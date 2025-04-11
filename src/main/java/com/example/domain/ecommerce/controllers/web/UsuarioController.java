@@ -106,7 +106,7 @@ public class UsuarioController {
         return "commerce/informacion_Usu";
     }
 
-    @PostMapping("/actualizar_usu/{id}")
+    @PostMapping("/actualizarUsu/{id}")
     public String actualizarUsuarios(
             @ModelAttribute UserDTO userDTO,
             @PathVariable int id,

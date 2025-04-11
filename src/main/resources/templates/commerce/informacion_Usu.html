@@ -24,7 +24,7 @@
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
-                <form  th:action="@{/actualizar_usu/{id} (id = ${user.idUsuario}) }" method="post">
+                <form  th:action="@{/actualizarUsu/{id} (id = ${user.idUsuario}) }" method="post">
                     <div>
                         <label>Nombre:</label> <br>
                         <input th:value="${session.user.persona.nombre}" type="text" id="nombre" name="nombre">

@@ -41,7 +41,7 @@ public class ProductoInventarioController {
         return "redirect:/productos";
     }
 
-    @PostMapping("/actualizar_prod/{id}")
+    @PostMapping("/actualizar/{id}")
     public String actualizarProd(
             @ModelAttribute ProductDTO productDTO, 
             @PathVariable int id,
@@ -53,7 +53,7 @@ public class ProductoInventarioController {
         return "redirect:/productos";
     }
 
-    @PostMapping("/eliminar_prod/{id}")
+    @PostMapping("/eliminar/{id}")
     public String eliminarProd(
             @PathVariable int id_producto,
             Model model) {

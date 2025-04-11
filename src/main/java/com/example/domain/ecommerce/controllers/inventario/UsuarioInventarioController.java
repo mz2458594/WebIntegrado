@@ -50,7 +50,7 @@ public class UsuarioInventarioController {
         return "redirect:/usuarios";
     }
 
-    @PostMapping("/eliminar_usu/{id}")
+    @PostMapping("/eliminarUsuario/{id}")
     public String eliminarUsu(
             @PathVariable int id_usuario,
             Model model) {
