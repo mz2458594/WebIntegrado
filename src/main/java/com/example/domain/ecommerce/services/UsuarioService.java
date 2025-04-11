@@ -7,9 +7,6 @@ import com.example.domain.ecommerce.dto.EmailDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.*;
-import com.example.domain.ecommerce.models.entities.Categoria;
-import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -59,6 +56,36 @@ public class UsuarioService {
         }
 
     }
+
+    public Usuario loginEmpleado(LoginDTO user) {
+        Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
+
+
+        if (usuario.isEmpty()) {
+            throw new EntityNotFoundException("Usuario no encontrado");
+        }
+
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if ( encoder.matches(user.getPassword(), usuario.get().getPassword()) ) {
+           Usuario us = usuario.get();
+
+           if (!us.getRole().equals("Empleado")) {
+                throw new SecurityException("El usuario no es un empleado");
+           }
+
+           return us;
+
+        } else {
+            throw new EntityNotFoundException("Contraseña incorrecta");
+        }
+
+
+    }
+
+
+
 
     public List<Producto> listarProducto() {
         return (List<Producto>) productoDAO.findAll();

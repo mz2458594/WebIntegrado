@@ -27,7 +27,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @Slf4j
 @SessionAttributes({ "nombre", "id", "rol" })
-@RequestMapping("/empleados")
 public class ControladorGeneral {
 
     @Autowired
@@ -44,7 +43,7 @@ public class ControladorGeneral {
     public String access(LoginDTO loginDTO, Model model, HttpServletRequest request) {
 
         try {
-            Usuario user = usuarioService.login(loginDTO);
+            Usuario user = usuarioService.loginEmpleado(loginDTO);
 
             HttpSession session = request.getSession();
 
