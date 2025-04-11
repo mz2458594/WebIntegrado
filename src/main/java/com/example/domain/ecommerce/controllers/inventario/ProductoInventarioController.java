@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @SessionAttributes({ "nombre", "id", "rol" })
-public class ProductoController {
+public class ProductoInventarioController {
 
     @Autowired
     private ProductoService productoService;

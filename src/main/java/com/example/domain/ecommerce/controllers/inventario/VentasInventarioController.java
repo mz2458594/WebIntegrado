@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @SessionAttributes({ "compra"})
-public class VentasController {
+public class VentasInventarioController {
 
     // @Autowired
     // private VentaService ventasService;

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-public class UsuarioController {
+public class UsuarioInventarioController {
     @Autowired
     private UsuarioService usuarioService;
 
