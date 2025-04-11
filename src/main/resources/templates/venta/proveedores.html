@@ -131,15 +131,13 @@
                         <tr class="thead">
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Direccion</th>
                             <th>Telefono</th>
                             <th>Email</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="proveedor: ${proveedores}">
-                            <td th:text="${proveedor.idProveedor}">1</td>
+                            <td th:text="${proveedor.ruc}">1</td>
                             <td th:text="${proveedor.nombre}">Chips</td>
-                            <td th:text="${proveedor.direccion}">Ica</td>
                             <td th:text="${proveedor.telefono}">999999999</td>
                             <td th:text="${proveedor.email}">example@gmail.com</td>
                             <td>
