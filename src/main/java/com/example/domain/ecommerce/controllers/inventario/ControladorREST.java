@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.LoginDTO;
-import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
-import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @Slf4j
 @SessionAttributes({ "nombre", "id", "rol" })
-@RequestMapping("/venta")
+@RequestMapping("/empleados")
 public class ControladorREST {
 
     @Autowired
@@ -37,12 +35,12 @@ public class ControladorREST {
 
     int contador = 0;
 
-    @RequestMapping("/iniciar_crear")
+    @RequestMapping("/login")
     public String loginEmpleado() {
-        return "venta/Iniciar_crear";
+        return "venta/login";
     }
 
-    @PostMapping("/iniciar_crear")
+    @PostMapping("/login")
     public String access(LoginDTO loginDTO, Model model, HttpServletRequest request) {
 
         try {
@@ -55,7 +53,7 @@ public class ControladorREST {
             System.out.println(session.getAttribute("user"));
             contador = 0;
 
-            return "redirect:/";
+            return "index";
 
         } catch (EntityNotFoundException e) {
 
@@ -66,7 +64,7 @@ public class ControladorREST {
             }
 
             model.addAttribute("error", true);
-            return "venta/Iniciar_crear";
+            return "venta/login";
         }
 
     }
@@ -77,7 +75,7 @@ public class ControladorREST {
         request.removeAttribute("nombre");
         request.removeAttribute("id");
         request.removeAttribute("rol");
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/index")
