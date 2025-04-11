@@ -52,7 +52,7 @@ public class ControladorGeneral {
             System.out.println(session.getAttribute("user"));
             contador = 0;
 
-            return "index";
+            return "venta/index";
 
         } catch (EntityNotFoundException e) {
 
@@ -80,7 +80,7 @@ public class ControladorGeneral {
     @GetMapping("/index")
     public String menu(Model model) {
         
-        return "index";
+        return "venta/index";
     }
 
     @PostMapping("/fecha")
@@ -88,11 +88,11 @@ public class ControladorGeneral {
             @RequestParam("fecha") String fecha) {
 
         
-        return "index";
+        return "venta/index";
     }
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        return "dashboard";
+        return "venta/dashboard";
     }
 }

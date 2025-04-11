@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <header class="header" th:insert="header.html"></header>
-    <nav class="navbar" th:insert="navbar.html"></nav>
+    <header class="header" th:insert="venta/header.html"></header>
+    <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
         <div class="contenedor__inicio">
             <div class="title_cont">
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="dashboard">
+        <!-- <div class="container" id="dashboard">
             <div class="head">
                 <h2>Productos Más Vendidos</h2>
             </div>
@@ -62,7 +62,7 @@
             </section>
         </div>
         <!--CONSULTAS PARA OBTENCION DE DATOS-->
-        <input hidden type="number" id="product-1" th:value="${producto1}"><br>
+        <!-- <input hidden type="number" id="product-1" th:value="${producto1}"><br>
         <input hidden type="number" id="product-2" th:value="${producto2}"><br>
         <input hidden type="number" id="product-3" th:value="${producto3}"><br>
         <input hidden type="number" id="product-4" th:value="${producto4}"><br>
@@ -196,7 +196,7 @@
                 width: 100%;
                 margin-top: 30px;
             }
-        </style>
+        </style> -->
     </main>
 </body>
 
