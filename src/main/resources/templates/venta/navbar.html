@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="contenedor__navbar">
+        <div class="accesoUser">
+            <ul>
+                <li><i class="fa-solid fa-gauge"></i><a th:href="@{/index}">Inicio</a></li>
+                <li><i class="fa-solid fa-cart-shopping"></i><a th:href="@{/nuevaVenta}">Venta nueva</a></li>
+                <li><i class="fa-solid fa-arrow-trend-up"></i><a th:href="@{/stock}">Stock</a></li>
+                <li><i class="fa-solid fa-basket-shopping"></i><a th:href="@{/pedidos}">Pedidos</a></li>
+            </ul>
+        </div>
+        <div class="accesoAdmin" th:if="${rol == 'Administrador'}">
+            <p>Mantenimiento: </p>
+            <ul>
+                <li><i class="fa-solid fa-truck-field-un"></i><a th:href="@{/proveedores}">Proveedores</a></li>
+                <li><i class="fa-solid fa-layer-group"></i><a th:href="@{/categoria}">Categorias</a></li>
+                <li><i class="fa-brands fa-product-hunt"></i><a th:href="@{/productos}">Productos</a></li>
+                <li><i class="fa-solid fa-users"></i><a th:href="@{/usuarios}">Usuario</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="cerrar-sesion">
+        <div><i class="fa-solid fa-right-from-bracket"></i><a th:href="@{/cerrar}">Cerrar Sesion</a></div>
+    </div>
+</body>
+
+</html>

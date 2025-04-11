@@ -1,0 +1,74 @@
+body{
+    min-height: 640px;
+    min-width: 781px;
+    margin: 0;
+}
+
+.container {
+    width: 40%;
+    margin: 50px auto;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+legend{
+    color: black;
+}
+
+#titulo {
+    text-align: center;
+    color: black;
+}
+
+form fieldset {
+    border: none;
+    padding: 0;
+}
+
+label {
+    display: block;
+    margin: 15px 0 10px;
+    color: black;
+}
+
+input, select, #CrearC {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Asegura que el ancho incluya el relleno y el borde */
+}
+
+.contenedor {
+    display: flex;
+}
+
+.contenedor select {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.contenedor input {
+    width: 100%;
+}
+
+#boton_crear {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#DE0900;
+    color: #fff837;
+    cursor: pointer;
+    box-sizing: border-box; 
+}
+
+.enlaces{
+    text-decoration: none;
+    color: black;
+    margin: 10px;
+}
+

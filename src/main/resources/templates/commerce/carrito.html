@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de compra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+    <div th:insert="commerce/header.html"></div>
+
+
+    <div class="wrapper">
+        <main>
+            <div class="container-cart">
+                <h2 class="firts-title">Carrito <i class="bi bi-cart3"></i></h2>
+                <div class="cart-products">
+                    <div class="flexwrap">
+                        <form action="" class="cart-form">
+                            <div class="item">
+                                <table id="cart-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody th:if="${carrito != null}">
+                                        <tr class="infoProducto" th:each="item: ${carrito.item}">
+                                            <td class="flexitem">
+                                                <div class="thumbnail">
+                                                    <a href="#"><img th:src="${item.producto.imagen}" alt=""></a>
+                                                </div>
+                                                <div class="content">
+                                                    <strong>
+                                                        <p th:text="${item.producto.nombre}">Pollo Rostizado</p>
+                                                    </strong>
+                                                    <p th:text="${item.producto.descripcion}">Añadidos: Aji 200gr</p>
+                                                </div>
+                                            </td>
+                                            <td class="cost" th:text="${item.producto.precio}">S/19.50</td>
+                                            <td>
+                                                <div class="qlty-control flexitem">
+                                                    <span class="quantity" th:text="${item.cantidad}">
+                                                </div>
+                                            </td>
+                                            <td class="sub">S/39.00</td>
+                                            <td><a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="product-remove"><i class="bi bi-trash3"></i></a></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        <div class="cart-summary">
+                            <div class="cart-subtotal">
+                                <h2 class="cart-boleta">Revisión</h2>
+                                <table class="cart-table-sbt">
+                                    <tbody>
+                                        <tr>
+                                            <th class="cart-text-sb">Subtotal:</th>
+                                            <td>S/78.00</td>
+                                            <script>
+                                                let total = 0;
+
+                                                document.querySelectorAll('.infoProducto').forEach(function (element) {
+                                                    let cantidad = parseInt(element.querySelector(".quantity").innerText)
+                                                    let precio = parseFloat(element.querySelector(".cost").innerText)
+
+                                                    total += cantidad * precio
+                                                    
+                                                    element.querySelector(".sub").innerText = cantidad * precio
+                                                });
+
+                                                
+                                                const subtotalElement = document.querySelector('.cart-table-sbt tbody tr td');
+                                                subtotalElement.innerText = `S/${total.toFixed(2)}`
+                                                </script>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button class="buy-button" type="button" id="comprar"
+                                    onclick="location.href='/iniciar_crear'">Comprar</button>
+                                <script th:if="${user != null}">
+                                    document.getElementById("comprar").addEventListener("click", function () {
+                                        window.location.href = "/pagar";
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:insert="commerce/footer.html"></div>
+
+
+
+</body>
+
+
+</html>

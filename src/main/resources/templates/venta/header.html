@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="contenedor__logo"> <img th:src="@{/images/logo.png}" alt=""></div>
+    <div class="title__inicio">
+        <p>Sistemas de Gestion de Inventario</p>
+    </div>
+    <div class="contenedor__perfil">
+        <div class="icon__notifi">
+            <p><i class="fa-regular fa-bell"></i></p>
+        </div>
+        <div class="linea"></div>
+        <div class="profile">
+            <div class="name_profile">
+                <p>Hola <span th:text="${nombre}">Jefe de market</span></p>
+                <p th:text="${rol}">Administrador</p>
+            </div>
+            <div class="img_perfil"><i class="fa-solid fa-user"></i></div>
+        </div>
+    </div>
+</body>
+
+</html>

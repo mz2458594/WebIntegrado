@@ -1,0 +1,71 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.Opciones ul li:nth-child(1){ /*Decorar en donde estamos ubicados*/
+    border-left: 4px solid #DE0900 ;
+    background-color: #dad5d5;
+}
+
+.Contenido{
+    width: 100%;
+    padding: 10px 40px;
+    border: 2px solid #FEDA00;
+    border-radius: 10px;
+    h2{
+        font-size: 22px;
+        font-style: italic;
+        border-bottom: 2px solid #DE0900;
+    }
+}
+
+form{
+    display: grid;
+    font-family: "Nunito", sans-serif;
+    font-size: 18px;
+    grid-template-columns: 2fr 1fr ;
+    margin: 10px 60px;
+        
+            input[type=number]::-webkit-outer-spin-button,
+            input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+
+        div{
+            margin: 20px 0;
+            label{
+                font-weight: bolder;
+            }
+            
+        }
+        input{
+            margin: 10px 0;
+            border: none;
+            border-bottom:1px solid #DE0900;
+            border-left:1px solid #DE0900;
+            border-radius: 10px;
+            padding: 10px;
+            width: 70%;
+        }        
+}
+
+.ima{
+    background-color: #FEDA00;
+    border: 3px solid #DE0900;
+    margin: 12px;
+    padding: 4px 10px;
+    border-radius: 10px;
+}
+
+.bott{
+    border: 3px solid #DE0900;
+    border-radius: 12px;
+    color: #DE0900;
+    font-weight: bolder;
+    background-color: #FEDA00;
+    align-items: center;
+    padding: 8px;
+    margin: 20px 10px;
+}

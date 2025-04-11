@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completando Compra | Maxiahorro</title>
+    <link rel="stylesheet" th:href="@{/css/form_Usu.css}">
+    <script th:src="@{/js/form_pago.js}"></script>
+    <script
+        src="https://sandbox.paypal.com/sdk/js?client-id=AavLCw44MUQdDVM03rzqRJswCUwYOLqgcvwJ5WBn9-98YjsSBZ4nZxGKjPIWf-DyenNWp4CBTR7SYjOi&currency=USD"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form id="Form1" class="active">
+            <h3>Productos</h3>
+            <table class="prod" id="orderTable">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody th:if="${carrito != null}">
+                    <tr class="pro" th:each="item : ${carrito.item}">
+                        <td th:text="${item.producto.nombre}"></td>
+                        <td class="quantity" th:text="${item.cantidad}"></td>
+                        <td  class="cost" th:text="${item.producto.precio}">${product.price}</td>
+                        <td class="sub"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+
+                    <!-- <tr>
+                        <td colspan="4" class="fi">Precio de Envío</td>
+                        <td id="Envio" class="fi">0</td>
+                    </tr> -->
+                    <tr>
+                        <td colspan="4" class="fi T">Total</td>
+                        <td class="fi"></td>
+                    </tr>
+                    <script>
+                        let total = 0;
+
+                        document.querySelectorAll('.pro').forEach(function (element) {
+                            let cantidad = parseInt(element.querySelector(".quantity").innerText)
+                            let precio = parseFloat(element.querySelector(".cost").innerText)
+
+                            total += cantidad * precio
+                            
+                            element.querySelector(".sub").innerText = cantidad * precio
+                        });
+
+                        
+                        const subtotalElement = document.querySelector('.fi');
+                        subtotalElement.innerText = `${total.toFixed(2)}`
+                        </script>
+                </tfoot>
+            </table>
+            <div class="btn-box">
+                <button type="button" id="Next1">Siguiente</button>
+            </div>
+        </form>
+
+
+        <form id="Form2">
+            <h3>Información Personal</h3>
+            <input type="text" placeholder="Ingrese su nombre" required th:if="${ usuario != null}"
+                th:value="${usuario.persona.nombre}"><br>
+            <input type="text" placeholder="Ingrese su apellido" required th:if="${ usuario != null}"
+                th:value="${usuario.persona.apellido}"><br>
+            <input type="text" placeholder="Ingrese su número teléfono" required th:if="${usuario != null}"
+                th:value="${usuario.persona.telefono}"><br>
+            <div class="btn-box">
+                <button type="button" id="Back1">Atrás</button>
+                <button type="button" id="Next2">Siguiente</button>
+            </div>
+        </form>
+
+        <form id="Form3" method="post">
+            <h3>Dirección de Envío</h3>
+            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required th:value="${user.persona.direccion.calle}"><br>
+
+            <div class="Sele">
+                <h2>Ciudad</h2>
+                <h2>Provincia</h2>
+                <h2>Distrito</h2>
+
+                <select id="ciudad" name="ciudad">
+                    <option value="Ica" th:if="${user.persona.direccion.ciudad == 'Ica'}"
+                        th:selected="${direccion.ciudad}">Ica</option>
+                    <option value="Ica">Ica</option>
+                </select>
+
+                <select name="provincia" id="provincia">
+                    <option value="Ica" th:if="${user.persona.direccion.provincia == 'Ica'}"
+                        th:selected="${user.persona.direccion.provincia}">Ica</option>
+                    <option value="Ica">Ica</option>
+                    <option value="Chincha" th:if="${user.persona.direccion.provincia == 'Chincha'}"
+                        th:selected="${user.persona.direccion.provincia}">Chincha</option>
+                    <option value="Chincha">Chincha</option>
+                    <option value="Pisco" th:if="${user.persona.direccion.provincia == 'Pisco'}"
+                        th:selected="${user.persona.direccion.provincia}">Pisco</option>
+                    <option value="Pisco">Pisco</option>
+                    <option value="Nazca" th:if="${user.persona.direccion.provincia == 'Nazca'}"
+                        th:selected="${user.persona.direccion.provincia}">Nazca</option>
+                    <option value="Nazca">Nazca</option>
+                    <option value="Palpa" th:if="${user.persona.direccion.provincia == 'Palpa'}"
+                        th:selected="${user.persona.direccion.provincia}">Palpa</option>
+                    <option value="Palpa">Palpa</option>
+                </select>
+
+                <select id="distrito" name="distrito">
+                    <option value="Pisco" th:if="${user.persona.direccion.distrito == 'Pisco'}"
+                        th:selected="${user.persona.direccion.distrito}">Pisco</option>
+                    <option value="San andres" th:if="${user.persona.direccion.distrito == 'San andres'}"
+                        th:selected="${user.persona.direccion.distrito}">San andres</option>
+                    <option value="Pisco">Pisco</option>
+                    <option value="San andres">San andres</option>
+                </select>
+
+            </div>
+
+            <div class="btn-box">
+                <button type="button" id="Back2">Atrás</button>
+                <button type="button" id="Next3">Siguiente</button>
+            </div>
+            <input type="submit" style="display: none;">
+        </form>
+
+        <form id="Form4">
+            <h3>Método de Pago</h3>
+            <div id="paypal-button-container"></div>
+            <div class="btn-box">
+                <button type="button" id="Back3">Atrás</button>
+                <button type="button" id="Next4">Finalizar</button>
+            </div>
+        </form>
+
+        <div class="step-row">
+            <div id="progreso"></div>
+            <div class="step-col">Paso 1</div>
+            <div class="step-col">Paso 2</div>
+            <div class="step-col">Paso 3</div>
+            <div class="step-col">Paso 4</div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        const totalProd = parseFloat(document.querySelector(".fi").innerText)
+
+        var forms = [Form1, Form2, Form3, Form4];
+        var progreso = document.getElementById("progreso");
+
+        function showForm(index) {
+            forms.forEach((form, i) => {
+                form.classList.toggle("active", i === index);
+            });
+            progreso.style.width = `${(index + 1) * 25}%`;
+        }
+
+        document.getElementById("Next1").onclick = () => showForm(1);
+        document.getElementById("Next2").onclick = () => showForm(2);
+        document.getElementById("Next3").onclick = () => showForm(3);
+        document.getElementById("Back1").onclick = () => showForm(0);
+        document.getElementById("Back2").onclick = () => showForm(1);
+        document.getElementById("Back3").onclick = () => showForm(2);
+
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'blue',
+                shape: 'pill',
+                label: 'paypal',
+                height: 38,
+                disableMaxWidth: true
+            },
+            createOrder: function (data, actions) {
+                const total_venta = totalProd;
+                console.log(total_venta)
+
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total_venta,
+                        }
+                    }]
+                })
+            },
+
+            oncancel: function (data_cancel) {
+                console.log(data_cancel);
+            },
+
+            onApprove: function (data, actions) {
+                actions.order.capture().then(
+                    
+                    window.location.href = "/registrar_venta"
+                )
+            }
+        }).render('#paypal-button-container');
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores | Multiservicios Leo</title>
+    <link rel="icon" th:href="@{/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal-delete.css}">
+</head>
+
+<body>
+    <div class="modal__container--add">
+        <div class="ventana__modal ventana-close">
+            <div class="form__name--add">
+                <p><i class="fa-solid fa-plus"></i> Agregar Proveedor</p>
+            </div>
+            <form class="form_modal" th:action="@{/agregar_prov}" method="post">
+                <div class="input__box">
+                    <label for="">Nombre</label><br>
+                    <input type="text" name="nombre">
+                </div>
+                <div class="input__box">
+                    <label for="">Direccion</label><br>
+                    <input type="text" name="direccion">
+                </div>
+                <div class="input__box">
+                    <label for="">Telefono</label><br>
+                    <input type="text" name="telefono">
+                </div>
+                <div class="input__box">
+                    <label for="">Email</label><br>
+                    <input type="email" name="email">
+                </div>
+                <div class="button__modal">
+                    <div class="btn-modal">
+                        <input type="submit" class="btn-guardar" value="Guardar">
+                        <input class="btn-cancelar" type="reset" value="Cancelar">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container-modal--edit">
+        <div class="ventana_modal--edit ventana-close-edit">
+            <div class="form__name--add">
+                <p><i class="fa-solid fa-plus"></i> Editar Proveedor</p>
+            </div>
+            <form class="form_modal" th:action="@{/actualizar_prov}" method="post">
+                <input type="text" name="id_act" id="id_act" style="display: none;">
+                <div class="input__box">
+                    <label for="">Nombre</label><br>
+                    <input type="text" name="nombre_act" id="nombre_act">
+                </div>
+                <div class="input__box">
+                    <label for="">Direccion</label><br>
+                    <input type="text" name="direccion_act" id="direccion_act">
+                </div>
+                <div class="input__box">
+                    <label for="">Telefono</label><br>
+                    <input type="text" name="telefono_act" id="telefono_act">
+                </div>
+                <div class="input__box">
+                    <label for="">Email</label><br>
+                    <input type="email" name="email_act" id="email_act">
+                </div>
+                <div class="button__modal">
+                    <div class="btn-modal">
+                        <input type="submit" class="btn-guardar" value="Guardar">
+                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container_modal--delete">
+        <div class="ventana_modal--delete ventana-close-delete">
+            <div class="confir-delete">
+                <p>Confirmacion</p>
+            </div>
+            <div class="cont-pregunt-delete">
+                <p>¿Deseas eliminar este proveedor permanentamente?</p>
+            </div>
+            <div class="btns-delete">
+                <div>
+                    <button id="delete-btn" class="button-confir">Continuar</button>
+                    <button class="button-cancelar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{/eliminar_prov}" id="eliminar_prov" style="display: none;" method="post">
+        <input type="text" id="id_eliminar" name="id_eliminar" required>
+        <input type="submit">
+    </form>
+
+    <header class="header" th:insert="header.html"></header>
+    <nav class="navbar" th:insert="navbar.html"></nav>
+    <main class="contenedor_main">
+        <div class="contenedor_modal">
+            <div class="title__add--modal">
+                <p>Lista de Proveedores</p>
+                <button class="addition">
+                    <i class="fa-solid fa-plus"></i>
+                    <p>Nuevo</p>
+                </button>
+            </div>
+            <div class="Cont__buscar">
+                <div class="buscar_search">
+                    <label for="">Buscar :</label>
+                    <input type="text" id="productInput">
+                </div>
+                <div class="cont-reportes">
+                    <p>Generar reporte:</p>
+                    <div class="reporte-btns">
+                        <button class="btn-pdf"><i class="fa-solid fa-file-pdf"></i></button>
+                        <button class="btn-excel"><i class="fa-solid fa-file-excel"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="cont_table">
+                <div class="table__product">
+                    <table class="table">
+                        <tr class="thead">
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                            <th>Telefono</th>
+                            <th>Email</th>
+                            <th>Accion</th>
+                        </tr>
+                        <tr id="productList" th:each="proveedor: ${proveedores}">
+                            <td th:text="${proveedor.idProveedor}">1</td>
+                            <td th:text="${proveedor.nombre}">Chips</td>
+                            <td th:text="${proveedor.direccion}">Ica</td>
+                            <td th:text="${proveedor.telefono}">999999999</td>
+                            <td th:text="${proveedor.email}">example@gmail.com</td>
+                            <td>
+                                <div class="container_action">
+                                    <label type="checkbox" class="action_checkbox">
+                                        <label class="name_action" for="open_action">Accion <i
+                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                        <div class="cont_opciones">
+                                            <button class="editproduc">Editar <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="deleteProduc">Eliminar <i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <script>
+                            const boton2 = document.querySelectorAll(".editproduc");
+                            boton2.forEach(boton => {
+                                boton.addEventListener('click', function () {
+                                    // Encontramos la fila asociada al botón
+                                    const fila = this.closest('tr');
+
+                                    // Recogemos los valores de las celdas de la fila
+                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                                    // Mostramos los valores recogidos
+                                    document.getElementById("id_act").value = valores[0];
+                                    document.getElementById("nombre_act").value = valores[1];
+                                    document.getElementById("direccion_act").value = valores[2];
+                                    document.getElementById("telefono_act").value = valores[3];
+                                    document.getElementById("email_act").value = valores[4];
+                                    modalContEdit.style.opacity = "1";
+                                    modalContEdit.style.visibility = "visible";
+                                    VentEdit.classList.toggle("ventana-close-edit");
+                                });
+                            });
+
+
+                            const boton3 = document.querySelectorAll(".deleteProduc");
+                            boton3.forEach(boton => {
+                                boton.addEventListener('click', function () {
+                                    // Encontramos la fila asociada al botón
+                                    const fila = this.closest('tr');
+
+                                    // Recogemos los valores de las celdas de la fila
+                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                                    // Mostramos los valores recogidos
+                                    document.getElementById("id_eliminar").value = valores[0];
+                                    modalContDele.style.opacity = "1";
+                                    modalContDele.style.visibility = "visible";
+                                    VentDelete.classList.toggle("ventana-close-delete");
+                                });
+                            });
+
+                            const boton4 = document.querySelectorAll(".button-confir");
+                            boton4.forEach(boton => {
+                                boton.addEventListener('click', function () {
+                                    document.getElementById('eliminar_prov').submit();
+                                });
+                            });
+
+
+                        </script>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script th:src="@{/js/modalAdd.js}"></script>
+
+
+    <script>
+        const productInput = document.getElementById("productInput");
+        const tableRows = document.querySelectorAll("#productList");
+
+        function filterProducts() {
+            const query = productInput.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
+                const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                const productName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+                const productDir = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+                const productTel = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                const productEmail = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
+
+                if (productId.includes(query) || productName.includes(query) || productDir.includes(query) || productTel.includes(query) || productEmail.includes(query)) {
+                    row.style.display = ""; // Mostrar fila
+                } else {
+                    row.style.display = "none"; // Ocultar fila
+                }
+
+            });
+        }
+
+        // Asociar la función al evento de entrada
+        productInput.addEventListener("input", filterProducts);
+    </script>
+
+    <script>
+        document.querySelector('.btn-pdf').addEventListener('click', function () {
+            const filteredRows = Array.from(document.querySelectorAll("#productList"))
+                .filter(row => row.style.display !== "none") // Solo filas visibles
+                .map(row => {
+                    const cells = row.querySelectorAll("td");
+                    return {
+                        idProveedor: cells[0].textContent.trim(),
+                        nombre: cells[1].textContent.trim(),
+                        direccion: cells[2].textContent.trim(),
+                        telefono: cells[3].textContent.trim(),
+                        email: cells[4].textContent.trim()
+                    };
+                });
+
+            fetch('/reporteProveedores-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filteredRows),
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Reporte_Proveedores.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => console.error('Error al generar el PDF:', error));
+        });
+    </script>
+
+    <script>
+        document.querySelector('.btn-excel').addEventListener('click', function () {
+            const filteredRows = Array.from(document.querySelectorAll("#productList"))
+                .filter(row => row.style.display !== "none") // Solo filas visibles
+                .map(row => {
+                    const cells = row.querySelectorAll("td");
+                    return {
+                        idProveedor: cells[0].textContent.trim(),
+                        nombre: cells[1].textContent.trim(),
+                        direccion: cells[2].textContent.trim(),
+                        telefono: cells[3].textContent.trim(),
+                        email: cells[4].textContent.trim()
+                    };
+                });
+
+            fetch('/excelProv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filteredRows)
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'reporte_proveedores.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => console.error('Error al generar el Excel:', error));
+        });
+    </script>
+
+
+</body>
+
+</html>

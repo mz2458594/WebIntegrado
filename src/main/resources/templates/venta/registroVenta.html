@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regsitro de Venta | Multiservicios Leo</title>
+    <link rel="icon" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+        <link rel="stylesheet" th:href="@{/css/style-registroVenta.css}">
+</head>
+
+<body>
+    <header class="header" th:insert="header.html"></header>
+    <nav class="navbar" th:insert="navbar.html"></nav>
+    <main class="contenedor_main">
+        <div class="contenedor_modal">
+            <div class="title__add--modal">
+                <p>Registro de Venta</p>
+            </div>
+            <div class="contenedor-registro-venta">
+                <div class="cont-codigo-usuario">
+                    <div class="info-cod-venta">
+                        <p>Codigo</p>
+                        <span class="cod-vent-regis" th:text="${id_venta}">0001</span>
+                    </div>
+                    <div class="info-user-venta">
+                        <p>Usuario</p>
+                        <span class="cod-user-regis" th:text="${id}">7777777</span>
+                    </div>
+                </div><br>
+                <div class="cont-tabla-registro">
+                    <p>Items</p>
+                    <table class="tabla-registro-venta" id="tabla-listar">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cant</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="detalle : ${detalles}">
+                                <td th:each="producto : ${productos}"
+                                    th:if="${producto.idProducto == detalle.idProducto}" th:text="${producto.nombre}">
+                                    arroz</td>
+                                <td th:each="producto : ${productos}"
+                                    th:if="${producto.idProducto == detalle.idProducto}" th:text="${producto.precio}">
+                                    4.50</td>
+                                <td th:text="${detalle.cantidadProductos}">2</td>
+                                <td id="tot" class="tot" th:each="producto : ${productos}"
+                                    th:if="${producto.idProducto == detalle.idProducto}"
+                                    th:text="${producto.precio * detalle.cantidadProductos}">9</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">Total</td>
+                                <td id="finalTotal">S/. 9</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="container-impri-edi-vol">
+                    <div class="im-id-vol">
+                        <button class="btn-imprimir">Imprimir</button>
+                        <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
+                        <button class="btn-volver" onclick="window.location.href='/nuevaVenta'">Volver</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let total_pag = document.querySelectorAll("td.tot");
+
+        const precios = Array.from(total_pag).map(precios => precios.textContent.trim());
+        console.log(precios);
+
+        const t = precios.reduce((acc, precio) => parseFloat(acc) + parseFloat(precio), 0);
+        console.log(t);
+        document.getElementById("finalTotal").innerHTML = t.toFixed(2);
+    </script>
+
+<script>
+    document.querySelector('.btn-imprimir').addEventListener('click', function () {
+        const tabla = document.getElementById('tabla-listar').outerHTML; // Captura la tabla
+        const ventanaImpresion = window.open('', '_blank'); // Abre una nueva ventana o pestaña
+
+        // Crea el contenido del documento
+        ventanaImpresion.document.write(`
+            <html>
+                <head>
+                    <title>Imprimir Venta</title>
+                    <style>
+                        /* Agrega estilos básicos para impresión */
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>Detalles de la venta</h2>
+                    ${tabla} <!-- Incluye la tabla -->
+                </body>
+            </html>
+        `);
+
+        ventanaImpresion.document.close(); // Cierra el documento para asegurar la renderización
+        ventanaImpresion.print(); // Llama a la función de impresión
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/header.css}" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header id="encabezado">
+        <nav>
+            <center>
+                <a href="/" id="logo">
+                    <img id="maxi" src="https://maxiahorro.com.pe/wp-content/uploads/2021/05/logo.png" alt="">
+                </a>
+            </center>
+        </nav>
+        <nav>
+            <form th:action="@{/buscar}" method="post" autocomplete="off">
+                <div class="barra_busqueda">
+                    <input type="text" name="q" id="q" class="barra" placeholder="Buscar...."
+                        aria-describedby="icon.buscar">
+                    <button type="submit" id="busc">
+                        <i class="fast fa-search">Buscar</i>
+                    </button>
+                </div>
+            </form>
+        </nav>
+        <nav>
+            <button class="boton_opciones" onclick="location.href = '/'">Tienda</button>
+        </nav>
+        <nav>
+            <button class="boton_opciones" onclick="location.href = '/infoEmp'">Información</button>
+        </nav>
+        <nav>
+            <div class="opciones_usuario" onmouseleave="cerrar_bloque()">
+                <button id="cuenta" class="boton_opciones" onclick="location.href = '/iniciar_crear'"
+                    onmouseenter="abrirMenu()">Mi
+                    cuenta</button>
+                <div th:if="${user != null}" id="menu_usu" class="op_usu">
+                    <ul class="list_op">
+                        <li class="op">
+                            <a class="cerrar" th:href="@{/info}">Información personal</a>
+                            <a class="cerrar" th:href="@{/cerrar}">Cerrar sesión</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <script th:if="${user != null}">
+                    document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.persona.nombre}]]";
+                    document.getElementById('cuenta').onclick = actualizar;
+                    function actualizar() {
+                        window.location.href = '/opcion';
+                    }
+
+                    function abrirMenu() {
+                        document.getElementById('menu_usu').style.display = "block";
+                        document.getElementById('cuenta').style.marginTop = "80px";
+                    }
+
+                    function cerrar_bloque() {
+                        document.getElementById('menu_usu').style.display = "none";
+                        document.getElementById('cuenta').style.marginTop = "0px";
+                    }
+                </script>
+            </div>
+        </nav>
+        <nav id="carrito_compra">
+            <a th:href="@{/carro}">
+                <img th:src="@{/images/carrito.png}" alt="Carrito de compra" id="carrito">
+                <div class="cantidad_productos">
+                    <span id="contador">0</span>
+                </div>
+            </a>
+            <div class="info_producto">
+                <div class="row_product" th:if="${carrito != null}">
+                    <div class="cart_product" th:each="item: ${carrito.item}">
+                        <div class="info_product">
+                            <span id="id_pro" class="idd" name="id_pro" style="display: none;"></span>
+                            <span class="cantidad_product" th:text="${item.cantidad}">0</span>
+                            <span class="titulo_product" th:text="${item.producto.nombre}">Ningun producto</span>
+                            <span class="precio_product" th:text="${ item.producto.precio}">$0</span>
+                            <a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="eliminar_prod_link"><img th:src="@{/images/x-regular-24.png}"
+                                alt="un icono" class="icono"></a>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="cart_total">
+                    <h3>Total</h3>
+                    <span class="total_pagar">S/0</span>
+                </div>
+                <script>
+                    let valor_total = 0
+                    document.querySelectorAll('.info_product').forEach(function(element) {
+                        let cantidad = parseInt(element.querySelector(".cantidad_product").innerText)
+                        let precio = parseFloat(element.querySelector(".precio_product").innerText)
+                        
+                        valor_total += cantidad * precio
+
+                    });
+                    
+                    document.querySelector('.total_pagar').innerText = "S/" + valor_total.toFixed(2);
+
+                </script>
+            </div>
+        </nav>
+    </header>
+</body>
+
+</html>

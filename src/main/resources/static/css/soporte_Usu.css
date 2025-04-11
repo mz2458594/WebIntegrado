@@ -1,0 +1,40 @@
+.Opciones ul li:nth-child(2){ /*Decorar en donde estamos ubicados*/
+    border-left: 4px solid #DE0900 ;
+    background-color: #dad5d5;
+}
+
+
+.Contenido{
+    font-family: "Nunito", sans-serif;
+    width: 100%;
+    padding: 20px 40px;
+    border: 2px solid #FEDA00;
+    border-radius: 10px;
+    h2{
+        font-size: 22px;
+        font-style: italic;
+        border-bottom: 2px solid #DE0900;
+    }
+    h3{
+        font-size: 28px;
+        color: #1D2937;
+        text-shadow: 0 4px 2px #1d29376b;
+    }
+    p{
+        font-size: 18px;
+        margin: 0;
+    }
+    li{
+        margin: 10px;
+    }
+    a{
+        color: #DE0900;
+        font-size: 18px;
+    }
+    a:hover{
+        font-size: 20px;
+        color: #FEDA00;
+    }
+
+}
+

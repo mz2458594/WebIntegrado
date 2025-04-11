@@ -1,0 +1,246 @@
+    :root{
+        --red-color: #DE0900;
+        --border-color: #e5e8ec;
+        --yellow-color: #FEDA00;
+        --dark-color: #1D2937;
+    }
+    
+    
+    * {
+        font-family: "Nunito", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .item a{
+        font-weight: 750;
+        text-decoration: none;
+        color: inherit;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .item th{
+        font-weight: 750;
+        text-decoration: none;
+        color: inherit;
+        -webkit-tap-highlight-color: transparent;
+        
+        
+    }
+
+    .item th:first-child{
+        border-top-left-radius: 1.25rem; /* Ajusta el radio según lo que necesites */
+        border-bottom-left-radius: 1.25rem;
+        
+        
+    }
+
+    .item th:last-child{
+        border-top-right-radius: 1.25rem; /* Ajusta el radio según lo que necesites */
+        border-bottom-right-radius: 1.25rem;
+        
+        
+    }
+
+    strong{
+        font-weight: 800;
+    }
+
+    ul{
+        list-style: none;
+    }
+
+    table{
+        border-collapse: collapse;
+        border-spacing: 0;
+        
+    }
+
+    input ::placeholder{
+        font: inherit;
+    }
+
+    main{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+    }
+    
+
+    .firts-title{
+        width: 100%;
+        padding: 2rem 0rem;
+        font-weight: 1000;
+        font-size: 2rem;
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+
+    .flexwrap{
+        display: flex;
+        flex-wrap: nowrap;
+        
+        
+    }
+
+    .flexitem{
+        display: flex;
+        align-items: center;
+    }
+
+    .container-cart{
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 0.98em;
+        justify-content: center;    
+
+        width: 100%;
+        overflow: visible;
+    }
+
+    .cart-products form{
+        width: 100%;
+        
+    }
+
+    .cart-products .thumbnail img{
+        position: relative;
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        margin-left: 1.5em;
+        margin-right: 1em;
+        object-fit: cover;
+    }
+
+
+    
+    .cart-products table thead th{
+        vertical-align: middle;
+        background-color: var(--red-color);
+        color: var(--yellow-color);
+        
+    }
+
+    .cart-products table :where(th,td){
+        padding: 2em 1em;
+    }
+    
+    .cart-products table :where(th,td):first-child{
+        text-align: left;
+        padding-left: 2em;
+    }
+    
+    .cart-products table tbody td:first-child{
+        padding-left: 0;
+    }
+
+    .cart-products table td :where(.content, .qlty-control, p){
+        margin: 0;
+        padding: 0;
+    }
+
+    .cart-products .qlty-control :where(button,input){
+        width: 32px;
+        height: 32px;
+        padding: 0.25em;
+        text-align: center;
+        border: 0;
+        outline: 0;
+        background-color:rgb(247, 245, 245);
+    }
+
+    .cart-products .qlty-control button{
+        cursor: pointer;
+    }
+
+    .cart-products table tbody tr{
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-summary{
+        width: 100%;
+        margin: 2.5em 0 4em;
+        
+    }
+
+    .cart-summary .cart-subtotal{
+        padding-left: 5em;
+        line-height: 2em;
+        
+    }
+    .cart-products.cart-subtotal table tr > *{
+        padding: 0;
+    }
+    
+    .cart-products.cart-subtotal table td{
+        text-align: right;
+    }
+
+    .cart-boleta{
+        background-color: #f7d930;
+        text-align: center;
+        border-radius: 2rem;
+        font-weight: 750;
+        color: var(--red-color);
+    }
+    
+    .cart-form{
+        width: 70%; 
+        margin-right: 20px;
+    }
+
+    .cart-text-sb{
+        font-weight: 750;
+        font-size: 1.25em;
+    }
+
+    .buy-button{
+        border: 0;
+        border-radius: 2rem;
+        width: 100%;
+        display: block;
+        text-align: center;
+        text-transform: uppercase;
+        padding: .5rem;
+        background-color: var(--dark-color);
+        color: white;
+        cursor: pointer;
+    }
+
+
+
+    @media screen and (min-width: 992px){
+        .container-cart{
+            padding: 0 2em;
+            display: flex;
+            flex-wrap: wrap;
+            
+        }
+        
+
+        
+        .cart-products .cart-form{
+            width: 66%;
+            
+        }
+        
+        .cart-products .cart-summary{
+            width: 34%;
+            margin-left: 2%;
+            position: sticky;
+            top: 1em; 
+            margin-top: 0;
+            
+            
+        }
+        
+    }
+
+
+
+    
+

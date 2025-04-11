@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros productos</title>
+    <link rel="stylesheet" th:href="@{/css/productos.css}">
+    <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div th:insert="commerce/header.html"></div>
+
+    <h1>Nuestros Productos</h1>
+    <h2>Categorías:</h2>
+    <div id="categories" class="categories" th:if="${categorias != null}">
+        <div class="category" data-category="Todas">
+            <img
+                src="https://cdn-3.expansion.mx/dims4/default/cbea166/2147483647/strip/true/crop/3840x2160+0+0/resize/1800x1013!/format/webp/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2Fc4%2F1a%2F8b38172e4b2dae61a690c231b4a2%2Famazon-alexa-nuevos-productos-2023.jpg">
+            <p>Todos</p>
+        </div>
+        <div class="category" th:each="categoria: ${categorias}" th:attr="data-category=${categoria.nombre}">
+            <img th:src="${categoria.imagen}">
+            <p th:text="${categoria.nombre}">Todos</p>
+        </div>
+    </div>
+    <div class="promo-banner">
+        <img th:src="@{/images/is.png}" alt="Icono de oferta" class="promo-image">
+        <div class="promo-content">
+            <p>¡No te pierdas nuestras increíbles ofertas y promociones!</p>
+            <a th:href="@{/ofertas}" class="promo-link">Ver ofertas especiales</a>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div>
+            <input class="buscar" type="text" id="search-input" placeholder="Buscar productos...">
+        </div>
+        <div>
+            <select id="sort-select">
+                <option value="name-asc">Ordenar por nombre (A-Z)</option>
+                <option value="name-desc">Ordenar por nombre (Z-A)</option>
+                <option value="price-asc">Ordenar por precio (Menor a Mayor)</option>
+                <option value="price-desc">Ordenar por precio (Mayor a Menor)</option>
+            </select>
+            <button id="apply-sort">Aplicar</button>
+        </div>
+    </div>
+    <div class="product-grid">
+        <div th:each="producto : ${productos}" class="product-card">
+            <form th:action="@{/añadir/{id} (id = ${producto.idProducto}) }" method="post">
+
+                <img th:src="${producto.imagen}">
+                <h3 class="nombre" th:text="${producto.nombre}"></h3>
+                <p class="price">Precio: $<strong class="precio" th:text="${producto.precio}"></strong></p>
+                <div th:attr="data-category=${producto.categoria.nombre}">
+                    <p>Categoría: <strong class="categoria" th:text="${producto.categoria.nombre}"></strong></p>
+                </div>
+                <input id="canti" name="canti" type="number" class="quantity-input" value="1" min="1"
+                    th:attr="max=${producto.stock}">
+                <button class="buy-button" th:attr="data-product-id=${producto.idProducto}"
+                    type="submit">Comprar</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:insert="commerce/footer.html"></div>
+
+    <script th:if="${buscar != '' && buscar != null}">
+        document.getElementById("search-input").value = "[[${buscar}]]";
+        handleSearch();
+    </script>
+
+</body>
+
+</html>

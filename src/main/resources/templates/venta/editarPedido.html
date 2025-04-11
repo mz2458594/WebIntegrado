@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informacion Pedido | Multiservicios Leo</title>
+    <link rel="icon" th:href="@{/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/style-agregarPedido.css}">
+</head>
+
+<body>
+    <header class="header" th:insert="header.html"></header>
+    <nav class="navbar" th:insert="navbar.html"></nav>
+    <main class="contenedor_main">
+        <div class="contenedor_modal">
+            <div class="title__add--modal">
+                <p>Informacion de pedido - <span th:text="${id}">Codigo 001</span></p>
+            </div>
+            <div class="contenedor_form-pedido">
+                <form th:action="@{/añadirP}" method="post">
+                    <div class="cont-cod-provee">
+                        <div class="conte-cod">
+                            <label for="">Codigo de Pedido</label><br>
+                            <input type="text" disabled th:value="${id}">
+                        </div>
+                        <div class="conte-proveedor">
+                            <label for="">Proveedor</label><br>
+                            <input type="text" id="proveedorInput" name="proveedorInput" class="dropdown-inputs"
+                                th:value="${prov}" required>
+                            <div class="dropdown-lista" id="proveedorList">
+                                <div class="prov" th:each="proveedor: ${proveedores}" th:text="${proveedor.nombre}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-produc-pedido">
+                        <p>Productos a pedir</p>
+                        <div class="listar-pedido">
+                            <div class="producto-pedido">
+                                <label for="">Producto</label><br>
+                                <input type="text" id="productInput" name="productInput" class="dropdown-input" required>
+                                <div class="dropdown-list" id="productList">
+                                    <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cantidad-produc-pedi">
+                                <label for="">Cantidad</label><br>
+                                <input type="number" id="canti" name="canti" value="1">
+                            </div>
+                            <div class="agregar-list-pedido">
+                                <button>Agregar</button>
+                            </div>
+                </form>
+            </div>
+        </div>
+        <div class="cont-table-list">
+            <table id="tabla-listar" class="table-list">
+                <thead>
+                    <tr>
+                        <th>Quitar</th>
+                        <th>Producto</th>
+                        <th>Cantidad<br>Un. o KG</th>
+                        <th>Precio S/.</th>
+                        <th>Total S/.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="detalle : ${detalles}">
+                        <td><a class="quitar-listas" th:each="producto : ${productos}"
+                                th:if="${producto.idProducto == detalle.idProducto}"
+                                th:href="@{/eliminarP/{idProducto}(idProducto=${producto.idProducto})}">X</a></td>
+                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
+                            th:text="${producto.nombre}">2</td>
+                        <td th:text="${detalle.cantidad}">arroz</td>
+                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
+                            th:text="${producto.precio}">4.50</td>
+                        <td id="tot" class="tot" th:each="producto : ${productos}"
+                            th:if="${producto.idProducto == detalle.idProducto}"
+                            th:text="${producto.precio * detalle.cantidad}">9</td>
+                    </tr>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            <p>SubTotal</p>
+                        </td>
+                        <td id="finalTotal">S/.9.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p>Descuento: <input class="inp-descuen" type="number" value="1" min="0" size="10"> %</p>
+                        </td>
+                        <td id="descuento">20</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p>Impuesto: <input class="inp-descuen" type="number" value="1" min="0" size="10"> %</p>
+                        </td>
+                        <td id="impuesto">20</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p>Total</p>
+                        </td>
+                        <td id="total">20</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <form th:action="@{/actualizarP}" method="post">
+            <div class="container-submit-cancelar">
+                <div class="sub-can">
+                    <input value="Guardar" type="submit" class="btn-agreventa">
+                    <input type="hidden" id="inputDescuento" name="inputDescuento">
+                    <input type="hidden" id="inputImpuesto" name="inputImpuesto">
+                    <input type="hidden" id="inputProveedor" name="inputProveedor">
+                    <input type="text" id="total_reg" name="total_reg" style="display: none;">
+                    <button type="reset" onclick="window.location.href='/cancelarEdit'">Cancelar</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        </div>
+    </main>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const proveedor = document.getElementById("proveedorInput");
+
+            proveedor.addEventListener("input", enviarProv);
+
+            function enviarProv() {
+                const enviarProveedor = document.getElementById("inputProveedor");
+                enviarProveedor.value = proveedor.value;
+
+                console.log(enviarProveedor.value);
+            }
+
+            const enviarImpuesto = document.getElementById("inputImpuesto");
+            const enviarDescuento = document.getElementById("inputDescuento");
+
+            const mostrarImpuesto = document.getElementById("impuesto");
+            const mostrarDescuento = document.getElementById("descuento");
+
+            const FinalTotalEl = document.getElementById("finalTotal");
+            const descuentoInput = document.querySelectorAll(".inp-descuen")[0];
+            const impuestoInput = document.querySelectorAll(".inp-descuen")[1];
+            const totalEl = document.getElementById("total");
+            const totalRegInput = document.getElementById("total_reg");
+
+            const precios = Array.from(document.querySelectorAll("td.tot")).map(precios => parseFloat(precios.textContent.trim()));
+
+            const subtotal = precios.reduce((acc, precio) => acc + precio, 0);
+
+            console.log(precios);
+            console.log(subtotal);
+            FinalTotalEl.innerHTML = `S/.${subtotal.toFixed(2)}`;
+
+            function recalcularTotal() {
+                const descuento = parseFloat(descuentoInput.value) || 0;
+                const impuesto = parseFloat(impuestoInput.value) || 0;
+
+                enviarDescuento.value = descuento;
+                enviarImpuesto.value = impuesto;
+
+
+                const montoDescuento = subtotal * (descuento / 100);
+                const montoImpuesto = (subtotal - montoDescuento) * (impuesto / 100);
+
+                mostrarDescuento.innerHTML = montoDescuento.toFixed(2);
+                mostrarImpuesto.innerHTML = montoImpuesto.toFixed(2);
+
+
+                const totalFinal = subtotal - montoDescuento + montoImpuesto;
+
+                totalEl.textContent = `${totalFinal.toFixed(2)}`;
+                totalRegInput.value = totalFinal.toFixed(2);
+            }
+
+            descuentoInput.addEventListener("input", recalcularTotal);
+            impuestoInput.addEventListener("input", recalcularTotal);
+
+            recalcularTotal();
+
+        });
+
+
+        // Selecciona todos los elementos con la clase 'pro'
+
+        const products = document.querySelectorAll("div.dropdown-list div.pro");
+
+        // Crea un arreglo con el texto de cada div
+        const productNames = Array.from(products).map(product => product.textContent.trim());
+
+        const productInput = document.getElementById("productInput");
+        const productList = document.getElementById("productList");
+
+        // Función para mostrar y filtrar la lista
+        function filterProducts() {
+            const query = productInput.value.toLowerCase();
+            productList.innerHTML = ""; // Limpiar la lista
+
+            const filteredProducts = productNames.filter(product =>
+                product.toLowerCase().includes(query)
+            );
+
+            filteredProducts.forEach(product => {
+                const item = document.createElement("div");
+                item.textContent = product;
+                item.onclick = () => selectProduct(product);
+                productList.appendChild(item);
+            });
+
+            productList.style.display = filteredProducts.length ? "block" : "none";
+        }
+
+        // Función para seleccionar un producto
+        function selectProduct(product) {
+            productInput.value = product;
+            productList.style.display = "none";
+        }
+
+        // Eventos
+        productInput.addEventListener("input", filterProducts);
+        document.addEventListener("click", (e) => {
+            if (!productInput.contains(e.target)) {
+                productList.style.display = "none";
+            }
+        });
+    </script>
+
+    <script>
+
+        const proveedores = document.querySelectorAll("div.dropdown-lista div.prov");
+
+        // Crea un arreglo con el texto de cada div
+        const ProvNames = Array.from(proveedores).map(product => product.textContent.trim());
+
+        const ProvInput = document.getElementById("proveedorInput");
+        const ProvList = document.getElementById("proveedorList");
+
+        // Función para mostrar y filtrar la lista
+        function filterProv() {
+            const query = ProvInput.value.toLowerCase();
+            ProvList.innerHTML = ""; // Limpiar la lista
+
+            const filteredProv = ProvNames.filter(proveedor =>
+                proveedor.toLowerCase().includes(query)
+            );
+
+            filteredProv.forEach(prov => {
+                const item = document.createElement("div");
+                item.textContent = prov;
+                item.onclick = () => selectProveedor(prov);
+                ProvList.appendChild(item);
+            });
+
+            ProvList.style.display = filteredProv.length ? "block" : "none";
+        }
+
+        // Función para seleccionar un producto
+        function selectProveedor(proveedor) {
+            ProvInput.value = proveedor;
+            const enviarProveedor = document.getElementById("inputProveedor");
+            enviarProveedor.value = ProvInput.value;
+            console.log(enviarProveedor.value);
+            ProvList.style.display = "none";
+        }
+
+        // Eventos
+        ProvInput.addEventListener("input", filterProv);
+        document.addEventListener("click", (e) => {
+            if (!ProvInput.contains(e.target)) {
+                ProvList.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>

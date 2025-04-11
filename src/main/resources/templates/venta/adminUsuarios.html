@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" type="text/css" />
+    <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div th:insert="commerce/header.html"></div>
+
+
+    <div class="dos_columnas">
+        <div class="opciones_admin">
+            <ul>
+                <li>
+                    <button onclick="location.href='/adminProducto'">Productos</button>
+                </li>
+                <li>
+                    <button onclick="mostrarUsuarios()">Usuarios</button>
+                </li>
+
+                <script>
+
+                    function mostrarUsuarios() {
+                        document.getElementById("tabla_usuarios").style.display = "block";
+                        document.getElementById("ingresar").style.display = "none";
+                        document.getElementById("actualizar_usuarios").style.display = "none";
+
+                    }
+
+                    function mostrarForm() {
+                        document.getElementById("tabla_usuarios").style.display = "none";
+                        document.getElementById("ingresar").style.display = "block";
+                        document.getElementById("actualizar_usuarios").style.display = "none";
+
+                    }
+
+                    function actualizarUsu() {
+                        document.getElementById("tabla_usuarios").style.display = "none";
+                        document.getElementById("ingresar").style.display = "none";
+                        document.getElementById("actualizar_usuarios").style.display = "block";
+                    }
+                </script>
+
+            </ul>
+        </div>
+
+        <div class="info">
+
+            <form th:action="@{/insertar_usu}" method="post" id="ingresar">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br><br>
+
+                <label for="edad">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required><br><br>
+
+                <label for="edad">Numero de documento</label>
+                <input type="text" id="num_documento" name="num_documento" required maxlength="8"><br><br>
+
+                <label for="edad">Celular</label>
+                <input type="text" id="celular" name="celular" required maxlength="9"><br><br>
+
+                <label for="edad">Correo</label>
+                <input type="text" id="correo" name="correo" required><br><br>
+
+                <label for="edad">Constraseña</label>
+                <input type="text" id="contraseña" name="contraseña" required><br><br>
+
+                <input type="submit" value="Enviar">
+
+            </form>
+
+
+            <form th:action="@{/actualizar_usu}" method="post" id="actualizar_usuarios">
+                <input type="text" id="id_usu" name="id_usu" required><br><br>
+
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre_usu" name="nombre_usu" required><br><br>
+
+                <label for="edad">Apellido:</label>
+                <input type="text" id="apellido_usu" name="apellido_usu" required><br><br>
+
+                <label for="edad">Numero de documento</label>
+                <input type="text" id="num_documento_usu" name="num_documento_usu" required maxlength="8"><br><br>
+
+                <label for="edad">Celular</label>
+                <input type="text" id="celular_usu" name="celular_usu" required maxlength="9"><br><br>
+
+                <label for="edad">Correo</label>
+                <input type="text" id="correo_usu" name="correo_usu" required><br><br>
+
+                <input type="submit" value="Enviar">
+
+            </form>
+
+            <form th:action="@{/eliminar_usu}" method="post" id="eliminar_usuarios">
+                <input type="text" id="id_usuario" name="id_usuario" required><br><br>
+                <input type="submit" value="Enviar">
+
+            </form>
+
+            <div id="tabla_usuarios" th:if="${usuarios != null and !usuarios.empty}">
+                <table border="2">
+                    <button onclick="location.href='/adminUsuarios?format=pdf'">Generar reporte de usuarios</button>
+                    <button onclick="mostrarForm()">Agregar usuario</button>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Tipo documento</th>
+                        <th>Numero de documento</th>
+                        <th>Celular</th>
+                        <th>Correo</th>
+                        <th>Contraseña</th>
+                        <th>Rol</th>
+
+                    </tr>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td th:text="${usuario.idUsuario}"></td>
+                        <td th:text="${usuario.persona.nombre}"></td>
+                        <td th:text="${usuario.persona.apellido}"></td>
+                        <td th:text="${usuario.persona.num_documento}"></td>
+                        <td th:text="${usuario.persona.telefono}"></td>
+                        <td th:text="${usuario.email}"></td>
+                        <td th:text="${usuario.password}"></td>
+                        <td><button class='bt_eliminar'>Eliminar</button></td>
+                        <td><button onclick="actualizarUsu()" class='bt_usu'>Modificar</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <script>
+                const boton2 = document.querySelectorAll(".bt_usu");
+                boton2.forEach(boton => {
+                    boton.addEventListener('click', function () {
+                        // Encontramos la fila asociada al botón
+                        const fila = this.closest('tr');
+
+                        // Recogemos los valores de las celdas de la fila
+                        const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                        // Mostramos los valores recogidos
+                        document.getElementById("id_usu").value = valores[0];
+                        document.getElementById("nombre_usu").value = valores[1];
+                        document.getElementById("apellido_usu").value = valores[2];
+                        document.getElementById("tipo_documento_usu").value = valores[3];
+                        document.getElementById("num_documento_usu").value = valores[4];
+                        document.getElementById("celular_usu").value = valores[5];
+                        document.getElementById("correo_usu").value = valores[6];
+                        document.getElementById("contraseña_usu").value = valores[7];
+
+                    });
+                });
+
+
+                const boton3 = document.querySelectorAll(".bt_eliminar");
+                boton3.forEach(boton => {
+                    boton.addEventListener('click', function () {
+                        // Encontramos la fila asociada al botón
+                        const fila = this.closest('tr');
+
+                        // Recogemos los valores de las celdas de la fila
+                        const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                        // Mostramos los valores recogidos
+                        document.getElementById("id_usuario").value = valores[0];
+                        document.getElementById('eliminar_usuarios').submit();
+                    });
+                });
+
+            </script>
+
+            <div th:if="${usuarios == null or usuarios.empty}">
+                La lista no tiene informacion
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div th:insert="commerce/footer.html"></div>
+
+    <script th:if="${error != '' && error != null}">
+        alert("[[${error}]]");
+    </script>
+
+</body>
+
+</html>

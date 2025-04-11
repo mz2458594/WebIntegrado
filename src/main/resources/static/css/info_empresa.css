@@ -1,0 +1,229 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    color: #1D2937;
+}
+
+h2, h3 {
+    color: #DE0900;
+}
+
+/* misión y visión */
+.mision_vision {
+    background-color: #FEDA00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+    gap: 20px;
+}
+
+.box {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    flex: 1;
+}
+
+
+
+/* Info*/
+.contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.box {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.image-box {
+    flex: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center;      
+}
+
+.image-box img {
+    max-width: 70%; 
+    height: auto;
+    border-radius: 10px;
+}
+
+.text-box {
+    background-color: #FEDA00;
+    flex: 1;
+}
+
+/* Form contacto*/
+.contact-section {
+    background-color: #911a1a;
+    padding: 40px;
+    color: white;
+    text-align: center;
+}
+
+.contact-section form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-section label {
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.contact-section input, 
+.contact-section textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.contact-section button {
+    padding: 10px 20px;
+    background-color: #FEDA00;
+    border: none;
+    border-radius: 5px;
+    color: #1D2937;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.contact-section button:hover {
+    background-color: #DE0900;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2, h3 {
+    animation: slideIn 1s ease-out;
+}
+
+.image-box img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-box img:hover {
+    transform: scale(1.1);
+}
+
+.contact-section button {
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.contact-section button:hover {
+    transform: scale(1.05);
+    background-color: #DE0900;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.box {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.contact-section form {
+    animation: zoomIn 0.8s ease-in-out;
+}
+
+/* Slider */
+.slider-container {
+    width: 80%;
+    max-width: 1200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 200%;
+}
+
+.slide {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+}
+
+.slide-image {
+    flex: 1;
+    max-width: 20%;
+    height: auto;
+    margin-left: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}

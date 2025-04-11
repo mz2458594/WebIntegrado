@@ -1,0 +1,97 @@
+body{
+    margin: 0;
+    min-height: 640px;
+    min-width: 781px;
+}
+
+.pie{
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
+    width: 100%;
+    height: 200px;
+    background-color: #AD0000;
+    color: white;
+    align-content: center;
+    align-items: center;
+    box-sizing: content-box;
+    overflow: hidden;
+}
+
+ul{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.lista_opciones{
+    list-style: none;
+}
+
+.opc{
+    text-decoration: none;
+    color: white;
+}
+
+#logo_maxi{
+    margin-top: 30px;
+    display: flex;
+    width: 192px;
+    height: fit-content;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+.contacto{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+#enlaces{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-self: center;
+    align-content: center;
+}
+
+.red{
+    margin: 5px;
+}
+
+.titulos{
+    color: #fff837;
+}
+
+footer{
+    background-color: #AD0000;
+    color: white;
+    text-align: right;
+    padding-right: 100px;
+    padding-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    ul{
+        display: none;
+    }
+
+    .contacto{
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    footer{
+        display: none;
+    }
+
+}

@@ -1,0 +1,284 @@
+*{
+    font-family: "Nunito", sans-serif;
+}
+
+body{
+    margin: 0;
+    min-height: 640px;
+    min-width: 781px;
+}
+#encabezado{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+    height: 112px;
+    background-color: #DE0900;
+}
+
+
+nav{
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    padding: 10px;
+}
+
+#logo{
+    overflow: hidden;
+    display: flex;
+    width: 192px;
+    height: auto;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+#maxi{
+    display: flex;
+    width: 192px;
+    height: 75px;
+    overflow: hidden;
+}
+
+.barra_busqueda{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-content: center;
+}
+
+#buscar{
+    background-color: var(--color-list);
+    color: white;
+    margin-left: 0;
+    border-radius: 5px;
+}
+
+.barra{
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 100%;
+}
+
+q{
+    height: 40px;
+    flex: 1;
+    border: none;
+    font-weight: 600;
+    color: #1D2937;
+    font-size: 12.5px;
+    border-radius: 20px;
+    border: 3px solid white;
+}
+
+.boton_opciones{
+    border: none;
+    border-left: 2px solid white;
+    width: 100%;
+    height: 50px;
+    background-color: #DE0900;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+}
+
+.boton_opciones:hover{
+    background-color: #a21a1a;
+}
+
+
+#boton_cerrar{
+    display: none;
+}
+
+#carrito{
+    background-color: white;
+    border-radius: 20px;
+    height: 100%;
+}
+
+#carrito_compra{
+    position: relative;
+    height: 40px;
+    width: 20%;
+    padding-right: 20px;
+    z-index: 10;
+}
+
+#carrito_compra:hover .info_producto{
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cantidad_productos{
+    position: absolute;
+    top: 55%;
+    left: 60%;
+    display: flex;
+    width: 25px;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+
+.info_producto{
+    position: absolute;
+    top: 50px;
+    background-color: #fff;
+    width: 400px;
+    right: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .20);
+    border-radius: 10px;
+    display: none;
+}
+
+.cart_product{
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    align-items: center;
+}
+
+.cart_product img:hover{
+    background-color: red;
+}
+
+.cart_product img{
+    width: 25px;
+    height: 25px;
+}
+
+#contador{
+    font-size: 12px;
+}
+
+.info_product{
+    display: flex;
+    justify-content: space-between;
+    flex: 0.8;
+}
+
+.cantidad_product{
+    font-weight: 400;
+    font-size: 15px;
+    color: black;
+}
+
+.titulo_product{
+    font-size: 15px;
+    color: black;
+}
+
+.precio_product{
+    color: black;
+    font-weight: 700;
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.cart_total{
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+    gap: 20px;
+    border-bottom: 1px solid black;
+}
+
+.cart_total h3{
+    font-size: 15px;
+    font-weight: 700;
+    color: black;
+}
+
+.total_pagar{
+    font-size: 15px;
+    font-weight: 900;
+}
+
+button {
+    background-color: #de0900;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.opciones_usuario{
+    height: auto;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.op_usu{
+    text-align: center;
+    background-color: white;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+}
+
+.list_op{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+
+.op{
+    list-style: none;
+    margin-top: 0;
+    display: list-item;
+
+}
+
+.cerrar{
+    color: #002d85;
+    display: block;
+    padding: 5px 0;
+    text-decoration: none;
+    background-color: transparent;
+    transition: color .3s;
+    position: relative;
+
+}
+
+.cerrar::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: red;
+    z-index: -1;
+    width: 0%;
+    transition: .3s;
+    border-radius: 10px;
+}
+
+.cerrar:hover{
+    color: yellow;
+    opacity: .9;
+}
+
+.cerrar:hover::before{
+    left: 0%;
+    width: 100%;
+    transition: width .3s;
+}
