@@ -1,4 +1,4 @@
-package com.example.domain.ecommerce.controllers.html;
+package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;

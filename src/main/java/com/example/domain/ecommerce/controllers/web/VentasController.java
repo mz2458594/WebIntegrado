@@ -1,4 +1,4 @@
-package com.example.domain.ecommerce.controllers.html;
+package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Producto;

@@ -1,4 +1,4 @@
-package com.example.domain.ecommerce.controllers.html;
+package com.example.domain.ecommerce.controllers.web;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
