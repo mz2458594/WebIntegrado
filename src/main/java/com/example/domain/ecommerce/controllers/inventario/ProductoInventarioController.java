@@ -21,14 +21,14 @@ public class ProductoInventarioController {
     @GetMapping("/stock")
     public String stock(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
-        return "stock";
+        return "venta/stock";
     }
 
 
     @GetMapping("/productos")
     public String productos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
-        return "productos";
+        return "venta/productos";
     }
 
     @PostMapping("/agregar_prod")

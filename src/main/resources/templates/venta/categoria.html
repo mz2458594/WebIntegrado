@@ -88,8 +88,8 @@
         <input type="submit">
     </form>
 
-    <header class="header" th:insert="header.html"></header>
-    <nav class="navbar" th:insert="navbar.html"></nav>
+    <header class="header" th:insert="venta/header.html"></header>
+    <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <div class="title__add--modal">
@@ -122,9 +122,10 @@
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="categoria:${categorias}">
-                            <td th:text="${categoria.idCategoria}">1</td>
+                            <td th:text="${categoria.id_categoria}">1</td>
                             <td th:text="${categoria.nombre}" id="nombre_cat">Kenneth</td>
                             <td th:text="${categoria.descripcion}" id="descripcion_cat">kenn</td>
+                            <td th:text="${categoria.imagen}" id="imagen">kenn</td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">

@@ -22,7 +22,7 @@ public class CategoriaController {
     @GetMapping("/categoria")
     public String listarCategorias(Model model) {
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "categoria";
+        return "venta/categoria";
     }
 
     @PostMapping("/agregar_cat")

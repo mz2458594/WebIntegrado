@@ -21,7 +21,7 @@ public class ProveedorController {
     @GetMapping("/proveedores")
     public String proveedores(Model model) {
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
-        return "proveedores";
+        return "venta/proveedores";
     }
 
     @PostMapping("/agregar_prov")

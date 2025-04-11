@@ -14,8 +14,13 @@ public class GlobalModelAtributte {
     @ModelAttribute
     public void addUserModel(HttpSession session, Model model){
         Usuario user = (Usuario) session.getAttribute("user");
+        Usuario empleado = (Usuario) session.getAttribute("empleado");
         if (user != null) {
             model.addAttribute("user", user);
+        }
+
+        if (empleado != null) {
+            model.addAttribute("empleado", empleado);
         }
     }
 

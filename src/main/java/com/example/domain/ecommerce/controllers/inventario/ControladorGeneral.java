@@ -2,9 +2,6 @@ package com.example.domain.ecommerce.controllers.inventario;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.LoginDTO;
@@ -26,7 +22,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "nombre", "id", "rol" })
 public class ControladorGeneral {
 
     @Autowired
@@ -47,7 +42,7 @@ public class ControladorGeneral {
 
             HttpSession session = request.getSession();
 
-            session.setAttribute("user", user);
+            session.setAttribute("empleado", user);
 
             System.out.println(session.getAttribute("user"));
             contador = 0;
@@ -71,9 +66,7 @@ public class ControladorGeneral {
     @GetMapping("/cerrar")
     public String cerrar_sesion(HttpSession request, SessionStatus status) {
         status.setComplete();
-        request.removeAttribute("nombre");
-        request.removeAttribute("id");
-        request.removeAttribute("rol");
+        request.removeAttribute("empleado");
         return "redirect:/login";
     }
 
