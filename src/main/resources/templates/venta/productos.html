@@ -171,13 +171,9 @@
                         <tr id="productList" th:each="producto: ${productos}">
                             <td th:text="${producto.idProducto}">1</td>
                             <td th:text="${producto.nombre}">Papas Lays</td>
-                            <td th:each="categoria: ${categorias}"
-                                th:if="${categoria.idCategoria == producto.idCategoria}" th:text="${categoria.nombre}">
-                                Snacks</td>
-                            <td th:each="proveedor: ${proveedores}"
-                                th:if="${proveedor.idProveedor == producto.rucProveedor}" th:text="${proveedor.nombre}">
-                                Paperos</td>
                             <td th:text="${producto.descripcion}">Rico y nutritivos</td>
+                            <td th:text="${producto.categoria.nombre}">Snacks</td>
+                            <td th:text="${producto.proveedor.nombre}">Paperos</td>
                             <td th:text="${producto.precio}">2</td>
                             <td th:text="${producto.stock}">200</td>
                             <td>
