@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpSession;
 @Slf4j
 @SessionAttributes({ "nombre", "id", "rol" })
 @RequestMapping("/empleados")
-public class ControladorREST {
+public class ControladorGeneral {
 
     @Autowired
     private UsuarioService usuarioService;
