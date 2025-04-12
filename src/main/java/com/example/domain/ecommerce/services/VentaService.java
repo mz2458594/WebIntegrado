@@ -1,5 +1,7 @@
 package com.example.domain.ecommerce.services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class VentaService {
         Usuario usuario = usuarioService.obtenerUsuarioPorId(data.getId_usuario());
 
         Venta venta = new Venta();
-        venta.setFechaVenta(venta.getFechaVenta());
+        venta.setFechaVenta(Timestamp.from(Instant.now()));
         venta.setUsuario(usuario);
 
         List<Venta_producto> listasProductos = new ArrayList<>();
