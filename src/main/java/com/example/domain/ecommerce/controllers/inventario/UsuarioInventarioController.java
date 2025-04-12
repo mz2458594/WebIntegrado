@@ -52,10 +52,10 @@ public class UsuarioInventarioController {
 
     @PostMapping("/eliminarUsuario/{id}")
     public String eliminarUsu(
-            @PathVariable int id_usuario,
+            @PathVariable int id,
             Model model) {
 
-        usuarioService.eliminarUsuario(id_usuario);
+        usuarioService.eliminarUsuario(id);
 
         model.addAttribute("usuarios", usuarioService.listarUsuario());
 

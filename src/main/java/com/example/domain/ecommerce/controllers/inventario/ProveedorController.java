@@ -51,10 +51,10 @@ public class ProveedorController {
 
     @PostMapping("/eliminar_prov/{id}")
     public String eliminarProv(
-            @PathVariable int id_proveedor,
+            @PathVariable int id,
             Model model) {
 
-        proveedorService.eliminarProveedor(id_proveedor);
+        proveedorService.eliminarProveedor(id);
 
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 

@@ -23,12 +23,12 @@
             </div>
             <form class="form_modal" th:action="@{/agregar_prov}" method="post">
                 <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input type="text" name="nombre">
+                    <label for="">RUC</label><br>
+                    <input type="text" name="ruc">
                 </div>
                 <div class="input__box">
-                    <label for="">Direccion</label><br>
-                    <input type="text" name="direccion">
+                    <label for="">Nombre</label><br>
+                    <input type="text" name="nombre">
                 </div>
                 <div class="input__box">
                     <label for="">Telefono</label><br>
@@ -47,59 +47,27 @@
             </form>
         </div>
     </div>
-    <div class="container-modal--edit">
-        <div class="ventana_modal--edit ventana-close-edit">
-            <div class="form__name--add">
-                <p><i class="fa-solid fa-plus"></i> Editar Proveedor</p>
-            </div>
-            <form class="form_modal" th:action="@{/actualizar_prov}" method="post">
-                <input type="text" name="id_act" id="id_act" style="display: none;">
-                <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input type="text" name="nombre_act" id="nombre_act">
+
+
+    <div class="container_modal--delete">
+        <div class="ventana_modal--delete ventana-close-delete">
+            <form method="post" id="formEliminar">
+                <div class="confir-delete">
+                    <p>Confirmacion</p>
                 </div>
-                <div class="input__box">
-                    <label for="">Direccion</label><br>
-                    <input type="text" name="direccion_act" id="direccion_act">
+                <div class="cont-pregunt-delete">
+                    <p>¿Deseas eliminar este proveedor permanentamente?</p>
                 </div>
-                <div class="input__box">
-                    <label for="">Telefono</label><br>
-                    <input type="text" name="telefono_act" id="telefono_act">
-                </div>
-                <div class="input__box">
-                    <label for="">Email</label><br>
-                    <input type="email" name="email_act" id="email_act">
-                </div>
-                <div class="button__modal">
-                    <div class="btn-modal">
-                        <input type="submit" class="btn-guardar" value="Guardar">
-                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                <div class="btns-delete">
+                    <div>
+                        <button id="delete-btn" class="button-confir" type="submit">Continuar</button>
+                        <button class="button-cancelar">Cerrar</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="container_modal--delete">
-        <div class="ventana_modal--delete ventana-close-delete">
-            <div class="confir-delete">
-                <p>Confirmacion</p>
-            </div>
-            <div class="cont-pregunt-delete">
-                <p>¿Deseas eliminar este proveedor permanentamente?</p>
-            </div>
-            <div class="btns-delete">
-                <div>
-                    <button id="delete-btn" class="button-confir">Continuar</button>
-                    <button class="button-cancelar">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <form th:action="@{/eliminar_prov}" id="eliminar_prov" style="display: none;" method="post">
-        <input type="text" id="id_eliminar" name="id_eliminar" required>
-        <input type="submit">
-    </form>
 
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
@@ -130,12 +98,14 @@
                     <table class="table">
                         <tr class="thead">
                             <th>ID</th>
+                            <th>RUC</th>
                             <th>Nombre</th>
                             <th>Telefono</th>
                             <th>Email</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="proveedor: ${proveedores}">
+                            <td th:text="${proveedor.id}">1</td>
                             <td th:text="${proveedor.ruc}">1</td>
                             <td th:text="${proveedor.nombre}">Chips</td>
                             <td th:text="${proveedor.telefono}">999999999</td>
@@ -154,59 +124,92 @@
                                 </div>
                             </td>
                         </tr>
-                        <script>
-                            const boton2 = document.querySelectorAll(".editproduc");
-                            boton2.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
 
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_act").value = valores[0];
-                                    document.getElementById("nombre_act").value = valores[1];
-                                    document.getElementById("direccion_act").value = valores[2];
-                                    document.getElementById("telefono_act").value = valores[3];
-                                    document.getElementById("email_act").value = valores[4];
-                                    modalContEdit.style.opacity = "1";
-                                    modalContEdit.style.visibility = "visible";
-                                    VentEdit.classList.toggle("ventana-close-edit");
-                                });
-                            });
-
-
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_eliminar").value = valores[0];
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-                                });
-                            });
-
-                            const boton4 = document.querySelectorAll(".button-confir");
-                            boton4.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    document.getElementById('eliminar_prov').submit();
-                                });
-                            });
-
-
-                        </script>
                     </table>
                 </div>
             </div>
         </div>
+
+        <div class="container-modal--edit">
+            <div class="ventana_modal--edit ventana-close-edit">
+                <div class="form__name--add">
+                    <p><i class="fa-solid fa-plus"></i> Editar Proveedor</p>
+                </div>
+                <form class="form_modal" id="formEditar" method="post">
+                    <input type="text" name="id_act" id="id_act" style="display: none;">
+                    <div class="input__box">
+                        <label for="">RUC</label><br>
+                        <input type="text" name="ruc" id="ruc_act">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Nombre</label><br>
+                        <input type="text" name="nombre" id="nombre_act">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Telefono</label><br>
+                        <input type="text" name="telefono" id="telefono_act">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Email</label><br>
+                        <input type="email" name="email" id="email_act">
+                    </div>
+                    <div class="button__modal">
+                        <div class="btn-modal">
+                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const boton2 = document.querySelectorAll(".editproduc");
+
+            boton2.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+                    const celdas = fila.querySelectorAll('td');
+
+                    document.getElementById("id_act").value = celdas[0].textContent;
+                    document.getElementById("ruc_act").value = celdas[1].textContent;
+                    document.getElementById("nombre_act").value = celdas[2].textContent;
+                    document.getElementById("telefono_act").value = celdas[3].textContent;
+                    document.getElementById("email_act").value = celdas[4].textContent;
+
+
+                    const form = document.getElementById("formEditar");
+                    const idProveedor = celdas[0].textContent.trim();
+                    form.action = `/actualizar_prov/${idProveedor}`;
+
+                    modalContEdit.style.opacity = "1";
+                    modalContEdit.style.visibility = "visible";
+                    VentEdit.classList.remove("ventana-close-edit");
+                });
+            });
+
+
+            const boton3 = document.querySelectorAll(".deleteProduc");
+            boton3.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                    modalContDele.style.opacity = "1";
+                    modalContDele.style.visibility = "visible";
+                    VentDelete.classList.toggle("ventana-close-delete");
+
+                    const form = document.getElementById("formEliminar");
+                    const idProveedor = valores[0].trim();
+                    form.action = `/eliminar_prov/${idProveedor}`;
+                });
+            });
+        </script>
+
+
+
+
     </main>
 
     <script th:src="@{/js/modalAdd.js}"></script>

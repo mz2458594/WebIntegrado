@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/style-modal.css}">
-        <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
     <link rel="stylesheet" th:href="@{/css/style-modal-delete.css}">
 </head>
+
 <body>
 
     <div class="modal__container--add">
@@ -21,22 +23,61 @@
                 <p><i class="fa-solid fa-plus"></i> Agregar Nuevo Usuario</p>
             </div>
             <form id="formulario" class="form_modal" th:action="@{/agregar_usu}" method="post">
+
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" id="nombre" name="nombre">
+                    <input type="text" name="nombre">
+                </div>
+                <div class="input__box">
+                    <label for="">Apellido</label><br>
+                    <input type="text" name="apellido">
+                </div>
+                <div class="input__box">
+                    <label for="">Numero de documento</label><br>
+                    <input type="text" name="num_documento">
+                </div>
+                <div class="input__box">
+                    <label for="">Fecha de nacimiento</label><br>
+                    <input type="date" name="fecha_nac">
+                </div>
+                <div class="input__box">
+                    <label for="">Celular</label><br>
+                    <input type="text" name="celular">
+                </div>
+                <div class="input__box">
+                    <label for="">Calle</label><br>
+                    <input type="text" name="calle">
+                </div>
+                <div class="input__box">
+                    <label for="">Ciudad</label><br>
+                    <input type="text" name="ciudad">
+                </div>
+                <div class="input__box">
+                    <label for="">Distrito</label><br>
+                    <input type="text" name="distrito">
+                </div>
+                <div class="input__box">
+                    <label for="">Provincia</label><br>
+                    <input type="text" name="provincia">
                 </div>
                 <div class="input__box">
                     <label for="">Email</label><br>
-                    <input type="email" id="email" name="email">
+                    <input type="email" name="correo">
                 </div>
+
                 <div class="input__box">
-                    <label for="">Rol</label><br>
-                    <input type="text" id="rol" name="rol">
+                    <label for="">Username</label><br>
+                    <input type="text" name="username">
                 </div>
                 <div class="input__box">
                     <label for="">Contraseña</label><br>
-                    <input type="password" id="contraseña" name="contraseña">
+                    <input type="password" name="contraseña">
                 </div>
+                <div class="input__box">
+                    <label for="">Rol</label><br>
+                    <input type="text" name="rol">
+                </div>
+
                 <div class="button__modal">
                     <div class="btn-modal">
                         <input id="btn-user" type="submit" class="btn-guardar" value="Guardar">
@@ -46,60 +87,25 @@
             </form>
         </div>
     </div>
-    <div class="container-modal--edit">
-        <div class="ventana_modal--edit ventana-close-edit">
-            <div class="form__name--add">
-                <p><i class="fa-solid fa-plus"></i> Editar Usuario</p>
-            </div>
-            <form id="formulario" class="form_modal" th:action="@{/actualizar_usu}" method="post">
-                <input type="text" name="id_act" id="id_act" style="display: none;">
-                <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input type="text" id="nombre_act" name="nombre_act">
+
+    <div class="container_modal--delete">
+        <div class="ventana_modal--delete ventana-close-delete">
+            <form method="post" id="formEliminar">
+                <div class="confir-delete">
+                    <p>Confirmacion</p>
                 </div>
-                <div class="input__box">
-                    <label for="">Email</label><br>
-                    <input type="email" id="email_act" name="email_act">
+                <div class="cont-pregunt-delete">
+                    <p>¿Deseas eliminar este usuario permanentamente?</p>
                 </div>
-                <div class="input__box">
-                    <label for="">Rol</label><br>
-                    <input type="text" id="rol_act" name="rol_act">
-                </div>
-                <div class="input__box">
-                    <label for="">Contraseña</label><br>
-                    <input type="password" id="contraseña_act" name="contraseña_act">
-                </div>
-                <div class="button__modal">
-                    <div class="btn-modal">
-                        <input id="btn-user" type="submit" class="btn-guardar" value="Guardar">
-                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                <div class="btns-delete">
+                    <div>
+                        <button id="delete-btn" class="button-confir" type="submit">Continuar</button>
+                        <button class="button-cancelar">Cerrar</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="container_modal--delete">
-        <div class="ventana_modal--delete ventana-close-delete">
-            <div class="confir-delete">
-                <p>Confirmacion</p>
-            </div>
-            <div class="cont-pregunt-delete">
-                <p>¿Deseas eliminar este usuario permanentamente?</p>
-            </div>
-            <div class="btns-delete">
-                <div>
-                    <button id="delete-btn" class="button-confir">Continuar</button>
-                    <button class="button-cancelar">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <form th:action="@{/eliminar_usu}" id="eliminar_usu" style="display: none;" method="post">
-        <input type="text" id="id_eliminar" name="id_eliminar" required>
-        <input type="submit">
-    </form>
-
 
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
@@ -131,85 +137,176 @@
                         <tr class="thead">
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>DNI</th>
+                            <th>Fecha de nacimiento</th>
+                            <th>Celular</th>
+                            <th>Calle</th>
+                            <th>Ciudad</th>
+                            <th>Distrito</th>
+                            <th>Provincia</th>
                             <th>Email</th>
-                            <th>Contraseña</th>
+                            <th>Username</th>
                             <th>Rol</th>
+                            <th>Cargo</th>
                         </tr>
                         <tr id="productList" th:each="usuario: ${usuarios}">
                             <td th:text="${usuario.idUsuario}">1</td>
-                            <td th:text="${usuario.nombre}">Kenneth</td>
+                            <td th:text="${usuario.persona.nombre}">Kenneth</td>
+                            <td th:text="${usuario.persona.apellido}">Kenneth</td>
+                            <td th:text="${usuario.persona.dni}">Kenneth</td>
+                            <td th:text="${usuario.persona.fecha}">Kenneth</td>
+                            <td th:text="${usuario.persona.telefono}">Kenneth</td>
+                            <td th:text="${usuario.persona.direccion.calle}">Kenneth</td>
+                            <td th:text="${usuario.persona.direccion.ciudad}">Kenneth</td>
+                            <td th:text="${usuario.persona.direccion.distrito}">Kenneth</td>
+                            <td th:text="${usuario.persona.direccion.provincia}">Kenneth</td>
                             <td th:text="${usuario.email}">kenn</td>
-                            <td th:text="${usuario.contraseña}">kenn</td>
-                            <td th:text="${usuario.rol}">Admin</td>
+                            <td th:text="${usuario.username}">kenn</td>
+                            <td th:text="${usuario.role}">Admin</td>
+                            <td th:if="${usuario.role == 'Empleado'}" th:text="${usuario.cargo}"></td>
                             <td>
                                 <div class="container_action">
-                                    <label  type="checkbox" class="action_checkbox">
-                                    <label class="name_action" for="open_action">Accion <i class="fa-solid fa-caret-down" id="vuelta"></i></label>
-                                    <div class="cont_opciones">
-                                        <button class="editproduc">Editar <i class="fa-solid fa-pen-to-square"></i></button>
-                                        <button class="deleteProduc">Eliminar <i class="fa-solid fa-trash-can"></i></button>
-                                    </div>
+                                    <label type="checkbox" class="action_checkbox">
+                                        <label class="name_action" for="open_action">Accion <i
+                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                        <div class="cont_opciones">
+                                            <button class="editproduc">Editar <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="deleteProduc">Eliminar <i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
                                 </div>
                             </td>
                         </tr>
 
-
-                        <script>
-                            const boton2 = document.querySelectorAll(".editproduc");
-                            boton2.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-        
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-        
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_act").value = valores[0];
-                                    document.getElementById("nombre_act").value = valores[1];
-                                    document.getElementById("email_act").value = valores[2];
-                                    document.getElementById("contraseña_act").value = valores[3];
-                                    document.getElementById("rol_act").value = valores[4];
-                                    modalContEdit.style.opacity = "1";
-                                    modalContEdit.style.visibility = "visible";
-                                    VentEdit.classList.toggle("ventana-close-edit");
-                                });
-                            });
-                            
-                            
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-        
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-        
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_eliminar").value = valores[0];
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-                                });
-                            });
-
-                            const boton4 = document.querySelectorAll(".button-confir");
-                            boton4.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    document.getElementById('eliminar_usu').submit();
-                                });
-                            });
-
-                           
-                        </script>
-                        
                     </table>
                 </div>
             </div>
         </div>
+
+        <div class="container-modal--edit">
+            <div class="ventana_modal--edit ventana-close-edit">
+                <div class="form__name--add">
+                    <p><i class="fa-solid fa-plus"></i> Editar Usuario</p>
+                </div>
+                <form class="form_modal" id="formEditar" method="post">
+                    <input type="text" name="id_act" id="id_act" style="display: none;">
+                    <div class="input__box">
+                        <label for="">Nombre</label><br>
+                        <input type="text" id="nombre_act" name="nombre">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Apellido</label><br>
+                        <input type="text" id="apellido_act" name="apellido">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Numero de documento</label><br>
+                        <input type="text" id="num_act" name="num_documento">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Fecha de nacimiento</label><br>
+                        <input type="date" id="fecha_act" name="fecha_nac">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Celular</label><br>
+                        <input type="text" id="cel_act" name="celular">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Calle</label><br>
+                        <input type="text" id="calle_act" name="calle">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Ciudad</label><br>
+                        <input type="text" id="ciudad_act" name="ciudad">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Distrito</label><br>
+                        <input type="text" id="distrito_act" name="distrito">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Provincia</label><br>
+                        <input type="text" id="provincia_act" name="provincia">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Email</label><br>
+                        <input type="email" id="email_act" name="correo">
+                    </div>
+
+                    <div class="input__box">
+                        <label for="">Username</label><br>
+                        <input type="text" id="username_act" name="username">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Rol</label><br>
+                        <input type="text" id="rol_act" name="rol">
+                    </div>
+
+
+                    <div class="button__modal">
+                        <div class="btn-modal">
+                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const boton2 = document.querySelectorAll(".editproduc");
+            boton2.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+                    const celdas = fila.querySelectorAll('td');
+
+                    document.getElementById("id_act").value = celdas[0].textContent;
+                    document.getElementById("nombre_act").value = celdas[1].textContent;
+                    document.getElementById("apellido_act").value = celdas[2].textContent;
+                    document.getElementById("num_act").value = celdas[3].textContent;
+                    document.getElementById("fecha_act").value = celdas[4].textContent;
+                    document.getElementById("cel_act").value = celdas[5].textContent;
+                    document.getElementById("calle_act").value = celdas[6].textContent;
+                    document.getElementById("ciudad_act").value = celdas[7].textContent;
+                    document.getElementById("distrito_act").value = celdas[8].textContent;
+                    document.getElementById("provincia_act").value = celdas[9].textContent;
+                    document.getElementById("email_act").value = celdas[10].textContent;
+                    document.getElementById("username_act").value = celdas[11].textContent;
+                    document.getElementById("rol_act").value = celdas[12].textContent;
+
+
+                    const form = document.getElementById("formEditar");
+                    const idUsuario = celdas[0].textContent.trim();
+                    form.action = `/actualizar_usu/${idUsuario}`;
+
+                    modalContEdit.style.opacity = "1";
+                    modalContEdit.style.visibility = "visible";
+                    VentEdit.classList.remove("ventana-close-edit");
+                });
+            });
+
+
+            const boton3 = document.querySelectorAll(".deleteProduc");
+            boton3.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                    modalContDele.style.opacity = "1";
+                    modalContDele.style.visibility = "visible";
+                    VentDelete.classList.toggle("ventana-close-delete");
+
+                    const form = document.getElementById("formEliminar");
+                    const idUsuario = valores[0].trim();
+                    form.action = `/eliminarUsuario/${idUsuario}`;
+                });
+            });
+        </script>
+
+
     </main>
-    
+
     <script th:src="@{/js/modalAdd.js}"></script>
 
     <script>
@@ -223,9 +320,9 @@
                 // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
                 const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
                 const productName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-                const productEmail= row.querySelector("td:nth-child(3)").textContent.toLowerCase();
-                const productRol  = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
-                
+                const productEmail = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+                const productRol = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
+
                 if (productId.includes(query) || productName.includes(query) || productEmail.includes(query) || productRol.includes(query)) {
                     row.style.display = ""; // Mostrar fila
                 } else {
@@ -286,7 +383,7 @@
                         rol: cells[4].textContent.trim()
                     };
                 });
-    
+
             fetch('/excelUsuarios', {
                 method: 'POST',
                 headers: {
@@ -308,4 +405,5 @@
         });
     </script>
 </body>
+
 </html>

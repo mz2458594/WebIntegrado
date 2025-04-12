@@ -37,7 +37,7 @@ public abstract class Persona implements Serializable {
     private String telefono;
 
     @Temporal(TemporalType.DATE)
-    private Date fecha_nac;
+    private Date fecha;
 
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     private Direccion direccion;
@@ -45,14 +45,14 @@ public abstract class Persona implements Serializable {
     public Persona() {
     }
 
-    public Persona(int id, String dni, String nombre, String apellido, String telefono, Date fecha_nac,
+    public Persona(int id, String dni, String nombre, String apellido, String telefono, Date fecha,
                    Direccion direccion) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        this.fecha_nac = fecha_nac;
+        this.fecha = fecha;
         this.direccion = direccion;
     }
 
@@ -96,13 +96,7 @@ public abstract class Persona implements Serializable {
         this.telefono = telefono;
     }
 
-    public Date getFecha_nac() {
-        return fecha_nac;
-    }
-
-    public void setFecha_nac(Date fecha_nac) {
-        this.fecha_nac = fecha_nac;
-    }
+    
 
     public Direccion getDireccion() {
         return direccion;
@@ -110,6 +104,14 @@ public abstract class Persona implements Serializable {
 
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
 }

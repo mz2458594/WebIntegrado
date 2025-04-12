@@ -64,9 +64,10 @@ window.addEventListener("click", function (e) {
 
 /*  */
 
-let cerrarEdit = document.querySelectorAll(".btn-cancelar-edit")[0];
-let VentEdit = document.querySelectorAll(".ventana_modal--edit")[0];
-let modalContEdit = document.querySelectorAll(".container-modal--edit")[0];
+let cerrarEdit = document.querySelector(".btn-cancelar-edit");
+let modalContEdit = document.querySelector(".container-modal--edit");
+let VentEdit = document.querySelector(".ventana_modal--edit");
+
 
 cerrarEdit.addEventListener("click", function (e) {
     VentEdit.classList.toggle("ventana-close-edit");
@@ -104,50 +105,3 @@ document.querySelectorAll(".container_action").forEach(actionContainer => {
     });
 });
 
-const boton2 = document.querySelectorAll(".editproduc");
-boton2.forEach(boton => {
-    boton.addEventListener('click', function () {
-        // // Encontramos la fila asociada al botón
-        // const fila = this.closest('tr');
-
-        // // Recogemos los valores de las celdas de la fila
-        // const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-        // // Mostramos los valores recogidos
-        // document.getElementById("id_act").value = valores[0];
-        // document.getElementById("nombre_act").value = valores[1];
-        // document.getElementById("categoria_act").value = valores[2];
-        // document.getElementById("proveedor_act").value = valores[3];
-        // document.getElementById("descripcion_act").value = valores[4];
-        // document.getElementById("precio_act").value = valores[5];
-        // document.getElementById("stock_act").value = valores[6];
-        modalContEdit.style.opacity = "1";
-        modalContEdit.style.visibility = "visible";
-        VentEdit.classList.toggle("ventana-close-edit");
-    });
-});
-
-
-const boton3 = document.querySelectorAll(".deleteProduc");
-boton3.forEach(boton => {
-    boton.addEventListener('click', function () {
-        // Encontramos la fila asociada al botón
-        const fila = this.closest('tr');
-
-        // Recogemos los valores de las celdas de la fila
-        const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-        // Mostramos los valores recogidos
-        document.getElementById("id_eliminar").value = valores[0];
-        modalContDele.style.opacity = "1";
-        modalContDele.style.visibility = "visible";
-        VentDelete.classList.toggle("ventana-close-delete");
-    });
-});
-
-const boton4 = document.querySelectorAll(".button-confir");
-boton4.forEach(boton => {
-    boton.addEventListener('click', function () {
-        document.getElementById('eliminar_prod').submit();
-    });
-});

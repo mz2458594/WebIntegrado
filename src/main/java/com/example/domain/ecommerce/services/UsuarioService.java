@@ -173,7 +173,7 @@ public class UsuarioService {
         }
 
         nueva.setDni(user.getNum_documento());
-        nueva.setFecha_nac(user.getFecha_nac());
+        nueva.setFecha(user.getFecha_nac());
         nueva.setApellido(user.getApellido());
         nueva.setNombre(user.getNombre());
         nueva.setTelefono(user.getCelular());
