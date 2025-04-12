@@ -25,11 +25,16 @@
             <form class="form_modal" th:action="@{/agregar_cat}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input name="nombre" type="text">
+                    <input type="text" name="nombre_act" id="nombre_cat">
                 </div>
                 <div class="input__box">
                     <label for="">Descripcion</label><br>
-                    <input name="descripcion" type="text">
+                    <input type="text" name="descripcion_act" id="descripcion_cat">
+                </div>
+
+                <div class="input__box">
+                    <label for="">Link Imagen</label><br>
+                    <input type="text" name="imagen_act" id="imagen_act">
                 </div>
 
                 <div class="button__modal">
