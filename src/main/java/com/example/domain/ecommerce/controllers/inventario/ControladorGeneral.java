@@ -44,7 +44,6 @@ public class ControladorGeneral {
 
             session.setAttribute("empleado", user);
 
-            System.out.println(session.getAttribute("user"));
             contador = 0;
 
             return "venta/index";
