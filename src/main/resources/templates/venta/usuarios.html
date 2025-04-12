@@ -191,7 +191,6 @@
                     <p><i class="fa-solid fa-plus"></i> Editar Usuario</p>
                 </div>
                 <form class="form_modal" id="formEditar" method="post">
-                    <input type="text" name="id_act" id="id_act" style="display: none;">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
                         <input type="text" id="nombre_act" name="nombre">
@@ -260,7 +259,6 @@
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
 
-                    document.getElementById("id_act").value = celdas[0].textContent;
                     document.getElementById("nombre_act").value = celdas[1].textContent;
                     document.getElementById("apellido_act").value = celdas[2].textContent;
                     document.getElementById("num_act").value = celdas[3].textContent;

@@ -25,15 +25,15 @@
             <form class="form_modal" th:action="@{/agregar_prod}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input id="nombre" type="text" name="nombre">
+                    <input type="text" name="nombre">
                 </div>
                 <div class="input__box">
                     <label for="">Descripcion</label><br>
-                    <textarea id="descripcion" name="descripcion"></textarea>
+                    <textarea name="descripcion"></textarea>
                 </div>
                 <div class="input__box">
                     <label for="">Categoria</label><br>
-                    <select id="categoria" name="categoria">
+                    <select name="categoria">
                         <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
                             th:text="${categoria.nombre}"></option>
                     </select>
@@ -47,11 +47,11 @@
                 </div>
                 <div class="input__box">
                     <label for="">Stock</label><br>
-                    <input type="number" id="stock" name="stock">
+                    <input type="number" name="stock">
                 </div>
                 <div class="input__box">
                     <label for="">Precio</label><br>
-                    <input type="text" id="precio" name="precio">
+                    <input type="text" name="precio">
                 </div>
                 <div class="button__modal">
                     <div class="btn-modal">
@@ -82,12 +82,6 @@
             </form>
         </div>
     </div>
-
-    <form th:action="@{/eliminar_prod}" id="eliminar_prod" style="display: none;" method="post">
-        <input type="text" id="id_eliminar" name="id_eliminar" required>
-        <input type="submit">
-    </form>
-
 
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
@@ -163,7 +157,6 @@
                     <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Editar Producto</p>
                 </div>
                 <form class="form_modal" method="post" id="formEditar">
-                    <input type="text" name="id_act" id="id_act" style="display: none;">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
                         <input id="nombre_act" type="text" name="nombre_act">
@@ -203,12 +196,12 @@
         </div>
 
         <script>
+            const boton2 = document.querySelectorAll(".editproduc");
             boton2.forEach(boton => {
                 boton.addEventListener('click', function () {
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
 
-                    document.getElementById("id_act").value = celdas[0].textContent;
                     document.getElementById("nombre_act").value = celdas[1].textContent;
                     document.getElementById("descripcion_act").value = celdas[2].textContent;
                     document.getElementById("categoria_act").value = celdas[3].textContent;

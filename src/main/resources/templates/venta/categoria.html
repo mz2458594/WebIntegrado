@@ -41,52 +41,27 @@
             </form>
         </div>
     </div>
-    <div class="container-modal--edit">
-        <div class="ventana_modal--edit ventana-close-edit">
-            <div class="form__name--add">
-                <p><i class="fa-solid fa-plus"></i>Editar categoria</p>
-            </div>
-            <form class="form_modal" th:action="@{/actualizar_cat}" method="post">
-                <input type="text" name="id_act" id="id_act" style="display: none;">
-                <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input type="text" name="nombre_act" id="nombre_cat">
-                </div>
-                <div class="input__box">
-                    <label for="">Descripcion</label><br>
-                    <input type="text" name="descripcion_act" id="descripcion_cat">
-                </div>
+    
 
-                <div class="button__modal">
-                    <div class="btn-modal">
-                        <input type="submit" class="btn-guardar" value="Guardar">
-                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+    <div class="container_modal--delete">
+        <div class="ventana_modal--delete ventana-close-delete">
+            <form method="post" id="formEliminar">
+                <div class="confir-delete">
+                    <p>Confirmacion</p>
+                </div>
+                <div class="cont-pregunt-delete">
+                    <p>¿Deseas eliminar este producto permanentamente?</p>
+                </div>
+                <div class="btns-delete">
+                    <div>
+                        <button id="delete-btn" class="button-confir" type="submit">Continuar</button>
+                        <button class="button-cancelar">Cerrar</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="container_modal--delete">
-        <div class="ventana_modal--delete ventana-close-delete">
-            <div class="confir-delete">
-                <p>Confirmacion</p>
-            </div>
-            <div class="cont-pregunt-delete">
-                <p>¿Deseas eliminar esta categoria permanentamente?</p>
-            </div>
-            <div class="btns-delete">
-                <div>
-                    <button id="delete-btn" class="button-confir">Continuar</button>
-                    <button class="button-cancelar">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <form th:action="@{/eliminar_cat}" id="eliminar_cat" style="display: none;" method="post">
-        <input type="text" id="id_eliminar" name="id_eliminar" required>
-        <input type="submit">
-    </form>
 
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
@@ -142,59 +117,84 @@
                             </td>
                         </tr>
 
-                        <script>
-
-
-                            const boton2 = document.querySelectorAll(".editproduc");
-                            boton2.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_act").value = valores[0];
-                                    document.getElementById("nombre_cat").value = valores[1];
-                                    document.getElementById("descripcion_cat").value = valores[2];
-                                    modalContEdit.style.opacity = "1";
-                                    modalContEdit.style.visibility = "visible";
-                                    VentEdit.classList.toggle("ventana-close-edit");
-                                });
-                            });
-
-
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_eliminar").value = valores[0];
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-                                });
-                            });
-
-                            const boton4 = document.querySelectorAll(".button-confir");
-                            boton4.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    document.getElementById('eliminar_cat').submit();
-                                });
-                            });
-
-                        </script>
-
                     </table>
                 </div>
             </div>
         </div>
+
+        <div class="container-modal--edit">
+            <div class="ventana_modal--edit ventana-close-edit">
+                <div class="form__name--add">
+                    <p><i class="fa-solid fa-plus"></i>Editar categoria</p>
+                </div>
+                <form class="form_modal" id="formEditar" method="post">
+                    <div class="input__box">
+                        <label for="">Nombre</label><br>
+                        <input type="text" name="nombre_act" id="nombre_cat">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Descripcion</label><br>
+                        <input type="text" name="descripcion_act" id="descripcion_cat">
+                    </div>
+
+                    <div class="input__box">
+                        <label for="">Link Imagen</label><br>
+                        <input type="text" name="imagen_act" id="imagen_act">
+                    </div>
+    
+                    <div class="button__modal">
+                        <div class="btn-modal">
+                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const boton2 = document.querySelectorAll(".editproduc");
+            boton2.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+                    const celdas = fila.querySelectorAll('td');
+
+                    document.getElementById("nombre_act").value = celdas[1].textContent;
+                    document.getElementById("descripcion_act").value = celdas[2].textContent;
+                    document.getElementById("imagen_act").value = celdas[3].textContent;
+
+                    const form = document.getElementById("formEditar");
+                    const idCategoria = celdas[0].textContent.trim();
+                    form.action = `/actualizar_cat/${idCategoria}`;
+
+                    modalContEdit.style.opacity = "1";
+                    modalContEdit.style.visibility = "visible";
+                    VentEdit.classList.remove("ventana-close-edit");
+                });
+            });
+
+
+            const boton3 = document.querySelectorAll(".deleteProduc");
+            boton3.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    // Encontramos la fila asociada al botón
+                    const fila = this.closest('tr');
+
+                    // Recogemos los valores de las celdas de la fila
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                    modalContDele.style.opacity = "1";
+                    modalContDele.style.visibility = "visible";
+                    VentDelete.classList.toggle("ventana-close-delete");
+
+                    const form = document.getElementById("formEliminar");
+                    const idCategoria = valores[0].trim();
+                    form.action = `/eliminar_cat/${idCategoria}`;
+                });
+            });
+        </script>
+
+
     </main>
 
 
