@@ -19,7 +19,9 @@ public class Proveedor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ruc;
+    private int id;
+    
+    private Long ruc;
 
     private String nombre;
 
@@ -36,7 +38,8 @@ public class Proveedor implements Serializable {
     }
 
 
-    public Proveedor(int ruc, String nombre, int telefono, String email, List<Producto> productos) {
+    public Proveedor(int id, Long ruc, String nombre, int telefono, String email, List<Producto> productos) {
+        this.id = id;
         this.ruc = ruc;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -45,12 +48,22 @@ public class Proveedor implements Serializable {
     }
 
 
-    public int getRuc() {
+    public int getId() {
+        return id;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public Long getRuc() {
         return ruc;
     }
 
 
-    public void setRuc(int ruc) {
+    public void setRuc(Long ruc) {
         this.ruc = ruc;
     }
 
@@ -93,6 +106,9 @@ public class Proveedor implements Serializable {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
+
+
+    
 
 
 

@@ -63,52 +63,6 @@
         </div>
     </div>
 
-    <div class="container-modal--edit">
-        <div class="ventana_modal--edit ventana-close-edit">
-            <div class="form__name--add">
-                <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Editar Producto</p>
-            </div>
-            <form class="form_modal" th:action="@{/actualizar_prod}" method="post">
-                <input type="text" name="id_act" id="id_act" style="display: none;">
-                <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input id="nombre_act" type="text" name="nombre_act">
-                </div>
-                <div class="input__box">
-                    <label for="">Descripcion</label><br>
-                    <textarea id="descripcion_act" name="descripcion_act"></textarea>
-                </div>
-                <div class="input__box">
-                    <label for="">Categoria</label><br>
-                    <select id="categoria_act" name="categoria_act">
-                        <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
-                            th:text="${categoria.nombre}"></option>
-                    </select>
-                </div>
-                <div class="input__box">
-                    <label for="">Proovedor</label><br>
-                    <select id="proveedor_act" name="proveedor_act">
-                        <option th:each="proveedor: ${proveedores}" th:value="${proveedor.nombre}"
-                            th:text="${proveedor.nombre}"></option>
-                    </select>
-                </div>
-                <div class="input__box">
-                    <label for="">Stock</label><br>
-                    <input type="number" id="stock_act" name="stock_act">
-                </div>
-                <div class="input__box">
-                    <label for="">Precio</label><br>
-                    <input type="text" id="precio_act" name="precio_act">
-                </div>
-                <div class="button__modal">
-                    <div class="btn-modal">
-                        <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
-                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
     
     <div class="container_modal--delete">
         <div class="ventana_modal--delete ventana-close-delete">
@@ -163,9 +117,9 @@
                         <tr class="thead">
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Descripcion</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
-                            <th>Descripcion</th>
                             <th>Precio S/.</th>
                             <th>Stock</th>
                             <th>Accion</th>
@@ -191,59 +145,55 @@
                                         </div>
                                 </div>
                             </td>
+
+                            <div class="container-modal--edit">
+                                <div class="ventana_modal--edit ventana-close-edit">
+                                    <div class="form__name--add">
+                                        <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Editar Producto</p>
+                                    </div>
+                                    <form class="form_modal" th:action="@{/actualizar_prod/{id} (id = ${producto.idProducto})}" method="post">
+                                        <input type="text" name="id_act" id="id_act" style="display: none;">
+                                        <div class="input__box">
+                                            <label for="">Nombre</label><br>
+                                            <input id="nombre_act" type="text" name="nombre_act" th:value="${producto.nombre}">
+                                        </div>
+                                        <div class="input__box">
+                                            <label for="">Descripcion</label><br>
+                                            <textarea id="descripcion_act" name="descripcion_act" th:text="${producto.descripcion}"></textarea>
+                                        </div>
+                                        <div class="input__box">
+                                            <label for="">Categoria</label><br>
+                                            <select id="categoria_act" name="categoria_act" th:selected="${producto.categoria.nombre}">
+                                                <option th:each="categoria: ${categorias}"
+                                                th:text="${categoria.nombre}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="input__box">
+                                            <label for="">Proovedor</label><br>
+                                            <select id="proveedor_act" name="proveedor_act">
+                                                <option th:value="${producto.proveedor.nombre}" th:text="${producto.proveedor.nombre}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="input__box">
+                                            <label for="">Stock</label><br>
+                                            <input type="number" id="stock_act" name="stock_act" th:value="${producto.stock}">
+                                        </div>
+                                        <div class="input__box">
+                                            <label for="">Precio</label><br>
+                                            <input type="text" id="precio_act" name="precio_act" th:value="${producto.precio}">
+                                        </div>
+                                        <div class="button__modal">
+                                            <div class="btn-modal">
+                                                <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
+                                                <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
                         </tr>
 
-                        <script>
-                            const boton2 = document.querySelectorAll(".editproduc");
-                            boton2.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_act").value = valores[0];
-                                    document.getElementById("nombre_act").value = valores[1];
-                                    document.getElementById("categoria_act").value = valores[2];
-                                    document.getElementById("proveedor_act").value = valores[3];
-                                    document.getElementById("descripcion_act").value = valores[4];
-                                    document.getElementById("precio_act").value = valores[5];
-                                    document.getElementById("stock_act").value = valores[6];
-                                    modalContEdit.style.opacity = "1";
-                                    modalContEdit.style.visibility = "visible";
-                                    VentEdit.classList.toggle("ventana-close-edit");
-                                });
-                            });
-
-
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_eliminar").value = valores[0];
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-                                });
-                            });
-
-                            const boton4 = document.querySelectorAll(".button-confir");
-                            boton4.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    document.getElementById('eliminar_prod').submit();
-                                });
-                            });
-
-
-                        </script>
                     </table>
                 </div>
             </div>

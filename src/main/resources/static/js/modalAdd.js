@@ -104,3 +104,50 @@ document.querySelectorAll(".container_action").forEach(actionContainer => {
     });
 });
 
+const boton2 = document.querySelectorAll(".editproduc");
+boton2.forEach(boton => {
+    boton.addEventListener('click', function () {
+        // // Encontramos la fila asociada al botón
+        // const fila = this.closest('tr');
+
+        // // Recogemos los valores de las celdas de la fila
+        // const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+        // // Mostramos los valores recogidos
+        // document.getElementById("id_act").value = valores[0];
+        // document.getElementById("nombre_act").value = valores[1];
+        // document.getElementById("categoria_act").value = valores[2];
+        // document.getElementById("proveedor_act").value = valores[3];
+        // document.getElementById("descripcion_act").value = valores[4];
+        // document.getElementById("precio_act").value = valores[5];
+        // document.getElementById("stock_act").value = valores[6];
+        modalContEdit.style.opacity = "1";
+        modalContEdit.style.visibility = "visible";
+        VentEdit.classList.toggle("ventana-close-edit");
+    });
+});
+
+
+const boton3 = document.querySelectorAll(".deleteProduc");
+boton3.forEach(boton => {
+    boton.addEventListener('click', function () {
+        // Encontramos la fila asociada al botón
+        const fila = this.closest('tr');
+
+        // Recogemos los valores de las celdas de la fila
+        const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+        // Mostramos los valores recogidos
+        document.getElementById("id_eliminar").value = valores[0];
+        modalContDele.style.opacity = "1";
+        modalContDele.style.visibility = "visible";
+        VentDelete.classList.toggle("ventana-close-delete");
+    });
+});
+
+const boton4 = document.querySelectorAll(".button-confir");
+boton4.forEach(boton => {
+    boton.addEventListener('click', function () {
+        document.getElementById('eliminar_prod').submit();
+    });
+});

@@ -1,11 +1,22 @@
 package com.example.domain.ecommerce.dto;
 
 public class ProveedorDTO {
+
+    private Long ruc;
+
     private String nombre;
 
     private int telefono;
 
     private String email;
+
+    public Long getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(Long ruc) {
+        this.ruc = ruc;
+    }
 
     public String getNombre() {
         return nombre;
@@ -30,6 +41,8 @@ public class ProveedorDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    
 
     
 

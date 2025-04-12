@@ -18,16 +18,17 @@ public class ProductoInventarioController {
     @Autowired
     private ProductoService productoService;
 
-    @GetMapping("/stock")
-    public String stock(Model model) {
-        model.addAttribute("productos", productoService.listarProducto());
-        return "venta/stock";
-    }
+    // @GetMapping("/stock")
+    // public String stock(Model model) {
+    //     model.addAttribute("productos", productoService.listarProducto());
+    //     return "venta/stock";
+    // }
 
 
     @GetMapping("/productos")
     public String productos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
+        model.addAttribute("categorias", productoService.obtenerCategorias());
         return "venta/productos";
     }
 
@@ -38,6 +39,7 @@ public class ProductoInventarioController {
         ;
         productoService.agregarProducto(productDTO);
         model.addAttribute("productos", productoService.listarProducto());
+        model.addAttribute("categorias", productoService.obtenerCategorias());
         return "redirect:/productos";
     }
 
@@ -50,6 +52,7 @@ public class ProductoInventarioController {
         productoService.actualizarProducto(productDTO, id);
 
         model.addAttribute("productos", productoService.listarProducto());
+        model.addAttribute("categorias", productoService.obtenerCategorias());
         return "redirect:/productos";
     }
 
@@ -62,6 +65,7 @@ public class ProductoInventarioController {
 
         
         model.addAttribute("productos", productoService.listarProducto());
+        model.addAttribute("categorias", productoService.obtenerCategorias());
         return "redirect:/productos";
 
     }

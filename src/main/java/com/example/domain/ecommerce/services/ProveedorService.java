@@ -24,6 +24,7 @@ public class ProveedorService {
 
     public void createProv(ProveedorDTO proveedorDTO){
         Proveedor nuevo_proveedor = new Proveedor();
+        nuevo_proveedor.setRuc(proveedorDTO.getRuc());
         nuevo_proveedor.setNombre(proveedorDTO.getNombre());
         nuevo_proveedor.setEmail(proveedorDTO.getEmail());
         nuevo_proveedor.setTelefono(proveedorDTO.getTelefono());
@@ -42,6 +43,7 @@ public class ProveedorService {
         }
 
         Proveedor proveedor = prov.get();
+        proveedor.setRuc(proveedorDTO.getRuc());
         proveedor.setNombre(proveedorDTO.getNombre());
         proveedor.setEmail(proveedorDTO.getEmail());
         proveedor.setTelefono(proveedorDTO.getTelefono());
