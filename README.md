@@ -36,10 +36,18 @@ src/main/resources
     Crea tu carpeta local y clona el proyecto dentro de el.
 
     ```bash
-    git clone LINK
+    git clone LINK DEL REPOSITORIO
 
-2.  **Dirigirse al archivo appplication.properties y configurar la base de datos**
-    Realiza los cambios necesarios en el username y password.
+
+2.  **Dirigite a la rama Develop**
+    Para empezar a realizar cambios dirigirse a la rama de desarrollo (develop).
+
+    ```bash
+    git status              -----> para ver en que rama te encuentras 
+    git checkout develop    -----> para cambiar de la rama principal a la de Develop
+    
+3.  **Dirigirse al archivo appplication.properties y configurar la base de datos**
+    Realiza los cambios necesarios en el username y password en base a tu configuracion en MySql.
 
     ```bash
     spring.datasource.username=INGRESA TU USERNAME
@@ -51,3 +59,18 @@ src/main/resources
 
 5.  **Ejecutar el proyecto:**
     Dirigirse al archivo EcommerceApplication.java para ejecutar el proyecto.
+
+
+## 👨‍💻 Subir cambios a la rama de develop
+
+1.  **Con la terminal en Visual Studio Code:**
+    ```bash
+    git status                             -----> para ver todos los archivos que se han modificado
+    git add .                              -----> mueve los cambios del directorio de trabajo al área del entorno de ensayo
+    git commit --message "MENSAJE"         -----> confirmando los cambios dejando un mensaje descriptivo
+    git push origin develop                -----> subir tus cambios a la rama Develop
+    
+
+2.  **Con las herramientas de Visual Studio Code**
+
+   
