@@ -41,7 +41,7 @@ public class UsuarioController {
             @ModelAttribute UserDTO userDTO,
             Model model) {
 
-        userDTO.setRol("Cliente");
+        userDTO.setRol("Empleado");
         usuarioService.createUser(userDTO);
 
         return "commerce/iniciosesion";
