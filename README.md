@@ -51,9 +51,3 @@ src/main/resources
 
 5.  **Ejecutar el proyecto:**
     Dirigirse al archivo EcommerceApplication.java para ejecutar el proyecto.
-
-    # Elimina la rama local
-    git branch -d feature/nombre-de-tarea
-
-    # Elimina la rama remota
-    git push origin --delete feature/nombre-de-tarea
