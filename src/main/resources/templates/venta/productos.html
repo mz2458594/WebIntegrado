@@ -33,7 +33,7 @@
                 </div>
                 <div class="input__box">
                     <label for="">Categoria</label><br>
-                    <select name="categoria">
+                    <select name="nombre_categoria">
                         <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
                             th:text="${categoria.nombre}"></option>
                     </select>
@@ -52,6 +52,10 @@
                 <div class="input__box">
                     <label for="">Precio</label><br>
                     <input type="text" name="precio">
+                </div>
+                <div class="input__box">
+                    <label for="">Imagen</label><br>
+                    <input type="text" name="imagen1">
                 </div>
                 <div class="button__modal">
                     <div class="btn-modal">
@@ -159,31 +163,31 @@
                 <form class="form_modal" method="post" id="formEditar">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input id="nombre_act" type="text" name="nombre_act">
+                        <input id="nombre_act" type="text" name="nombre">
                     </div>
                     <div class="input__box">
                         <label for="">Descripcion</label><br>
-                        <textarea id="descripcion_act" name="descripcion_act"></textarea>
+                        <textarea id="descripcion_act" name="descripcion"></textarea>
                     </div>
                     <div class="input__box">
                         <label for="">Categoria</label><br>
-                        <select id="categoria_act" name="categoria_act">
+                        <select id="categoria_act" name="nombre_categoria">
                             <option th:each="categoria: ${categorias}" th:text="${categoria.nombre}"></option>
                         </select>
                     </div>
                     <div class="input__box">
                         <label for="">Proovedor</label><br>
-                        <select id="proveedor_act" name="proveedor_act">
+                        <select id="proveedor_act" name="proveedor">
                             <option th:each="proveedor: ${proveedores}" th:text="${proveedor.nombre}"></option>
                         </select>
                     </div>
                     <div class="input__box">
                         <label for="">Stock</label><br>
-                        <input type="number" id="stock_act" name="stock_act">
+                        <input type="number" id="stock_act" name="stock">
                     </div>
                     <div class="input__box">
                         <label for="">Precio</label><br>
-                        <input type="text" id="precio_act" name="precio_act">
+                        <input type="text" id="precio_act" name="precio">
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">

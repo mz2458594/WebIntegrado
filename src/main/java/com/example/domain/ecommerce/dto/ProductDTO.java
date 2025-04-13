@@ -9,6 +9,7 @@ public class ProductDTO {
     String precio;
     String stock;
     String imagen1;
+    String proveedor;
 
     public String getNombre() {
         return nombre;
@@ -57,4 +58,14 @@ public class ProductDTO {
     public void setImagen1(String imagen1) {
         this.imagen1 = imagen1;
     }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    
 }

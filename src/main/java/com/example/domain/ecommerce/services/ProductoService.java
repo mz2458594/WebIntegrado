@@ -6,9 +6,11 @@ import java.util.Optional;
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Categoria;
 import com.example.domain.ecommerce.models.entities.Producto;
+import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
+import com.example.domain.ecommerce.repositories.ProveedorDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class ProductoService {
 
     @Autowired
     private UsuarioDAO usuarioDAO;
+
+    @Autowired
+    private ProveedorDAO proveedorDAO;
 
     public Iterable<Categoria> obtenerCategorias() {
         return categoriaDAO.findAll();
@@ -53,6 +58,7 @@ public class ProductoService {
 
     public void agregarProducto(ProductDTO productDTO) {
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
 
         Producto producto = new Producto();
         producto.setCategoria(categoria);
@@ -60,7 +66,7 @@ public class ProductoService {
         producto.setImagen(productDTO.getImagen1());
         producto.setNombre(productDTO.getNombre());
         producto.setPrecio(productDTO.getPrecio());
-        //producto.setProveedor(productDTO.get);
+        producto.setProveedor(proveedor);
         producto.setStock(productDTO.getStock());
 
         productoDAO.save(producto);
@@ -70,13 +76,14 @@ public class ProductoService {
     public void actualizarProducto(ProductDTO productDTO, int id) {
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
 
         Producto producto = productoDAO.findById(Long.valueOf(id)).get();
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
         producto.setNombre(productDTO.getNombre());
         producto.setPrecio(productDTO.getPrecio());
-        //producto.setProveedor(null);
+        producto.setProveedor(proveedor);
         producto.setStock(productDTO.getStock());
 
         productoDAO.save(producto);

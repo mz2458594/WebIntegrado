@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.services;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,11 +105,18 @@ public class UsuarioService {
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
 
         usuario.getPersona().setNombre(userDTO.getNombre());
-        usuario.setUsername(userDTO.getUsername());
         usuario.getPersona().setApellido(userDTO.getApellido());
-        usuario.setEmail(userDTO.getCorreo());
         usuario.getPersona().setDni(userDTO.getNum_documento());
+        usuario.getPersona().setFecha(userDTO.getFecha_nac());
         usuario.getPersona().setTelefono(userDTO.getCelular());
+        usuario.getPersona().getDireccion().setCalle(userDTO.getCalle());
+        usuario.getPersona().getDireccion().setCiudad(userDTO.getCiudad());
+        usuario.getPersona().getDireccion().setDistrito(userDTO.getDistrito());
+        usuario.getPersona().getDireccion().setProvincia(userDTO.getProvincia());
+        usuario.setEmail(userDTO.getCorreo());
+        usuario.setUsername(userDTO.getUsername());
+        usuario.setRole(userDTO.getRol());
+
         usuarioDAO.save(usuario);
 
        return  usuario;

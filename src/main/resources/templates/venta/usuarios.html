@@ -148,7 +148,7 @@
                             <th>Email</th>
                             <th>Username</th>
                             <th>Rol</th>
-                            <th>Cargo</th>
+                            <!-- <th>Cargo</th> -->
                         </tr>
                         <tr id="productList" th:each="usuario: ${usuarios}">
                             <td th:text="${usuario.idUsuario}">1</td>
@@ -164,7 +164,7 @@
                             <td th:text="${usuario.email}">kenn</td>
                             <td th:text="${usuario.username}">kenn</td>
                             <td th:text="${usuario.role}">Admin</td>
-                            <td th:if="${usuario.role == 'Empleado'}" th:text="${usuario.cargo}"></td>
+                            <!-- <td th:if="${usuario.role == 'Empleado'}"></td> -->
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">

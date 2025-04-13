@@ -7,5 +7,6 @@ import com.example.domain.ecommerce.models.entities.Proveedor;
 
 @Repository
 public interface ProveedorDAO extends JpaRepository<Proveedor, Long> {
-    
+    Proveedor findByNombre(String nombre);
+
 }
