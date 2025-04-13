@@ -44,7 +44,7 @@ src/main/resources
 
     ```bash
     git status              -----> para ver en que rama te encuentras 
-    git checkout develop    -----> para cambiar de la rama principal a la de Develop
+    git switch develop    -----> para cambiar de la rama principal a la de Develop
     
 3.  **Dirigirse al archivo appplication.properties y configurar la base de datos**
     Realiza los cambios necesarios en el username y password en base a tu configuracion en MySql.
