@@ -25,6 +25,10 @@
 
                 <label for="fecha_nac">Fecha de nacimiento:</label>
                 <input type="date" id="fecha_nac" name="fecha_nac" required>
+                <script>
+                    document.getElementById('fecha_nac').max = new Date().toISOString().split('T')[0]
+
+                </script>
 
                 <label for="calle">Calle:</label>
                 <input type="text" id="calle" name="calle">

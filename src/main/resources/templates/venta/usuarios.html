@@ -38,7 +38,10 @@
                 </div>
                 <div class="input__box">
                     <label for="">Fecha de nacimiento</label><br>
-                    <input type="date" name="fecha_nac">
+                    <input type="date" name="fecha_nac" id="fecha_nac">
+                    <script>
+                        document.getElementById('fecha_nac').max = new Date().toISOString().split('T')[0]
+                    </script>
                 </div>
                 <div class="input__box">
                     <label for="">Celular</label><br>
@@ -206,6 +209,9 @@
                     <div class="input__box">
                         <label for="">Fecha de nacimiento</label><br>
                         <input type="date" id="fecha_act" name="fecha_nac">
+                        <script>
+                            document.getElementById('fecha_act').max = new Date().toISOString().split('T')[0]
+                        </script>
                     </div>
                     <div class="input__box">
                         <label for="">Celular</label><br>
