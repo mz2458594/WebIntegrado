@@ -269,7 +269,7 @@ button {
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: red;
+    background-color: #223753;
     z-index: -1;
     width: 0%;
     transition: .3s;
@@ -277,7 +277,7 @@ button {
 }
 
 .cerrar:hover{
-    color: yellow;
+    color: white;
     opacity: .9;
 }
 
