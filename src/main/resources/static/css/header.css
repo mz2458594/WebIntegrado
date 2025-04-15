@@ -15,7 +15,7 @@ body{
     align-items: center;
     width: 100%;
     height: 112px;
-    background-color: #DE0900;
+    background-color: #223753;
 }
 
 
@@ -83,7 +83,7 @@ q{
     border-left: 2px solid white;
     width: 100%;
     height: 50px;
-    background-color: #DE0900;
+    background-color: #223753;
     font-size: 16px;
     font-weight: bold;
     color: #fff;
@@ -91,7 +91,7 @@ q{
 }
 
 .boton_opciones:hover{
-    background-color: #a21a1a;
+    background-color: #254a76;
 }
 
 
@@ -100,7 +100,7 @@ q{
 }
 
 #carrito{
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     border-radius: 20px;
     height: 100%;
 }
@@ -127,9 +127,10 @@ q{
     height: 25px;
     justify-content: center;
     align-items: center;
-    color: black;
-    background-color: #fff;
+    color: rgb(255, 255, 255);
+    background-color: #429ee4;
     border-radius: 50%;
+    font-weight: bold;
 }
 
 
@@ -137,11 +138,12 @@ q{
     position: absolute;
     top: 50px;
     background-color: #fff;
-    width: 400px;
+    width: 350px;
     right: 0;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .20);
     border-radius: 10px;
     display: none;
+    right: 20px;
 }
 
 .cart_product{
@@ -150,6 +152,7 @@ q{
     justify-content: space-between;
     border-bottom: 1px solid black;
     align-items: center;
+    
 }
 
 .cart_product img:hover{
@@ -159,6 +162,7 @@ q{
 .cart_product img{
     width: 25px;
     height: 25px;
+    margin-left: 15px;
 }
 
 #contador{
