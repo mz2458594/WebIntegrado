@@ -1,19 +1,21 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    margin: 0;
+    
     background-color: #f4f4f4;
+    
 }
 
 h1{
-    background-color: #de0900;
+    background-color: #0e5590;
     text-align: center;
     color: #ffffff;
+    margin: 20px;
 }
 
 h2{
     color: black;
-    margin: 5px;
+    margin-left: 20px;
     margin-bottom: 20px;
 }
 p{
@@ -49,12 +51,12 @@ p{
     object-fit: cover;
     margin-bottom: 5px;
     transition: transform 0.3s ease, border 0.3s ease;
-    border: 3.5px solid #de0900;
+    border: 3.5px solid #0e5590;
 
 }
 
 .category.active {
-    border-bottom: 3px solid #de0900;
+    border-bottom: 3px solid #0e5590;
 }
 
 .controls {
@@ -66,6 +68,7 @@ p{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 20px;
 }
 
 .buscar{
@@ -76,7 +79,8 @@ p{
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 20px; 
+    padding: 20px;
 }
 
 .product-card {
@@ -84,12 +88,13 @@ p{
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 
 .product-card img {
     width: 100%;
-    height: auto;
+    height: 170px;
     border-radius: 5px;
 }
 
@@ -418,13 +423,14 @@ footer{
 }
 
 .promo-banner {
-    background-color: #ffe44c;
-    border: 1px solid #fff53c;
+    background-color: #0e5590;
+    border: 1px solid #0e5590;
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
+    margin: 20px;
 }
 .promo-image {
     width: 100px;
@@ -436,21 +442,22 @@ footer{
     text-align: center;
 }
 .promo-content p {
-    color: black;
+    color: rgb(255, 255, 255);
     font-size: 18px;
     margin-bottom: 10px;
 }
 .promo-link {
     display: inline-block;
-    background-color: #de0900;
+    background-color: #439ce4;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.3s ease;
+    font-weight: bold;
 }
 .promo-link:hover {
-    background-color: #c82333;
+    background-color: #3383c4;
 }
 @media (max-width: 600px) {
     .promo-banner {

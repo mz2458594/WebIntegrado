@@ -15,7 +15,7 @@ body{
     align-items: center;
     width: 100%;
     height: 112px;
-    background-color: #DE0900;
+    background-color: #21344a;
 }
 
 
@@ -83,7 +83,7 @@ q{
     border-left: 2px solid white;
     width: 100%;
     height: 50px;
-    background-color: #DE0900;
+    background-color: #21344a;
     font-size: 16px;
     font-weight: bold;
     color: #fff;
@@ -91,7 +91,7 @@ q{
 }
 
 .boton_opciones:hover{
-    background-color: #a21a1a;
+    background-color: #2e4779;
 }
 
 
@@ -127,8 +127,8 @@ q{
     height: 25px;
     justify-content: center;
     align-items: center;
-    color: black;
-    background-color: #fff;
+    color: rgb(255, 255, 255);
+    background-color: #1084e3;
     border-radius: 50%;
 }
 
@@ -136,9 +136,9 @@ q{
 .info_producto{
     position: absolute;
     top: 50px;
-    background-color: #fff;
-    width: 400px;
-    right: 0;
+    background-color: #ffffff;
+    width: 350px;
+    right: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .20);
     border-radius: 10px;
     display: none;
@@ -153,16 +153,18 @@ q{
 }
 
 .cart_product img:hover{
-    background-color: red;
+    background-color: rgb(255, 71, 71);
 }
 
 .cart_product img{
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
+    margin-left: 30px;
 }
 
 #contador{
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .info_product{
@@ -211,7 +213,7 @@ q{
 }
 
 button {
-    background-color: #de0900;
+    background-color: #1b1111;
     color: #fff;
     cursor: pointer;
 }
@@ -265,7 +267,7 @@ button {
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: red;
+    background-color: #002d85;
     z-index: -1;
     width: 0%;
     transition: .3s;
@@ -273,7 +275,7 @@ button {
 }
 
 .cerrar:hover{
-    color: yellow;
+    color: rgb(255, 255, 255);
     opacity: .9;
 }
 
