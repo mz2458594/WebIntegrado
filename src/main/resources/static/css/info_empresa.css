@@ -7,17 +7,35 @@ body {
 }
 
 h2, h3 {
-    color: #DE0900;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.slide-image{
+    width: 140px;
+    height: 140px;
+    border: none;
+}
+.slide-image1{
+    width: 130px;
+    height: 130px;
+    
 }
 
 /* misión y visión */
 .mision_vision {
-    background-color: #FEDA00;
+    background-color: #2788ff;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 0;
+    padding: 20px 0;
     overflow: hidden;
+    margin-right: 155px;
+    margin-left: 155px;
+    margin-top: 30px;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 20px;
 }
 
 .row {
@@ -45,6 +63,7 @@ h2, h3 {
     flex-direction: column;
     align-items: center;
     padding: 40px;
+    color: #ffffff;
 }
 
 .row {
@@ -76,8 +95,11 @@ h2, h3 {
 }
 
 .text-box {
-    background-color: #FEDA00;
+    background-color: #2788ff;
     flex: 1;
+    border-radius: 20px;
+    font-weight: bold;
+    
 }
 
 /* Form contacto*/
@@ -220,10 +242,9 @@ h2, h3 {
 
 .slide-image {
     flex: 1;
-    max-width: 20%;
-    height: auto;
+    max-width: 30%;
+    height: 140px;
     margin-left: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    
+
 }
