@@ -62,7 +62,7 @@ public class ControladorGeneral {
 
     }
 
-    @GetMapping("/cerrar")
+    @GetMapping("/cerrarEmpleado")
     public String cerrar_sesion(HttpSession request, SessionStatus status) {
         status.setComplete();
         request.removeAttribute("empleado");

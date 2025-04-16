@@ -6,7 +6,6 @@ public class UserDTO {
     private String nombre;
     private String apellido;
     private String num_documento;
-    private Date fecha_nac;
     private String celular;
     private String calle;
     private String ciudad;
@@ -26,13 +25,7 @@ public class UserDTO {
         this.num_documento = num_documento;
     }
 
-    public Date getFecha_nac() {
-        return fecha_nac;
-    }
-
-    public void setFecha_nac(Date fecha_nac) {
-        this.fecha_nac = fecha_nac;
-    }
+   
 
     public String getApellido() {
         return apellido;

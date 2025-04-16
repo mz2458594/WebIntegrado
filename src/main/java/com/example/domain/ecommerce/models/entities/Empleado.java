@@ -16,12 +16,15 @@ public class Empleado extends Persona implements Serializable{
 
     }
 
-
-    public Empleado(int id, String dni, String nombre, String apellido, String telefono, Date fecha_nac,
-                    Direccion direccion, String cargo) {
-        super(id, dni, nombre, apellido, telefono, fecha_nac, direccion);
+    
+    public Empleado(int id, String dni, String nombre, String apellido, String telefono, Direccion direccion,
+            String cargo) {
+        super(id, dni, nombre, apellido, telefono, direccion);
         this.cargo = cargo;
     }
+
+
+
 
 
     public String getCargo() {

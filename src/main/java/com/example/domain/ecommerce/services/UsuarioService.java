@@ -1,6 +1,5 @@
 package com.example.domain.ecommerce.services;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,7 +106,6 @@ public class UsuarioService {
         usuario.getPersona().setNombre(userDTO.getNombre());
         usuario.getPersona().setApellido(userDTO.getApellido());
         usuario.getPersona().setDni(userDTO.getNum_documento());
-        usuario.getPersona().setFecha(userDTO.getFecha_nac());
         usuario.getPersona().setTelefono(userDTO.getCelular());
         usuario.getPersona().getDireccion().setCalle(userDTO.getCalle());
         usuario.getPersona().getDireccion().setCiudad(userDTO.getCiudad());
@@ -181,7 +179,6 @@ public class UsuarioService {
         }
 
         nueva.setDni(user.getNum_documento());
-        nueva.setFecha(user.getFecha_nac());
         nueva.setApellido(user.getApellido());
         nueva.setNombre(user.getNombre());
         nueva.setTelefono(user.getCelular());
