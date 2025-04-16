@@ -117,6 +117,9 @@ button {
     color: #ffffff;
     cursor: pointer;
 }
+.buy-button{
+    background-color: #2d72c6;
+}
 
 button:hover {
     background-color: #20518c;

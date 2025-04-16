@@ -104,10 +104,14 @@ h2, h3 {
 
 /* Form contacto*/
 .contact-section {
-    background-color: #911a1a;
+    background-color: #20518c;
     padding: 40px;
     color: white;
     text-align: center;
+    margin-right: 155px;
+    margin-left: 155px;
+    border-radius: 20px;
+    font-weight: bold;
 }
 
 .contact-section form {
@@ -133,16 +137,19 @@ h2, h3 {
 
 .contact-section button {
     padding: 10px 20px;
-    background-color: #FEDA00;
+    background-color: #2788ff;
     border: none;
     border-radius: 5px;
-    color: #1D2937;
+    color: #ffffff;
     font-size: 1rem;
     cursor: pointer;
+    margin-right: 150px;
+    margin-left: 150px;
+    border-radius: 20px;
 }
 
 .contact-section button:hover {
-    background-color: #DE0900;
+    background-color: #2788ff;
     color: white;
 }
 
@@ -180,8 +187,8 @@ h2, h3 {
 }
 
 .contact-section button:hover {
-    transform: scale(1.05);
-    background-color: #DE0900;
+    
+    background-color: #206fd1;
     color: white;
 }
 
