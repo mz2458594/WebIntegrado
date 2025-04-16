@@ -13,8 +13,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "personas")
@@ -36,23 +34,19 @@ public abstract class Persona implements Serializable {
     @Column(nullable = false, unique = true)
     private String telefono;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     private Direccion direccion;
 
     public Persona() {
     }
 
-    public Persona(int id, String dni, String nombre, String apellido, String telefono, Date fecha,
+    public Persona(int id, String dni, String nombre, String apellido, String telefono,
                    Direccion direccion) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        this.fecha = fecha;
         this.direccion = direccion;
     }
 
@@ -104,14 +98,6 @@ public abstract class Persona implements Serializable {
 
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,9 +16,9 @@ public class Cliente extends Persona implements Serializable{
 
     }
 
-    public Cliente(int id, String dni, String nombre, String apellido, String telefono, Date fecha_nac,
+    public Cliente(int id, String dni, String nombre, String apellido, String telefono,
                    Direccion direccion, Usuario usuario) {
-        super(id, dni, nombre, apellido, telefono, fecha_nac, direccion);
+        super(id, dni, nombre, apellido, telefono, direccion);
     }
 
 
