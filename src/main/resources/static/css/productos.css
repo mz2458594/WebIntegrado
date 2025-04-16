@@ -420,44 +420,6 @@ footer{
     }
 
 }
-
-.promo-banner {
-    background-color: #20518c;
-    border: 1px solid #20518c;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    margin: 20px;
-}
-.promo-image {
-    width: 100px;
-    height: 100px;
-    margin-right: 20px;
-}
-.promo-content {
-    flex-grow: 1;
-    text-align: center;
-}
-.promo-content p {
-    color: white;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-.promo-link {
-    display: inline-block;
-    background-color: #1e80f8;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-}
-.promo-link:hover {
-    background-color: #1763c1;
-}
 @media (max-width: 600px) {
     .promo-banner {
         flex-direction: column;

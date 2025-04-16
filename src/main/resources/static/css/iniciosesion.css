@@ -58,6 +58,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin-right: 200px;
 }
 
 form {
@@ -119,7 +120,7 @@ form {
     bottom: -2px;
     width: 0%;
     height: 2px;
-    background-color: #de0900;
+    background-color: #136fe7;
     transition: .4s;
 }
 
@@ -142,7 +143,7 @@ form {
 }
 
 .input-div.focus > .i > i {
-    color: #de0900;
+    color: #136fe7;
 }
 
 .input-div > div > input {
@@ -175,7 +176,7 @@ a {
 }
 
 a:hover {
-    color: #de0900;
+    color: #136fe7;
 }
 
 .btn, .btn-registro {
@@ -186,7 +187,7 @@ a:hover {
     border-radius: 25px;
     outline: none;
     border: none;
-    background-color: #de0900;
+    background-color: #136fe7;
     background-size: 200%;
     font-size: 1.2rem;
     color: #fff;
@@ -200,14 +201,14 @@ a:hover {
 }
 
 .btn:hover, .btn-registro:hover {
-    background-color: #ae100a;
+    background-color: #173b66;
 }
 
 /* Registro */
 .contenido-registro {
     flex: 1;
     min-width: 300px;
-    background-color: #feda00;
+    background-color: #173b66;
     padding: 2rem;
     border-radius: 10px;
     display: flex;
@@ -220,24 +221,24 @@ a:hover {
     font-size: 2rem;
     margin-bottom: 1rem;
     text-align: center;
-    color: #1D2937;
+    color: #ffffff;
 }
 
 .contenido-registro ul {
     list-style: none;
     padding: 0;
-    color: #1D2937;
+    color: #ffffff;
 }
 
 .contenido-registro ul li {
     margin-bottom: 0.5rem;
     font-size: 1rem;
-    color: #1D2937;
+    color: #ffffff;
 }
 
 .contenido-registro ul li::before {
     content: "• ";
-    color: #1D2937;
+    color: #ffffff;
     font-size: 1.5rem;
     vertical-align: middle;
 }
