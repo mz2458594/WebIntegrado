@@ -338,7 +338,7 @@ public class EcommerceApplicationTests {
         assertEquals("usuario@example.com", resultado.getEmail());
         verify(usuarioDAO, times(1)).findByEmail("usuario@example.com");
     }
-
+//test
     @Test
     void testLoginEmpleado() {
         LoginDTO loginDTO = new LoginDTO();
