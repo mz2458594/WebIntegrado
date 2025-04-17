@@ -22,11 +22,6 @@ public class ProductoController {
 
     @GetMapping("/")
     public String comienzo(Model model) {
-        return "commerce/index";
-    }
-
-    @GetMapping("/producto")
-    public String abrir(Model model) {
         model.addAttribute("productos", productosService.listarProducto());
         model.addAttribute("categorias", productosService.obtenerCategorias());
         return "commerce/productos";
