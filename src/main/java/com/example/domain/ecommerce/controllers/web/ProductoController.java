@@ -22,7 +22,7 @@ public class ProductoController {
 
     @GetMapping("/")
     public String comienzo(Model model) {
-        return "commerce/index";
+        return "commerce/principal";
     }
 
     @GetMapping("/producto")
