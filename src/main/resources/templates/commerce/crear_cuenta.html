@@ -12,9 +12,6 @@
 <body>
 
     <div th:insert="commerce/header.html"></div>
-
-
-    <br />
     <a th:href="@{/iniciar_crear}" class="enlaces">Iniciar sesion</a> |
     <a th:href="@{/form_crear}" class="enlaces">Crear cuenta</a>
     <div class="container">
@@ -22,13 +19,6 @@
         <form th:action="@{/form_crear}" method="POST">
             <fieldset>
                 <hr><br>
-
-                <label for="fecha_nac">Fecha de nacimiento:</label>
-                <input type="date" id="fecha_nac" name="fecha_nac" required>
-                <script>
-                    document.getElementById('fecha_nac').max = new Date().toISOString().split('T')[0]
-
-                </script>
 
                 <label for="calle">Calle:</label>
                 <input type="text" id="calle" name="calle">
@@ -43,7 +33,7 @@
                 <input type="text" id="provincia" name="provincia">
 
                 <label for="username">Nombre de Usuario:</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" required>
 
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -53,7 +43,7 @@
 
                 <label for="num_documento">Num documento:</label>
                     <input type="text" id="num_documento" name="num_documento"
-                        title="El DNI debe tener 8 dígitos" placeholder="Número de Documento" maxlength="8">
+                        title="El DNI debe tener 8 dígitos" placeholder="Número de Documento" maxlength="8" required>
 
                 <label for="celular">Celular:</label>
                 <input type="tel" id="celular" name="celular" required maxlength="9">

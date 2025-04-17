@@ -6,14 +6,15 @@ body {
 }
 
 h1{
-    background-color: #de0900;
+    background-color: #20518c;
     text-align: center;
     color: #ffffff;
+    margin: 20px;
 }
 
 h2{
     color: black;
-    margin: 5px;
+    margin: 20px;
     margin-bottom: 20px;
 }
 p{
@@ -49,12 +50,12 @@ p{
     object-fit: cover;
     margin-bottom: 5px;
     transition: transform 0.3s ease, border 0.3s ease;
-    border: 3.5px solid #de0900;
+    border: 3.5px solid #20518c;
 
 }
 
 .category.active {
-    border-bottom: 3px solid #de0900;
+    border-bottom: 3px solid #20518c;
 }
 
 .controls {
@@ -66,6 +67,7 @@ p{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 20px;
 }
 
 .buscar{
@@ -77,6 +79,7 @@ p{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 
 .product-card {
@@ -84,12 +87,13 @@ p{
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 
 .product-card img {
     width: 100%;
-    height: auto;
+    height: 150px;
     border-radius: 5px;
 }
 
@@ -109,13 +113,16 @@ button {
 }
 
 button {
-    background-color: #de0900;
-    color: #fff;
+    background-color: #2264b6;
+    color: #ffffff;
     cursor: pointer;
+}
+.buy-button{
+    background-color: #2d72c6;
 }
 
 button:hover {
-    background-color: #a21a1a;
+    background-color: #20518c;
 }
 
 .product-actions {
@@ -415,42 +422,6 @@ footer{
         display: none;
     }
 
-}
-
-.promo-banner {
-    background-color: #ffe44c;
-    border: 1px solid #fff53c;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-}
-.promo-image {
-    width: 100px;
-    height: 100px;
-    margin-right: 20px;
-}
-.promo-content {
-    flex-grow: 1;
-    text-align: center;
-}
-.promo-content p {
-    color: black;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-.promo-link {
-    display: inline-block;
-    background-color: #de0900;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-.promo-link:hover {
-    background-color: #c82333;
 }
 @media (max-width: 600px) {
     .promo-banner {

@@ -37,13 +37,6 @@
                     <input type="text" name="num_documento">
                 </div>
                 <div class="input__box">
-                    <label for="">Fecha de nacimiento</label><br>
-                    <input type="date" name="fecha_nac" id="fecha_nac">
-                    <script>
-                        document.getElementById('fecha_nac').max = new Date().toISOString().split('T')[0]
-                    </script>
-                </div>
-                <div class="input__box">
                     <label for="">Celular</label><br>
                     <input type="text" name="celular">
                 </div>
@@ -142,7 +135,6 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>DNI</th>
-                            <th>Fecha de nacimiento</th>
                             <th>Celular</th>
                             <th>Calle</th>
                             <th>Ciudad</th>
@@ -158,7 +150,6 @@
                             <td th:text="${usuario.persona.nombre}">Kenneth</td>
                             <td th:text="${usuario.persona.apellido}">Kenneth</td>
                             <td th:text="${usuario.persona.dni}">Kenneth</td>
-                            <td th:text="${usuario.persona.fecha}">Kenneth</td>
                             <td th:text="${usuario.persona.telefono}">Kenneth</td>
                             <td th:text="${usuario.persona.direccion.calle}">Kenneth</td>
                             <td th:text="${usuario.persona.direccion.ciudad}">Kenneth</td>
@@ -205,13 +196,6 @@
                     <div class="input__box">
                         <label for="">Numero de documento</label><br>
                         <input type="text" id="num_act" name="num_documento">
-                    </div>
-                    <div class="input__box">
-                        <label for="">Fecha de nacimiento</label><br>
-                        <input type="date" id="fecha_act" name="fecha_nac">
-                        <script>
-                            document.getElementById('fecha_act').max = new Date().toISOString().split('T')[0]
-                        </script>
                     </div>
                     <div class="input__box">
                         <label for="">Celular</label><br>

@@ -14,12 +14,13 @@ body{
 }
 
 legend{
-    color: black;
+    color: rgb(0, 0, 0);
 }
 
 #titulo {
     text-align: center;
     color: black;
+    font-weight: bold;
 }
 
 form fieldset {
@@ -31,6 +32,7 @@ label {
     display: block;
     margin: 15px 0 10px;
     color: black;
+    font-weight: bold;
 }
 
 input, select, #CrearC {
@@ -59,16 +61,22 @@ input, select, #CrearC {
     width: 100%;
     padding: 10px;
     border: none;
-    border-radius: 10px;
-    background-color:#DE0900;
-    color: #fff837;
+    border-radius: 15px;
+    background-color:#136fe7;
+    color: #ffffff;
     cursor: pointer;
     box-sizing: border-box; 
+    font-weight: bold;
+}
+
+#boton_crear:hover{
+    background-color: #1a5194;
 }
 
 .enlaces{
     text-decoration: none;
     color: black;
-    margin: 10px;
+    margin: 20px;
+    font-weight: bold;
 }
 
