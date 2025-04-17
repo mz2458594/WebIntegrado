@@ -13,13 +13,9 @@
     justify-content: center;
 }
 
-#formEditar{
-    height: 500px;
-    overflow-y: scroll;
-    scrollbar-width: none;
-}
 
-#formulario{
+
+#formulario, #formEditar{
     height: 500px;
     overflow-y: scroll;
     scrollbar-width: none;
