@@ -31,12 +31,6 @@ public class ControladorREST {
         return "commerce/iniciosesion";
     }
 
-     @RequestMapping("/infoEmp")
-     public String abrirInfoEmpresa(Model model) {
-         return "commerce/info_empresa";
-     }
-
-
      @RequestMapping("/form_crear")
      public String abrirCrear(Model model) {
          return "commerce/crear_cuenta";
