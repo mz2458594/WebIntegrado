@@ -20,12 +20,21 @@ public class ProductoController {
     @Autowired
     private ProductoService productosService;
 
+
     @GetMapping("/")
     public String comienzo(Model model) {
+        return "commerce/principal";
+    }
+
+    @GetMapping("/producto")
+    public String abrir(Model model) {
         model.addAttribute("productos", productosService.listarProducto());
         model.addAttribute("categorias", productosService.obtenerCategorias());
         return "commerce/productos";
     }
+
+
+    @GetMapping()
 
     @PostMapping("/insertar")
     public String insertar(
