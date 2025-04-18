@@ -33,15 +33,10 @@ public class ProductoController {
         return "commerce/productos";
     }
 
-
-    @GetMapping()
-
     @PostMapping("/insertar")
     public String insertar(
             @ModelAttribute ProductDTO productDTO,
             Model model) {
-
-
 
         // Llamar al repositorio para insertar los datos en la base de datos
         productosService.agregarProducto(productDTO);
