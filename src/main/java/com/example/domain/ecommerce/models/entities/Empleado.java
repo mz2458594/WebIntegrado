@@ -22,11 +22,7 @@ public class Empleado extends Persona implements Serializable{
         super(id, dni, nombre, apellido, telefono, direccion);
         this.cargo = cargo;
     }
-
-
-
-
-
+    
     public String getCargo() {
         return cargo;
     }
