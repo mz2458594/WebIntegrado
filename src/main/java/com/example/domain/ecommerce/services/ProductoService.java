@@ -56,7 +56,7 @@ public class ProductoService {
         return (List<Producto>) productoDAO.findAll();
     }
 
-    public void agregarProducto(ProductDTO productDTO) {
+    public Producto agregarProducto(ProductDTO productDTO) {
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
         Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
 
@@ -69,7 +69,7 @@ public class ProductoService {
         producto.setProveedor(proveedor);
         producto.setStock(productDTO.getStock());
 
-        productoDAO.save(producto);
+        return productoDAO.save(producto);
 
     }
 

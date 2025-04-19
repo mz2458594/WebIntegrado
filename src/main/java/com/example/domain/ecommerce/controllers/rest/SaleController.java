@@ -14,20 +14,19 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-// @SessionAttributes({ "nombre", "id", "rol" })
 
-// @RestController
-// @Slf4j
-// @RequestMapping("/api/sales")
-// public class SaleController {
+@RestController
+@Slf4j
+@RequestMapping("/api/sales")
+public class SaleController {
 
-//     @Autowired
-//     VentaService ventasService;
+    @Autowired
+    VentaService ventasService;
 
-//     @PostMapping
-//     public ResponseEntity<Venta> crearVenta(@RequestBody RequestDTO request) {
-//         Venta venta = ventasService.crearVenta(request);
-//         return new ResponseEntity<>(venta, HttpStatus.CREATED);
-//     }
+    @PostMapping("/createSale")
+    public ResponseEntity<Venta> createSale(@RequestBody RequestDTO request) {
+        Venta venta = ventasService.crearVenta(request);
+        return new ResponseEntity<>(venta, HttpStatus.CREATED);
+    }
 
-// }
+}
