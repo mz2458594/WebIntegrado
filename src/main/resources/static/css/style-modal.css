@@ -115,10 +115,11 @@
     background-color: #0001;
 }
 
-#imagen{
+#imagen, #productList td{
     word-break: break-word;   /* Para que corte palabras largas sin espacios */
     white-space: normal;  /* Permite que el texto se ajuste en varias líneas */
 }
+
 
 .container_action{
     margin: auto;
