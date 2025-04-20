@@ -70,7 +70,7 @@
                         </thead>
                         <tbody th:if="${venta != null}">
                             <tr th:each="item: ${venta.item}">
-                                <td><a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto})} ">X</a></td>
+                                <td><a th:href="@{/eliminarProd/{id} (id = ${item.producto.idProducto})} ">X</a></td>
                                 <td th:text="${item.producto.nombre}">arroz</td>
                                 <td th:text="${item.cantidad}">2</td>
                                 <td th:text="${item.producto.precio}">4.50</td>
@@ -106,10 +106,8 @@
     let total_pag = document.querySelectorAll("td.tot");
 
     const precios = Array.from(total_pag).map(precios => precios.textContent.trim());
-    console.log(precios);
 
     const t = precios.reduce((acc, precio) => parseFloat(acc) + parseFloat(precio), 0);
-    console.log(t);
     document.getElementById("finalTotal").innerHTML = t;
 
     let total = document.getElementById("finalTotal").innerHTML;
@@ -128,7 +126,7 @@
     // Función para mostrar y filtrar la lista
     function filterProducts() {
         const query = productInput.value.toLowerCase();
-        productList.innerHTML = ""; // Limpiar la lista
+        // productList.innerHTML = ""; // Limpiar la lista
 
         const filteredProducts = productNames.filter(product =>
             product.toLowerCase().includes(query)

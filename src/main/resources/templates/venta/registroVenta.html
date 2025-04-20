@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/style-modal.css}">
-        <link rel="stylesheet" th:href="@{/css/style-registroVenta.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/style-registroVenta.css}">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
                 <div class="cont-codigo-usuario">
                     <div class="info-cod-venta">
                         <p>Codigo</p>
-                        <span class="cod-vent-regis" >0001</span>
+                        <span class="cod-vent-regis">0001</span>
                     </div>
                     <div class="info-user-venta">
                         <p>Usuario</p>
@@ -51,8 +51,7 @@
                                 <td th:text="${item.producto.precio}">
                                     4.50</td>
                                 <td th:text="${item.cantidad}">2</td>
-                                <td id="tot" class="tot"
-                                    th:text="${item.producto.precio * item.cantidad}">9</td>
+                                <td id="tot" class="tot" th:text="${item.producto.precio * item.cantidad}">9</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -65,10 +64,12 @@
                 </div>
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
-                        <!-- <button class="btn-imprimir">Imprimir</button> -->
-                        <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
-                        <button class="btn-save" onclick="window.location.href='/saveVenta'">Guardar</button>
-                        <button class="btn-volver" onclick="window.location.href='/cancelar'">Cancelar</button>
+                        <form th:action="@{/saveVenta}" method="post">
+                            <!-- <button class="btn-imprimir">Imprimir</button> -->
+                            <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
+                            <button class="btn-save" type="submit">Guardar</button>
+                            <button class="btn-volver" type="reset" onclick="window.location.href='/cancelar'">Cancelar</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -85,13 +86,13 @@
         document.getElementById("finalTotal").innerHTML = t.toFixed(2);
     </script>
 
-<script>
-    document.querySelector('.btn-imprimir').addEventListener('click', function () {
-        const tabla = document.getElementById('tabla-listar').outerHTML; // Captura la tabla
-        const ventanaImpresion = window.open('', '_blank'); // Abre una nueva ventana o pestaña
+    <script>
+        document.querySelector('.btn-imprimir').addEventListener('click', function () {
+            const tabla = document.getElementById('tabla-listar').outerHTML; // Captura la tabla
+            const ventanaImpresion = window.open('', '_blank'); // Abre una nueva ventana o pestaña
 
-        // Crea el contenido del documento
-        ventanaImpresion.document.write(`
+            // Crea el contenido del documento
+            ventanaImpresion.document.write(`
             <html>
                 <head>
                     <title>Imprimir Venta</title>
@@ -118,10 +119,10 @@
             </html>
         `);
 
-        ventanaImpresion.document.close(); // Cierra el documento para asegurar la renderización
-        ventanaImpresion.print(); // Llama a la función de impresión
-    });
-</script>
+            ventanaImpresion.document.close(); // Cierra el documento para asegurar la renderización
+            ventanaImpresion.print(); // Llama a la función de impresión
+        });
+    </script>
 </body>
 
 </html>
