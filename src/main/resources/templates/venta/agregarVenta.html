@@ -22,24 +22,24 @@
                 <p>Realizar Nueva Venta</p>
             </div>
             <div class="contenedor__form--venta">
-                <form th:action="@{/añadir}" method="post">
-                    <div class="cont_cod-user">
-                        <div class="cont-cod">
-                            <label for="">Codigo</label><br>
-                            <input type="text" disabled>
-                        </div>
+                <div class="cont_cod-user">
+                    <div class="cont-cod">
+                        <label for="">Codigo</label><br>
+                        <input type="text" disabled>
                     </div>
-                    <div class="info-produc-venta">
-                        <p>Informacion de la venta</p>
-
+                </div>
+                <div class="info-produc-venta">
+                    <p>Informacion de la venta</p>
+                    <form method="post" id="formAgregarProducto">
                         <div class="listar">
                             <div class="list-produc">
                                 <label for="">Producto</label><br>
                                 <div class="dropdown-container">
                                     <input type="text" class="dropdown-input" placeholder="Buscar producto..."
-                                        id="productInput" name="productInput" required>
+                                        id="productInput" name="productInput" required autocomplete="off">
                                     <div class="dropdown-list" id="productList">
-                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}">
+                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}"
+                                            th:attr="data-id=${producto.idProducto}">
                                         </div>
                                     </div>
 
@@ -52,58 +52,54 @@
                             <div class="btn-agregar-list">
                                 <button type="submit">Agregar</button>
                             </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="cont-table-list">
+                    <table id="tabla-listar" class="table-list">
+                        <thead>
+                            <tr>
+                                <th>Quitar</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio S/.</th>
+                                <th>Total S/.</th>
+                            </tr>
+                        </thead>
+                        <tbody th:if="${venta != null}">
+                            <tr th:each="item: ${venta.item}">
+                                <td><a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto})} ">X</a></td>
+                                <td th:text="${item.producto.nombre}">arroz</td>
+                                <td th:text="${item.cantidad}">2</td>
+                                <td th:text="${item.producto.precio}">4.50</td>
+                                <td id="tot" class="tot" th:text="${item.producto.precio * item.cantidad}">9</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <p>Monto Total</p>
+                                </td>
+                                <td id="finalTotal" th>S/.9.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <form th:action="@{/registroVenta}" method="post">
+                    <div class="container-submit-cancelar">
+                        <div class="sub-can">
+                            <input value="Guardar" type="submit" class="btn-agreventa">
+                            <input type="text" id="total_reg" name="total_reg" style="display: none;">
+                            <button type="reset" onclick="window.location.href='/cancelar'">Cancelar</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
-
-        <div class="cont-table-list">
-            <table id="tabla-listar" class="table-list">
-                <thead>
-                    <tr>
-                        <th>Quitar</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio S/.</th>
-                        <th>Total S/.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="detalle : ${detalles}">
-                        <td><a th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
-                                th:href="@{/eliminar_prod/{idProducto}(idProducto=${producto.idProducto})}">X</a></td>
-                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.nombre}">arroz</td>
-                        <td th:text="${detalle.cantidadProductos}">2</td>
-                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.precio}">4.50</td>
-                        <td id="tot" class="tot" th:each="producto : ${productos}"
-                            th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.precio * detalle.cantidadProductos}">9</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            <p>Monto Total</p>
-                        </td>
-                        <td id="finalTotal" th>S/.9.00</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <form th:action="@{/registroVenta}" method="post">
-            <div class="container-submit-cancelar">
-                <div class="sub-can">
-                    <input value="Guardar" type="submit" class="btn-agreventa">
-                    <input type="text" id="total_reg" name="total_reg" style="display: none;">
-                    <button type="reset" onclick="window.location.href='/nuevaVenta'">Cancelar</button>
-                </div>
-            </div>
-        </form>
-        </div>
-        </div>
     </main>
-    
+
 </body>
 
 <script>
@@ -161,10 +157,24 @@
             productList.style.display = "none";
         }
     });
-</script>
 
-<script th:if="${error != null}">
-    alert("No hay existencias de este producto");
+    const form = document.getElementById('formAgregarProducto');
+    const cantidadInput = document.getElementById('canti');
+    console.log(cantidadInput)
+
+    productList.addEventListener('click', function (event) {
+        console.log(event.target.classList.contains('pro'))
+        
+        if (event.target.classList.contains('pro')) {
+            const nombre = event.target.textContent;
+            const id = event.target.getAttribute('data-id');
+            form.action = '/añadirProd/' + id;
+        }
+    });
+
+
+
+
 </script>
 
 </html>

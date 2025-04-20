@@ -46,7 +46,7 @@ public class ControladorGeneral {
 
             contador = 0;
 
-            return "venta/index";
+            return "redirect:/index";
 
         } catch (EntityNotFoundException e) {
 

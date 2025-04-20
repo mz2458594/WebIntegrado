@@ -26,11 +26,11 @@
                 <div class="cont-codigo-usuario">
                     <div class="info-cod-venta">
                         <p>Codigo</p>
-                        <span class="cod-vent-regis" th:text="${id_venta}">0001</span>
+                        <span class="cod-vent-regis" >0001</span>
                     </div>
                     <div class="info-user-venta">
                         <p>Usuario</p>
-                        <span class="cod-user-regis" th:text="${id}">7777777</span>
+                        <span class="cod-user-regis" th:text="${venta.id_usuario}">7777777</span>
                     </div>
                 </div><br>
                 <div class="cont-tabla-registro">
@@ -44,18 +44,15 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr th:each="detalle : ${detalles}">
-                                <td th:each="producto : ${productos}"
-                                    th:if="${producto.idProducto == detalle.idProducto}" th:text="${producto.nombre}">
+                        <tbody th:if="${venta != null}">
+                            <tr th:each="item: ${venta.item}">
+                                <td th:text="${item.producto.nombre}">
                                     arroz</td>
-                                <td th:each="producto : ${productos}"
-                                    th:if="${producto.idProducto == detalle.idProducto}" th:text="${producto.precio}">
+                                <td th:text="${item.producto.precio}">
                                     4.50</td>
-                                <td th:text="${detalle.cantidadProductos}">2</td>
-                                <td id="tot" class="tot" th:each="producto : ${productos}"
-                                    th:if="${producto.idProducto == detalle.idProducto}"
-                                    th:text="${producto.precio * detalle.cantidadProductos}">9</td>
+                                <td th:text="${item.cantidad}">2</td>
+                                <td id="tot" class="tot"
+                                    th:text="${item.producto.precio * item.cantidad}">9</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -68,9 +65,10 @@
                 </div>
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
-                        <button class="btn-imprimir">Imprimir</button>
+                        <!-- <button class="btn-imprimir">Imprimir</button> -->
                         <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
-                        <button class="btn-volver" onclick="window.location.href='/nuevaVenta'">Volver</button>
+                        <button class="btn-save" onclick="window.location.href='/saveVenta'">Guardar</button>
+                        <button class="btn-volver" onclick="window.location.href='/cancelar'">Cancelar</button>
                     </div>
                 </div>
             </div>
