@@ -1,6 +1,5 @@
 package com.example.domain.ecommerce.dto;
 
-import java.sql.Date;
 
 public class UserDTO {
     private String nombre;

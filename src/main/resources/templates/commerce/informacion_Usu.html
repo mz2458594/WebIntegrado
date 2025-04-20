@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <label>Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}"><br><br>
+                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}"><br>
                     </div>
                     <div>
                         <label>Celular:</label> <br>
@@ -50,7 +50,7 @@
                         <input th:value="${session.user.username}" type="text" id="username" name="username">
                     </div>
 
-                    <div><br>
+                    <div class="botons">
                         <button type="submit" class="bott">Actualizar</button>
                         <button type="reset" class="bott">Revertir</button>
                     </div>
@@ -93,13 +93,10 @@
                         id="distrito"
                         name="distrito"><br>
                     </div>
-
-                    <br>
-                    <div>
+                    <div class="botons">
                         <button   type="submit" class="bott">Actualizar</button>
                         <button type="reset" class="bott">Revertir</button>
                     </div>
-
                 </form>
             </section>
 

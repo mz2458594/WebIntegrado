@@ -88,7 +88,7 @@ public class VentasController {
         session.setAttribute("carrito", carrito);
         model.addAttribute("productos", productosService.listarProducto() );
 
-        return "redirect:/";
+        return "redirect:/producto";
     }
 
     @GetMapping("/eliminar_prod/{id}")
@@ -109,7 +109,7 @@ public class VentasController {
 
         model.addAttribute("productos", productosService.listarProducto());
 
-        return "redirect:/";
+        return "redirect:/producto";
 
     }
 

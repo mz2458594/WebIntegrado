@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Tu tienda de tecnología</title>
+    <title>Página principal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
@@ -166,7 +166,7 @@
                         </p>
                     </div>
                     <div class="company-image">
-                        <img th:src="@{/js/index.js}" alt="Nuestra tienda">
+                        <img th:src="@{/images/acercade.png}" alt="Nuestra tienda">
                     </div>
                 </div>
             </div>
@@ -175,6 +175,6 @@
 
     <div th:insert="commerce/footer.html"></div>
     
-    <script src="index.js"></script>
+    <script th:src="@{/js/index.js}"></script>
 </body>
 </html>

@@ -1,22 +1,23 @@
 body{
     margin: 0;
-    padding: 0;
+    padding: 0
 }
 
-.Opciones ul li:nth-child(1){ /*Decorar en donde estamos ubicados*/
-    border-left: 4px solid #DE0900 ;
-    background-color: #dad5d5;
+.Opciones ul li:nth-child(1){
+    border-left: 4px solid #173b66;
+    background-color: #dfd8d8;
 }
 
 .Contenido{
     width: 100%;
     padding: 10px 40px;
-    border: 2px solid #FEDA00;
+    border: 3px solid #1b7eff;
     border-radius: 10px;
     h2{
         font-size: 22px;
         font-style: italic;
-        border-bottom: 2px solid #DE0900;
+        border-bottom: 2px solid #173b66;
+        text-align: center;
     }
 }
 
@@ -43,8 +44,8 @@ form{
         input{
             margin: 10px 0;
             border: none;
-            border-bottom:1px solid #DE0900;
-            border-left:1px solid #DE0900;
+            border-bottom:1px solid #266bc0;
+            border-left:1px solid #266bc0;
             border-radius: 10px;
             padding: 10px;
             width: 70%;
@@ -52,20 +53,25 @@ form{
 }
 
 .ima{
-    background-color: #FEDA00;
-    border: 3px solid #DE0900;
+    background-color: #266bc0;
+    border: 3px solid #266bc0;
     margin: 12px;
     padding: 4px 10px;
     border-radius: 10px;
 }
 
 .bott{
-    border: 3px solid #DE0900;
+    border: 3px solid #266bc0;
     border-radius: 12px;
-    color: #DE0900;
+    color: #ffffff;
     font-weight: bolder;
-    background-color: #FEDA00;
+    background-color: #22599c;
     align-items: center;
     padding: 8px;
     margin: 20px 10px;
+
+}
+
+.botons{
+    margin-left: 310px;
 }
