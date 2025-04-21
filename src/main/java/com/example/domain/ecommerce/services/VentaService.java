@@ -54,7 +54,7 @@ public class VentaService {
             vp.setVenta(venta);
 
             //Para disminuir la cantidad de productos luego de registrar una venta
-            // p.setStock(String.valueOf(Integer.valueOf(p.getStock()) - productos.getCantidad()));
+            productosService.actualizarStockProducto(p, productos.getCantidad());
 
             total += vp.getSubtotal();
 
@@ -75,7 +75,20 @@ public class VentaService {
 
 
     public void deleteVenta(int id){
+        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
+        
+        if (venta.isEmpty()) {
+            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
+        }
+
+        Venta v = venta.get();
+
+        for (Venta_producto ve: v.getVentaProductos()) {
+            productosService.devolverStock(ve.getProducto(), ve.getCantidad());
+        }
+
         ventasDAO.deleteById(Long.valueOf(id));
+
     }
 
 

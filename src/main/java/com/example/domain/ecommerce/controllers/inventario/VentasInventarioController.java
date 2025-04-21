@@ -1,8 +1,6 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -138,7 +136,7 @@ public class VentasInventarioController {
 
         sale.setId_usuario(empleado.getIdUsuario());
         session.setAttribute("sale", sale);
-        
+
         model.addAttribute("venta", sale);
         return "venta/registroVenta";
     }

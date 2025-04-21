@@ -25,22 +25,19 @@
                 <div class="item">
                     <i class="fa-solid fa-cart-shopping"></i><a th:href="@{/nuenvaVenta}">Venta nueva</a></li>
                 </div>
-                <div class="item">
-                    <i class="fa-solid fa-arrow-trend-up"></i><a th:href="@{/stock}">Stock</a></li>
-                </div>
-                <div class="item">
+                <!-- <div class="item">
                     <i class="fa-solid fa-basket-shopping"></i><a th:href="@{/pedidos}">Pedidos</a></li>
-                </div>
-                <div class="item item-admin" th:if="${rol == 'Administrador'}">
+                </div> -->
+                <div class="item item-admin">
                     <i class="fa-solid fa-truck-field-un"></i><a th:href="@{/proveedores}">Proveedores</a>
                 </div>
-                <div class="item item-admin" th:if="${rol == 'Administrador'}">
+                <div class="item item-admin">
                     <i class="fa-solid fa-layer-group"></i><a th:href="@{/categoria}">Categorias</a>
                 </div>
-                <div class="item item-admin" th:if="${rol == 'Administrador'}">
+                <div class="item item-admin">
                     <i class="fa-brands fa-product-hunt"></i><a th:href="@{/productos}">Productos</a>
                 </div>
-                <div class="item item-admin" th:if="${rol == 'Administrador'}">
+                <div class="item item-admin" >
                     <i class="fa-solid fa-users"></i><a th:href="@{/usuarios}">Usuario</a>
                 </div>
             </div>
