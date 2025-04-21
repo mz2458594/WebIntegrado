@@ -134,7 +134,11 @@ public class VentasInventarioController {
             Model model, HttpSession session, SessionStatus status) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        Usuario empleado = (Usuario) session.getAttribute("empleado");
 
+        sale.setId_usuario(empleado.getIdUsuario());
+        session.setAttribute("sale", sale);
+        
         model.addAttribute("venta", sale);
         return "venta/registroVenta";
     }
@@ -144,10 +148,8 @@ public class VentasInventarioController {
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
         Usuario empleado = (Usuario) session.getAttribute("empleado");
 
-        // if (sale.getId_usuario() == 0) {
-        //     sale.setId_usuario(empleado.getIdUsuario());
-        // }
-
+        sale.setId_usuario(empleado.getIdUsuario());
+        
         ventasService.crearVenta(sale);
 
         session.removeAttribute("sale");
@@ -180,6 +182,7 @@ public class VentasInventarioController {
 
         model.addAttribute("venta", sale);
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("ocultar", true);
         return "venta/registroVenta";
     }
 
