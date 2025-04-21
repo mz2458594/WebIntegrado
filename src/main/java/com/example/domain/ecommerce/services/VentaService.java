@@ -53,40 +53,9 @@ public class VentaService {
             vp.setProducto(p);
             vp.setVenta(venta);
 
-            total += vp.getSubtotal();
-
-            listasProductos.add(vp);
-
-        }
-
-        venta.setTotal(total);
-        venta.setVentaProductos(listasProductos);
-
-        return ventasDAO.save(venta);
-
-    }
-
-
-    public Venta actualizarVenta(RequestDTO data, int id){
-
-       Venta venta = ventasDAO.findById(Long.valueOf(id)).get();
-
-        List<Venta_producto> listasProductos = new ArrayList<>();
-
-        double total = 0.00;
-
-        for (RequestDTO.ItemsVentaDTO productos : data.getItem()) {
-
-            Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
-
             //Para disminuir la cantidad de productos luego de registrar una venta
             // p.setStock(String.valueOf(Integer.valueOf(p.getStock()) - productos.getCantidad()));
 
-            Venta_producto vp = new Venta_producto();
-            vp.setCantidad(productos.getCantidad());
-            vp.setProducto(p);
-            vp.setVenta(venta);
-
             total += vp.getSubtotal();
 
             listasProductos.add(vp);
@@ -97,9 +66,8 @@ public class VentaService {
         venta.setVentaProductos(listasProductos);
 
         return ventasDAO.save(venta);
+
     }
-
-
 
     public List<Venta> getVentas(){
         return (List<Venta>)ventasDAO.findAll();
