@@ -114,12 +114,6 @@
     total = parseFloat(total.replace("S/.", "").trim());
     document.getElementById("total_reg").value = total;
 
-    // Selecciona todos los elementos con la clase 'pro'
-    const products = document.querySelectorAll("div.dropdown-list div.pro");
-
-    // Crea un arreglo con el texto de cada div
-    const productNames = Array.from(products).map(product => product.textContent.trim());
-
     const productInput = document.getElementById("productInput");
     const productList = document.getElementById("productList");
 
@@ -169,9 +163,6 @@
             form.action = '/añadirProd/' + id;
         }
     });
-
-
-
 
 </script>
 

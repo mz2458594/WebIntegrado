@@ -169,6 +169,7 @@ public class VentasInventarioController {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(venta.getCantidad());
             nuevo_item.setProducto(venta.getProducto());
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecio()) * nuevo_item.getCantidad());
             sale.getItem().add(nuevo_item);
         }        
 

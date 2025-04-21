@@ -51,7 +51,7 @@
                                 <td th:text="${item.producto.precio}">
                                     4.50</td>
                                 <td th:text="${item.cantidad}">2</td>
-                                <td id="tot" class="tot" th:text="${item.producto.precio * item.cantidad}">9</td>
+                                <td id="tot" class="tot" th:text="${item.total}">9</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -64,11 +64,13 @@
                 </div>
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
+                        <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
+
                         <form th:action="@{/saveVenta}" method="post">
                             <!-- <button class="btn-imprimir">Imprimir</button> -->
-                            <button class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
                             <button class="btn-save" type="submit">Guardar</button>
-                            <button class="btn-volver" type="reset" onclick="window.location.href='/cancelar'">Cancelar</button>
+                            <button class="btn-volver" type="reset"
+                                onclick="window.location.href='/cancelar'">Cancelar</button>
                         </form>
                     </div>
                 </div>
