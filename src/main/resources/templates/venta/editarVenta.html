@@ -39,7 +39,8 @@
                                     <input type="text" class="dropdown-input" placeholder="Buscar producto..."
                                         id="productInput" name="productInput" required>
                                     <div class="dropdown-list" id="productList">
-                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}">
+                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}"
+                                            th:attr="data-id=${producto.idProducto}">
                                         </div>
                                     </div>
 
@@ -124,26 +125,25 @@
         const productInput = document.getElementById("productInput");
         const productList = document.getElementById("productList");
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            console.log(productNames);
-        });
+
         // Función para mostrar y filtrar la lista
         function filterProducts() {
             const query = productInput.value.toLowerCase();
-            productList.innerHTML = ""; // Limpiar la lista
 
-            const filteredProducts = productNames.filter(product =>
-                product.toLowerCase().includes(query)
-            );
+            const allProducts = document.querySelectorAll("div.dropdown-list div.pro")
 
-            filteredProducts.forEach(product => {
-                const item = document.createElement("div");
-                item.textContent = product;
-                item.onclick = () => selectProduct(product);
-                productList.appendChild(item);
+            allProducts.forEach(product => {
+                const nombre = product.textContent.toLowerCase()
+                if (nombre.includes(query)) {
+                    product.onclick = () => selectProduct(product.textContent)
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+
             });
 
-            productList.style.display = filteredProducts.length ? "block" : "none";
+            productList.style.display = "block";
         }
 
         // Función para seleccionar un producto
@@ -159,6 +159,21 @@
                 productList.style.display = "none";
             }
         });
+
+        const form = document.getElementById('formAgregarProducto');
+        const cantidadInput = document.getElementById('canti');
+
+        productList.addEventListener('click', function (event) {
+            console.log(event.target.classList.contains('pro'))
+
+            if (event.target.classList.contains('pro')) {
+                const nombre = event.target.textContent;
+                const id = event.target.getAttribute('data-id');
+                form.action = '/añadirProd/' + id;
+            }
+        });
+
+
     </script>
     <script th:if="${error != null}">
         alert("[[${error}]]");
