@@ -144,7 +144,9 @@ public class VentasInventarioController {
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
         Usuario empleado = (Usuario) session.getAttribute("empleado");
 
-        sale.setId_usuario(empleado.getIdUsuario());
+        // if (sale.getId_usuario() == 0) {
+        //     sale.setId_usuario(empleado.getIdUsuario());
+        // }
 
         ventasService.crearVenta(sale);
 

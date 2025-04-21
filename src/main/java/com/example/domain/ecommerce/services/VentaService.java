@@ -40,7 +40,7 @@ public class VentaService {
         venta.setUsuario(usuario);
 
         List<Venta_producto> listasProductos = new ArrayList<>();
-
+        
 
         double total = 0.00;
 
