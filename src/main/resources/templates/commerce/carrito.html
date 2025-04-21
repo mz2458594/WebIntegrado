@@ -57,7 +57,7 @@
                                                     <span class="quantity" th:text="${item.cantidad}">
                                                 </div>
                                             </td>
-                                            <td class="sub">S/39.00</td>
+                                            <td class="sub" th:text="${item.total}">S/39.00</td>
                                             <td><a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="product-remove"><i class="bi bi-trash3"></i></a></td>
                                         </tr>
 

@@ -81,6 +81,7 @@ public class VentasInventarioController {
         for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
                 encontrado = true;
                 break;
             }
@@ -91,6 +92,7 @@ public class VentasInventarioController {
             nuevo_item.setCantidad(cantidad);
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
             sale.getItem().add(nuevo_item);
         }
 
