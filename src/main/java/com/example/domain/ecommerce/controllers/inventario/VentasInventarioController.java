@@ -1,8 +1,6 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Producto;
+import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.entities.Venta;
+import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
 
@@ -22,355 +25,183 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "compra"})
+@SessionAttributes({ "compra" })
 public class VentasInventarioController {
 
-    // @Autowired
-    // private VentaService ventasService;
-   
-
-    // @Autowired
-    // private ProductoService productosService;
-
-    // List<DetalleVenta> detalles = new ArrayList<DetalleVenta>();
-
-    // List<DetalleVenta> lista_temporal = new ArrayList<DetalleVenta>();
-
-    // Ventas venta = new Ventas();
+    @Autowired
+    private VentaService ventasService;
+
+    @Autowired
+    private ProductoService productosService;
+
+    @GetMapping("/nuevaVenta")
+    public String nuevaVenta(Model model) {
 
-    // int id_vent;
+        model.addAttribute("ventas", ventasService.getVentas());
 
-    // @PostMapping("/registroVenta")
-    // public String registrarVenta(
-    //         @RequestParam("total_reg") double total,
-    //         Model model, HttpSession session, SessionStatus status) {
+        return "venta/nuevaVenta";
+    }
 
-    //     java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+    @PostMapping("/eliminarVenta/{id}")
+    public String eliminarVenta(
+            @PathVariable int id,
+            Model model) {
 
-    //     int id = (int) session.getAttribute("id");
-    //     Ventas re = new Ventas();
-    //     re.setIdUsuario(id);
-    //     re.setTotal(total);
-    //     re.setFechaVenta(date);
+        ventasService.deleteVenta(id);
 
-    //     Ventas nueva = ventasDAO.save(re);
+        model.addAttribute("ventas", ventasService.getVentas());
+        return "redirect:/nuevaVenta";
 
-    //     for (DetalleVenta detalle_ventas : detalles) {
-    //         detalle_ventas.setIdVentas(nueva.getIdVventa());
-    //         detalleService.agregarDetalle(detalle_ventas);
-    //     }
+    }
+
+    @GetMapping("/agregarVenta")
+    public String agregarVenta(Model model) {
+        model.addAttribute("productos", productosService.listarProducto());
+        return "venta/agregarVenta";
+    }
+
+    @PostMapping("/añadirProd/{id}")
+    public String agregar(
+            @PathVariable int id,
+            @RequestParam("canti") int cantidad,
+            HttpSession session,
+            Model model) {
+
+        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
 
-    //     id_vent = nueva.getIdVventa();
+        if (sale == null) {
+            sale = new RequestDTO();
+            sale.setItem(new ArrayList<>());
+        }
+
+        boolean encontrado = false;
+
+        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
+            if (item.getProducto().getIdProducto() == id) {
+                item.setCantidad(item.getCantidad() + cantidad);
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
+                encontrado = true;
+                break;
+            }
+        }
 
-    //     model.addAttribute("detalles", detalles);
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("id", id);
-    //     model.addAttribute("id_venta", nueva.getIdVventa());
-    //     return "registroVenta";
-    // }
+        if (!encontrado) {
+            RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
+            nuevo_item.setCantidad(cantidad);
+            Producto p = productosService.obtenerProductoPorId(id);
+            nuevo_item.setProducto(p);
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
+            sale.getItem().add(nuevo_item);
+        }
 
-    // @PostMapping("/añadir")
-    // public String agregar(
-    //         @RequestParam("productInput") String nombre,
-    //         @RequestParam("canti") int cantidad,
-    //         Model model) {
+        session.setAttribute("sale", sale);
+        
+        model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("venta", sale);
 
-    //     DetalleVenta detalle_ventas = new DetalleVenta();
-    //     Producto producto = new Producto();
-    //     int contador = 0;
-    //     Producto optional = productosService.obtenerProductoPorNombre(nombre);
+        return "venta/agregarVenta";
+    }
 
-    //     producto = optional;
+    @GetMapping("/eliminarProd/{id}")
+    public String eliminarProd(
+            @PathVariable Integer id,
+            HttpSession session,
+            Model model) {
 
-    //     if (producto.getStock() > 0) {
+        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
 
-    //         if (cantidad > producto.getStock()) {
-    //             model.addAttribute("error", "No hay existencias");
-    //         } else {
-    //             detalle_ventas.setIdProducto(producto.getIdProducto());
-    //             detalle_ventas.setCantidadProductos(cantidad);
+        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
+            if (item.getProducto().getIdProducto() == id) {
+                sale.getItem().remove(item);
+                break;
+            }
+        }
 
-    //             for (DetalleVenta detalle_v : detalles) {
-    //                 if (detalle_v.getIdProducto() == detalle_ventas.getIdProducto()) {
-    //                     if ((detalle_v.getCantidadProductos() + cantidad) > producto.getStock()) {
-    //                         model.addAttribute("error", "No hay existencias");
-    //                         contador = 1;
-    //                     } else {
-    //                         detalle_v.setCantidadProductos(detalle_v.getCantidadProductos() + cantidad);
-    //                         contador = 1;
-    //                     }
-    //                 }
-    //             }
+        session.setAttribute("sale", sale);
 
-    //             if (contador == 0) {
-    //                 detalles.add(detalle_ventas);
-    //             }
-    //         }
+        model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("venta", sale);
 
-    //     } else {
-    //         model.addAttribute("error", "No hay existencias");
-    //     }
+        return "venta/agregarVenta";
 
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("detalles", detalles);
+    }
 
-    //     return "agregarVenta";
-    // }
-
-    // @GetMapping("/eliminar_prod/{id}")
-    // public String eliminarProd(
-    //         @PathVariable Integer id,
-    //         Model model) {
-
-    //     List<DetalleVenta> detalle_ventas = new ArrayList<DetalleVenta>();
-    //     for (DetalleVenta detalle_ventas2 : detalles) {
-    //         if (detalle_ventas2.getIdProducto() != id) {
-    //             detalle_ventas.add(detalle_ventas2);
-    //         }
-    //     }
+    @PostMapping("/registroVenta")
+    public String registrarVenta(
+            @RequestParam("total_reg") double total,
+            Model model, HttpSession session, SessionStatus status) {
 
-    //     detalles = detalle_ventas;
-
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("detalles", detalles);
-
-    //     return "agregarVenta";
-
-    // }
-
-    // @GetMapping("/nuevaVenta")
-    // public String nuevaVenta(Model model) {
-
-    //     detalles.clear();
-    //     id_vent = 0;
-
-    //     model.addAttribute("ventas", ventasService.listarVentas());
-    //     model.addAttribute("usuarios", ventasService.listarUsuarios());
-
-    //     return "nuevaVenta";
-    // }
+        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        Usuario empleado = (Usuario) session.getAttribute("empleado");
 
-    // @GetMapping("/agregarVenta")
-    // public String agregarVenta(Model model) {
-    //     model.addAttribute("productos", productosService.listarProducto());
-    //     return "agregarVenta";
-    // }
-
-    // @GetMapping("/editarVenta")
-    // public String editarVenta(Model model, HttpSession session, SessionStatus status) {
-
-    //     int id = (int) session.getAttribute("id");
-
-    //     model.addAttribute("detalles", detalles);
-    //     model.addAttribute("productos", productosService.listarProducto());
-    //     model.addAttribute("id", id);
-    //     return "editarVenta";
-    // }
-
-    // @PostMapping("/eliminarVenta")
-    // public String eliminarVenta(
-    //         @RequestParam("id_eliminar") int id_venta,
-    //         Model model) {
-
-    //     List<DetalleVenta> eliminar_detalles = detalleService.obtenerVentasPorIdVenta(id_venta);
-
-    //     for (DetalleVenta detalleVenta : eliminar_detalles) {
-    //         Optional<Producto> optional = productosService.obtenerProductoPorId(detalleVenta.getIdProducto());
-    //         if (optional.isPresent()) {
-    //             Producto producto = optional.get();
-    //             producto.setStock(producto.getStock() + detalleVenta.getCantidadProductos());
-    //             productosService.guardarProducto(producto);
-    //         }
-    //     }
-
-    //     ventasService.eliminarVenta(id_venta);
-
-    //     model.addAttribute("ventas", ventasService.listarVentas());
-    //     return "redirect:/nuevaVenta";
-
-    // }
-
-    // @PostMapping("/ver")
-    // public String ver(
-    //         @RequestParam("id_detalle") int id_venta,
-    //         Model model) {
-
-    //     id_vent = id_venta;
-    //     Optional<Ventas> v = ventasService.obtenerVentasPorId(id_venta);
-
-    //     Ventas venta = v.get();
-    //     detalles = detalleService.obtenerVentasPorIdVenta(venta.getIdVventa());
-
-    //     for (DetalleVenta detalle_venta : detalles) {
-    //         DetalleVenta copia = new DetalleVenta();
-    //         copia.setCantidadProductos(detalle_venta.getCantidadProductos());
-    //         copia.setIdDetalleVenta(detalle_venta.getIdDetalleVenta());
-    //         copia.setIdVentas(detalle_venta.getIdVentas());
-    //         copia.setIdProducto(detalle_venta.getIdProducto());
-    //         lista_temporal.add(copia);
-    //     }
-
-    //     model.addAttribute("detalles", detalles);
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("id", venta.getIdUsuario());
-    //     model.addAttribute("id_venta", venta.getIdVventa());
-    //     return "registroVenta";
-    // }
-
-    // @GetMapping("/eliminar/{id}")
-    // public String eliminar(
-    //         @PathVariable Integer id,
-    //         HttpSession session, SessionStatus status,
-    //         Model model) {
-
-    //     int id_usuario = (int) session.getAttribute("id");
-
-    //     List<DetalleVenta> detalle_ventas = new ArrayList<DetalleVenta>();
-    //     for (DetalleVenta detalle_ventas2 : detalles) {
-    //         if (detalle_ventas2.getIdProducto() != id) {
-    //             detalle_ventas.add(detalle_ventas2);
-    //         } else {
-    //             Optional<Producto> optional = productosService.obtenerProductoPorId(id);
-    //             if (optional.isPresent()) {
-    //                 Producto producto = optional.get();
-    //                 producto.setStock(producto.getStock() + detalle_ventas2.getCantidadProductos());
-    //                 productosService.guardarProducto(producto);
-    //             }
-    //         }
-    //     }
-
-    //     detalles = detalle_ventas;
-
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("detalles", detalles);
-    //     model.addAttribute("id", id_usuario);
-
-    //     return "editarVenta";
-
-    // }
-
-    // @PostMapping("/añadirV")
-    // public String agregarV(
-    //         @RequestParam("productInput") String nombre,
-    //         @RequestParam("canti") int cantidad,
-    //         Model model) {
-
-    //     DetalleVenta detalle_ventas = new DetalleVenta();
-    //     Producto producto = new Producto();
-    //     int contador = 0;
-    //     Producto optional = productosService.obtenerProductoPorNombre(nombre);
-
-    //     producto = optional;
-
-    //     if (producto.getStock() > 0) {
-
-    //         if (cantidad > producto.getStock()) {
-    //             model.addAttribute("error", "La cantidad excede el stock");
-    //         } else {
-    //             detalle_ventas.setIdProducto(producto.getIdProducto());
-    //             detalle_ventas.setCantidadProductos(cantidad);
-
-    //             for (DetalleVenta detalle_v : detalles) {
-    //                 if (detalle_v.getIdProducto() == detalle_ventas.getIdProducto()) {
-    //                     producto.setStock(producto.getStock() + detalle_v.getCantidadProductos());
-    //                     productosService.guardarProducto(producto);
-    //                     if ((detalle_v.getCantidadProductos() + cantidad) > (producto.getStock())) {
-    //                         model.addAttribute("error", "No hay existencias");
-    //                         contador = 1;
-    //                     } else {
-    //                         detalle_v.setCantidadProductos(detalle_v.getCantidadProductos() + cantidad);
-    //                         contador = 1;
-    //                         producto.setStock(producto.getStock() - detalle_v.getCantidadProductos());
-    //                     }
-    //                 }
-    //             }
-
-    //             if (contador == 0) {
-    //                 detalles.add(detalle_ventas);
-    //             }
-    //         }
-
-    //     } else {
-    //         model.addAttribute("error", "No hay existencias");
-    //     }
-
-    //     productosService.guardarProducto(producto);
-
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("detalles", detalles);
-
-    //     return "editarVenta";
-    // }
-
-    // @PostMapping("/actualizarV")
-    // public String actualizar(
-    //         @RequestParam("total_reg") double total,
-    //         Model model, HttpSession session, SessionStatus status) {
-
-    //     int idVenta = id_vent;
-    //     int id = (int) session.getAttribute("id");
-    //     Optional<Ventas> venta = ventasDAO.findById(Long.valueOf(idVenta));
-    //     Ventas re = venta.get();
-    //     re.setTotal(total);
-
-    //     ventasDAO.save(re);
-
-    //     detalleService.eliminarDetalle(idVenta);
-
-    //     for (DetalleVenta detalle_ventas : detalles) {
-    //         detalle_ventas.setIdVentas(re.getIdVventa());
-    //         Optional<Producto> optional = productosService.obtenerProductoPorId(detalle_ventas.getIdProducto());
-    //         Producto producto = optional.get();
-    //         producto.setStock(producto.getStock() + detalle_ventas.getCantidadProductos());
-    //         producto.setStock(producto.getStock() - detalle_ventas.getCantidadProductos());
-    //         productosService.guardarProducto(producto);
-    //         detalleService.actualizarDetalle(detalle_ventas);
-    //     }
-
-    //     model.addAttribute("detalles", detalles);
-    //     model.addAttribute("productos", ventasService.listarProductos());
-    //     model.addAttribute("id", id);
-    //     model.addAttribute("id_venta", re.getIdVventa());
-    //     return "registroVenta";
-    // }
-
-    // @GetMapping("/cancelar_edit")
-    // public String cancelar(Model model) {
-
-    //     for (DetalleVenta detalleVentaActual : detalles) {
-    //         boolean existeEnVentaOriginal = lista_temporal.stream()
-    //                 .anyMatch(detalleOriginal -> detalleOriginal.getIdProducto() == detalleVentaActual.getIdProducto());
-
-    //         Optional<Producto> optional = productosService.obtenerProductoPorId(detalleVentaActual.getIdProducto());
-    //         if (optional.isPresent()) {
-    //             Producto producto = optional.get();
-
-    //             if (existeEnVentaOriginal) {
-    //                 DetalleVenta detalleOriginal = lista_temporal.stream()
-    //                         .filter(detalle -> detalle.getIdProducto() == detalleVentaActual.getIdProducto())
-    //                         .findFirst()
-    //                         .orElse(null);
-
-    //                 if (detalleOriginal != null) {
-    //                     int diferencia = detalleVentaActual.getCantidadProductos() - detalleOriginal.getCantidadProductos();
-    //                     producto.setStock(producto.getStock() + diferencia);
-    //                 }
-    //             } else {
-    //                 producto.setStock(producto.getStock() - detalleVentaActual.getCantidadProductos());
-    //             }
-
-    //             productosService.guardarProducto(producto);
-    //         }
-    //     }
-
-    //     lista_temporal.clear();
-    //     detalles.clear();
-    //     id_vent = 0;
-
-    //     model.addAttribute("ventas", ventasService.listarVentas());
-    //     model.addAttribute("usuarios", ventasService.listarUsuarios());
-
-    //     return "nuevaVenta";
-    // }
+        sale.setId_usuario(empleado.getIdUsuario());
+        session.setAttribute("sale", sale);
+
+        model.addAttribute("venta", sale);
+        return "venta/registroVenta";
+    }
+
+    @PostMapping("/saveVenta")
+    public String saveVenta(HttpSession session, Model model) {
+        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        Usuario empleado = (Usuario) session.getAttribute("empleado");
+
+        sale.setId_usuario(empleado.getIdUsuario());
+        
+        ventasService.crearVenta(sale);
+
+        session.removeAttribute("sale");
+        model.addAttribute("ventas", ventasService.getVentas());
+        return "redirect:/nuevaVenta";
+    }
+
+    @GetMapping("/detalleVenta/{id}")
+    public String ver(
+            @PathVariable int id,
+            HttpSession session,
+            Model model) {
+
+        Venta ventas = ventasService.obtenerVentasPorId(id);
+
+        RequestDTO sale = new RequestDTO();
+        sale.setItem(new ArrayList<>());
+        sale.setId_usuario(ventas.getUsuario().getIdUsuario());
+
+        for (Venta_producto venta : ventas.getVentaProductos()) {
+            RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
+            nuevo_item.setCantidad(venta.getCantidad());
+            nuevo_item.setProducto(venta.getProducto());
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecio()) * nuevo_item.getCantidad());
+            sale.getItem().add(nuevo_item);
+        }        
+
+        session.setAttribute("sale", sale);
+
+
+        model.addAttribute("venta", sale);
+        model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("ocultar", true);
+        return "venta/registroVenta";
+    }
+
+    @GetMapping("/editarVenta")
+    public String editarVenta(Model model, HttpSession session, SessionStatus status) {
+
+        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+
+        model.addAttribute("venta", sale);
+        model.addAttribute("productos", productosService.listarProducto());
+
+        return "venta/editarVenta";
+    }
+
+    @GetMapping("/cancelar")
+    public String cancelar(Model model, HttpSession session) {
+
+        session.removeAttribute("sale");
+
+        model.addAttribute("ventas", ventasService.getVentas());
+        return "venta/nuevaVenta";
+    }
 
 }

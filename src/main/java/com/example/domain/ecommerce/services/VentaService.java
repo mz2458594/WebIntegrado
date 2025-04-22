@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -11,6 +12,9 @@ import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.repositories.VentasDAO;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +40,7 @@ public class VentaService {
         venta.setUsuario(usuario);
 
         List<Venta_producto> listasProductos = new ArrayList<>();
-
+        
 
         double total = 0.00;
 
@@ -48,6 +52,9 @@ public class VentaService {
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setVenta(venta);
+
+            //Para disminuir la cantidad de productos luego de registrar una venta
+            productosService.actualizarStockProducto(p, productos.getCantidad());
 
             total += vp.getSubtotal();
 
@@ -62,4 +69,38 @@ public class VentaService {
 
     }
 
+    public List<Venta> getVentas(){
+        return (List<Venta>)ventasDAO.findAll();
+    }
+
+
+    public void deleteVenta(int id){
+        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
+        
+        if (venta.isEmpty()) {
+            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
+        }
+
+        Venta v = venta.get();
+
+        for (Venta_producto ve: v.getVentaProductos()) {
+            productosService.devolverStock(ve.getProducto(), ve.getCantidad());
+        }
+
+        ventasDAO.deleteById(Long.valueOf(id));
+
+    }
+
+
+    public Venta obtenerVentasPorId(int id) {
+
+        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
+
+        if (venta.isEmpty()) {
+            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
+
+        }
+
+        return venta.get();
+    }
 }

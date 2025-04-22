@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/style-modal.css}">
-    <link rel="stylesheet"th:href="@{/css/ventana-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
     <link rel="stylesheet" th:href="@{/css/style-modal-delete.css}">
 </head>
 <style>
@@ -30,30 +30,22 @@
 
             <div class="container_modal--delete">
                 <div class="ventana_modal--delete ventana-close-delete">
-                    <div class="confir-delete">
-                        <p>Confirmacion</p>
-                    </div>
-                    <div class="cont-pregunt-delete">
-                        <p>¿Deseas eliminar esta venta permanentamente?</p>
-                    </div>
-                    <div class="btns-delete">
-                        <div>
-                            <button id="delete-btn" class="button-confir">Continuar</button>
-                            <button class="button-cancelar">Cerrar</button>
+                    <form method="post" id="formEliminar">
+                        <div class="confir-delete">
+                            <p>Confirmacion</p>
                         </div>
-                    </div>
+                        <div class="cont-pregunt-delete">
+                            <p>¿Deseas eliminar esta venta permanentamente?</p>
+                        </div>
+                        <div class="btns-delete">
+                            <div>
+                                <button id="delete-btn" class="button-confir" type="submit">Continuar</button>
+                                <button class="button-cancelar">Cerrar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <form th:action="@{/eliminarVenta}" id="eliminar_vent" style="display: none;" method="post">
-                <input type="text" id="id_eliminar" name="id_eliminar" required>
-                <input type="submit">
-            </form>
-
-            <form th:action="@{/ver}" id="ver_detalle" style="display: none;" method="post">
-                <input type="text" id="id_detalle" name="id_detalle" required>
-                <input type="submit">
-            </form>
 
             <div class="title__add--modal">
                 <p>Ventas</p>
@@ -79,9 +71,9 @@
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="venta : ${ventas}">
-                            <td th:text="${venta.idVventa}">1</td>
+                            <td th:text="${venta.idVentas}">1</td>
                             <td th:text="${venta.fechaVenta}">20/10/2024</td>
-                            <td th:each="usuario : ${usuarios}" th:if="${usuario.idUsuario == venta.idUsuario}"  th:text="${usuario.nombre}">2</td>
+                            <td th:text="${venta.usuario.persona.nombre}">2</td>
                             <td th:text="${venta.total}">9</td>
                             <td>
                                 <div class="container_action">
@@ -89,63 +81,52 @@
                                         <label class="name_action">Accion <i class="fa-solid fa-caret-down"
                                                 id="vuelta"></i></label>
                                         <div class="cont_opciones">
-                                            <button class="editproduc">Editar <i
+                                            <button class="editproduc">Ver detalle <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Eliminar <i
+                                            <button class="deleteProduc">Anular <i
                                                     class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                 </div>
                             </td>
                         </tr>
 
-                        <script>
-
-                            const boton2 = document.querySelectorAll(".editproduc");
-                            boton2.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_detalle").value = valores[0];
-
-                                    document.getElementById('ver_detalle').submit();
-
-                                });
-                            });
-
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-                                    console.log(valores[0]);
-                                    // Mostramos los valores recogidos
-                                    document.getElementById("id_eliminar").value = valores[0];
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-                                });
-                            });
-
-                            const boton4 = document.querySelectorAll(".button-confir");
-                            boton4.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    document.getElementById('eliminar_vent').submit();
-                                });
-                            });
-                        </script>
-
                     </table>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.querySelectorAll(".editproduc").forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+                    const idVenta = valores[0].trim();
+                    window.location.href = `/detalleVenta/${idVenta}`;
+                });
+            });
+
+            const boton3 = document.querySelectorAll(".deleteProduc");
+            boton3.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    // Encontramos la fila asociada al botón
+                    const fila = this.closest('tr');
+
+                    // Recogemos los valores de las celdas de la fila
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                    modalContDele.style.opacity = "1";
+                    modalContDele.style.visibility = "visible";
+                    VentDelete.classList.toggle("ventana-close-delete");
+
+                    const form = document.getElementById("formEliminar")
+                    const idVenta = valores[0].trim();
+                    form.action = `/eliminarVenta/${idVenta}`;
+                });
+            });
+
+        </script>
+
+
     </main>
     <script>
         let abrirOpciones = document.querySelectorAll(".action_checkbox");

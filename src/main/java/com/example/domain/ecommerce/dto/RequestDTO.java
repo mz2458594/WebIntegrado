@@ -33,7 +33,9 @@ public class RequestDTO {
     public static class ItemsVentaDTO {
         private Producto producto;
         private int cantidad;
+        private float total;
 
+        
 
         public Producto getProducto() {
             return producto;
@@ -48,6 +50,12 @@ public class RequestDTO {
         }
         public void setCantidad(int cantidad) {
             this.cantidad = cantidad;
+        }
+        public float getTotal() {
+            return total;
+        }
+        public void setTotal(float total) {
+            this.total = total;
         }
         
         

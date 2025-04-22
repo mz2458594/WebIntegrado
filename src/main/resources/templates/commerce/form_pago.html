@@ -29,7 +29,7 @@
                         <td th:text="${item.producto.nombre}"></td>
                         <td class="quantity" th:text="${item.cantidad}"></td>
                         <td  class="cost" th:text="${item.producto.precio}">${product.price}</td>
-                        <td class="sub"></td>
+                        <td class="sub" th:text="${item.total}"></td>
                     </tr>
                 </tbody>
                 <tfoot>
