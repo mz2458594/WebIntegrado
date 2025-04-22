@@ -3,6 +3,8 @@ package com.example.domain.ecommerce.models.entities;
 import java.io.Serializable;
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +37,7 @@ public abstract class Persona implements Serializable {
     private String telefono;
 
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Direccion direccion;
 
     public Persona() {
