@@ -17,10 +17,11 @@ p, ul, body, h1{
 .header{
     width: 100%;
     display: flex;
+    color: white;
     justify-content: space-between;
     align-items: center;
     padding: 10px 50px;
-    background-color: #0078ff;
+    background-color: #223753;
     position: fixed;
     z-index: 10;
     box-shadow: 0 0 3px 3px #0003;
