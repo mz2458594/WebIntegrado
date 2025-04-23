@@ -42,6 +42,7 @@ p, ul, body, h1{
     align-items: center;
     background-color: #fff;
     padding: 15px;
+    color: black;
     border-radius: 10px;
 }
 .contenedor__perfil i{
