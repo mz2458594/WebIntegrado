@@ -1,8 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
