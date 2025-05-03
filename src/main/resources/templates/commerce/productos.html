@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -7,61 +7,196 @@
     <title>Nuestros productos</title>
     <link rel="stylesheet" th:href="@{/css/productos.css}">
     <link rel="icon" th:href="@{/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div th:insert="commerce/header.html"></div>
 
-    <h1>Nuestros Productos</h1>
-    <h2>Categorías:</h2>
-    <div id="categories" class="categories" th:if="${categorias != null}">
-        <div class="category" data-category="Todas">
-            <img
-                src="https://cdn-3.expansion.mx/dims4/default/cbea166/2147483647/strip/true/crop/3840x2160+0+0/resize/1800x1013!/format/webp/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2Fc4%2F1a%2F8b38172e4b2dae61a690c231b4a2%2Famazon-alexa-nuevos-productos-2023.jpg">
-            <p>Todos</p>
+    <main class="container">
+        <div class="title-section">
+            <div class="title-inner">
+                <h1 class="page-title">Nuestros Productos</h1>
+                <p class="title-subtitle">Descubre nuestra selección de productos de alta calidad</p>
+                <div class="title-decoration"></div>
+            </div>
         </div>
-        <div class="category" th:each="categoria: ${categorias}" th:attr="data-category=${categoria.nombre}">
-            <img th:src="${categoria.imagen}">
-            <p th:text="${categoria.nombre}">Todos</p>
-        </div>
-    </div>
-    <div class="controls">
-        <div>
-            <input class="buscar" type="text" id="search-input" placeholder="Buscar productos...">
-        </div>
-        <div>
-            <select id="sort-select">
-                <option value="name-asc">Ordenar por nombre (A-Z)</option>
-                <option value="name-desc">Ordenar por nombre (Z-A)</option>
-                <option value="price-asc">Ordenar por precio (Menor a Mayor)</option>
-                <option value="price-desc">Ordenar por precio (Mayor a Menor)</option>
-            </select>
-            <button class="buy-button" id="apply-sort">Aplicar</button>
-        </div>
-    </div>
-    <div class="product-grid">
-        <div th:each="producto : ${productos}" class="product-card">
-            <form th:action="@{/añadir/{id} (id = ${producto.idProducto}) }" method="post">
-
-                <img th:src="${producto.imagen}">
-                <h3 class="nombre" th:text="${producto.nombre}"></h3>
-                <p class="price">Precio: $<strong class="precio" th:text="${producto.precio}"></strong></p>
-                <div th:attr="data-category=${producto.categoria.nombre}">
-                    <p>Categoría: <strong class="categoria" th:text="${producto.categoria.nombre}"></strong></p>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input class="search-input" type="text" id="search-input" placeholder="¿Qué estás buscando?" >
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
                 </div>
-                <input id="canti" name="canti" type="number" class="quantity-input" value="1" min="1"
-                    th:attr="max=${producto.stock}">
-                <button class="buy-button" th:attr="data-product-id=${producto.idProducto}"
-                    type="submit">Comprar</button>
-            </form>
+            </div>
+            
+            <div class="filter-box">
+                <select id="sort-select" class="filter-select">
+                    <option value="name-asc">Ordenar por nombre (A-Z)</option>
+                    <option value="name-desc">Ordenar por nombre (Z-A)</option>
+                    <option value="price-asc">Ordenar por precio (Menor a Mayor)</option>
+                    <option value="price-desc">Ordenar por precio (Mayor a Menor)</option>
+                </select>
+            </div>
         </div>
-    </div>
+
+        <div class="product-grid" id="product-grid" >
+            <div th:each="producto : ${productos}" class="product-card" th:attr="data-name=${producto.nombre},data-price=${producto.precio}">
+                <a th:href="@{/producto/{id} (id = ${producto.idProducto})}" class="product-link">
+                    <div class="product-image">
+                        <img th:src="${producto.imagen}" alt="Imagen del producto">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name" th:text="${producto.nombre}"></h3>
+                        <p class="product-category">Categoría: <span th:text="${producto.categoria.nombre}"></span></p>
+                        <p class="product-price">$<strong th:text="${producto.precio}"></strong></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Paginación mejorada -->
+        <div class="pagination-container">
+            <div class="pagination">
+                <button class="pagination-button" id="prev-page" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="page-numbers" id="page-numbers">
+                    <!-- Los números de página se generarán con JavaScript -->
+                </div>
+                <button class="pagination-button" id="next-page">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
 
     <div th:insert="commerce/footer.html"></div>
 
-    <script th:if="${buscar != '' && buscar != null}">
-        document.getElementById("search-input").value = "[[${buscar}]]";
-        handleSearch();
+    <script>
+
+        // Filtrado y ordenamiento en el cliente
+        const productCards = Array.from(document.querySelectorAll('.product-card'));
+        const productGrid = document.getElementById('product-grid');
+        
+        // Ordenamiento
+        document.getElementById('sort-select').addEventListener('change', function() {
+            const sortValue = this.value;
+            sortProducts(sortValue);
+        });
+        
+        function sortProducts(sortType) {
+            const sortedProducts = [...productCards].sort((a, b) => {
+                switch(sortType) {
+                    case 'name-asc':
+                        return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+                    case 'name-desc':
+                        return b.getAttribute('data-name').localeCompare(a.getAttribute('data-name'));
+                    case 'price-asc':
+                        return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+                    case 'price-desc':
+                        return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+                    default:
+                        return 0;
+                }
+            });
+            
+            // Limpiar el grid
+            productGrid.innerHTML = '';
+            
+            // Añadir productos ordenados
+            sortedProducts.forEach(product => {
+                productGrid.appendChild(product);
+            });
+            
+            // Reiniciar paginación
+            currentPage = 1;
+            showPage(currentPage);
+        }
+
+        // Paginación mejorada
+        const productsPerPage = 8;
+        let currentPage = 1;
+        let totalPages = Math.ceil(productCards.length / productsPerPage);
+
+        function showPage(page) {
+            const visibleProducts = productCards.filter(card => !card.classList.contains('hidden'));
+            totalPages = Math.ceil(visibleProducts.length / productsPerPage);
+            
+            const start = (page - 1) * productsPerPage;
+            const end = start + productsPerPage;
+
+            visibleProducts.forEach((card, index) => {
+                if (index >= start && index < end) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('prev-page').disabled = page === 1;
+            document.getElementById('next-page').disabled = page === totalPages || totalPages === 0;
+
+            // Actualizar números de página
+            updatePageNumbers(page, totalPages);
+        }
+
+        function updatePageNumbers(currentPage, totalPages) {
+            const pageNumbers = document.getElementById('page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            // Siempre mostrar al menos las páginas adyacentes
+            let startPage = Math.max(1, currentPage - 1);
+            let endPage = Math.min(totalPages, currentPage + 1);
+            
+            // Asegurarse de que siempre se muestren al menos 3 páginas si hay suficientes
+            if (totalPages >= 3) {
+                if (endPage - startPage + 1 < 3) {
+                    if (currentPage === 1) {
+                        endPage = Math.min(3, totalPages);
+                    } else if (currentPage === totalPages) {
+                        startPage = Math.max(1, totalPages - 2);
+                    }
+                }
+            }
+            
+            // Crear botones de página
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = 'page-number';
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', function() {
+                    currentPage = i;
+                    showPage(i);
+                });
+                pageNumbers.appendChild(pageButton);
+            }
+        }
+
+        document.getElementById('prev-page').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+
+        // Inicializar paginación
+        showPage(currentPage);
+
+        // Si hay un parámetro de búsqueda, ejecutar la búsqueda
+        if (document.getElementById("search-input").value) {
+            handleSearch();
+        }
     </script>
 
 </body>
