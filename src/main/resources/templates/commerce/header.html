@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/header.css}" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" th:src="@{/images/Targus_Logo.png}">
 </head>
 
 <body>
@@ -13,7 +15,7 @@
         <nav>
             <center>
                 <a href="/" id="logo">
-                    <img id="maxi" src="https://maxiahorro.com.pe/wp-content/uploads/2021/05/logo.png" alt="">
+                    <img id="maxi" th:src="@{/images/Targus_Logo2.png}" alt="">
                 </a>
             </center>
         </nav>
@@ -29,13 +31,10 @@
             </form>
         </nav> -->
         <nav>
-            <button class="boton_opciones" onclick="location.href = '/'">Principal</button>
+            <button class="boton_opciones" onclick="location.href = '/'">Incio</button>
         </nav>
         <nav>
             <button class="boton_opciones" onclick="location.href = '/producto'">Productos</button>
-        </nav>
-        <nav>
-            <button class="boton_opciones" onclick="location.href = '/login'">Portal de empleados</button>
         </nav>
         <nav>
             <div class="opciones_usuario" onmouseleave="cerrar_bloque()">
@@ -51,6 +50,20 @@
                         </li>
                     </ul>
                 </div>
+                <!--INICIO del Cambio del header al bajar-->
+                <script>
+                    const header = document.getElementById('encabezado');
+            
+                window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shrink');
+                } else {
+                    header.classList.remove('shrink');
+                }
+                });
+              </script>
+                <!--FIN del Cambio del header al bajar-->
+
                 <script th:if="${user != null}">
                     document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.persona.nombre}]]";
                     document.getElementById('cuenta').onclick = actualizar;
@@ -70,9 +83,10 @@
                 </script>
             </div>
         </nav>
+     
         <nav id="carrito_compra">
             <a th:href="@{/carro}">
-                <img th:src="@{/images/carrito.png}" alt="Carrito de compra" id="carrito">
+                <img th:src="@{/images/bolsita.png}" alt="Carrito de compra" id="carrito">
                 <div class="cantidad_productos">
                     <span id="contador">0</span>
                 </div>

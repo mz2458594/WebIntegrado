@@ -81,49 +81,52 @@
                                         <label class="name_action">Accion <i class="fa-solid fa-caret-down"
                                                 id="vuelta"></i></label>
                                         <div class="cont_opciones">
-                                            <button class="editproduc">Editar <i class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Eliminar <i
+                                            <button class="editproduc">Ver detalle <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="deleteProduc">Anular <i
                                                     class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                 </div>
                             </td>
                         </tr>
 
-                        <script>
-                            document.querySelectorAll(".editproduc").forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    const fila = this.closest('tr');
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-                                    const idVenta = valores[0].trim();
-                                    window.location.href = `/detalleVenta/${idVenta}`;
-                                });
-                            });
-
-                            const boton3 = document.querySelectorAll(".deleteProduc");
-                            boton3.forEach(boton => {
-                                boton.addEventListener('click', function () {
-                                    // Encontramos la fila asociada al botón
-                                    const fila = this.closest('tr');
-
-                                    // Recogemos los valores de las celdas de la fila
-                                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                                    modalContDele.style.opacity = "1";
-                                    modalContDele.style.visibility = "visible";
-                                    VentDelete.classList.toggle("ventana-close-delete");
-
-
-                                    const idVenta = valores[0].trim();
-                                    window.location.href = `/eliminarVenta/${idVenta}`;
-                                });
-                            });
-
-                        </script>
-
                     </table>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.querySelectorAll(".editproduc").forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const fila = this.closest('tr');
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+                    const idVenta = valores[0].trim();
+                    window.location.href = `/detalleVenta/${idVenta}`;
+                });
+            });
+
+            const boton3 = document.querySelectorAll(".deleteProduc");
+            boton3.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    // Encontramos la fila asociada al botón
+                    const fila = this.closest('tr');
+
+                    // Recogemos los valores de las celdas de la fila
+                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+
+                    modalContDele.style.opacity = "1";
+                    modalContDele.style.visibility = "visible";
+                    VentDelete.classList.toggle("ventana-close-delete");
+
+                    const form = document.getElementById("formEliminar")
+                    const idVenta = valores[0].trim();
+                    form.action = `/eliminarVenta/${idVenta}`;
+                });
+            });
+
+        </script>
+
+
     </main>
     <script>
         let abrirOpciones = document.querySelectorAll(".action_checkbox");

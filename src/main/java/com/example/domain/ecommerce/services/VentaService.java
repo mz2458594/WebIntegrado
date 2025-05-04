@@ -40,7 +40,7 @@ public class VentaService {
         venta.setUsuario(usuario);
 
         List<Venta_producto> listasProductos = new ArrayList<>();
-
+        
 
         double total = 0.00;
 
@@ -52,40 +52,9 @@ public class VentaService {
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setVenta(venta);
-
-            total += vp.getSubtotal();
-
-            listasProductos.add(vp);
-
-        }
-
-        venta.setTotal(total);
-        venta.setVentaProductos(listasProductos);
-
-        return ventasDAO.save(venta);
-
-    }
-
-
-    public Venta actualizarVenta(RequestDTO data, int id){
-
-       Venta venta = ventasDAO.findById(Long.valueOf(id)).get();
-
-        List<Venta_producto> listasProductos = new ArrayList<>();
-
-        double total = 0.00;
-
-        for (RequestDTO.ItemsVentaDTO productos : data.getItem()) {
-
-            Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
 
             //Para disminuir la cantidad de productos luego de registrar una venta
-            // p.setStock(String.valueOf(Integer.valueOf(p.getStock()) - productos.getCantidad()));
-
-            Venta_producto vp = new Venta_producto();
-            vp.setCantidad(productos.getCantidad());
-            vp.setProducto(p);
-            vp.setVenta(venta);
+            productosService.actualizarStockProducto(p, productos.getCantidad());
 
             total += vp.getSubtotal();
 
@@ -97,9 +66,8 @@ public class VentaService {
         venta.setVentaProductos(listasProductos);
 
         return ventasDAO.save(venta);
+
     }
-
-
 
     public List<Venta> getVentas(){
         return (List<Venta>)ventasDAO.findAll();
@@ -107,7 +75,20 @@ public class VentaService {
 
 
     public void deleteVenta(int id){
+        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
+        
+        if (venta.isEmpty()) {
+            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
+        }
+
+        Venta v = venta.get();
+
+        for (Venta_producto ve: v.getVentaProductos()) {
+            productosService.devolverStock(ve.getProducto(), ve.getCantidad());
+        }
+
         ventasDAO.deleteById(Long.valueOf(id));
+
     }
 
 

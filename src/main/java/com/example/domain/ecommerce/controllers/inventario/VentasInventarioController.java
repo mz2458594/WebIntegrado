@@ -1,8 +1,6 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -81,6 +79,7 @@ public class VentasInventarioController {
         for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
                 encontrado = true;
                 break;
             }
@@ -91,6 +90,7 @@ public class VentasInventarioController {
             nuevo_item.setCantidad(cantidad);
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
             sale.getItem().add(nuevo_item);
         }
 
@@ -132,6 +132,10 @@ public class VentasInventarioController {
             Model model, HttpSession session, SessionStatus status) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        Usuario empleado = (Usuario) session.getAttribute("empleado");
+
+        sale.setId_usuario(empleado.getIdUsuario());
+        session.setAttribute("sale", sale);
 
         model.addAttribute("venta", sale);
         return "venta/registroVenta";
@@ -143,7 +147,7 @@ public class VentasInventarioController {
         Usuario empleado = (Usuario) session.getAttribute("empleado");
 
         sale.setId_usuario(empleado.getIdUsuario());
-
+        
         ventasService.crearVenta(sale);
 
         session.removeAttribute("sale");
@@ -167,6 +171,7 @@ public class VentasInventarioController {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(venta.getCantidad());
             nuevo_item.setProducto(venta.getProducto());
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecio()) * nuevo_item.getCantidad());
             sale.getItem().add(nuevo_item);
         }        
 
@@ -175,6 +180,7 @@ public class VentasInventarioController {
 
         model.addAttribute("venta", sale);
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("ocultar", true);
         return "venta/registroVenta";
     }
 

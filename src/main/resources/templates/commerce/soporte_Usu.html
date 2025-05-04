@@ -6,7 +6,7 @@
         <title>Información</title>
         <link rel="stylesheet" th:href="@{/css/soporte_Usu.css}">
         <link rel="stylesheet" th:href="@{/css/barra_Opc_Usu.css}">
-        <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+        <link rel="icon" th:href="@{/images/logo.png}">
     </head>
     <body>
         <div th:insert="commerce/header.html"></div>
@@ -28,14 +28,16 @@
                     <h2 class="titu">Obtener un reembolso</h2>
                     <p>Si el vendedor se ofrece a devolverte el dinero, dispone de 2 días laborables para efectuar el correspondiente reembolso. Una vez que lo haya hecho, recibirás un correo electrónico para informarte de ello.</p><br>
                     <p>El reembolso se enviará a la forma de pago original y, generalmente, los fondos estarán disponibles en 3 o 5 días laborables. Si el reembolso se envía a una tarjeta de crédito, podría tardar hasta 30 días en aparecer en el extracto en función de la entidad emisora de la tarjeta.</p> <br>
-                    <p>Puede ocurrir que el artículo finalmente te llegue después de que se haya efectuado el reembolso. En ese caso, debes ponerte en contacto con el vendedor para tratar de acordar qué hacer a continuación. Puedes:</p><br>
+                    <p>Puede ocurrir que el artículo finalmente te llegue después de que se haya efectuado el reembolso. En ese caso, debes ponerte en contacto con el vendedor para tratar de acordar qué hacer a continuación. Puedes:</p>
                     <ol>
                         <li>Devolver el artículo y conservar el reembolso</li>
                         <li>Conservar el artículo y realizar un reintegro al vendedor</li>
                     </ol>
                     <h2 class="titu">Articulo no recibido</h2>
-                    <p>En la mayoría de los casos, si no has recibido el artículo, el vendedor solucionará el problema por ti. No obstante, si transcurridos 3 días laborables el vendedor no ha podido solucionarlo, siempre puedes pedir ayuda a Maxiahorro.</p>
-                    <p><a th:href="@{/infoEmp}">Ponte en contacto con nosotros</a></p>
+                    <p>En la mayoría de los casos, si no has recibido el artículo, el vendedor solucionará el 
+                        problema por ti. No obstante, si transcurridos 3 días laborables el vendedor no ha podido solucionarlo,
+                        siempre puedes pedir ayuda a Maxiahorro.</p> 
+                    <br>
             </div>
         </div>
 

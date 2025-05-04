@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Serializable {
@@ -36,6 +38,7 @@ public class Usuario implements Serializable {
     private Persona persona;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     List<Venta> ventas = new ArrayList<>();
 
     public Usuario() {

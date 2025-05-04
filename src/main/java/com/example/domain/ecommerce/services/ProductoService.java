@@ -23,7 +23,6 @@ public class ProductoService {
     @Autowired
     private ProductoDAO productoDAO;
 
-
     @Autowired
     private CategoriaDAO categoriaDAO;
 
@@ -94,13 +93,17 @@ public class ProductoService {
         productoDAO.deleteById(Long.valueOf(id));
     }
 
-    public void actualizarStocks(int id_producto, int cantidad) {
 
-        Producto producto = productoDAO.findById(Long.valueOf(id_producto)).get();
-        int stock = Integer.parseInt(producto.getStock());
-
-        producto.setStock(String.valueOf(stock - cantidad));
-
-
+    public void actualizarStockProducto(Producto producto, int cantidad) {
+        Producto product = producto;
+        product.setStock(String.valueOf(Integer.valueOf(product.getStock()) - cantidad));
+        productoDAO.save(product);
     }
+
+    public void devolverStock(Producto producto, int cantidad) {
+        Producto product = producto;
+        product.setStock(String.valueOf(Integer.valueOf(product.getStock()) + cantidad));
+        productoDAO.save(product);
+    }
+
 }

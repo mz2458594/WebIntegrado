@@ -22,12 +22,6 @@
                 <p>Realizar Nueva Venta</p>
             </div>
             <div class="contenedor__form--venta">
-                <div class="cont_cod-user">
-                    <div class="cont-cod">
-                        <label for="">Codigo</label><br>
-                        <input type="text" disabled>
-                    </div>
-                </div>
                 <div class="info-produc-venta">
                     <p>Informacion de la venta</p>
                     <form method="post" id="formAgregarProducto">
@@ -74,7 +68,7 @@
                                 <td th:text="${item.producto.nombre}">arroz</td>
                                 <td th:text="${item.cantidad}">2</td>
                                 <td th:text="${item.producto.precio}">4.50</td>
-                                <td id="tot" class="tot" th:text="${item.producto.precio * item.cantidad}">9</td>
+                                <td id="tot" class="tot" th:text="${item.total}">9</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -114,32 +108,27 @@
     total = parseFloat(total.replace("S/.", "").trim());
     document.getElementById("total_reg").value = total;
 
-    // Selecciona todos los elementos con la clase 'pro'
-    const products = document.querySelectorAll("div.dropdown-list div.pro");
-
-    // Crea un arreglo con el texto de cada div
-    const productNames = Array.from(products).map(product => product.textContent.trim());
-
     const productInput = document.getElementById("productInput");
     const productList = document.getElementById("productList");
 
     // Función para mostrar y filtrar la lista
     function filterProducts() {
         const query = productInput.value.toLowerCase();
-        // productList.innerHTML = ""; // Limpiar la lista
+        
+        const allProducts = document.querySelectorAll("div.dropdown-list div.pro")
 
-        const filteredProducts = productNames.filter(product =>
-            product.toLowerCase().includes(query)
-        );
-
-        filteredProducts.forEach(product => {
-            const item = document.createElement("div");
-            item.textContent = product;
-            item.onclick = () => selectProduct(product);
-            productList.appendChild(item);
+        allProducts.forEach(product => {
+            const nombre = product.textContent.toLowerCase()
+            if (nombre.includes(query)) {
+                product.onclick = () => selectProduct(product.textContent)
+                product.style.display = "block";
+            } else {
+                product.style.display = "none";
+            }
+            
         });
 
-        productList.style.display = filteredProducts.length ? "block" : "none";
+        productList.style.display = "block";
     }
 
     // Función para seleccionar un producto
@@ -158,7 +147,6 @@
 
     const form = document.getElementById('formAgregarProducto');
     const cantidadInput = document.getElementById('canti');
-    console.log(cantidadInput)
 
     productList.addEventListener('click', function (event) {
         console.log(event.target.classList.contains('pro'))
@@ -169,9 +157,6 @@
             form.action = '/añadirProd/' + id;
         }
     });
-
-
-
 
 </script>
 

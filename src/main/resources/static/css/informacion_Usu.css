@@ -4,8 +4,8 @@ body{
 }
 
 .Opciones ul li:nth-child(1){
-    border-left: 4px solid #173b66;
-    background-color: #dfd8d8;
+    border-left: 4px solid #266bc0;
+    background-color: #cdcdcd;
 }
 
 .Contenido{
@@ -43,12 +43,13 @@ form{
         }
         input{
             margin: 10px 0;
-            border: none;
-            border-bottom:1px solid #266bc0;
-            border-left:1px solid #266bc0;
-            border-radius: 10px;
+            border: none; 
+            border-bottom: 2px solid #266bc0; 
+            border-radius: 0; 
             padding: 10px;
             width: 70%;
+            outline: none; 
+            font-size: 16px;
         }        
 }
 

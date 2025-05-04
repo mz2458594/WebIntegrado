@@ -248,22 +248,21 @@
                 boton.addEventListener('click', function () {
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
-
+                    
                     document.getElementById("nombre_act").value = celdas[1].textContent;
                     document.getElementById("apellido_act").value = celdas[2].textContent;
                     document.getElementById("num_act").value = celdas[3].textContent;
-                    document.getElementById("fecha_act").value = celdas[4].textContent;
-                    document.getElementById("cel_act").value = celdas[5].textContent;
-                    document.getElementById("calle_act").value = celdas[6].textContent;
-                    document.getElementById("ciudad_act").value = celdas[7].textContent;
-                    document.getElementById("distrito_act").value = celdas[8].textContent;
-                    document.getElementById("provincia_act").value = celdas[9].textContent;
-                    document.getElementById("email_act").value = celdas[10].textContent;
-                    document.getElementById("username_act").value = celdas[11].textContent;
-                    document.getElementById("rol_act").value = celdas[12].textContent;
+                    document.getElementById("cel_act").value = celdas[4].textContent;
+                    document.getElementById("calle_act").value = celdas[5].textContent;
+                    document.getElementById("ciudad_act").value = celdas[6].textContent;
+                    document.getElementById("distrito_act").value = celdas[7].textContent;
+                    document.getElementById("provincia_act").value = celdas[8].textContent;
+                    document.getElementById("email_act").value = celdas[9].textContent;
+                    document.getElementById("username_act").value = celdas[10].textContent;
+                    document.getElementById("rol_act").value = celdas[11].textContent;
 
 
-                    const form = document.getElementById("formEditar");
+                    const form = document.getElementById("formEditarUser");
                     const idUsuario = celdas[0].textContent.trim();
                     form.action = `/actualizar_usu/${idUsuario}`;
 
