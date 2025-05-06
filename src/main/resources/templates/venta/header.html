@@ -20,8 +20,8 @@
         <div class="linea"></div>
         <div class="profile">
             <div class="name_profile" th:if="${empleado != null}">
-                <p>Hola <span th:text="${empleado.persona.nombre}">Jefe de market</span></p>
-                <p th:text="${empleado.role}">Administrador</p>
+                <p>Hola <span th:text="${empleado.nombre}">Jefe de market</span></p>
+                <p th:text="${empleado.usuario.rol}">Administrador</p>
             </div>
             <div class="img_perfil"><i class="fa-solid fa-user"></i></div>
         </div>

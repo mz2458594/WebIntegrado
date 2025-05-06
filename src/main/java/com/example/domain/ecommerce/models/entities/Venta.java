@@ -36,7 +36,7 @@ public class Venta implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    Usuario usuario;
+    private Usuario usuario;
 
 
 

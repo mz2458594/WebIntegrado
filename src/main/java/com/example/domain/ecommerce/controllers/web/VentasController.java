@@ -1,6 +1,7 @@
 package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 
@@ -42,8 +43,8 @@ public class VentasController {
 
         RequestDTO car = (RequestDTO)session.getAttribute("carrito");
         
-        Usuario user = (Usuario)session.getAttribute("user");
-        car.setId_usuario(user.getIdUsuario());
+        Cliente user = (Cliente)session.getAttribute("user");
+        car.setId_usuario(user.getUsuario().getIdUsuario());
         
         ventasService.crearVenta(car);
         session.removeAttribute("carrito");

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
@@ -132,9 +133,9 @@ public class VentasInventarioController {
             Model model, HttpSession session, SessionStatus status) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Usuario empleado = (Usuario) session.getAttribute("empleado");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        sale.setId_usuario(empleado.getIdUsuario());
+        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
         session.setAttribute("sale", sale);
 
         model.addAttribute("venta", sale);
@@ -144,9 +145,9 @@ public class VentasInventarioController {
     @PostMapping("/saveVenta")
     public String saveVenta(HttpSession session, Model model) {
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Usuario empleado = (Usuario) session.getAttribute("empleado");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        sale.setId_usuario(empleado.getIdUsuario());
+        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
         
         ventasService.crearVenta(sale);
 

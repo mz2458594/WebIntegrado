@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.LoginDTO;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.UsuarioService;
 
@@ -38,11 +39,11 @@ public class ControladorGeneral {
     public String access(LoginDTO loginDTO, Model model, HttpServletRequest request) {
 
         try {
-            Usuario user = usuarioService.loginEmpleado(loginDTO);
+            Empleado empleado = usuarioService.loginEmpleado(loginDTO);
 
             HttpSession session = request.getSession();
 
-            session.setAttribute("empleado", user);
+            session.setAttribute("empleado", empleado);
 
             contador = 0;
 

@@ -1,7 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +18,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "personas")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Persona implements Serializable {
+public class Persona implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

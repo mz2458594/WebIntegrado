@@ -28,89 +28,138 @@ public class Usuario implements Serializable {
 
     @Column(nullable = false)
     private String password;
-    private String role;
+    
 
     @Column(nullable = false, unique = true)
     private String email;
-
-    @OneToOne
-    @JoinColumn(name = "persona_id", unique = true)
-    private Persona persona;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     List<Venta> ventas = new ArrayList<>();
 
+
+    @OneToOne
+    @JoinColumn(name = "rol_id", unique = true)
+    private Rol rol;
+
+    private String estado;
+    private String comentario;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Pedido> pedidos = new ArrayList<>();
+
+
     public Usuario() {
 
     }
 
-    public Usuario(int idUsuario, String username, String password, String role, String email, Persona persona,
-                   List<Venta> ventas) {
+
+    public Usuario(int idUsuario, String username, String password, String email, List<Venta> ventas, Rol rol,
+            String estado, String comentario, List<Pedido> pedidos) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
-        this.role = role;
         this.email = email;
-        this.persona = persona;
         this.ventas = ventas;
+        this.rol = rol;
+        this.estado = estado;
+        this.comentario = comentario;
+        this.pedidos = pedidos;
     }
+
 
     public int getIdUsuario() {
         return idUsuario;
     }
 
+
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
 
     public String getUsername() {
         return username;
     }
 
+
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getPassword() {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getEmail() {
         return email;
     }
 
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
 
     public List<Venta> getVentas() {
         return ventas;
     }
 
+
     public void setVentas(List<Venta> ventas) {
         this.ventas = ventas;
     }
 
+
+    public Rol getRol() {
+        return rol;
+    }
+
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+
+    public String getEstado() {
+        return estado;
+    }
+
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+
+    public String getComentario() {
+        return comentario;
+    }
+
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+
+   
+   
 
 }

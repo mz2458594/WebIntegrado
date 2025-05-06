@@ -65,7 +65,7 @@
                 <!--FIN del Cambio del header al bajar-->
 
                 <script th:if="${user != null}">
-                    document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.persona.nombre}]]";
+                    document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.nombre}]]";
                     document.getElementById('cuenta').onclick = actualizar;
                     function actualizar() {
                         window.location.href = '/opcion';

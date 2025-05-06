@@ -8,14 +8,15 @@ import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
+import com.example.domain.ecommerce.repositories.ClienteDAO;
+import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
+import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -34,22 +35,35 @@ public class UsuarioService {
     EmailService emailService;
 
     @Autowired
-    PersonaDAO personaDAO;
+    private ClienteDAO clienteDAO;
 
-    public Usuario login(LoginDTO user) {
+    @Autowired
+    private EmpleadoDAO empleadoDAO;
+
+    @Autowired
+    private RolDAO rolDAO;
+
+    public Cliente login(LoginDTO user) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
-
-        System.out.println(usuario);
 
         if (usuario.isEmpty()) {
             throw new EntityNotFoundException("Usuario no encontrado");
         }
 
+        Usuario us = usuario.get();
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if ( encoder.matches(user.getPassword(), usuario.get().getPassword()) ) {
-            return usuario.get();
+        if (encoder.matches(user.getPassword(), usuario.get().getPassword())) {
+
+            Optional<Cliente> cliente = clienteDAO.findByUsuario(us);
+            System.out.println(cliente);
+
+            if (cliente.isEmpty()) {
+                throw new EntityNotFoundException("Cliente no encontrado para el usuario " + usuario.get().getEmail());
+            }
+
+            return cliente.get();
 
         } else {
             throw new EntityNotFoundException("Contraseña incorrecta");
@@ -57,35 +71,29 @@ public class UsuarioService {
 
     }
 
-    public Usuario loginEmpleado(LoginDTO user) {
+    public Empleado loginEmpleado(LoginDTO user) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
-
 
         if (usuario.isEmpty()) {
             throw new EntityNotFoundException("Usuario no encontrado");
         }
 
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if ( encoder.matches(user.getPassword(), usuario.get().getPassword()) ) {
-           Usuario us = usuario.get();
+        if (encoder.matches(user.getPassword(), usuario.get().getPassword())) {
+            Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario.get());
 
-           if (!us.getRole().equals("Empleado")) {
-                throw new SecurityException("El usuario no es un empleado");
-           }
+            if (empleado.isEmpty()) {
+                throw new EntityNotFoundException("Empleado no encontrado");
+            }
 
-           return us;
+            return empleado.get();
 
         } else {
             throw new EntityNotFoundException("Contraseña incorrecta");
         }
 
-
     }
-
-
-
 
     public List<Producto> listarProducto() {
         return (List<Producto>) productoDAO.findAll();
@@ -99,26 +107,70 @@ public class UsuarioService {
         return (List<Categoria>) categoriaDAO.findAll();
     }
 
-    public Usuario actualizarUsuarios(UserDTO userDTO, int id) {
+    public Persona actualizarUsuarios(UserDTO userDTO, int id) {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
 
-        usuario.getPersona().setNombre(userDTO.getNombre());
-        usuario.getPersona().setApellido(userDTO.getApellido());
-        usuario.getPersona().setDni(userDTO.getNum_documento());
-        usuario.getPersona().setTelefono(userDTO.getCelular());
-        usuario.getPersona().getDireccion().setCalle(userDTO.getCalle());
-        usuario.getPersona().getDireccion().setCiudad(userDTO.getCiudad());
-        usuario.getPersona().getDireccion().setDistrito(userDTO.getDistrito());
-        usuario.getPersona().getDireccion().setProvincia(userDTO.getProvincia());
-        usuario.setEmail(userDTO.getCorreo());
-        usuario.setUsername(userDTO.getUsername());
-        usuario.setRole(userDTO.getRol());
+        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
+        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
 
-        usuarioDAO.save(usuario);
+        if (cliente.isPresent()) {
 
-       return  usuario;
+            Cliente cliente2 = cliente.get();
 
+            actualizarPersona(cliente2, userDTO);
+            usuario.setEmail(userDTO.getCorreo());
+            usuario.setUsername(userDTO.getUsername());
+
+            Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
+
+            if (rol.isPresent()) {
+                usuario.setRol(rol.get());
+            }
+
+            usuarioDAO.save(usuario);
+
+            clienteDAO.save(cliente2);
+
+            return cliente2;
+
+        } else if (empleado.isPresent()) {
+
+            Empleado empleado2 = empleado.get();
+            actualizarPersona(empleado2, userDTO);
+
+            usuario.setEmail(userDTO.getCorreo());
+            usuario.setUsername(userDTO.getUsername());
+
+            Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
+
+            if (rol.isPresent()) {
+                usuario.setRol(rol.get());
+            }
+
+            usuarioDAO.save(usuario);
+            empleadoDAO.save(empleado2);
+            return empleado2;
+
+        } else {
+            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
+        }
+
+    }
+
+    public void actualizarPersona(Persona persona, UserDTO userDTO) {
+        persona.setNombre(userDTO.getNombre());
+        persona.setApellido(userDTO.getApellido());
+        persona.setDni(userDTO.getNum_documento());
+        persona.setTelefono(userDTO.getCelular());
+
+        if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
+                userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
+            persona.getDireccion().setCalle(userDTO.getCalle());
+            persona.getDireccion().setCiudad(userDTO.getCiudad());
+            persona.getDireccion().setDistrito(userDTO.getDistrito());
+            persona.getDireccion().setProvincia(userDTO.getProvincia());
+        }
     }
 
     public void eliminarUsuario(int id) {
@@ -143,23 +195,31 @@ public class UsuarioService {
 
     }
 
-//    public void enviarEmail(Usuario usuario) {
-//        Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(), "Registrar cuenta",
-//                usuario.getUsername(),
-//                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-//
-//        emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
-//    }
+    // public void enviarEmail(Usuario usuario) {
+    // Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
+    // "Registrar cuenta",
+    // usuario.getUsername(),
+    // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+    //
+    // emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
+    // }
 
     public boolean verificar(String correo, String num_documento, String celular) {
 
-        List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+        Optional<Usuario> usuario = usuarioDAO.findByEmail(correo);
 
-        for (Usuario usuario : usuarios) {
-            if (usuario.getEmail().equals(correo) || usuario.getPersona().getDni().equals(num_documento)
-                    || usuario.getPersona().getTelefono().equals(celular)) {
-                return true;
-            }
+        if (usuario.isPresent()) {
+            return true;
+        }
+
+        Optional<Cliente> cliente = clienteDAO.findByDni(num_documento);
+        if (cliente.isPresent()) {
+            return true;
+        }
+
+        Optional<Cliente> cliente2 = clienteDAO.findByTelefono(celular);
+        if (cliente2.isPresent()) {
+            return true;
         }
 
         return false;
@@ -167,46 +227,68 @@ public class UsuarioService {
 
     // nuevos metodos
     public Usuario createUser(UserDTO user) {
-        Persona nueva;
-
-        if (user.getRol().equals("Empleado")){
-            Empleado emp = new Empleado();
-            emp.setCargo(user.getCargo());
-            nueva = emp;
-        } else {
-            Cliente cli = new Cliente();
-            nueva = cli;
-        }
-
-        nueva.setDni(user.getNum_documento());
-        nueva.setApellido(user.getApellido());
-        nueva.setNombre(user.getNombre());
-        nueva.setTelefono(user.getCelular());
-
-
-        Direccion nueva_direccion = new Direccion();
-        nueva_direccion.setCalle(user.getCalle());
-        nueva_direccion.setCiudad(user.getCiudad());
-        nueva_direccion.setDistrito(user.getDistrito());
-        nueva_direccion.setProvincia(user.getProvincia());
-        nueva_direccion.setPersona(nueva);
-
-        nueva.setDireccion(nueva_direccion);
-
-        personaDAO.save(nueva);
 
         Usuario usuario = new Usuario();
         usuario.setUsername(user.getUsername());
         usuario.setEmail(user.getCorreo());
         usuario.setPassword(new BCryptPasswordEncoder().encode(user.getContraseña()));
-        usuario.setPersona(nueva);
-        usuario.setRole(user.getRol());
 
-        return usuarioDAO.save(usuario);
+        Optional<Rol> rol = rolDAO.findByNombre(user.getRol());
+        if (rol.isPresent()) {
+            usuario.setRol(rol.get());
+        }
+        usuario.setEstado("Activo");
+
+        usuarioDAO.save(usuario);
+
+        if (user.getRol().equals("Empleado")) {
+            Empleado emp = new Empleado();
+            emp.setCargo(user.getCargo());
+            emp.setDni(user.getNum_documento());
+            emp.setApellido(user.getApellido());
+            emp.setNombre(user.getNombre());
+            emp.setTelefono(user.getCelular());
+
+            Direccion nueva_direccion = new Direccion();
+            nueva_direccion.setCalle(user.getCalle());
+            nueva_direccion.setCiudad(user.getCiudad());
+            nueva_direccion.setDistrito(user.getDistrito());
+            nueva_direccion.setProvincia(user.getProvincia());
+            nueva_direccion.setPersona(emp);
+
+            emp.setDireccion(nueva_direccion);
+
+            emp.setUsuario(usuario);
+
+            empleadoDAO.save(emp);
+
+            return emp.getUsuario();
+
+        } else {
+            Cliente cli = new Cliente();
+            cli.setDni(user.getNum_documento());
+            cli.setApellido(user.getApellido());
+            cli.setNombre(user.getNombre());
+            cli.setTelefono(user.getCelular());
+
+            Direccion nueva_direccion = new Direccion();
+            nueva_direccion.setCalle(user.getCalle());
+            nueva_direccion.setCiudad(user.getCiudad());
+            nueva_direccion.setDistrito(user.getDistrito());
+            nueva_direccion.setProvincia(user.getProvincia());
+            nueva_direccion.setPersona(cli);
+
+            cli.setDireccion(nueva_direccion);
+            cli.setUsuario(usuario);
+
+            clienteDAO.save(cli);
+
+            return cli.getUsuario();
+        }
+
     }
 
-
-    public Usuario obtenerUsuarioPorCorreo (EmailDTO email) {
+    public Usuario obtenerUsuarioPorCorreo(EmailDTO email) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(email.getEmail());
 
         if (usuario.isEmpty()) {
