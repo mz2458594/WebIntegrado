@@ -145,6 +145,12 @@ public class UsuarioService {
                 usuario.setRol(rol.get());
             }
 
+            if (userDTO.getEstado().equals("ACTIVO")) {
+                usuario.setEstado(Estado.ACTIVO);
+            } else if (userDTO.getEstado().equals("INACTIVO")) {
+                usuario.setEstado(Estado.INACTIVO);
+            }
+
             usuarioDAO.save(usuario);
 
             clienteDAO.save(cliente2);

@@ -15,6 +15,9 @@ public class UserDTO {
     private String contraseña;
     private String rol;
     private String cargo;
+    private String estado;
+
+    
 
     public String getNum_documento() {
         return num_documento;
@@ -120,5 +123,13 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

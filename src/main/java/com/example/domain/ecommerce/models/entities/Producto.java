@@ -37,7 +37,7 @@ public class Producto implements Serializable{
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<Venta_producto> ventaProductos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<Detalle_pedido> detalle_pedidos = new ArrayList<>();
 
     @ManyToOne
