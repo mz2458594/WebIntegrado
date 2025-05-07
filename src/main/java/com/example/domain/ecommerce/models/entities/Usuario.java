@@ -32,7 +32,7 @@ public class Usuario implements Serializable {
     
 
     @Column(nullable = false, unique = true)
-    private String email;
+    private String email;   
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore

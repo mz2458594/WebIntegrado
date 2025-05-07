@@ -47,7 +47,6 @@ public class UsuarioService {
     @Autowired
     private PersonaDAO personaDAO;
 
-
     public List<Producto> listarProducto() {
         return (List<Producto>) productoDAO.findAll();
     }
@@ -60,17 +59,22 @@ public class UsuarioService {
         return (List<Categoria>) categoriaDAO.findAll();
     }
 
-    public List<Persona> listarPersonas(){
+    public List<Persona> listarPersonas() {
         return (List<Persona>) personaDAO.findAll();
     }
 
-    public List<Cliente> listarClientes(){
+    public List<Cliente> listarClientes() {
         return (List<Cliente>) clienteDAO.findAll();
     }
 
-    public List<Empleado> listarEmpleados(){
+    public List<Empleado> listarEmpleados() {
         return (List<Empleado>) empleadoDAO.findAll();
     }
+
+    public List<Rol> listarRoles(){
+        return (List<Rol>) rolDAO.findAll();
+    }
+
 
     public Cliente login(LoginDTO user) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
@@ -145,10 +149,13 @@ public class UsuarioService {
                 usuario.setRol(rol.get());
             }
 
-            if (userDTO.getEstado().equals("ACTIVO")) {
-                usuario.setEstado(Estado.ACTIVO);
-            } else if (userDTO.getEstado().equals("INACTIVO")) {
-                usuario.setEstado(Estado.INACTIVO);
+            if (userDTO.getEstado() != null) {
+
+                if (userDTO.getEstado().equals("ACTIVO")) {
+                    usuario.setEstado(Estado.ACTIVO);
+                } else if (userDTO.getEstado().equals("INACTIVO")) {
+                    usuario.setEstado(Estado.INACTIVO);
+                }
             }
 
             usuarioDAO.save(usuario);
@@ -169,6 +176,15 @@ public class UsuarioService {
 
             if (rol.isPresent()) {
                 usuario.setRol(rol.get());
+            }
+
+            if (userDTO.getEstado() != null) {
+
+                if (userDTO.getEstado().equals("ACTIVO")) {
+                    usuario.setEstado(Estado.ACTIVO);
+                } else if (userDTO.getEstado().equals("INACTIVO")) {
+                    usuario.setEstado(Estado.INACTIVO);
+                }
             }
 
             usuarioDAO.save(usuario);

@@ -71,7 +71,10 @@
                 </div>
                 <div class="input__box">
                     <label for="">Rol</label><br>
-                    <input type="text" name="rol">
+                    <select name="rol">
+                        <option th:each="rol: ${roles}" th:value="${rol.nombre}"
+                            th:text="${rol.nombre}"></option>
+                    </select>
                 </div>
 
                 <div class="button__modal">
@@ -146,18 +149,18 @@
                             <!-- <th>Cargo</th> -->
                         </tr>
                         <tr id="productList" th:each="usuario: ${usuarios}">
-                            <td th:text="${usuario.idUsuario}">1</td>
-                            <td th:text="${usuario.persona.nombre}">Kenneth</td>
-                            <td th:text="${usuario.persona.apellido}">Kenneth</td>
-                            <td th:text="${usuario.persona.dni}">Kenneth</td>
-                            <td th:text="${usuario.persona.telefono}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.calle}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.ciudad}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.distrito}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.provincia}">Kenneth</td>
-                            <td th:text="${usuario.email}">kenn</td>
-                            <td th:text="${usuario.username}">kenn</td>
-                            <td th:text="${usuario.role}">Admin</td>
+                            <td th:text="${usuario.usuario.idUsuario}">1</td>
+                            <td th:text="${usuario.nombre}">Kenneth</td>
+                            <td th:text="${usuario.apellido}">Kenneth</td>
+                            <td th:text="${usuario.dni}">Kenneth</td>
+                            <td th:text="${usuario.telefono}">Kenneth</td>
+                            <td th:text="${usuario.direccion.calle}">Kenneth</td>
+                            <td th:text="${usuario.direccion.ciudad}">Kenneth</td>
+                            <td th:text="${usuario.direccion.distrito}">Kenneth</td>
+                            <td th:text="${usuario.direccion.provincia}">Kenneth</td>
+                            <td th:text="${usuario.usuario.email}">kenn</td>
+                            <td th:text="${usuario.usuario.username}">kenn</td>
+                            <td th:text="${usuario.usuario.rol.nombre}">Admin</td>
                             <!-- <td th:if="${usuario.role == 'Empleado'}"></td> -->
                             <th>
                                 <div class="container_action">
@@ -228,7 +231,10 @@
                     </div>
                     <div class="input__box">
                         <label for="">Rol</label><br>
-                        <input type="text" id="rol_act" name="rol">
+                        <select id="rol_act" name="rol">
+                            <option th:each="rol: ${roles}" th:value="${rol.nombre}"
+                                th:text="${rol.nombre}"></option>
+                        </select>
                     </div>
 
 
