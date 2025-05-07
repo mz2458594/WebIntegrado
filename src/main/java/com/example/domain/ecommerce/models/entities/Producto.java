@@ -37,6 +37,9 @@ public class Producto implements Serializable{
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<Venta_producto> ventaProductos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<Detalle_pedido> detalle_pedidos = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
@@ -45,7 +48,9 @@ public class Producto implements Serializable{
 
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, String precio, String stock, String imagen, Categoria categoria, List<Venta_producto> ventaProductos, Proveedor proveedor) {
+    public Producto(int idProducto, String nombre, String descripcion, String precio, String stock, String imagen,
+            Categoria categoria, List<Venta_producto> ventaProductos, List<Detalle_pedido> detalle_pedidos,
+            Proveedor proveedor) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -54,6 +59,7 @@ public class Producto implements Serializable{
         this.imagen = imagen;
         this.categoria = categoria;
         this.ventaProductos = ventaProductos;
+        this.detalle_pedidos = detalle_pedidos;
         this.proveedor = proveedor;
     }
 
@@ -128,4 +134,14 @@ public class Producto implements Serializable{
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
     }
+
+    public List<Detalle_pedido> getDetalle_pedidos() {
+        return detalle_pedidos;
+    }
+
+    public void setDetalle_pedidos(List<Detalle_pedido> detalle_pedidos) {
+        this.detalle_pedidos = detalle_pedidos;
+    }
+
+    
 }

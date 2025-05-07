@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.ecommerce.models.enums.Estado;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,10 @@ public class Proveedor implements Serializable {
 
     private String email;
 
+    private String comentario;
+
+    private Estado estado;
+
 
     @OneToMany (mappedBy = "proveedor", cascade = CascadeType.ALL)
     private List<Producto> productos = new ArrayList<>();
@@ -38,12 +44,15 @@ public class Proveedor implements Serializable {
     }
 
 
-    public Proveedor(int id, Long ruc, String nombre, int telefono, String email, List<Producto> productos) {
+    public Proveedor(int id, Long ruc, String nombre, int telefono, String email, String comentario, Estado estado,
+            List<Producto> productos) {
         this.id = id;
         this.ruc = ruc;
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
+        this.comentario = comentario;
+        this.estado = estado;
         this.productos = productos;
     }
 
@@ -98,6 +107,26 @@ public class Proveedor implements Serializable {
     }
 
 
+    public String getComentario() {
+        return comentario;
+    }
+
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+
     public List<Producto> getProductos() {
         return productos;
     }
@@ -107,9 +136,7 @@ public class Proveedor implements Serializable {
         this.productos = productos;
     }
 
-
     
-
 
 
 

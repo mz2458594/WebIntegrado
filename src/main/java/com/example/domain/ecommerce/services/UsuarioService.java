@@ -7,6 +7,7 @@ import com.example.domain.ecommerce.dto.EmailDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.*;
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
@@ -253,7 +254,7 @@ public class UsuarioService {
         if (rol.isPresent()) {
             usuario.setRol(rol.get());
         }
-        usuario.setEstado("Activo");
+        usuario.setEstado(Estado.ACTIVO);
 
         usuarioDAO.save(usuario);
 

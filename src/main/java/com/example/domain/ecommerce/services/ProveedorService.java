@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.domain.ecommerce.dto.ProveedorDTO;
 import com.example.domain.ecommerce.models.entities.Proveedor;
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +29,7 @@ public class ProveedorService {
         nuevo_proveedor.setNombre(proveedorDTO.getNombre());
         nuevo_proveedor.setEmail(proveedorDTO.getEmail());
         nuevo_proveedor.setTelefono(proveedorDTO.getTelefono());
+        nuevo_proveedor.setEstado(Estado.ACTIVO);
 
         proveedorDAO.save(nuevo_proveedor);
 
@@ -47,6 +49,12 @@ public class ProveedorService {
         proveedor.setNombre(proveedorDTO.getNombre());
         proveedor.setEmail(proveedorDTO.getEmail());
         proveedor.setTelefono(proveedorDTO.getTelefono());
+
+        if (proveedorDTO.getEstado().equals("ACTIVO")) {
+            proveedor.setEstado(Estado.ACTIVO);
+        } else if (proveedorDTO.getEstado().equals("INACTIVO")) {
+            proveedor.setEstado(Estado.INACTIVO);
+        }
 
         proveedorDAO.save(proveedor);
     }

@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -42,7 +43,7 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "rol_id", unique = true)
     private Rol rol;
 
-    private String estado;
+    private Estado estado;
     private String comentario;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -56,7 +57,7 @@ public class Usuario implements Serializable {
 
 
     public Usuario(int idUsuario, String username, String password, String email, List<Venta> ventas, Rol rol,
-            String estado, String comentario, List<Pedido> pedidos) {
+            Estado estado, String comentario, List<Pedido> pedidos) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
@@ -129,12 +130,12 @@ public class Usuario implements Serializable {
     }
 
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
@@ -158,8 +159,6 @@ public class Usuario implements Serializable {
         this.pedidos = pedidos;
     }
 
-
+    
    
-   
-
 }
