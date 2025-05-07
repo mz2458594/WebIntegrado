@@ -41,7 +41,7 @@
     box-shadow: var(--shadow);
     color: var(--white);
     overflow: hidden;
-    margin-top: 140px;
+    margin-top: 110px;
   }
   
   .title-section::before {
