@@ -43,6 +43,34 @@ public class UsuarioService {
     @Autowired
     private RolDAO rolDAO;
 
+    @Autowired
+    private PersonaDAO personaDAO;
+
+
+    public List<Producto> listarProducto() {
+        return (List<Producto>) productoDAO.findAll();
+    }
+
+    public List<Usuario> listarUsuario() {
+        return (List<Usuario>) usuarioDAO.findAll();
+    }
+
+    public List<Categoria> listarCategoria() {
+        return (List<Categoria>) categoriaDAO.findAll();
+    }
+
+    public List<Persona> listarPersonas(){
+        return (List<Persona>) personaDAO.findAll();
+    }
+
+    public List<Cliente> listarClientes(){
+        return (List<Cliente>) clienteDAO.findAll();
+    }
+
+    public List<Empleado> listarEmpleados(){
+        return (List<Empleado>) empleadoDAO.findAll();
+    }
+
     public Cliente login(LoginDTO user) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
 
@@ -93,18 +121,6 @@ public class UsuarioService {
             throw new EntityNotFoundException("Contraseña incorrecta");
         }
 
-    }
-
-    public List<Producto> listarProducto() {
-        return (List<Producto>) productoDAO.findAll();
-    }
-
-    public List<Usuario> listarUsuario() {
-        return (List<Usuario>) usuarioDAO.findAll();
-    }
-
-    public List<Categoria> listarCategoria() {
-        return (List<Categoria>) categoriaDAO.findAll();
     }
 
     public Persona actualizarUsuarios(UserDTO userDTO, int id) {
