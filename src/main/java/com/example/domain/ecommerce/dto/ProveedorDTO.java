@@ -12,8 +12,6 @@ public class ProveedorDTO {
 
     private String estado;
 
-    
-
     public Long getRuc() {
         return ruc;
     }
