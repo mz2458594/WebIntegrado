@@ -3,6 +3,8 @@ package com.example.domain.ecommerce.models.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,6 +45,7 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "rol_id", unique = true)
     private Rol rol;
 
+    @Enumerated(EnumType.STRING)
     private Estado estado;
     private String comentario;
 

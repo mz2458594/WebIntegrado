@@ -50,8 +50,16 @@
                     <input type="number" name="stock">
                 </div>
                 <div class="input__box">
-                    <label for="">Precio</label><br>
+                    <label for="">Precio Venta</label><br>
                     <input type="text" name="precio">
+                </div>
+                <div class="input__box">
+                    <label for="">Precio Compra</label><br>
+                    <input type="text" name="precioCompra">
+                </div>
+                <div class="input__box">
+                    <label for="">Marca</label><br>
+                    <input type="text" name="marca">
                 </div>
                 <div class="input__box">
                     <label for="">Imagen</label><br>
@@ -120,8 +128,10 @@
                             <th>Descripcion</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
-                            <th>Precio S/.</th>
+                            <th>Precio Venta</th>
+                            <th>Precio Compra</th>
                             <th>Stock</th>
+                            <th>Marca</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="producto: ${productos}">
@@ -130,8 +140,10 @@
                             <td th:text="${producto.descripcion}">Rico y nutritivos</td>
                             <td th:text="${producto.categoria.nombre}">Snacks</td>
                             <td th:text="${producto.proveedor.nombre}">Paperos</td>
-                            <td th:text="${producto.precio}">2</td>
+                            <td th:text="${producto.precioVenta}">2</td>
+                            <td th:text="${producto.precioCompra}">200</td>
                             <td th:text="${producto.stock}">200</td>
+                            <td th:text="${producto.marca}">200</td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -185,10 +197,26 @@
                         <label for="">Stock</label><br>
                         <input type="number" id="stock_act" name="stock">
                     </div>
+
                     <div class="input__box">
-                        <label for="">Precio</label><br>
-                        <input type="text" id="precio_act" name="precio">
+                        <label for="">Precio Venta</label><br>
+                        <input type="text" name="precio" id="precio_act">
                     </div>
+                    <div class="input__box">
+                        <label for="">Precio Compra</label><br>
+                        <input type="text" name="precioCompra" id="precioC_act">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Marca</label><br>
+                        <input type="text" name="marca" id="marca_act">
+                    </div>
+                    <div class="input__box">
+                        <label for="">Imagen</label><br>
+                        <input type="text" name="imagen1" id="imagen_act">
+                    </div>
+
+
+
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
@@ -211,7 +239,9 @@
                     document.getElementById("categoria_act").value = celdas[3].textContent;
                     document.getElementById("proveedor_act").value = celdas[4].textContent;
                     document.getElementById("precio_act").value = celdas[5].textContent;
-                    document.getElementById("stock_act").value = celdas[6].textContent;
+                    document.getElementById("precioC_act").value = celdas[6].textContent;
+                    document.getElementById("stock_act").value = celdas[7].textContent;
+                    document.getElementById("imagen_act").value = celad[8].textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();

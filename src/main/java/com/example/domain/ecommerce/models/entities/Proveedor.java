@@ -8,6 +8,8 @@ import com.example.domain.ecommerce.models.enums.Estado;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,6 +35,7 @@ public class Proveedor implements Serializable {
 
     private String comentario;
 
+    @Enumerated(EnumType.STRING)
     private Estado estado;
 
 

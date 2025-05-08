@@ -1,6 +1,7 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,6 +15,8 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "personas")
@@ -39,17 +42,21 @@ public class Persona implements Serializable {
     @JsonIgnore
     private Direccion direccion;
 
+    @Temporal(TemporalType.DATE)
+    private Date fecha; 
+
     public Persona() {
     }
 
-    public Persona(int id, String dni, String nombre, String apellido, String telefono,
-                   Direccion direccion) {
+    public Persona(int id, String dni, String nombre, String apellido, String telefono, Direccion direccion,
+            Date fecha) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.fecha = fecha;
     }
 
     public int getId() {
@@ -92,8 +99,6 @@ public class Persona implements Serializable {
         this.telefono = telefono;
     }
 
-    
-
     public Direccion getDireccion() {
         return direccion;
     }
@@ -101,5 +106,15 @@ public class Persona implements Serializable {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    
 
 }

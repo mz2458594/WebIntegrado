@@ -21,7 +21,7 @@ public class UsuarioInventarioController {
 
     @GetMapping("/usuarios")
     public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarClientes());
+        model.addAttribute("usuarios", usuarioService.listarUsuario());
         model.addAttribute("roles", usuarioService.listarRoles());
         return "venta/usuarios";
     }

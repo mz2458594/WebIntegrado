@@ -15,7 +15,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.services.ProductoService;
@@ -80,7 +79,7 @@ public class VentasInventarioController {
         for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
                 encontrado = true;
                 break;
             }
@@ -91,7 +90,7 @@ public class VentasInventarioController {
             nuevo_item.setCantidad(cantidad);
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
-            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
             sale.getItem().add(nuevo_item);
         }
 
@@ -172,7 +171,7 @@ public class VentasInventarioController {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(venta.getCantidad());
             nuevo_item.setProducto(venta.getProducto());
-            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecio()) * nuevo_item.getCantidad());
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()) * nuevo_item.getCantidad());
             sale.getItem().add(nuevo_item);
         }        
 

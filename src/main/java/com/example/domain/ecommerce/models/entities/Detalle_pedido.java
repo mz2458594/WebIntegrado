@@ -27,15 +27,22 @@ public class Detalle_pedido {
     @JoinColumn(name = "product_id")
     private Producto producto;
 
+    private double subtotal;
+
+
     public Detalle_pedido() {
     }
 
-    public Detalle_pedido(int id_detalle, int cantidad, Pedido pedido, Producto producto) {
+    
+    public Detalle_pedido(int id_detalle, int cantidad, Pedido pedido, Producto producto, double subtotal) {
         this.id_detalle = id_detalle;
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
+        this.subtotal = cantidad * Double.parseDouble(producto.getPrecioCompra());
     }
+
+
 
     public int getId_detalle() {
         return id_detalle;
@@ -69,6 +76,15 @@ public class Detalle_pedido {
         this.producto = producto;
     }
 
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    
 
     
 

@@ -26,7 +26,7 @@ public class Producto implements Serializable{
     private String nombre;
 
     private String descripcion;
-    private String precio;
+    private String precioVenta;
     private String stock;
     private String imagen;
 
@@ -44,23 +44,29 @@ public class Producto implements Serializable{
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
+    private String marca;
+
+    private String precioCompra;
+
     public Producto() {
 
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, String precio, String stock, String imagen,
+    public Producto(int idProducto, String nombre, String descripcion, String precioVenta, String stock, String imagen,
             Categoria categoria, List<Venta_producto> ventaProductos, List<Detalle_pedido> detalle_pedidos,
-            Proveedor proveedor) {
+            Proveedor proveedor, String marca, String precioCompra) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = precio;
+        this.precioVenta = precioVenta;
         this.stock = stock;
         this.imagen = imagen;
         this.categoria = categoria;
         this.ventaProductos = ventaProductos;
         this.detalle_pedidos = detalle_pedidos;
         this.proveedor = proveedor;
+        this.marca = marca;
+        this.precioCompra = precioCompra;
     }
 
     public int getIdProducto() {
@@ -87,12 +93,12 @@ public class Producto implements Serializable{
         this.descripcion = descripcion;
     }
 
-    public String getPrecio() {
-        return precio;
+    public String getPrecioVenta() {
+        return precioVenta;
     }
 
-    public void setPrecio(String precio) {
-        this.precio = precio;
+    public void setPrecioVenta(String precioVenta) {
+        this.precioVenta = precioVenta;
     }
 
     public String getStock() {
@@ -127,14 +133,6 @@ public class Producto implements Serializable{
         this.ventaProductos = ventaProductos;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
-
     public List<Detalle_pedido> getDetalle_pedidos() {
         return detalle_pedidos;
     }
@@ -143,5 +141,30 @@ public class Producto implements Serializable{
         this.detalle_pedidos = detalle_pedidos;
     }
 
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(String precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    
     
 }

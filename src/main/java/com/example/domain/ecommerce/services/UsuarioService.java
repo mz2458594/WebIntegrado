@@ -8,11 +8,8 @@ import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.models.enums.Estado;
-import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
-import com.example.domain.ecommerce.repositories.PersonaDAO;
-import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +24,6 @@ public class UsuarioService {
     private UsuarioDAO usuarioDAO;
 
     @Autowired
-    private ProductoDAO productoDAO;
-
-    @Autowired
-    private CategoriaDAO categoriaDAO;
-
-    @Autowired
     EmailService emailService;
 
     @Autowired
@@ -44,31 +35,8 @@ public class UsuarioService {
     @Autowired
     private RolDAO rolDAO;
 
-    @Autowired
-    private PersonaDAO personaDAO;
-
-    public List<Producto> listarProducto() {
-        return (List<Producto>) productoDAO.findAll();
-    }
-
     public List<Usuario> listarUsuario() {
         return (List<Usuario>) usuarioDAO.findAll();
-    }
-
-    public List<Categoria> listarCategoria() {
-        return (List<Categoria>) categoriaDAO.findAll();
-    }
-
-    public List<Persona> listarPersonas() {
-        return (List<Persona>) personaDAO.findAll();
-    }
-
-    public List<Cliente> listarClientes() {
-        return (List<Cliente>) clienteDAO.findAll();
-    }
-
-    public List<Empleado> listarEmpleados() {
-        return (List<Empleado>) empleadoDAO.findAll();
     }
 
     public List<Rol> listarRoles(){
@@ -202,6 +170,7 @@ public class UsuarioService {
         persona.setApellido(userDTO.getApellido());
         persona.setDni(userDTO.getNum_documento());
         persona.setTelefono(userDTO.getCelular());
+        persona.setFecha(userDTO.getFecha_nacimiento());
 
         if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
                 userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
@@ -287,6 +256,7 @@ public class UsuarioService {
             emp.setApellido(user.getApellido());
             emp.setNombre(user.getNombre());
             emp.setTelefono(user.getCelular());
+            emp.setFecha(user.getFecha_nacimiento());
 
             Direccion nueva_direccion = new Direccion();
             nueva_direccion.setCalle(user.getCalle());
@@ -309,6 +279,7 @@ public class UsuarioService {
             cli.setApellido(user.getApellido());
             cli.setNombre(user.getNombre());
             cli.setTelefono(user.getCelular());
+            cli.setFecha(user.getFecha_nacimiento());
 
             Direccion nueva_direccion = new Direccion();
             nueva_direccion.setCalle(user.getCalle());

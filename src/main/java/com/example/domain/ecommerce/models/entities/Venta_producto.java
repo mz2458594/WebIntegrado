@@ -30,18 +30,19 @@ public class Venta_producto implements Serializable{
 
     private int cantidad;
 
+    private double subtotal;
+
 
     public Venta_producto() {
     }
-
 
     public Venta_producto(Long id, Venta venta, Producto producto, int cantidad) {
         this.id = id;
         this.venta = venta;
         this.producto = producto;
         this.cantidad = cantidad;
+        this.subtotal = cantidad * Double.parseDouble(producto.getPrecioVenta());
     }
-
 
     public Long getId() {
         return id;
@@ -82,9 +83,14 @@ public class Venta_producto implements Serializable{
         this.cantidad = cantidad;
     }
 
-
-    public double getSubtotal(){
-        return cantidad * Double.parseDouble(producto.getPrecio());
+    public double getSubtotal() {
+        return subtotal;
     }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    
 
 }

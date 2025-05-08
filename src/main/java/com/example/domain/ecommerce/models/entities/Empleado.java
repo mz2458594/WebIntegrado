@@ -1,6 +1,8 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -20,8 +22,8 @@ public class Empleado extends Persona implements Serializable{
     }
 
     public Empleado(int id, String dni, String nombre, String apellido, String telefono, Direccion direccion,
-            String cargo, Usuario usuario) {
-        super(id, dni, nombre, apellido, telefono, direccion);
+            Date fecha, String cargo, Usuario usuario) {
+        super(id, dni, nombre, apellido, telefono, direccion, fecha);
         this.cargo = cargo;
         this.usuario = usuario;
     }

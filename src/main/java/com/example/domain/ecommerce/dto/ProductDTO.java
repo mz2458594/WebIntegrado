@@ -10,6 +10,26 @@ public class ProductDTO {
     String stock;
     String imagen1;
     String proveedor;
+    String marca;
+    String precioCompra;
+
+
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(String precioCompra) {
+        this.precioCompra = precioCompra;
+    }
 
     public String getNombre() {
         return nombre;

@@ -64,9 +64,11 @@ public class ProductoService {
         producto.setDescripcion(productDTO.getDescripcion());
         producto.setImagen(productDTO.getImagen1());
         producto.setNombre(productDTO.getNombre());
-        producto.setPrecio(productDTO.getPrecio());
+        producto.setPrecioVenta(productDTO.getPrecio());
         producto.setProveedor(proveedor);
         producto.setStock(productDTO.getStock());
+        producto.setMarca(productDTO.getMarca());
+        producto.setPrecioCompra(productDTO.getPrecioCompra());
 
         return productoDAO.save(producto);
 
@@ -81,9 +83,11 @@ public class ProductoService {
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
         producto.setNombre(productDTO.getNombre());
-        producto.setPrecio(productDTO.getPrecio());
+        producto.setPrecioVenta(productDTO.getPrecio());
         producto.setProveedor(proveedor);
         producto.setStock(productDTO.getStock());
+        producto.setMarca(productDTO.getMarca());
+        producto.setPrecioCompra(productDTO.getPrecioCompra());
 
         productoDAO.save(producto);
 
