@@ -14,16 +14,15 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProveedorService {
-   
+
     @Autowired
     private ProveedorDAO proveedorDAO;
-
 
     public Iterable<Proveedor> obtenerProveedores() {
         return proveedorDAO.findAll();
     }
 
-    public void createProv(ProveedorDTO proveedorDTO){
+    public void createProv(ProveedorDTO proveedorDTO) {
         Proveedor nuevo_proveedor = new Proveedor();
         nuevo_proveedor.setRuc(proveedorDTO.getRuc());
         nuevo_proveedor.setNombre(proveedorDTO.getNombre());
@@ -49,16 +48,18 @@ public class ProveedorService {
         proveedor.setNombre(proveedorDTO.getNombre());
         proveedor.setEmail(proveedorDTO.getEmail());
         proveedor.setTelefono(proveedorDTO.getTelefono());
+        proveedor.setComentario(proveedorDTO.getComentario());
 
-        if (proveedorDTO.getEstado().equals("ACTIVO")) {
-            proveedor.setEstado(Estado.ACTIVO);
-        } else if (proveedorDTO.getEstado().equals("INACTIVO")) {
-            proveedor.setEstado(Estado.INACTIVO);
+        if (proveedor.getEstado() != null) {
+            if (proveedorDTO.getEstado().equals("ACTIVO")) {
+                proveedor.setEstado(Estado.ACTIVO);
+            } else if (proveedorDTO.getEstado().equals("INACTIVO")) {
+                proveedor.setEstado(Estado.INACTIVO);
+            }
         }
 
         proveedorDAO.save(proveedor);
     }
-
 
     public void eliminarProveedor(int id) {
         proveedorDAO.deleteById(Long.valueOf(id));

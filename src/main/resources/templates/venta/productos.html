@@ -132,6 +132,7 @@
                             <th>Precio Compra</th>
                             <th>Stock</th>
                             <th>Marca</th>
+                            <th>Imagen</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="producto: ${productos}">
@@ -144,6 +145,7 @@
                             <td th:text="${producto.precioCompra}">200</td>
                             <td th:text="${producto.stock}">200</td>
                             <td th:text="${producto.marca}">200</td>
+                            <td th:text="${producto.imagen}"></td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -241,7 +243,8 @@
                     document.getElementById("precio_act").value = celdas[5].textContent;
                     document.getElementById("precioC_act").value = celdas[6].textContent;
                     document.getElementById("stock_act").value = celdas[7].textContent;
-                    document.getElementById("imagen_act").value = celad[8].textContent;
+                    document.getElementById("marca_act").value = celdas[8].textContent;
+                    document.getElementById("imagen_act").value = celdas[9].textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();

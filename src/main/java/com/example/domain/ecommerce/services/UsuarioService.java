@@ -170,7 +170,7 @@ public class UsuarioService {
         persona.setApellido(userDTO.getApellido());
         persona.setDni(userDTO.getNum_documento());
         persona.setTelefono(userDTO.getCelular());
-        persona.setFecha(userDTO.getFecha_nacimiento());
+        persona.setFecha(userDTO.getFecha_nac());
 
         if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
                 userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
@@ -256,7 +256,7 @@ public class UsuarioService {
             emp.setApellido(user.getApellido());
             emp.setNombre(user.getNombre());
             emp.setTelefono(user.getCelular());
-            emp.setFecha(user.getFecha_nacimiento());
+            emp.setFecha(user.getFecha_nac());
 
             Direccion nueva_direccion = new Direccion();
             nueva_direccion.setCalle(user.getCalle());
@@ -279,7 +279,7 @@ public class UsuarioService {
             cli.setApellido(user.getApellido());
             cli.setNombre(user.getNombre());
             cli.setTelefono(user.getCelular());
-            cli.setFecha(user.getFecha_nacimiento());
+            cli.setFecha(user.getFecha_nac());
 
             Direccion nueva_direccion = new Direccion();
             nueva_direccion.setCalle(user.getCalle());

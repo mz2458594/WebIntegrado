@@ -17,7 +17,7 @@ public class UserDTO {
     private String rol;
     private String cargo;
     private String estado;
-    private Date fecha_nacimiento;
+    private Date fecha_nac;
 
     
 
@@ -135,11 +135,14 @@ public class UserDTO {
         this.estado = estado;
     }
 
-    public Date getFecha_nacimiento() {
-        return fecha_nacimiento;
+    public Date getFecha_nac() {
+        return fecha_nac;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
+    public void setFecha_nac(Date fecha_nac) {
+        this.fecha_nac = fecha_nac;
     }
+
+    
+
 }
