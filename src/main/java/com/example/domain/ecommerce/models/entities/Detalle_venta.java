@@ -11,8 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ventas_productos")
-public class Venta_producto implements Serializable{
+@Table(name = "detalles_ventas")
+public class Detalle_venta implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Venta_producto implements Serializable{
     private double subtotal;
 
 
-    public Venta_producto() {
+    public Detalle_venta() {
     }
 
-    public Venta_producto(Long id, Venta venta, Producto producto, int cantidad) {
+    public Detalle_venta(Long id, Venta venta, Producto producto, int cantidad) {
         this.id = id;
         this.venta = venta;
         this.producto = producto;

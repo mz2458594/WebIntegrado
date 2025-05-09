@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
 
@@ -167,7 +167,7 @@ public class VentasInventarioController {
         sale.setItem(new ArrayList<>());
         sale.setId_usuario(ventas.getUsuario().getIdUsuario());
 
-        for (Venta_producto venta : ventas.getVentaProductos()) {
+        for (Detalle_venta venta : ventas.getVentaProductos()) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(venta.getCantidad());
             nuevo_item.setProducto(venta.getProducto());

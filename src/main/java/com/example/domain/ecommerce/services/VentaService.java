@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.repositories.VentasDAO;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -39,7 +39,7 @@ public class VentaService {
         venta.setFechaVenta(Timestamp.from(Instant.now()));
         venta.setUsuario(usuario);
 
-        List<Venta_producto> listasProductos = new ArrayList<>();
+        List<Detalle_venta> listasProductos = new ArrayList<>();
         
 
         double total = 0.00;
@@ -48,7 +48,7 @@ public class VentaService {
 
             Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
 
-            Venta_producto vp = new Venta_producto();
+            Detalle_venta vp = new Detalle_venta();
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setVenta(venta);
@@ -83,7 +83,7 @@ public class VentaService {
 
         Venta v = venta.get();
 
-        for (Venta_producto ve: v.getVentaProductos()) {
+        for (Detalle_venta ve: v.getVentaProductos()) {
             productosService.devolverStock(ve.getProducto(), ve.getCantidad());
         }
 
