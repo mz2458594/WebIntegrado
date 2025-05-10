@@ -1,8 +1,10 @@
 package com.example.domain.ecommerce.models.entities;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.domain.ecommerce.models.enums.EstadoPedido;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,7 +27,7 @@ public class Pedido {
 
     private Timestamp fechaPedido;
 
-    private String estado;
+    private EstadoPedido estado;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -34,14 +36,24 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<Detalle_pedido> detallePedidos = new ArrayList<>();
 
+    private double total;
+
     public Pedido() {
     }
 
-    public Pedido(int idPedido, Timestamp fechaPedido, String estado) {
+    
+
+    public Pedido(int idPedido, Timestamp fechaPedido, EstadoPedido estado, Usuario user,
+            List<Detalle_pedido> detallePedidos, double total) {
         this.idPedido = idPedido;
         this.fechaPedido = fechaPedido;
         this.estado = estado;
+        this.user = user;
+        this.detallePedidos = detallePedidos;
+        this.total = total;
     }
+
+
 
     public int getIdPedido() {
         return idPedido;
@@ -59,12 +71,40 @@ public class Pedido {
         this.fechaPedido = fechaPedido;
     }
 
-    public String getEstado() {
+    public EstadoPedido getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoPedido estado) {
         this.estado = estado;
+    }
+
+    public Usuario getUser() {
+        return user;
+    }
+
+    public void setUser(Usuario user) {
+        this.user = user;
+    }
+
+    public List<Detalle_pedido> getDetallePedidos() {
+        return detallePedidos;
+    }
+
+    public void setDetallePedidos(List<Detalle_pedido> detallePedidos) {
+        this.detallePedidos = detallePedidos;
+    }
+
+
+
+    public double getTotal() {
+        return total;
+    }
+
+
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
 

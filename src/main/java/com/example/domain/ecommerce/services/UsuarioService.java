@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.domain.ecommerce.dto.EmailDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
@@ -344,14 +343,4 @@ public class UsuarioService {
 
     }
 
-    public Usuario obtenerUsuarioPorCorreo(EmailDTO email) {
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(email.getEmail());
-
-        if (usuario.isEmpty()) {
-            throw new EntityNotFoundException("Usuario no encontrado");
-        }
-
-        return usuario.get();
-
-    }
 }

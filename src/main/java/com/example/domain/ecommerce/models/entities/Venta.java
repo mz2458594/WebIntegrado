@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -37,6 +38,10 @@ public class Venta implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
+    private Boleta boleta;
+
 
 
 
