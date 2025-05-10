@@ -1,11 +1,13 @@
 package com.example.domain.ecommerce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.EmailDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
+import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
 import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
@@ -39,10 +41,68 @@ public class UsuarioService {
         return (List<Usuario>) usuarioDAO.findAll();
     }
 
-    public List<Rol> listarRoles(){
+    public List<Rol> listarRoles() {
         return (List<Rol>) rolDAO.findAll();
     }
 
+    public List<Cliente> listarClientes() {
+        return (List<Cliente>) clienteDAO.findAll();
+    }
+
+    public List<UsuarioPersonaDTO> listarClientesYEmpleados() {
+        List<UsuarioPersonaDTO> resultado = new ArrayList<>();
+
+        List<Cliente> clientes = clienteDAO.findAll();
+        for (Cliente c : clientes) {
+            Usuario u = c.getUsuario();
+            UsuarioPersonaDTO dto = new UsuarioPersonaDTO();
+
+            dto.setIdUsuario(u.getIdUsuario());
+            dto.setNombre(c.getNombre());
+            dto.setApellido(c.getApellido());
+            dto.setNum_documento(c.getDni());
+            dto.setFecha(c.getFecha());
+            dto.setCelular(c.getTelefono());
+            dto.setCalle(c.getDireccion().getCalle());
+            dto.setCiudad(c.getDireccion().getCiudad());
+            dto.setDistrito(c.getDireccion().getDistrito());
+            dto.setProvincia(c.getDireccion().getProvincia());
+            dto.setCorreo(u.getEmail());
+            dto.setUsername(u.getUsername());
+            dto.setRol(u.getRol().getNombre());
+            dto.setEstado(u.getEstado().name());
+            dto.setComentario(u.getComentario());
+
+            resultado.add(dto);
+        }
+
+        List<Empleado> empleados = empleadoDAO.findAll();
+        for (Empleado e : empleados) {
+            Usuario u = e.getUsuario();
+            UsuarioPersonaDTO dto = new UsuarioPersonaDTO();
+
+            dto.setIdUsuario(u.getIdUsuario());
+            dto.setNombre(e.getNombre());
+            dto.setApellido(e.getApellido());
+            dto.setNum_documento(e.getDni());
+            dto.setFecha(e.getFecha());
+            dto.setCelular(e.getTelefono());
+            dto.setCalle(e.getDireccion().getCalle());
+            dto.setCiudad(e.getDireccion().getCiudad());
+            dto.setDistrito(e.getDireccion().getDistrito());
+            dto.setProvincia(e.getDireccion().getProvincia());
+            dto.setCorreo(u.getEmail());
+            dto.setUsername(u.getUsername());
+            dto.setRol(u.getRol().getNombre());
+            dto.setEstado(u.getEstado().name());
+            dto.setComentario(u.getComentario());
+
+            resultado.add(dto);
+
+        }
+
+        return resultado;
+    }
 
     public Cliente login(LoginDTO user) {
         Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
@@ -100,6 +160,25 @@ public class UsuarioService {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
 
+        usuario.setEmail(userDTO.getCorreo());
+        usuario.setUsername(userDTO.getUsername());
+        usuario.setComentario(userDTO.getComentario());
+
+        Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
+
+        if (rol.isPresent()) {
+            usuario.setRol(rol.get());
+        }
+
+        if (userDTO.getEstado() != null) {
+
+            if (userDTO.getEstado().equals("ACTIVO")) {
+                usuario.setEstado(Estado.ACTIVO);
+            } else if (userDTO.getEstado().equals("INACTIVO")) {
+                usuario.setEstado(Estado.INACTIVO);
+            }
+        }
+
         Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
         Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
 
@@ -108,23 +187,6 @@ public class UsuarioService {
             Cliente cliente2 = cliente.get();
 
             actualizarPersona(cliente2, userDTO);
-            usuario.setEmail(userDTO.getCorreo());
-            usuario.setUsername(userDTO.getUsername());
-
-            Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
-
-            if (rol.isPresent()) {
-                usuario.setRol(rol.get());
-            }
-
-            if (userDTO.getEstado() != null) {
-
-                if (userDTO.getEstado().equals("ACTIVO")) {
-                    usuario.setEstado(Estado.ACTIVO);
-                } else if (userDTO.getEstado().equals("INACTIVO")) {
-                    usuario.setEstado(Estado.INACTIVO);
-                }
-            }
 
             usuarioDAO.save(usuario);
 
@@ -137,26 +199,10 @@ public class UsuarioService {
             Empleado empleado2 = empleado.get();
             actualizarPersona(empleado2, userDTO);
 
-            usuario.setEmail(userDTO.getCorreo());
-            usuario.setUsername(userDTO.getUsername());
-
-            Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
-
-            if (rol.isPresent()) {
-                usuario.setRol(rol.get());
-            }
-
-            if (userDTO.getEstado() != null) {
-
-                if (userDTO.getEstado().equals("ACTIVO")) {
-                    usuario.setEstado(Estado.ACTIVO);
-                } else if (userDTO.getEstado().equals("INACTIVO")) {
-                    usuario.setEstado(Estado.INACTIVO);
-                }
-            }
-
             usuarioDAO.save(usuario);
+
             empleadoDAO.save(empleado2);
+
             return empleado2;
 
         } else {

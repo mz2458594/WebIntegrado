@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -41,8 +42,8 @@ public class Usuario implements Serializable {
     List<Venta> ventas = new ArrayList<>();
 
 
-    @OneToOne
-    @JoinColumn(name = "rol_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
     private Rol rol;
 
     @Enumerated(EnumType.STRING)

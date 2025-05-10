@@ -21,7 +21,7 @@ public class UsuarioInventarioController {
 
     @GetMapping("/usuarios")
     public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
         return "venta/usuarios";
     }
@@ -33,7 +33,7 @@ public class UsuarioInventarioController {
 
         usuarioService.createUser(userDTO);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
         return "redirect:/usuarios";
@@ -47,7 +47,9 @@ public class UsuarioInventarioController {
 
         usuarioService.actualizarUsuarios(userDTO, id);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        System.out.println(usuarioService.listarClientesYEmpleados());
+
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
         return "redirect:/usuarios";
@@ -60,7 +62,7 @@ public class UsuarioInventarioController {
 
         usuarioService.eliminarUsuario(id);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
         return "redirect:/usuarios";
