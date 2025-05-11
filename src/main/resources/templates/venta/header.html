@@ -21,7 +21,7 @@
         <div class="profile">
             <div class="name_profile" th:if="${empleado != null}">
                 <p>Hola <span th:text="${empleado.nombre}">Jefe de market</span></p>
-                <p th:text="${empleado.usuario.rol}">Administrador</p>
+                <p th:text="${empleado.usuario.rol.nombre}">Administrador</p>
             </div>
             <div class="img_perfil"><i class="fa-solid fa-user"></i></div>
         </div>

@@ -14,6 +14,42 @@ public class RequestDTO {
         return id_usuario;
     }
 
+    private String ruc;
+
+    private String razon;
+
+    private String tipo;
+
+
+    public String getRuc() {
+        return ruc;
+    }
+
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+
+    public String getRazon() {
+        return razon;
+    }
+
+
+    public void setRazon(String razon) {
+        this.razon = razon;
+    }
+
+
+    public String getTipo() {
+        return tipo;
+    }
+
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
 
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;

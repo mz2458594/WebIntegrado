@@ -1,9 +1,13 @@
 package com.example.domain.ecommerce.models.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.example.domain.ecommerce.models.enums.TipoComprobante;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,9 +16,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "boletas")
-public class Boleta implements Serializable{
-    
+@Table(name = "comprobantes")
+public class Comprobante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,18 +25,33 @@ public class Boleta implements Serializable{
     @Column(unique = true, nullable = false)
     private String numero;
 
-    @Column(nullable = false)
     private LocalDateTime fechaEmision;
+
+    @Enumerated(EnumType.STRING)
+    private TipoComprobante tipo;
 
     @OneToOne
     @JoinColumn(name = "venta_id", nullable = false)
     private Venta venta;
 
-    public Boleta(int id, String numero, LocalDateTime fechaEmision, Venta venta) {
+    @Column(nullable = true)
+    private String rucCliente;
+
+    @Column(nullable = true)
+    private String razonSocial;
+
+    public Comprobante() {
+    }
+
+    public Comprobante(int id, String numero, LocalDateTime fechaEmision, TipoComprobante tipo, Venta venta,
+            String rucCliente, String razonSocial) {
         this.id = id;
         this.numero = numero;
         this.fechaEmision = fechaEmision;
+        this.tipo = tipo;
         this.venta = venta;
+        this.rucCliente = rucCliente;
+        this.razonSocial = razonSocial;
     }
 
     public int getId() {
@@ -60,6 +78,14 @@ public class Boleta implements Serializable{
         this.fechaEmision = fechaEmision;
     }
 
+    public TipoComprobante getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoComprobante tipo) {
+        this.tipo = tipo;
+    }
+
     public Venta getVenta() {
         return venta;
     }
@@ -67,5 +93,24 @@ public class Boleta implements Serializable{
     public void setVenta(Venta venta) {
         this.venta = venta;
     }
+
+    public String getRucCliente() {
+        return rucCliente;
+    }
+
+    public void setRucCliente(String rucCliente) {
+        this.rucCliente = rucCliente;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    
+
 
 }

@@ -40,7 +40,7 @@ public class Venta implements Serializable {
     private Usuario usuario;
 
     @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
-    private Boleta boleta;
+    private Comprobante comprobante;
 
 
 

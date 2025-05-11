@@ -8,6 +8,8 @@ import com.example.domain.ecommerce.models.enums.EstadoPedido;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,14 +21,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPedido;
 
-
     private Timestamp fechaPedido;
 
+    @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
     @ManyToOne
@@ -41,8 +43,6 @@ public class Pedido {
     public Pedido() {
     }
 
-    
-
     public Pedido(int idPedido, Timestamp fechaPedido, EstadoPedido estado, Usuario user,
             List<Detalle_pedido> detallePedidos, double total) {
         this.idPedido = idPedido;
@@ -52,8 +52,6 @@ public class Pedido {
         this.detallePedidos = detallePedidos;
         this.total = total;
     }
-
-
 
     public int getIdPedido() {
         return idPedido;
@@ -95,18 +93,12 @@ public class Pedido {
         this.detallePedidos = detallePedidos;
     }
 
-
-
     public double getTotal() {
         return total;
     }
-
-
 
     public void setTotal(double total) {
         this.total = total;
     }
 
-
-    
 }

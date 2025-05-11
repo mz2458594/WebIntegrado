@@ -11,6 +11,7 @@ import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
+import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class UsuarioService {
     @Autowired
     private RolDAO rolDAO;
 
+    @Autowired
+    private PersonaDAO personaDAO;
+
     public List<Usuario> listarUsuario() {
         return (List<Usuario>) usuarioDAO.findAll();
     }
@@ -46,6 +50,10 @@ public class UsuarioService {
 
     public List<Cliente> listarClientes() {
         return (List<Cliente>) clienteDAO.findAll();
+    }
+
+    public Persona obtenerPersonaPorIdUsuario(int id){
+        return personaDAO.findById(Long.valueOf(id)).get();
     }
 
     public List<UsuarioPersonaDTO> listarClientesYEmpleados() {

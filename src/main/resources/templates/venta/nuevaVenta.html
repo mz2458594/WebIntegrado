@@ -73,7 +73,7 @@
                         <tr id="productList" th:each="venta : ${ventas}">
                             <td th:text="${venta.idVentas}">1</td>
                             <td th:text="${venta.fechaVenta}">20/10/2024</td>
-                            <td th:text="${venta.usuario.persona.nombre}">2</td>
+                            <td th:text="${venta.usuario.username}">2</td>
                             <td th:text="${venta.total}">9</td>
                             <td>
                                 <div class="container_action">

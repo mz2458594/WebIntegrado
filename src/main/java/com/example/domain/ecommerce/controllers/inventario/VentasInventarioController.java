@@ -148,6 +148,8 @@ public class VentasInventarioController {
 
         sale.setId_usuario(empleado.getUsuario().getIdUsuario());
         
+        sale.setTipo("BOLETA");
+        
         ventasService.crearVenta(sale);
 
         session.removeAttribute("sale");
