@@ -321,43 +321,6 @@ public class EcommerceApplicationTests {
         verify(proveedorDAO).deleteById(1L);
     }
 
-    @Test
-    void testLogin() {
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setEmail("usuario@example.com");
-        loginDTO.setPassword("password123");
-
-        Usuario usuario = new Usuario();
-        usuario.setEmail("usuario@example.com");
-        usuario.setPassword(new BCryptPasswordEncoder().encode("password123"));
-
-        when(usuarioDAO.findByEmail("usuario@example.com")).thenReturn(Optional.of(usuario));
-
-        Cliente resultado = usuarioService.login(loginDTO);
-
-        assertEquals("usuario@example.com", resultado.getUsuario().getEmail());
-        verify(usuarioDAO, times(1)).findByEmail("usuario@example.com");
-    }
-//test
-    @Test
-    void testLoginEmpleado() {
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setEmail("empleado@example.com");
-        loginDTO.setPassword("password123");
-
-        Usuario usuario = new Usuario();
-        usuario.setEmail("empleado@example.com");
-        usuario.setPassword(new BCryptPasswordEncoder().encode("password123"));
-        // usuario.setRole("Empleado");
-
-        when(usuarioDAO.findByEmail("empleado@example.com")).thenReturn(Optional.of(usuario));
-
-        Empleado resultado = usuarioService.loginEmpleado(loginDTO);
-
-        assertEquals("empleado@example.com", resultado.getUsuario().getEmail());
-        verify(usuarioDAO, times(1)).findByEmail("empleado@example.com");
-    }
-
 
     @Test
     void testActualizarUsuario() {

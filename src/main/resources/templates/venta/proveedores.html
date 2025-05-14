@@ -21,7 +21,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Proveedor</p>
             </div>
-            <form class="form_modal" th:action="@{/agregar_prov}" method="post">
+            <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" method="post">
                 <div class="input__box">
                     <label for="">RUC</label><br>
                     <input type="text" name="ruc">
@@ -208,7 +208,7 @@
 
                     const form = document.getElementById("formEditar");
                     const idProveedor = celdas[0].textContent.trim();
-                    form.action = `/actualizar_prov/${idProveedor}`;
+                    form.action = `/inventario/proveedores/actualizar_prov/${idProveedor}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -230,7 +230,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idProveedor = valores[0].trim();
-                    form.action = `/eliminar_prov/${idProveedor}`;
+                    form.action = `/inventario/proveedores/eliminar_prov/${idProveedor}`;
                 });
             });
         </script>

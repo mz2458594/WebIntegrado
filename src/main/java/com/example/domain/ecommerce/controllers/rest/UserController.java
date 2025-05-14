@@ -31,11 +31,6 @@ public class UserController {
    @Autowired
    EmailService emailService;
 
-   @PostMapping("/login")
-    public Cliente login(@RequestBody LoginDTO loginDTO){
-       return usuarioService.login(loginDTO);
-   }
-
    @PostMapping("/createDirection/{id}")
    public ResponseEntity<?> createDirection(
            @RequestBody DireccionDTO direccion,

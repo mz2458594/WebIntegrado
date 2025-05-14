@@ -22,7 +22,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Nuevo Usuario</p>
             </div>
-            <form id="formulario" class="form_modal" th:action="@{/agregar_usu}" method="post">
+            <form id="formulario" class="form_modal" th:action="@{/inventario/usuarios/agregar_usu}" method="post">
 
                 <div class="input__box">
                     <label for="">Nombre</label><br>
@@ -300,7 +300,7 @@
 
                     const form = document.getElementById("formEditarUser");
                     const idUsuario = celdas[0].textContent.trim();
-                    form.action = `/actualizar_usu/${idUsuario}`;
+                    form.action = `/inventario/usuarios/actualizar_usu/${idUsuario}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -322,7 +322,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idUsuario = valores[0].trim();
-                    form.action = `/eliminarUsuario/${idUsuario}`;
+                    form.action = `/inventario/usuarios/eliminarUsuario/${idUsuario}`;
                 });
             });
         </script>

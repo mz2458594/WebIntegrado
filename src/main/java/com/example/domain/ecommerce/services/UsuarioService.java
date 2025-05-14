@@ -115,58 +115,6 @@ public class UsuarioService {
         return resultado;
     }
 
-    public Cliente login(LoginDTO user) {
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
-
-        if (usuario.isEmpty()) {
-            throw new EntityNotFoundException("Usuario no encontrado");
-        }
-
-        Usuario us = usuario.get();
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        if (encoder.matches(user.getPassword(), usuario.get().getPassword())) {
-
-            Optional<Cliente> cliente = clienteDAO.findByUsuario(us);
-            System.out.println(cliente);
-
-            if (cliente.isEmpty()) {
-                throw new EntityNotFoundException("Cliente no encontrado para el usuario " + usuario.get().getEmail());
-            }
-
-            return cliente.get();
-
-        } else {
-            throw new EntityNotFoundException("Contraseña incorrecta");
-        }
-
-    }
-
-    public Empleado loginEmpleado(LoginDTO user) {
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(user.getEmail());
-
-        if (usuario.isEmpty()) {
-            throw new EntityNotFoundException("Usuario no encontrado");
-        }
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        if (encoder.matches(user.getPassword(), usuario.get().getPassword())) {
-            Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario.get());
-
-            if (empleado.isEmpty()) {
-                throw new EntityNotFoundException("Empleado no encontrado");
-            }
-
-            return empleado.get();
-
-        } else {
-            throw new EntityNotFoundException("Contraseña incorrecta");
-        }
-
-    }
-
     public Persona actualizarUsuarios(UserDTO userDTO, int id) {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
@@ -239,6 +187,18 @@ public class UsuarioService {
     }
 
     public void eliminarUsuario(int id) {
+        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
+        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
+        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
+
+        if (cliente.isPresent()) {
+            Cliente cliente2 = cliente.get();
+            clienteDAO.deleteById(Long.valueOf(cliente2.getId()));
+        } else if (empleado.isPresent()) {
+            Empleado empleado2 = empleado.get();
+            empleadoDAO.deleteById(Long.valueOf(empleado2.getId()));
+        } 
+        
         usuarioDAO.deleteById(Long.valueOf(id));
     }
 
@@ -261,12 +221,12 @@ public class UsuarioService {
     }
 
     // public void enviarEmail(Usuario usuario) {
-    //     Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
-    //             "Registrar cuenta",
-    //             usuario.getUsername(),
-    //             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+    // Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
+    // "Registrar cuenta",
+    // usuario.getUsername(),
+    // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
-    //     emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
+    // emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
     // }
 
     public boolean verificar(String correo, String num_documento, String celular) {
@@ -306,7 +266,7 @@ public class UsuarioService {
 
         usuarioDAO.save(usuario);
 
-        if (user.getRol().equals("Empleado")) {
+        if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
             Empleado emp = new Empleado();
             emp.setCargo(user.getCargo());
             emp.setDni(user.getNum_documento());

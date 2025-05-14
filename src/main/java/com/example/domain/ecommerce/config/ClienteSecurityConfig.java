@@ -24,7 +24,7 @@ public class ClienteSecurityConfig {
         .securityMatcher("/iniciar_crear")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/comprobantes/**").hasRole("Empleado")
+                        // .requestMatchers("/comprobantes/**").hasRole("Empleado")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/iniciar_crear")

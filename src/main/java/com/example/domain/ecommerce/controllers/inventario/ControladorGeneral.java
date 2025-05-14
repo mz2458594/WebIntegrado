@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
+@RequestMapping("/inventario/principal")
 public class ControladorGeneral {
 
 
@@ -24,7 +25,7 @@ public class ControladorGeneral {
     public String cerrar_sesion(HttpSession request, SessionStatus status) {
         status.setComplete();
         request.removeAttribute("empleado");
-        return "redirect:/login";
+        return "redirect:/inventario/principal/login";
     }
 
     @GetMapping("/index")

@@ -49,7 +49,7 @@
 
             <div class="title__add--modal">
                 <p>Ventas</p>
-                <button onclick="window.location.href='/agregarVenta';" class="addition">
+                <button onclick="window.location.href='/inventario/ventas/agregarVenta';" class="addition">
                     <i class="fa-solid fa-plus"></i>
                     <p>Nueva Venta</p>
                 </button>
@@ -101,7 +101,7 @@
                     const fila = this.closest('tr');
                     const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
                     const idVenta = valores[0].trim();
-                    window.location.href = `/detalleVenta/${idVenta}`;
+                    window.location.href = `/inventario/ventas/detalleVenta/${idVenta}`;
                 });
             });
 
@@ -120,7 +120,7 @@
 
                     const form = document.getElementById("formEliminar")
                     const idVenta = valores[0].trim();
-                    form.action = `/eliminarVenta/${idVenta}`;
+                    form.action = `/inventario/ventas/eliminarVenta/${idVenta}`;
                 });
             });
 

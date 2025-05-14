@@ -44,9 +44,9 @@ public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler{
         if (empleadoDAO.findByUsuario(usuario).isPresent()) {
             Empleado empleado = empleadoDAO.findByUsuario(usuario).get();
             session.setAttribute("empleado", empleado);
-            response.sendRedirect("/index");
+            response.sendRedirect("/inventario/principal/index");
         } else {
-            response.sendRedirect("/login?error=true");
+            response.sendRedirect("/inventario/principal/login?error=true");
         }
       
     }

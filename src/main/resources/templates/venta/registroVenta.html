@@ -65,11 +65,11 @@
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
                             
-                            <form th:action="@{/saveVenta}" method="post">
+                            <form th:action="@{/inventario/ventas/saveVenta}" method="post">
                                 <!-- <button class="btn-imprimir">Imprimir</button> -->
-                                <button type="button" th:if="${ocultar == null}" class="btn-editar" onclick="window.location.href='/editarVenta'">Editar</button>
+                                <button type="button" th:if="${ocultar == null}" class="btn-editar" onclick="window.location.href='/inventario/ventas/editarVenta'">Editar</button>
                                 <button type="submit" th:if="${ocultar == null}" class="btn-save">Guardar</button>
-                                <button type="button" class="btn-volver" onclick="window.location.href='/cancelar'">Volver</button>
+                                <button type="button" class="btn-volver" onclick="window.location.href='/inventario/ventas/cancelar'">Volver</button>
                             </form>
                         
                     </div>
@@ -88,43 +88,6 @@
         document.getElementById("finalTotal").innerHTML = t.toFixed(2);
     </script>
 
-    <script>
-        document.querySelector('.btn-imprimir').addEventListener('click', function () {
-            const tabla = document.getElementById('tabla-listar').outerHTML; // Captura la tabla
-            const ventanaImpresion = window.open('', '_blank'); // Abre una nueva ventana o pestaña
-
-            // Crea el contenido del documento
-            ventanaImpresion.document.write(`
-            <html>
-                <head>
-                    <title>Imprimir Venta</title>
-                    <style>
-                        /* Agrega estilos básicos para impresión */
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: left;
-                        }
-                        th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>Detalles de la venta</h2>
-                    ${tabla} <!-- Incluye la tabla -->
-                </body>
-            </html>
-        `);
-
-            ventanaImpresion.document.close(); // Cierra el documento para asegurar la renderización
-            ventanaImpresion.print(); // Llama a la función de impresión
-        });
-    </script>
 </body>
 
 </html>

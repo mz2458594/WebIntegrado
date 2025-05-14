@@ -20,19 +20,26 @@ public class EmpleadoSecurityConfig {
     @Bean
     public SecurityFilterChain empleadoFilterC(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .securityMatcher("/comprobantes/**", "/login")
+                .securityMatcher( "/inventario/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/inventario/principal/**").hasAnyRole("Empleado", "Administrador")
+                        .requestMatchers("/inventario/usuarios/**").hasAnyRole("Administrador", "Empleado")
+                        .requestMatchers("/inventario/categoria/**").hasRole("Administrador")
+                        .requestMatchers("/inventario/proveedores/**").hasRole("Administrador")
+                        .requestMatchers("/inventario/productos/**").hasRole("Administrador")
+                        .requestMatchers("/inventario/ventas/**").hasAnyRole("Empleado", "Administrador")
+                        .requestMatchers("/inventario/comprobante/**").hasAnyRole("Empleado", "Administrador")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("/inventario/principal/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler(empleadoSuccessHandler)
-                        .failureUrl("/login?error=true"))
+                        .failureUrl("/inventario/principal/login?error=true"))
                 .logout(logout -> logout
-                        .logoutUrl("/cerrarEmpleado")
-                        .logoutSuccessUrl("/login")
+                        .logoutUrl("/inventario/principal/cerrarEmpleado")
+                        .logoutSuccessUrl("/inventario/principal/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .clearAuthentication(true)

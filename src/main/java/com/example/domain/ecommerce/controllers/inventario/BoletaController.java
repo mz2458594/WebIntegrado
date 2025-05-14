@@ -17,7 +17,7 @@ import com.example.domain.ecommerce.services.ComprobanteService;
 import com.example.domain.ecommerce.services.PdfGeneratorService;
 
 @RestController
-@RequestMapping("/comprobantes")
+@RequestMapping("/inventario/comprobante")
 public class BoletaController {
 
     @Autowired

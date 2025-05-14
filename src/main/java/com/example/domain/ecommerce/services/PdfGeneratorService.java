@@ -1,13 +1,13 @@
 package com.example.domain.ecommerce.services;
 
 import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
@@ -19,11 +19,11 @@ import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.io.util.StreamUtil;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
@@ -44,17 +44,23 @@ public class PdfGeneratorService {
         pdfDoc.setDefaultPageSize(pageSize);
         Document document = new Document(pdfDoc); // Tamaño pequeño vertical
 
-        document.setMargins(10, 10, 10, 10);
+        document.setMargins(20, 20, 20, 20);
 
         // 1. Logo (si tienes uno)
-        ImageData logoData = null;
+
         try {
-            logoData = ImageDataFactory.create("src/main/resources/static/images/logo.png");
-        } catch (MalformedURLException e) {
+            InputStream is = getClass().getResourceAsStream("/static/images/logo.png");
+            if (is == null) {
+                throw new FileNotFoundException("No se encontró la imagen: /images/logo.png");
+            }
+
+            ImageData imageData = ImageDataFactory.create(StreamUtil.inputStreamToArray(is));
+            Image image = new Image(imageData);
+            document.add(image);
+        } catch (IOException e) {
             e.printStackTrace();
-        } // Ruta al logo
-        Image logo = new Image(logoData).scaleToFit(100, 100).setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.add(logo);
+            throw new RuntimeException("Error al generar el PDF", e);
+        }
 
         // 2. Datos empresa
         document.add(new Paragraph("TARGUS S.A.C").setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(10));
@@ -123,7 +129,8 @@ public class PdfGeneratorService {
         // 8. Pie de página
         document.add(new Paragraph("\nRepresentación impresa de boleta electrónica.")
                 .setFontSize(8).setTextAlignment(TextAlignment.CENTER).setFontSize(10));
-        document.add(new Paragraph("www.targus.com.pe").setFontSize(8).setTextAlignment(TextAlignment.CENTER).setFontSize(10));
+        document.add(new Paragraph("www.targus.com.pe").setFontSize(8).setTextAlignment(TextAlignment.CENTER)
+                .setFontSize(10));
 
         document.close();
         return baos;
