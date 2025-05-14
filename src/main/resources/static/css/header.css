@@ -5,7 +5,6 @@
     --steam-light-blue: #c7d5e0;
     --steam-gray: #2a475e;
     --steam-light-gray: #b8b6b4;
-    --steam-green: #5c7e10;
     --steam-hover: #273c51;
   }
   
@@ -71,12 +70,13 @@
     color: var(--steam-blue);
     background-color: var(--steam-hover);
   }
-  
-  /* User options dropdown */
+
+    /* User options dropdown */
   .opciones_usuario {
     position: relative;
   }
   
+
   #menu_usu {
     display: none;
     position: absolute;
@@ -93,8 +93,8 @@
   .list_op {
     list-style: none;
   }
-  
-  .op {
+
+    .op {
     display: flex;
     flex-direction: column;
   }
