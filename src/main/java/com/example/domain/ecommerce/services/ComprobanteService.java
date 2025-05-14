@@ -1,6 +1,5 @@
 package com.example.domain.ecommerce.services;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ public class ComprobanteService {
     @Autowired
     private ControlComprobanteDAO controlComprobanteDAO;
 
-    // @Autowired
-    // private PdfGeneratorService pGeneratorService;
 
     @Transactional
     public Comprobante generarComprobante(Venta venta, String tipo, String ruc, String razon) {

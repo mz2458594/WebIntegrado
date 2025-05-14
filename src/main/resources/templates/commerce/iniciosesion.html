@@ -27,9 +27,9 @@
                                 <input type="text" class="input" name="email" id="email" required>
                             </div>
                         </div>
-                        <!-- <div th:if="${param.error}">
+                        <div th:if="${param.error}">
                             <p id="mensaje1">*Correo incorrecto </p>
-                        </div> -->
+                        </div>
 
                         <div class="input-div dos">
                             <div class="i">
@@ -40,7 +40,7 @@
                                 <input type="password" class="input" name="password" id="password" required>
                             </div>
                         </div>
-                        <div th:if="${error}">
+                        <div th:if="${param.error}">
                             <p id="mensaje2">*Correo y contraseña incorrectos </p><br/> 
                         </div>
 

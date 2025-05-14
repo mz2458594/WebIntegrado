@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.ecommerce.models.entities.Comprobante;
@@ -16,6 +17,7 @@ import com.example.domain.ecommerce.services.ComprobanteService;
 import com.example.domain.ecommerce.services.PdfGeneratorService;
 
 @RestController
+@RequestMapping("/comprobantes")
 public class BoletaController {
 
     @Autowired
@@ -24,7 +26,7 @@ public class BoletaController {
     @Autowired
     private PdfGeneratorService pdfGeneratorService;
 
-    @GetMapping("/comprobantes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<byte[]> verPdf(@PathVariable int id){
         Comprobante comprobante = comprobanteService.obtenerComprobantePorId(id);
         ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);

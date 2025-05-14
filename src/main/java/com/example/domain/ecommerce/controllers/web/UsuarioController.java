@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @Slf4j
 public class UsuarioController {
+
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -31,12 +32,6 @@ public class UsuarioController {
     EmailService emailService;
 
     int contador = 0;
-
-    @GetMapping("/adminUsuarios")
-    public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
-        return "/adminUsuarios";
-    }
 
     @PostMapping("/form_crear")
     public String crearCuenta(
@@ -50,34 +45,6 @@ public class UsuarioController {
 
     }
 
-    @PostMapping("/iniciar_crear")
-    public String iniciar(LoginDTO loginDTO, Model model, HttpServletRequest request) {
-
-        try {
-            Cliente cliente = usuarioService.login(loginDTO);
-
-            HttpSession session = request.getSession();
-
-            session.setAttribute("user", cliente);
-
-            System.out.println(session.getAttribute("user"));
-            contador = 0;
-
-            return "redirect:/";
-
-        } catch (EntityNotFoundException e) {
-
-            contador++;
-            System.out.println("CONTADOR" + contador);
-            if (contador >= 3) {
-                model.addAttribute("bloquear", contador>=3);
-            }
-
-            model.addAttribute("error", true);
-            return "commerce/iniciosesion";
-        }
-
-    }
 
     @GetMapping("/pagar")
     public String abrirForm_pago(Model model, HttpSession session) {
@@ -116,7 +83,6 @@ public class UsuarioController {
             @PathVariable int id,
             Model model, HttpSession session) {
 
-    
         Cliente cliente = direccionService.updateDirection(direccionDTO, id);
 
         session.setAttribute("user", cliente);

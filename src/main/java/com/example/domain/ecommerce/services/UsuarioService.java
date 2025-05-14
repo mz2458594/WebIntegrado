@@ -16,6 +16,7 @@ import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -40,6 +41,9 @@ public class UsuarioService {
     @Autowired
     private PersonaDAO personaDAO;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Usuario> listarUsuario() {
         return (List<Usuario>) usuarioDAO.findAll();
     }
@@ -52,7 +56,7 @@ public class UsuarioService {
         return (List<Cliente>) clienteDAO.findAll();
     }
 
-    public Persona obtenerPersonaPorIdUsuario(int id){
+    public Persona obtenerPersonaPorIdUsuario(int id) {
         return personaDAO.findById(Long.valueOf(id)).get();
     }
 
@@ -257,12 +261,12 @@ public class UsuarioService {
     }
 
     // public void enviarEmail(Usuario usuario) {
-    // Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
-    // "Registrar cuenta",
-    // usuario.getUsername(),
-    // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-    //
-    // emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
+    //     Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
+    //             "Registrar cuenta",
+    //             usuario.getUsername(),
+    //             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+
+    //     emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
     // }
 
     public boolean verificar(String correo, String num_documento, String celular) {
@@ -292,7 +296,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setUsername(user.getUsername());
         usuario.setEmail(user.getCorreo());
-        usuario.setPassword(new BCryptPasswordEncoder().encode(user.getContraseña()));
+        usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
 
         Optional<Rol> rol = rolDAO.findByNombre(user.getRol());
         if (rol.isPresent()) {

@@ -7,7 +7,6 @@ import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.UsuarioService;
 import com.example.domain.ecommerce.models.entities.Cliente;
-import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import lombok.extern.slf4j.Slf4j;
 

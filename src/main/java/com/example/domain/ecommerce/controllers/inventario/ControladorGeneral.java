@@ -14,7 +14,6 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.models.entities.Empleado;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.UsuarioService;
 
 import jakarta.persistence.EntityNotFoundException;
