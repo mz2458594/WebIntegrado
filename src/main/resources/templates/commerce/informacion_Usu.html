@@ -16,39 +16,38 @@
 <body>
     <div th:insert="commerce/header.html"></div>
 
-
-    <br /><br /><br><br><br><br>
-
+<div>
+    <a class="volverr" th:href="@{/opcion}">Volver</a>
+</div>
 
     <div class="content">
-        <div class="Opciones">
-        </div>
+
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
                 <form  th:action="@{/actualizarUsu/{id} (id = ${user.idUsuario}) }" method="post">
                     <div>
-                        <label>Nombre:</label> <br>
+                        <label>Nombre:</label>
                         <input th:value="${session.user.persona.nombre}" type="text" id="nombre" name="nombre">
                     </div>
                     <div>
                         <label>Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}"><br>
+                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}">
                     </div>
                     <div>
-                        <label>Celular:</label> <br>
+                        <label>Celular:</label> 
                         <input th:value="${session.user.persona.telefono}" type="text" maxlength="9" id="celular" name="celular">
                     </div>
                     <div>
-                        <label>Documento:</label> <br>
+                        <label>Documento:</label> 
                         <input th:value="${session.user.persona.dni}" type="text" maxlength="11" id="num_documento" name="num_documento">
                     </div>
                     <div>
-                        <label>Correo:</label> <br>
+                        <label>Correo:</label>
                         <input th:value="${session.user.email}" type="email" id="correo" name="correo">
                     </div>
                     <div>
-                        <label>Username:</label> <br>
+                        <label>Username:</label>
                         <input th:value="${session.user.username}" type="text" id="username" name="username">
                     </div>
 
@@ -64,7 +63,7 @@
 
                 <form th:action="@{/actualizar_direccion/{id} (id = ${user.idUsuario})}" method="post">
                     <div>
-                        <label for="">Direccion</label> <br>
+                        <label for="">Direccion</label> 
                         <input type="text" placeholder="Dirección" required 
                         th:value = "${user.persona.direccion.calle}"
                         name="calle"
@@ -76,16 +75,14 @@
                         <input type="text" placeholder="Ciudad" required
                         th:value = "${user.persona.direccion.ciudad}"
                         name="ciudad"
-                        id="ciudad"
-                        ><br>
-
+                        id="ciudad">
                     </div>
                     <div>
-                        <label for="">Provincia</label><br>
+                        <label for="">Provincia</label>
                         <input type="text" placeholder="Provincia" required
                         th:value = "${user.persona.direccion.provincia}"
                         id="provincia"
-                        name="provincia"><br> 
+                        name="provincia">
                     </div>
 
                     <div>
@@ -93,7 +90,7 @@
                         <input type="text" placeholder="Distrito" required
                         th:value = "${user.persona.direccion.distrito}"
                         id="distrito"
-                        name="distrito"><br>
+                        name="distrito">
                     </div>
                     <div class="botons">
                         <button   type="submit" class="bott">Actualizar</button>
@@ -104,8 +101,6 @@
 
         </div>
     </div>
-    <div th:insert="commerce/footer.html"></div>
-
 
 </body>
 <script th:src="@{/js/reemplazos.js}"></script>

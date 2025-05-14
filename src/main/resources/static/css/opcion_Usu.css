@@ -14,39 +14,47 @@ body {
   overflow-x: hidden;
 }
 
-/* Main content container */
+/* Center the content container */
 .contenido {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: row; /* Keep cards in a row */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  align-items: stretch; /* Stretch items to equal height */
+  justify-content: center; /* Center cards horizontally */
   gap: 2rem;
   margin-top: 50px;
 }
 
-/* Option cards */
+/* Set width for each card container */
+.contenido > a {
+  flex: 0 1 300px; /* Flex-basis of 300px, don't grow, can shrink */
+  max-width: 350px; /* Maximum width for cards */
+  display: flex;
+}
+
 .opciones {
-  background-color: #1b2838; /* Steam's panel background */
-  border-radius: 3px; /* Steam uses less rounded corners */
+  background-color: #1b2838;
+  border-radius: 3px; 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   padding: 2rem;
   transition: all 0.3s ease;
-  height: 100%;
+  width: 100%; /* Full width of parent */
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #66c0f4; /* Steam's light blue */
+  border-left: 1px solid #66c0f4;
 }
 
 .opciones:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  border-bottom: 3px solid #66c0f4; /* Steam's light blue */
-  background-color: #213044; /* Slightly lighter than base panel color */
+  border-bottom: 3px solid #66c0f4; 
+  background-color: #213044; 
 }
 
-/* Option header with icon and title */
 .prin {
   display: flex;
   align-items: center;
@@ -63,65 +71,59 @@ body {
 
 .prin h2 {
   font-size: 1.5rem;
-  color: #ffffff; /* Steam's white heading text */
+  color: #ffffff; 
   font-weight: 500;
 }
 
-/* Option description */
 .opciones p {
-  color: #8ba3b5; /* Steam's secondary text color */
+  color: #8ba3b5; 
   font-size: 1rem;
   margin-top: auto;
   line-height: 1.6;
 }
 
-/* Links */
 a {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-/* Admin option special styling */
 a[href="/adminProducto"] .opciones {
-  background-color: #1e293b; /* Darker blue for admin */
-  border-left: 3px solid #a3cf06; /* Steam's green */
+  background-color: #1e293b; 
+  border-left: 3px solid #a3cf06; 
 }
 
 a[href="/adminProducto"] .opciones:hover {
-  border-bottom: 3px solid #a3cf06; /* Steam's green */
+  border-bottom: 3px solid #a3cf06; 
   background-color: #243447;
 }
 
 a[href="/adminProducto"] .prin h2 {
-  color: #a3cf06; /* Steam's green */
+  color: #a3cf06; 
 }
 
 a[href="/adminProducto"] .prin img {
   filter: brightness(0) saturate(100%) invert(82%) sepia(29%) saturate(1115%) hue-rotate(28deg) brightness(93%) contrast(103%); /* Makes icon green */
 }
 
-/* Support option styling */
 a[href="/soporte"] .opciones {
-  background-color: #1b2838; /* Standard Steam panel */
-  border-left: 3px solid #66c0f4; /* Steam's light blue */
+  background-color: #1b2838; 
+  border-left: 3px solid #66c0f4; 
 }
 
 a[href="/soporte"] .opciones:hover {
   background-color: #213044;
 }
 
-/* Personal info option styling */
 a[href="/info"] .opciones {
-  background-color: #1b2838; /* Standard Steam panel */
-  border-left: 3px solid #66c0f4; /* Steam's light blue */
+  background-color: #1b2838; 
+  border-left: 3px solid #66c0f4; 
 }
 
 a[href="/info"] .opciones:hover {
   background-color: #213044;
 }
 
-/* Animation for cards */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -143,7 +145,6 @@ a[href="/info"] .opciones:hover {
   animation-delay: 0.3s;
 }
 
-/* Steam-style button effect on hover */
 .opciones:after {
   content: '';
   position: absolute;
@@ -161,13 +162,14 @@ a[href="/info"] .opciones:hover {
   height: 100%;
 }
 
-/* Responsive styles for different screen sizes */
-
-/* Large desktop screens */
+/* Responsive styles */
 @media (min-width: 1400px) {
   .contenido {
-    grid-template-columns: repeat(3, 1fr);
     max-width: 1400px;
+  }
+  
+  .contenido > a {
+    flex-basis: 350px;
   }
   
   .prin h2 {
@@ -179,19 +181,23 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Standard desktop screens */
 @media (max-width: 1200px) {
   .contenido {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding: 1.5rem;
+  }
+  
+  .contenido > a {
+    flex-basis: 300px;
   }
 }
 
-/* Tablets and small laptops */
 @media (max-width: 992px) {
   .contenido {
-    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+  }
+  
+  .contenido > a {
+    flex-basis: 280px;
   }
   
   .opciones {
@@ -199,12 +205,15 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Tablets and large phones */
 @media (max-width: 768px) {
   .contenido {
-    grid-template-columns: 1fr;
     padding: 1.2rem;
     gap: 1.2rem;
+  }
+  
+  .contenido > a {
+    flex-basis: 100%;
+    max-width: 500px;
   }
   
   .opciones {
@@ -221,7 +230,6 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Medium-sized phones */
 @media (max-width: 576px) {
   .contenido {
     padding: 1rem;
@@ -250,7 +258,6 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Small phones */
 @media (max-width: 375px) {
   .contenido {
     padding: 0.8rem;
@@ -279,7 +286,6 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Extra small phones */
 @media (max-width: 320px) {
   .contenido {
     padding: 0.6rem;
@@ -305,10 +311,8 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Ensure proper display on landscape orientation */
 @media (max-height: 500px) and (orientation: landscape) {
   .contenido {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     padding: 1rem;
   }
   
@@ -325,7 +329,6 @@ a[href="/info"] .opciones:hover {
   }
 }
 
-/* Print styles for better printing */
 @media print {
   body {
     background-color: white;
