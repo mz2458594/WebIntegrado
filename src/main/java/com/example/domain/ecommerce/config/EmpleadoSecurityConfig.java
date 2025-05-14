@@ -5,17 +5,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.example.domain.ecommerce.security.CustomSuccessHandler;
+import com.example.domain.ecommerce.security.EmpleadoSuccessHandler;
 
 @Configuration
 @Order(2)
 public class EmpleadoSecurityConfig {
 
-    private final CustomSuccessHandler customSuccessHandler;
+    private final EmpleadoSuccessHandler empleadoSuccessHandler;
 
-    public EmpleadoSecurityConfig(CustomSuccessHandler customSuccessHandler) {
-        this.customSuccessHandler = customSuccessHandler;
+    public EmpleadoSecurityConfig(EmpleadoSuccessHandler empleadoSuccessHandler) {
+        this.empleadoSuccessHandler = empleadoSuccessHandler;
     }
 
     @Bean
@@ -29,7 +28,7 @@ public class EmpleadoSecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .successHandler(customSuccessHandler)
+                        .successHandler(empleadoSuccessHandler)
                         .failureUrl("/login?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/cerrarEmpleado")

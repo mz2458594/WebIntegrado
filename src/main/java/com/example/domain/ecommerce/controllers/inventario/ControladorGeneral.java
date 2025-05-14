@@ -1,9 +1,6 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import lombok.extern.slf4j.Slf4j;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,23 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.example.domain.ecommerce.dto.LoginDTO;
-import com.example.domain.ecommerce.models.entities.Empleado;
-import com.example.domain.ecommerce.services.UsuarioService;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
 public class ControladorGeneral {
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    int contador = 0;
 
     @RequestMapping("/login")
     public String loginEmpleado() {

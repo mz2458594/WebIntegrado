@@ -6,16 +6,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.domain.ecommerce.security.CustomSuccessHandler;
+import com.example.domain.ecommerce.security.ClienteSuccessHandler;
 
 @Configuration
 @Order(1)
 public class ClienteSecurityConfig {
 
-    private final CustomSuccessHandler customSuccessHandler;
+    private final ClienteSuccessHandler clienteSuccessHandler;
 
-    public ClienteSecurityConfig(CustomSuccessHandler customSuccessHandler) {
-        this.customSuccessHandler = customSuccessHandler;
+    public ClienteSecurityConfig(ClienteSuccessHandler clienteSuccessHandler) {
+        this.clienteSuccessHandler = clienteSuccessHandler;
     }
 
     @Bean
@@ -30,7 +30,7 @@ public class ClienteSecurityConfig {
                         .loginPage("/iniciar_crear")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .successHandler(customSuccessHandler)
+                        .successHandler(clienteSuccessHandler)
                         .failureUrl("/iniciar_crear?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/cerrar")
