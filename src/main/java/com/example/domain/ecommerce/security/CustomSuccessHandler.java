@@ -35,16 +35,15 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             Authentication authentication) throws IOException, ServletException {
 
         String email = authentication.getName();
-        
+
         Usuario usuario = usuarioDAO.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         ;
 
         HttpSession session = request.getSession();
-        
+
         clienteDAO.findByUsuario(usuario).ifPresent(cliente -> session.setAttribute("user", cliente));
         empleadoDAO.findByUsuario(usuario).ifPresent(empleado -> session.setAttribute("empleado", empleado));
 
-        response.sendRedirect("/");
     }
 }

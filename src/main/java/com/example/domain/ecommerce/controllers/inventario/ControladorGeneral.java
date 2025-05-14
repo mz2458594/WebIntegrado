@@ -34,34 +34,6 @@ public class ControladorGeneral {
         return "venta/login";
     }
 
-    @PostMapping("/login")
-    public String access(LoginDTO loginDTO, Model model, HttpServletRequest request) {
-
-        try {
-            Empleado empleado = usuarioService.loginEmpleado(loginDTO);
-
-            HttpSession session = request.getSession();
-
-            session.setAttribute("empleado", empleado);
-
-            contador = 0;
-
-            return "redirect:/index";
-
-        } catch (EntityNotFoundException e) {
-
-            contador++;
-            System.out.println("CONTADOR" + contador);
-            if (contador >= 3) {
-                model.addAttribute("bloquear", contador>=3);
-            }
-
-            model.addAttribute("error", true);
-            return "venta/login";
-        }
-
-    }
-
     @GetMapping("/cerrarEmpleado")
     public String cerrar_sesion(HttpSession request, SessionStatus status) {
         status.setComplete();
