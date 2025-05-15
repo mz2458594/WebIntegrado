@@ -12,11 +12,12 @@ import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
+
+import org.hibernate.query.results.implicit.ImplicitFetchBuilderEmbeddable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
-
 
 @Service
 public class ProductoService {
@@ -70,8 +71,32 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
+        if (validarCodigo(productDTO.getCodigoBarras())) {
+            producto.setCodigoBarras(productDTO.getCodigoBarras());
+        } else {
+            throw new IllegalArgumentException("El codigo de barras debe tener exactamente 13 digitos.");
+        }
+        
         return productoDAO.save(producto);
 
+    }
+
+    public boolean validarCodigo(String codigo) {
+        if (codigo == null || !codigo.matches("\\d{13}")) {
+            return false;
+        }
+
+        int suma = 0;
+
+        for (int i = 0; i < 12; i++) {
+            int digito = Character.getNumericValue(codigo.charAt(i));
+            suma += (i % 2 == 0) ? digito : digito * 3;
+        }
+
+        int digitoControlCalculado = (10 - (suma % 10)) % 10;
+        int digitoControlReal = Character.getNumericValue(codigo.charAt(12));
+
+        return digitoControlCalculado == digitoControlReal;
     }
 
     public void actualizarProducto(ProductDTO productDTO, int id) {
@@ -89,6 +114,10 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
+        if (validarCodigo(productDTO.getCodigoBarras())) {
+            producto.setCodigoBarras(productDTO.getCodigoBarras());
+        }
+
         productoDAO.save(producto);
 
     }
@@ -96,7 +125,6 @@ public class ProductoService {
     public void eliminarProducto(int id) {
         productoDAO.deleteById(Long.valueOf(id));
     }
-
 
     public void actualizarStockProducto(Producto producto, int cantidad) {
         Producto product = producto;
@@ -108,6 +136,16 @@ public class ProductoService {
         Producto product = producto;
         product.setStock(String.valueOf(Integer.valueOf(product.getStock()) + cantidad));
         productoDAO.save(product);
+    }
+
+    public Producto buscarPorCodigoBarras(String codigo){
+        Optional<Producto> producto =  productoDAO.findByCodigoBarras(codigo);
+
+        if (producto.isEmpty()) {
+            throw new EntityNotFoundException("Producto con codigo " + codigo + " no encontrado");
+        }
+
+        return producto.get();
     }
 
 }

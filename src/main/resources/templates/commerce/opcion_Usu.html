@@ -14,7 +14,7 @@
         <br/><br/>
 
         <div class="contenido">
-            <a th:href="@{/info}">
+            <a th:href="@{/targus/usuario/info}">
                 <div class="opciones">   
                     <div class="prin">
                         <img th:src="@{/images/id-card-regular-60.png}" alt="">
@@ -24,7 +24,7 @@
                 </div>  
             </a>
 
-            <a th:href="@{/soporte}">
+            <a th:href="@{/targus/principal/soporte}">
                 <div class="opciones">
                     <div class="prin">
                         <img th:src="@{/images/support-regular-60.png}" alt="">
@@ -33,18 +33,7 @@
                     <p>Encuentra respuestas en la sección de preguntas frecuentes o contacta a nuestro equipo de soporte.</p>
                 </div>
             </a>
-
-            <a th:if="${rol == 'Administrador' && rol != null}" th:href="@{/adminProducto}">
-                <div class="opciones">
-                    <div class="prin">
-                        <img th:src="@{/images/support-regular-60.png}" alt="">
-                        <h2>Administrador</h2>
-                    </div>
-                    <p>Operaciones básicas para gestionar los datos almacenados en la base de datos y el sistema</p>
-                </div>
-            </a>
             
-
         </div>
 
         <div th:insert="commerce/footer.html"></div>

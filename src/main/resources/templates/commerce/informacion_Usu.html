@@ -26,7 +26,7 @@
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
-                <form  th:action="@{/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
+                <form  th:action="@{/targus/usuario/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
                     <div>
                         <label>Nombre:</label> <br>
                         <input th:value="${user.nombre}" type="text" id="nombre" name="nombre">
@@ -62,7 +62,7 @@
             <section id="direccion">
                 <h2>Dirección de Envio</h2>
 
-                <form th:action="@{/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}" method="post">
+                <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}" method="post">
                     <div>
                         <label for="">Direccion</label> <br>
                         <input type="text" placeholder="Dirección" required 

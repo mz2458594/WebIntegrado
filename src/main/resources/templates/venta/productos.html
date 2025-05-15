@@ -65,6 +65,15 @@
                     <label for="">Imagen</label><br>
                     <input type="text" name="imagen1">
                 </div>
+                <div class="input__box">
+                        <label for="">Codigo de barras</label><br>
+                        <input type="text" name="codigoBarras" 
+                        id="codigo_act" 
+                        maxlength="13" 
+                        pattern="\d{13}"
+                        title="El codigo debe tener exactamente 13 digitos numericos"
+                        required>
+                    </div>
                 <div class="button__modal">
                     <div class="btn-modal">
                         <input id="guardar-produc" type="submit" class="btn-guardar" value="Guardar">
@@ -133,6 +142,7 @@
                             <th>Stock</th>
                             <th>Marca</th>
                             <th>Imagen</th>
+                            <th>Codigo de barras</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="producto: ${productos}">
@@ -146,6 +156,7 @@
                             <td th:text="${producto.stock}">200</td>
                             <td th:text="${producto.marca}">200</td>
                             <td th:text="${producto.imagen}"></td>
+                            <td th:text="${producto.codigoBarras}"></td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -177,7 +188,7 @@
                 <form class="form_modal" method="post" id="formEditar">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input id="nombre_act" type="text" name="nombre">
+                        <input id="nombre_act" type="text" name="nombre" required>
                     </div>
                     <div class="input__box">
                         <label for="">Descripcion</label><br>
@@ -202,22 +213,29 @@
 
                     <div class="input__box">
                         <label for="">Precio Venta</label><br>
-                        <input type="text" name="precio" id="precio_act">
+                        <input type="text" name="precio" id="precio_act" required>
                     </div>
                     <div class="input__box">
                         <label for="">Precio Compra</label><br>
-                        <input type="text" name="precioCompra" id="precioC_act">
+                        <input type="text" name="precioCompra" id="precioC_act" required> 
                     </div>
                     <div class="input__box">
                         <label for="">Marca</label><br>
-                        <input type="text" name="marca" id="marca_act">
+                        <input type="text" name="marca" id="marca_act" required>
                     </div>
                     <div class="input__box">
                         <label for="">Imagen</label><br>
-                        <input type="text" name="imagen1" id="imagen_act">
+                        <input type="text" name="imagen1" id="imagen_act" required>
                     </div>
-
-
+                    <div class="input__box">
+                        <label for="">Codigo de barras</label><br>
+                        <input type="text" name="codigoBarras" 
+                        id="codigo_act" 
+                        maxlength="13" 
+                        pattern="\d{13}"
+                        title="El codigo debe tener exactamente 13 digitos numericos"
+                        required>
+                    </div>
 
                     <div class="button__modal">
                         <div class="btn-modal">
@@ -245,6 +263,7 @@
                     document.getElementById("stock_act").value = celdas[7].textContent;
                     document.getElementById("marca_act").value = celdas[8].textContent;
                     document.getElementById("imagen_act").value = celdas[9].textContent;
+                    document.getElementById("codigo_act").value = celdas[10].textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();

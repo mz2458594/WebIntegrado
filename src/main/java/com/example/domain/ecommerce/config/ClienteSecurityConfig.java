@@ -21,20 +21,24 @@ public class ClienteSecurityConfig {
     @Bean
     public SecurityFilterChain clienteFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-        .securityMatcher("/iniciar_crear")
+        .securityMatcher("/targus/**")
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        // .requestMatchers("/comprobantes/**").hasRole("Empleado")
+                        // .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        // .requestMatchers("/targus/usuario/form_crear").permitAll()
+                        // .requestMatchers("/targus/principal/**").permitAll()
+                        // .requestMatchers("/targus/usuario/**").hasRole("Cliente")
+                        // .requestMatchers("/targus/venta/**").permitAll()
+                        // .requestMatchers("/targus/producto/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(form -> form
-                        .loginPage("/iniciar_crear")
+                        .loginPage("/targus/principal/iniciar_crear")
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler(clienteSuccessHandler)
-                        .failureUrl("/iniciar_crear?error=true"))
+                        .failureUrl("/targus/principal/iniciar_crear?error=true"))
                 .logout(logout -> logout
-                        .logoutUrl("/cerrar")
-                        .logoutSuccessUrl("/iniciar_crear")
+                        .logoutUrl("/targus/principal/cerrar")
+                        .logoutSuccessUrl("/targus/principal/iniciar_crear")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .clearAuthentication(true)

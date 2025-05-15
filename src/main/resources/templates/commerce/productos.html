@@ -42,7 +42,7 @@
 
         <div class="product-grid" id="product-grid" >
             <div th:each="producto : ${productos}" class="product-card" th:attr="data-name=${producto.nombre},data-price=${producto.precioVenta}">
-                <a th:href="@{/producto/{id} (id = ${producto.idProducto})}" class="product-link">
+                <a th:href="@{/targus/producto/detalle/{id} (id = ${producto.idProducto})}" class="product-link">
                     <div class="product-image">
                         <img th:src="${producto.imagen}" alt="Imagen del producto">
                     </div>

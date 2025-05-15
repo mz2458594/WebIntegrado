@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequestMapping("/targus/producto")
 @SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
@@ -20,13 +20,7 @@ public class ProductoController {
     @Autowired
     private ProductoService productosService;
 
-
     @GetMapping("/")
-    public String comienzo(Model model) {
-        return "commerce/principal";
-    }
-
-    @GetMapping("/producto")
     public String abrir(Model model) {
         model.addAttribute("productos", productosService.listarProducto());
         model.addAttribute("categorias", productosService.obtenerCategorias());

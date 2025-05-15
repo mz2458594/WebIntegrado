@@ -10,17 +10,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "productos")
-public class Producto implements Serializable{
+public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_producto")
+    @Column(name = "id_producto")
     private int idProducto;
 
     private String nombre;
@@ -48,13 +50,17 @@ public class Producto implements Serializable{
 
     private String precioCompra;
 
+    @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
+    private String codigoBarras;
+
     public Producto() {
 
     }
 
     public Producto(int idProducto, String nombre, String descripcion, String precioVenta, String stock, String imagen,
             Categoria categoria, List<Detalle_venta> ventaProductos, List<Detalle_pedido> detalle_pedidos,
-            Proveedor proveedor, String marca, String precioCompra) {
+            Proveedor proveedor, String marca, String precioCompra,
+            @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos") String codigoBarras) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -67,6 +73,7 @@ public class Producto implements Serializable{
         this.proveedor = proveedor;
         this.marca = marca;
         this.precioCompra = precioCompra;
+        this.codigoBarras = codigoBarras;
     }
 
     public int getIdProducto() {
@@ -165,6 +172,12 @@ public class Producto implements Serializable{
         this.precioCompra = precioCompra;
     }
 
-    
-    
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
 }

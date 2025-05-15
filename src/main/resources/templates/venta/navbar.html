@@ -17,7 +17,9 @@
                 <!-- <li><i class="fa-solid fa-basket-shopping"></i><a th:href="@{/pedidos}">Pedidos</a></li> -->
             </ul>
         </div>
-        <div class="accesoAdmin" th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
+        <!-- Para restringir el acceso al empleado -->
+        <!-- th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}" -->
+        <div class="accesoAdmin">
             <p>Mantenimiento: </p>
             <ul>
                 <li><i class="fa-solid fa-truck-field-un"></i><a th:href="@{/inventario/proveedores/}">Proveedores</a></li>

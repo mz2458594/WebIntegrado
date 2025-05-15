@@ -9,9 +9,6 @@ import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.UsuarioService;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/targus/usuario")
 @SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
@@ -90,16 +88,10 @@ public class UsuarioController {
         return "redirect:/info";
     }
 
-    @GetMapping("/recuperar")
-    public String enviar_email(Model model) {
-        return "recuperar_contraseña";
-    }
-
     @GetMapping("/actualizar_contrasena/{id}")
     public String recuperarContraseña(Model model,
             @PathVariable Integer id) {
 
-        model.addAttribute("id", id);
         return "form_contraseña";
     }
 }

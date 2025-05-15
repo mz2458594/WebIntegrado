@@ -39,14 +39,12 @@ public class ClienteSuccessHandler implements AuthenticationSuccessHandler {
 
         HttpSession session = request.getSession();
 
-        clienteDAO.findByUsuario(usuario).ifPresent(cliente -> session.setAttribute("user", cliente));
-
         if (clienteDAO.findByUsuario(usuario).isPresent()) {
             Cliente cliente = clienteDAO.findByUsuario(usuario).get();
             session.setAttribute("user", cliente);
-            response.sendRedirect("/");
+            response.sendRedirect("/targus/principal/");
         } else {
-            response.sendRedirect("/iniciar_crear?error=true");
+            response.sendRedirect("/targus/principal/iniciar_crear?error=true");
         }
 
     }
