@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html {
@@ -84,7 +84,7 @@ section {
 
 /* Steam-like panel glow effect */
 section:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -113,7 +113,7 @@ section h2 {
 }
 
 #informacion_Usu h2:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -123,7 +123,7 @@ section h2 {
 }
 
 #direccion h2:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -208,7 +208,7 @@ input:hover:not(:focus) {
 
 /* Steam-like button hover effect */
 .bott:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -257,8 +257,14 @@ div[th\:insert="commerce/footer.html"] {
 
 /* Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #informacion_Usu {
@@ -274,20 +280,20 @@ div[th\:insert="commerce/footer.html"] {
   .content {
     max-width: 1400px;
   }
-  
+
   section {
     max-width: 600px;
   }
-  
+
   section h2 {
     font-size: 2rem;
   }
-  
+
   input {
     padding: 0.9rem;
     font-size: 1.05rem;
   }
-  
+
   .bott {
     padding: 0.9rem 1.8rem;
   }
@@ -305,12 +311,12 @@ div[th\:insert="commerce/footer.html"] {
   .content {
     padding: 1.5rem;
   }
-  
+
   section {
     padding: 1.8rem;
     flex: 1 1 45%;
   }
-  
+
   .Contenido {
     gap: 1.5rem;
   }
@@ -321,21 +327,21 @@ div[th\:insert="commerce/footer.html"] {
   .content {
     padding: 1.2rem;
   }
-  
+
   section {
     padding: 1.5rem;
     flex: 1 1 100%;
     max-width: 100%;
   }
-  
+
   .Contenido {
     gap: 1.5rem;
   }
-  
+
   .volverr {
     margin-left: 1.2rem;
   }
-  
+
   section h2 {
     font-size: 1.6rem;
   }
@@ -346,31 +352,31 @@ div[th\:insert="commerce/footer.html"] {
   .content {
     padding: 1rem;
   }
-  
+
   section {
     padding: 1.2rem;
   }
-  
+
   section h2 {
     font-size: 1.5rem;
     margin-bottom: 1.2rem;
   }
-  
+
   .botons {
     flex-direction: column !important;
   }
-  
+
   .volverr {
     margin-left: 1rem;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
   }
-  
+
   input {
     padding: 0.75rem;
     font-size: 0.95rem;
   }
-  
+
   .bott {
     padding: 0.75rem 1.2rem;
     font-size: 0.95rem;
@@ -384,133 +390,180 @@ div[th\:insert="commerce/footer.html"] {
     padding: 0.8rem;
     margin-bottom: 1.5rem;
   }
-  
+
   section {
     padding: 1rem;
+    margin-bottom: 1rem;
   }
-  
+
   section h2 {
     font-size: 1.4rem;
     margin-bottom: 1rem;
   }
-  
+
   input {
     padding: 0.7rem;
     font-size: 0.9rem;
   }
-  
+
   .bott {
     padding: 0.7rem 1rem;
     font-size: 0.9rem;
   }
-  
+
   label {
     font-size: 0.85rem;
   }
-  
+
   .volverr {
     margin-left: 0.8rem;
     margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+  }
+
+  /* Asegurar que los botones se apilen correctamente */
+  .botons {
+    flex-direction: column !important;
+    gap: 0.7rem;
+  }
+
+  /* Mejorar el espaciado del formulario */
+  form div {
+    gap: 0.3rem;
   }
 }
 
 /* Responsive styles - Very small phones */
 @media (max-width: 375px) {
   .content {
-    padding: 0.7rem;
+    padding: 0.6rem;
   }
-  
+
   section {
-    padding: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 2px;
   }
-  
+
   section h2 {
-    font-size: 1.3rem;
-    padding-bottom: 0.7rem;
-    margin-bottom: 0.9rem;
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
   }
-  
+
   form {
-    gap: 1rem;
+    gap: 0.8rem;
   }
-  
+
   input {
-    padding: 0.65rem;
+    padding: 0.6rem;
     font-size: 0.85rem;
+    border-radius: 2px;
   }
-  
+
   .bott {
-    padding: 0.65rem 0.9rem;
+    padding: 0.6rem 0.9rem;
     font-size: 0.85rem;
+    width: 100%;
+  }
+
+  /* Ajustar el espaciado vertical */
+  .Contenido {
+    gap: 1rem;
   }
 }
 
 /* Responsive styles - Extra small phones */
 @media (max-width: 320px) {
   .content {
-    padding: 0.6rem;
+    padding: 0.5rem;
   }
-  
+
   section {
-    padding: 0.8rem;
+    padding: 0.7rem;
   }
-  
+
   section h2 {
-    font-size: 1.2rem;
-    padding-bottom: 0.6rem;
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.7rem;
   }
-  
+
   input {
-    padding: 0.6rem;
-    font-size: 0.85rem;
-  }
-  
-  .bott {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.85rem;
-  }
-  
-  form {
-    gap: 0.8rem;
-  }
-  
-  .volverr {
+    padding: 0.55rem;
     font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
+  }
+
+  .bott {
+    padding: 0.55rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  form {
+    gap: 0.7rem;
+  }
+
+  .volverr {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
+    margin-left: 0.5rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+  }
+}
+
+/* Ajustes para dispositivos con pantalla táctil */
+@media (hover: none) {
+  /* Mejorar la interacción táctil */
+  input,
+  .bott,
+  .volverr {
+    min-height: 44px; /* Tamaño mínimo recomendado para elementos táctiles */
+  }
+
+  /* Aumentar el área de toque para los botones */
+  .bott {
+    margin-bottom: 0.3rem;
   }
 }
 
 /* Landscape orientation adjustments */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 450px) and (orientation: landscape) {
   .content {
     padding: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .Contenido {
     flex-direction: row;
   }
-  
+
   section {
-    padding: 1rem;
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-y: auto;
+    flex: 0 1 48%;
   }
-  
+
   form {
     gap: 0.8rem;
   }
-  
+
   input {
     padding: 0.6rem;
   }
-  
+
   .botons {
     margin-top: 0.8rem;
   }
-  
+
   .volverr {
-    margin-bottom: 1rem;
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 100;
+    margin: 0;
   }
 }
 
@@ -521,12 +574,12 @@ div[th\:insert="commerce/footer.html"] {
     color: black;
     display: block;
   }
-  
+
   .content {
     display: block;
     margin-bottom: 0;
   }
-  
+
   section {
     background-color: white;
     box-shadow: none;
@@ -535,34 +588,34 @@ div[th\:insert="commerce/footer.html"] {
     page-break-inside: avoid;
     max-width: 100%;
   }
-  
+
   section:before {
     display: none;
   }
-  
+
   section h2 {
     color: #333;
     border-bottom: 1px solid #ddd;
   }
-  
+
   section h2:after {
     display: none;
   }
-  
+
   input {
     background-color: white;
     border: 1px solid #ddd;
     color: black;
   }
-  
+
   label {
     color: #555;
   }
-  
+
   .volverr {
     display: none;
   }
-  
+
   div[th\:insert="commerce/footer.html"] {
     display: none;
   }
