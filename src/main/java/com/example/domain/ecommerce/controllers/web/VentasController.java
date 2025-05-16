@@ -1,16 +1,13 @@
 package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
-
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
-
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+@RequestMapping("/targus/venta")
 @SessionAttributes({"carrito" })
 @Controller
 @Slf4j
@@ -42,8 +41,8 @@ public class VentasController {
 
         RequestDTO car = (RequestDTO)session.getAttribute("carrito");
         
-        Usuario user = (Usuario)session.getAttribute("user");
-        car.setId_usuario(user.getIdUsuario());
+        Cliente user = (Cliente)session.getAttribute("user");
+        car.setId_usuario(user.getUsuario().getIdUsuario());
         
         ventasService.crearVenta(car);
         session.removeAttribute("carrito");
@@ -72,7 +71,7 @@ public class VentasController {
         for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
                 encontrado = true;
                 break;
             }
@@ -83,7 +82,7 @@ public class VentasController {
             nuevo_item.setCantidad(cantidad);
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
-            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
             carrito.getItem().add(nuevo_item);
         }
 

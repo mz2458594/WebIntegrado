@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.services;
 
+import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -7,17 +8,19 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Comprobante;
+import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.entities.Venta_producto;
+import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.VentasDAO;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VentaService {
@@ -31,16 +34,18 @@ public class VentaService {
     @Autowired
     private ProductoService productosService;
 
+    @Autowired
+    private ComprobanteService comprobanteService;
 
-    public Venta crearVenta(RequestDTO data){
+    @Transactional
+    public Venta crearVenta(RequestDTO data) {
         Usuario usuario = usuarioService.obtenerUsuarioPorId(data.getId_usuario());
 
         Venta venta = new Venta();
         venta.setFechaVenta(Timestamp.from(Instant.now()));
         venta.setUsuario(usuario);
 
-        List<Venta_producto> listasProductos = new ArrayList<>();
-        
+        List<Detalle_venta> listasProductos = new ArrayList<>();
 
         double total = 0.00;
 
@@ -48,13 +53,15 @@ public class VentaService {
 
             Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
 
-            Venta_producto vp = new Venta_producto();
+            Detalle_venta vp = new Detalle_venta();
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setVenta(venta);
 
-            //Para disminuir la cantidad de productos luego de registrar una venta
+            // Para disminuir la cantidad de productos luego de registrar una venta
             productosService.actualizarStockProducto(p, productos.getCantidad());
+            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioVenta());
+            vp.setSubtotal(subtotal);
 
             total += vp.getSubtotal();
 
@@ -65,32 +72,34 @@ public class VentaService {
         venta.setTotal(total);
         venta.setVentaProductos(listasProductos);
 
-        return ventasDAO.save(venta);
+        Venta ventaGuardada = ventasDAO.save(venta);
+
+        comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(), data.getRazon());
+
+        return ventaGuardada;
 
     }
 
-    public List<Venta> getVentas(){
-        return (List<Venta>)ventasDAO.findAll();
+    public List<Venta> getVentas() {
+        return (List<Venta>) ventasDAO.findAll();
     }
 
-
-    public void deleteVenta(int id){
+    public void deleteVenta(int id) {
         Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
-        
+
         if (venta.isEmpty()) {
             throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
         }
 
         Venta v = venta.get();
 
-        for (Venta_producto ve: v.getVentaProductos()) {
+        for (Detalle_venta ve : v.getVentaProductos()) {
             productosService.devolverStock(ve.getProducto(), ve.getCantidad());
         }
 
         ventasDAO.deleteById(Long.valueOf(id));
 
     }
-
 
     public Venta obtenerVentasPorId(int id) {
 

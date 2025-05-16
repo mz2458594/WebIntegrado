@@ -10,23 +10,25 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "productos")
-public class Producto implements Serializable{
+public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_producto")
+    @Column(name = "id_producto")
     private int idProducto;
 
     private String nombre;
 
     private String descripcion;
-    private String precio;
+    private String precioVenta;
     private String stock;
     private String imagen;
 
@@ -35,26 +37,43 @@ public class Producto implements Serializable{
     private Categoria categoria;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<Venta_producto> ventaProductos = new ArrayList<>();
+    private List<Detalle_venta> ventaProductos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<Detalle_pedido> detalle_pedidos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
+    private String marca;
+
+    private String precioCompra;
+
+    @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
+    private String codigoBarras;
+
     public Producto() {
 
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, String precio, String stock, String imagen, Categoria categoria, List<Venta_producto> ventaProductos, Proveedor proveedor) {
+    public Producto(int idProducto, String nombre, String descripcion, String precioVenta, String stock, String imagen,
+            Categoria categoria, List<Detalle_venta> ventaProductos, List<Detalle_pedido> detalle_pedidos,
+            Proveedor proveedor, String marca, String precioCompra,
+            @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos") String codigoBarras) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = precio;
+        this.precioVenta = precioVenta;
         this.stock = stock;
         this.imagen = imagen;
         this.categoria = categoria;
         this.ventaProductos = ventaProductos;
+        this.detalle_pedidos = detalle_pedidos;
         this.proveedor = proveedor;
+        this.marca = marca;
+        this.precioCompra = precioCompra;
+        this.codigoBarras = codigoBarras;
     }
 
     public int getIdProducto() {
@@ -81,12 +100,12 @@ public class Producto implements Serializable{
         this.descripcion = descripcion;
     }
 
-    public String getPrecio() {
-        return precio;
+    public String getPrecioVenta() {
+        return precioVenta;
     }
 
-    public void setPrecio(String precio) {
-        this.precio = precio;
+    public void setPrecioVenta(String precioVenta) {
+        this.precioVenta = precioVenta;
     }
 
     public String getStock() {
@@ -113,12 +132,20 @@ public class Producto implements Serializable{
         this.categoria = categoria;
     }
 
-    public List<Venta_producto> getVentaProductos() {
+    public List<Detalle_venta> getVentaProductos() {
         return ventaProductos;
     }
 
-    public void setVentaProductos(List<Venta_producto> ventaProductos) {
+    public void setVentaProductos(List<Detalle_venta> ventaProductos) {
         this.ventaProductos = ventaProductos;
+    }
+
+    public List<Detalle_pedido> getDetalle_pedidos() {
+        return detalle_pedidos;
+    }
+
+    public void setDetalle_pedidos(List<Detalle_pedido> detalle_pedidos) {
+        this.detalle_pedidos = detalle_pedidos;
     }
 
     public Proveedor getProveedor() {
@@ -128,4 +155,29 @@ public class Producto implements Serializable{
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
     }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(String precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
 }

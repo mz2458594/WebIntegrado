@@ -3,10 +3,13 @@ package com.example.domain.ecommerce.models.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -14,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -28,89 +32,137 @@ public class Usuario implements Serializable {
 
     @Column(nullable = false)
     private String password;
-    private String role;
+    
 
     @Column(nullable = false, unique = true)
-    private String email;
-
-    @OneToOne
-    @JoinColumn(name = "persona_id", unique = true)
-    private Persona persona;
+    private String email;   
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     List<Venta> ventas = new ArrayList<>();
 
+
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
+    private Rol rol;
+
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+    private String comentario;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Pedido> pedidos = new ArrayList<>();
+
+
     public Usuario() {
 
     }
 
-    public Usuario(int idUsuario, String username, String password, String role, String email, Persona persona,
-                   List<Venta> ventas) {
+
+    public Usuario(int idUsuario, String username, String password, String email, List<Venta> ventas, Rol rol,
+            Estado estado, String comentario, List<Pedido> pedidos) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
-        this.role = role;
         this.email = email;
-        this.persona = persona;
         this.ventas = ventas;
+        this.rol = rol;
+        this.estado = estado;
+        this.comentario = comentario;
+        this.pedidos = pedidos;
     }
+
 
     public int getIdUsuario() {
         return idUsuario;
     }
 
+
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
 
     public String getUsername() {
         return username;
     }
 
+
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getPassword() {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getEmail() {
         return email;
     }
 
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
 
     public List<Venta> getVentas() {
         return ventas;
     }
+
 
     public void setVentas(List<Venta> ventas) {
         this.ventas = ventas;
     }
 
 
+    public Rol getRol() {
+        return rol;
+    }
+
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+
+    public String getComentario() {
+        return comentario;
+    }
+
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    
+   
 }

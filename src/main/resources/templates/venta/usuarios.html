@@ -22,56 +22,75 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Nuevo Usuario</p>
             </div>
-            <form id="formulario" class="form_modal" th:action="@{/agregar_usu}" method="post">
+            <form id="formulario" class="form_modal" th:action="@{/inventario/usuarios/agregar_usu}" method="post">
 
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre">
+                    <input type="text" name="nombre" required>
                 </div>
                 <div class="input__box">
                     <label for="">Apellido</label><br>
-                    <input type="text" name="apellido">
+                    <input type="text" name="apellido" required>
                 </div>
                 <div class="input__box">
                     <label for="">Numero de documento</label><br>
-                    <input type="text" name="num_documento">
+                    <input type="text" name="num_documento" maxlength="8" required>
                 </div>
                 <div class="input__box">
                     <label for="">Celular</label><br>
-                    <input type="text" name="celular">
+                    <input type="text" name="celular" maxlength="9" required>
                 </div>
                 <div class="input__box">
                     <label for="">Calle</label><br>
-                    <input type="text" name="calle">
+                    <input type="text" name="calle" required>
                 </div>
                 <div class="input__box">
                     <label for="">Ciudad</label><br>
-                    <input type="text" name="ciudad">
+                    <input type="text" name="ciudad" required>
                 </div>
                 <div class="input__box">
                     <label for="">Distrito</label><br>
-                    <input type="text" name="distrito">
+                    <input type="text" name="distrito" required>
                 </div>
                 <div class="input__box">
                     <label for="">Provincia</label><br>
-                    <input type="text" name="provincia">
+                    <input type="text" name="provincia" required> 
                 </div>
+
+                <div class="input__box">
+                    <label for="">Fecha de nacimiento</label><br>
+                    <input type="date" name="fecha_nac" required>
+                </div>
+
                 <div class="input__box">
                     <label for="">Email</label><br>
-                    <input type="email" name="correo">
+                    <input type="email" name="correo" required>
                 </div>
 
                 <div class="input__box">
                     <label for="">Username</label><br>
-                    <input type="text" name="username">
+                    <input type="text" name="username" required>
                 </div>
                 <div class="input__box">
                     <label for="">Contraseña</label><br>
-                    <input type="password" name="contraseña">
+                    <input type="password" name="contraseña" required>
                 </div>
                 <div class="input__box">
                     <label for="">Rol</label><br>
-                    <input type="text" name="rol">
+                    <select name="rol">
+                        <option th:each="rol: ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}"></option>
+                    </select>
+                </div>
+                <div class="input__box">
+                    <label for="">Estado</label><br>
+                    <select name="estado">
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select>
+                </div>
+                <div class="input__box">
+                    <label for="">Comentario</label><br>
+                    <input type="text" name="comentario">
                 </div>
 
                 <div class="button__modal">
@@ -134,6 +153,7 @@
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
+                            <th>Fecha de nacimiento</th>
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>Calle</th>
@@ -143,22 +163,27 @@
                             <th>Email</th>
                             <th>Username</th>
                             <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Comentario</th>
+                            <th>Accion</th>
                             <!-- <th>Cargo</th> -->
                         </tr>
                         <tr id="productList" th:each="usuario: ${usuarios}">
                             <td th:text="${usuario.idUsuario}">1</td>
-                            <td th:text="${usuario.persona.nombre}">Kenneth</td>
-                            <td th:text="${usuario.persona.apellido}">Kenneth</td>
-                            <td th:text="${usuario.persona.dni}">Kenneth</td>
-                            <td th:text="${usuario.persona.telefono}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.calle}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.ciudad}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.distrito}">Kenneth</td>
-                            <td th:text="${usuario.persona.direccion.provincia}">Kenneth</td>
-                            <td th:text="${usuario.email}">kenn</td>
+                            <td th:text="${usuario.nombre}">Kenneth</td>
+                            <td th:text="${usuario.apellido}">Kenneth</td>
+                            <td th:text="${usuario.fecha}"></td>
+                            <td th:text="${usuario.num_documento}">Kenneth</td>
+                            <td th:text="${usuario.celular}">Kenneth</td>
+                            <td th:text="${usuario.calle}">Kenneth</td>
+                            <td th:text="${usuario.ciudad}">Kenneth</td>
+                            <td th:text="${usuario.distrito}">Kenneth</td>
+                            <td th:text="${usuario.provincia}">Kenneth</td>
+                            <td th:text="${usuario.correo}">kenn</td>
                             <td th:text="${usuario.username}">kenn</td>
-                            <td th:text="${usuario.role}">Admin</td>
-                            <!-- <td th:if="${usuario.role == 'Empleado'}"></td> -->
+                            <td th:text="${usuario.rol}">Admin</td>
+                            <td th:text="${usuario.estado}"></td>
+                            <td th:text="${usuario.comentario}"></td>
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -187,51 +212,60 @@
                 <form class="form_modal" id="formEditarUser" method="post">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input type="text" id="nombre_act" name="nombre">
+                        <input type="text" id="nombre_act" name="nombre" required>
                     </div>
                     <div class="input__box">
                         <label for="">Apellido</label><br>
-                        <input type="text" id="apellido_act" name="apellido">
+                        <input type="text" id="apellido_act" name="apellido" required>
+                    </div>
+                    <div class="input__box">
+                        <label for="">Fecha de nacimiento</label><br>
+                        <input type="date" id="fecha_act" name="fecha_nac" required>
                     </div>
                     <div class="input__box">
                         <label for="">Numero de documento</label><br>
-                        <input type="text" id="num_act" name="num_documento">
+                        <input type="text" id="num_act" name="num_documento" maxlength="8" required>
                     </div>
                     <div class="input__box">
                         <label for="">Celular</label><br>
-                        <input type="text" id="cel_act" name="celular">
+                        <input type="text" id="cel_act" name="celular" maxlength="9" required>
                     </div>
                     <div class="input__box">
                         <label for="">Calle</label><br>
-                        <input type="text" id="calle_act" name="calle">
+                        <input type="text" id="calle_act" name="calle" required>
                     </div>
                     <div class="input__box">
                         <label for="">Ciudad</label><br>
-                        <input type="text" id="ciudad_act" name="ciudad">
+                        <input type="text" id="ciudad_act" name="ciudad" required>
                     </div>
                     <div class="input__box">
                         <label for="">Distrito</label><br>
-                        <input type="text" id="distrito_act" name="distrito">
+                        <input type="text" id="distrito_act" name="distrito" required>
                     </div>
                     <div class="input__box">
                         <label for="">Provincia</label><br>
-                        <input type="text" id="provincia_act" name="provincia">
+                        <input type="text" id="provincia_act" name="provincia" required>
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
-                        <input type="email" id="email_act" name="correo">
+                        <input type="email" id="email_act" name="correo" required>
                     </div>
 
                     <div class="input__box">
                         <label for="">Username</label><br>
-                        <input type="text" id="username_act" name="username">
+                        <input type="text" id="username_act" name="username" required>
                     </div>
                     <div class="input__box">
-                        <label for="">Rol</label><br>
-                        <input type="text" id="rol_act" name="rol">
+                        <label for="">Estado</label><br>
+                        <select name="estado" id="estado_act">
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
+                        </select>
                     </div>
-
-
+                    <div class="input__box">
+                        <label for="">Comentario</label><br>
+                        <input type="comentario" name="comentario" id="comentario_act">
+                    </div>
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input type="submit" class="btn-guardar" value="Guardar">
@@ -248,23 +282,25 @@
                 boton.addEventListener('click', function () {
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
-                    
+
                     document.getElementById("nombre_act").value = celdas[1].textContent;
                     document.getElementById("apellido_act").value = celdas[2].textContent;
-                    document.getElementById("num_act").value = celdas[3].textContent;
-                    document.getElementById("cel_act").value = celdas[4].textContent;
-                    document.getElementById("calle_act").value = celdas[5].textContent;
-                    document.getElementById("ciudad_act").value = celdas[6].textContent;
-                    document.getElementById("distrito_act").value = celdas[7].textContent;
-                    document.getElementById("provincia_act").value = celdas[8].textContent;
-                    document.getElementById("email_act").value = celdas[9].textContent;
-                    document.getElementById("username_act").value = celdas[10].textContent;
-                    document.getElementById("rol_act").value = celdas[11].textContent;
-
+                    document.getElementById("fecha_act").value = celdas[3].textContent;
+                    document.getElementById("num_act").value = celdas[4].textContent;
+                    document.getElementById("cel_act").value = celdas[5].textContent;
+                    document.getElementById("calle_act").value = celdas[6].textContent;
+                    document.getElementById("ciudad_act").value = celdas[7].textContent;
+                    document.getElementById("distrito_act").value = celdas[8].textContent;
+                    document.getElementById("provincia_act").value = celdas[9].textContent;
+                    document.getElementById("email_act").value = celdas[10].textContent;
+                    document.getElementById("username_act").value = celdas[11].textContent;
+                    // document.getElementById("rol_act").value = celdas[11].textContent;
+                    document.getElementById("estado_act").value = celdas[13].textContent;
+                    document.getElementById("comentario_act").value = celdas[14].textContent;
 
                     const form = document.getElementById("formEditarUser");
                     const idUsuario = celdas[0].textContent.trim();
-                    form.action = `/actualizar_usu/${idUsuario}`;
+                    form.action = `/inventario/usuarios/actualizar_usu/${idUsuario}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -286,7 +322,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idUsuario = valores[0].trim();
-                    form.action = `/eliminarUsuario/${idUsuario}`;
+                    form.action = `/inventario/usuarios/eliminarUsuario/${idUsuario}`;
                 });
             });
         </script>

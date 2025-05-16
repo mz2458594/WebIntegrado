@@ -8,15 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Detalle_venta;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
 
@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "compra" })
+@RequestMapping("/inventario/ventas")
 public class VentasInventarioController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class VentasInventarioController {
         ventasService.deleteVenta(id);
 
         model.addAttribute("ventas", ventasService.getVentas());
-        return "redirect:/nuevaVenta";
+        return "redirect:/inventario/ventas/nuevaVenta";
 
     }
 
@@ -79,7 +79,7 @@ public class VentasInventarioController {
         for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecio()) * item.getCantidad());
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
                 encontrado = true;
                 break;
             }
@@ -90,7 +90,7 @@ public class VentasInventarioController {
             nuevo_item.setCantidad(cantidad);
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
-            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecio()));
+            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
             sale.getItem().add(nuevo_item);
         }
 
@@ -132,9 +132,9 @@ public class VentasInventarioController {
             Model model, HttpSession session, SessionStatus status) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Usuario empleado = (Usuario) session.getAttribute("empleado");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        sale.setId_usuario(empleado.getIdUsuario());
+        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
         session.setAttribute("sale", sale);
 
         model.addAttribute("venta", sale);
@@ -144,15 +144,17 @@ public class VentasInventarioController {
     @PostMapping("/saveVenta")
     public String saveVenta(HttpSession session, Model model) {
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Usuario empleado = (Usuario) session.getAttribute("empleado");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        sale.setId_usuario(empleado.getIdUsuario());
+        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
+        
+        sale.setTipo("BOLETA");
         
         ventasService.crearVenta(sale);
 
         session.removeAttribute("sale");
         model.addAttribute("ventas", ventasService.getVentas());
-        return "redirect:/nuevaVenta";
+        return "redirect:/inventario/ventas/nuevaVenta";
     }
 
     @GetMapping("/detalleVenta/{id}")
@@ -167,11 +169,11 @@ public class VentasInventarioController {
         sale.setItem(new ArrayList<>());
         sale.setId_usuario(ventas.getUsuario().getIdUsuario());
 
-        for (Venta_producto venta : ventas.getVentaProductos()) {
+        for (Detalle_venta venta : ventas.getVentaProductos()) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(venta.getCantidad());
             nuevo_item.setProducto(venta.getProducto());
-            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecio()) * nuevo_item.getCantidad());
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()) * nuevo_item.getCantidad());
             sale.getItem().add(nuevo_item);
         }        
 

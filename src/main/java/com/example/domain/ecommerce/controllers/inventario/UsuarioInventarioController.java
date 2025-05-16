@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.services.UsuarioService;
 
@@ -15,13 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/inventario/usuarios")
 public class UsuarioInventarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/usuarios")
+    @GetMapping("/")
     public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
         return "venta/usuarios";
     }
 
@@ -32,9 +36,10 @@ public class UsuarioInventarioController {
 
         usuarioService.createUser(userDTO);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/usuarios";
+        return "redirect:/inventario/usuarios/";
     }
 
     @PostMapping("/actualizar_usu/{id}")
@@ -45,9 +50,12 @@ public class UsuarioInventarioController {
 
         usuarioService.actualizarUsuarios(userDTO, id);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        System.out.println(usuarioService.listarClientesYEmpleados());
 
-        return "redirect:/usuarios";
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
+
+        return "redirect:/inventario/usuarios/";
     }
 
     @PostMapping("/eliminarUsuario/{id}")
@@ -57,9 +65,10 @@ public class UsuarioInventarioController {
 
         usuarioService.eliminarUsuario(id);
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/usuarios";
+        return "redirect:/inventario/usuarios/";
 
     }
 }

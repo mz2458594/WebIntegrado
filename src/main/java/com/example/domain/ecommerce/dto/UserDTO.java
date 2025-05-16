@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.dto;
 
+import java.sql.Date;
 
 public class UserDTO {
     private String nombre;
@@ -15,6 +16,11 @@ public class UserDTO {
     private String contraseña;
     private String rol;
     private String cargo;
+    private String estado;
+    private Date fecha_nac;
+    private String comentario;
+
+    
 
     public String getNum_documento() {
         return num_documento;
@@ -121,4 +127,31 @@ public class UserDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Date getFecha_nac() {
+        return fecha_nac;
+    }
+
+    public void setFecha_nac(Date fecha_nac) {
+        this.fecha_nac = fecha_nac;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    
+
 }

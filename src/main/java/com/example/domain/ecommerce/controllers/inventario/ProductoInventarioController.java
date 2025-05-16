@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "nombre", "id", "rol" })
+@RequestMapping("/inventario/productos")
 public class ProductoInventarioController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class ProductoInventarioController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping("/productos")
+    @GetMapping("/")
     public String productos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
@@ -42,7 +42,7 @@ public class ProductoInventarioController {
         productoService.agregarProducto(productDTO);
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        return "redirect:/inventario/productos/";
     }
 
     @PostMapping("/actualizar/{id}")
@@ -55,7 +55,7 @@ public class ProductoInventarioController {
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        return "redirect:/inventario/productos/";
     }
 
     @PostMapping("/eliminar/{id}")
@@ -68,7 +68,7 @@ public class ProductoInventarioController {
         
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        return "redirect:/inventario/productos/";
 
     }
 }

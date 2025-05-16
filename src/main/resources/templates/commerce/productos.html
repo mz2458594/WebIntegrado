@@ -41,15 +41,15 @@
         </div>
 
         <div class="product-grid" id="product-grid" >
-            <div th:each="producto : ${productos}" class="product-card" th:attr="data-name=${producto.nombre},data-price=${producto.precio}">
-                <a th:href="@{/producto/{id} (id = ${producto.idProducto})}" class="product-link">
+            <div th:each="producto : ${productos}" class="product-card" th:attr="data-name=${producto.nombre},data-price=${producto.precioVenta}">
+                <a th:href="@{/targus/producto/detalle/{id} (id = ${producto.idProducto})}" class="product-link">
                     <div class="product-image">
                         <img th:src="${producto.imagen}" alt="Imagen del producto">
                     </div>
                     <div class="product-info">
                         <h3 class="product-name" th:text="${producto.nombre}"></h3>
                         <p class="product-category">Categoría: <span th:text="${producto.categoria.nombre}"></span></p>
-                        <p class="product-price">$<strong th:text="${producto.precio}"></strong></p>
+                        <p class="product-price">$<strong th:text="${producto.precioVenta}"></strong></p>
                     </div>
                 </a>
             </div>

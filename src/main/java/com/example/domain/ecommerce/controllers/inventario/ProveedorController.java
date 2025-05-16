@@ -13,12 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/inventario/proveedores")
 public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
 
-    @GetMapping("/proveedores")
+    @GetMapping("/")
     public String proveedores(Model model) {
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         return "venta/proveedores";
@@ -33,7 +34,7 @@ public class ProveedorController {
 
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 
-        return "redirect:/proveedores";
+        return "redirect:/inventario/proveedores/";
     }
 
     @PostMapping("/actualizar_prov/{id}")
@@ -46,7 +47,7 @@ public class ProveedorController {
 
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 
-        return "redirect:/proveedores";
+        return "redirect:/inventario/proveedores/";
     }
 
     @PostMapping("/eliminar_prov/{id}")
@@ -58,7 +59,7 @@ public class ProveedorController {
 
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 
-        return "redirect:/proveedores";
+        return "redirect:/inventario/proveedores/";
 
     }
 }

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -32,11 +33,15 @@ public class Venta implements Serializable {
     private double total;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
-    private List<Venta_producto> ventaProductos = new ArrayList<>();
+    private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    Usuario usuario;
+    private Usuario usuario;
+
+    @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
+    private Comprobante comprobante;
+
 
 
 
@@ -44,7 +49,7 @@ public class Venta implements Serializable {
 
     }
 
-    public Venta(int idVentas, Timestamp fechaVenta, double total, List<Venta_producto> ventaProductos,
+    public Venta(int idVentas, Timestamp fechaVenta, double total, List<Detalle_venta> ventaProductos,
                  Usuario usuario) {
         this.idVentas = idVentas;
         this.fechaVenta = fechaVenta;
@@ -90,13 +95,13 @@ public class Venta implements Serializable {
 
 
 
-    public List<Venta_producto> getVentaProductos() {
+    public List<Detalle_venta> getVentaProductos() {
         return ventaProductos;
     }
 
 
 
-    public void setVentaProductos(List<Venta_producto> ventaProductos) {
+    public void setVentaProductos(List<Detalle_venta> ventaProductos) {
         this.ventaProductos = ventaProductos;
     }
 

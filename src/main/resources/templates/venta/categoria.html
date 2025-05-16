@@ -22,7 +22,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Categoria</p>
             </div>
-            <form class="form_modal" th:action="@{/agregar_cat}" method="post">
+            <form class="form_modal" th:action="@{/inventario/categoria/agregar_cat}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
                     <input type="text" name="nombre" id="nombre_cat">
@@ -170,7 +170,7 @@
 
                     const form = document.getElementById("formEditar");
                     const idCategoria = celdas[0].textContent.trim();
-                    form.action = `/actualizar_cat/${idCategoria}`;
+                    form.action = `/inventario/categoria/actualizar_cat/${idCategoria}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -194,7 +194,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idCategoria = valores[0].trim();
-                    form.action = `/eliminar_cat/${idCategoria}`;
+                    form.action = `/inventario/categoria/eliminar_cat/${idCategoria}`;
                 });
             });
         </script>

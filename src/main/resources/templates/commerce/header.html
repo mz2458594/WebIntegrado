@@ -14,7 +14,7 @@
     <header id="encabezado">
         <nav>
             <center>
-                <a href="/" id="logo">
+                <a href="/targus/principal/" id="logo">
                     <img id="maxi" th:src="@{/images/Targus_Logo2.png}" alt="">
                 </a>
             </center>
@@ -31,21 +31,21 @@
             </form>
         </nav> -->
         <nav>
-            <button class="boton_opciones" onclick="location.href = '/'">Incio</button>
+            <button class="boton_opciones" onclick="location.href = '/targus/principal/'">Incio</button>
         </nav>
         <nav>
-            <button class="boton_opciones" onclick="location.href = '/producto'">Productos</button>
+            <button class="boton_opciones" onclick="location.href = '/targus/producto/'">Productos</button>
         </nav>
         <nav>
             <div class="opciones_usuario" onmouseleave="cerrar_bloque()">
-                <button id="cuenta" class="boton_opciones" onclick="location.href = '/iniciar_crear'"
+                <button id="cuenta" class="boton_opciones" onclick="location.href = '/targus/principal/iniciar_crear'"
                     onmouseenter="abrirMenu()">Mi
                     cuenta</button>
                 <div th:if="${user != null}" id="menu_usu" class="op_usu">
                     <ul class="list_op">
                         <li class="op">
-                            <a class="cerrar" th:href="@{/info}">Información personal</a>
-                            <a class="cerrar" th:href="@{/cerrar}">Cerrar sesión</a>
+                            <a class="cerrar" th:href="@{/targus/usuario/info}">Información personal</a>
+                            <a class="cerrar" th:href="@{/targus/principal/cerrar}">Cerrar sesión</a>
 
                         </li>
                     </ul>
@@ -67,10 +67,10 @@
                 <!--FIN del Cambio del header al bajar-->
 
                 <script th:if="${user != null}">
-                    document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.persona.nombre}]]";
+                    document.getElementById('cuenta').innerHTML = "Bienvenido [[${user.nombre}]]";
                     document.getElementById('cuenta').onclick = actualizar;
                     function actualizar() {
-                        window.location.href = '/opcion';
+                        window.location.href = '/targus/principal/opcion';
                     }
 
                     function abrirMenu() {
@@ -87,7 +87,7 @@
         </nav>
      
         <nav id="carrito_compra">
-            <a th:href="@{/carro}">
+            <a th:href="@{/targus/principal/carro}">
                 <img th:src="@{/images/bolsita.png}" alt="Carrito de compra" id="carrito">
                 <div class="cantidad_productos">
                     <span id="contador">0</span>
@@ -101,7 +101,7 @@
                             <span class="cantidad_product" th:text="${item.cantidad}">0</span>
                             <span class="titulo_product" th:text="${item.producto.nombre}">Ningun producto</span>
                             <span class="precio_product" th:text="${ item.producto.precio}">$0</span>
-                            <a th:href="@{/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="eliminar_prod_link"><img th:src="@{/images/x-regular-24.png}"
+                            <a th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="eliminar_prod_link"><img th:src="@{/images/x-regular-24.png}"
                                 alt="un icono" class="icono"></a>
                         </div>
                         

@@ -15,11 +15,13 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "personas")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Persona implements Serializable {
+public class Persona implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -40,17 +42,21 @@ public abstract class Persona implements Serializable {
     @JsonIgnore
     private Direccion direccion;
 
+    @Temporal(TemporalType.DATE)
+    private Date fecha; 
+
     public Persona() {
     }
 
-    public Persona(int id, String dni, String nombre, String apellido, String telefono,
-                   Direccion direccion) {
+    public Persona(int id, String dni, String nombre, String apellido, String telefono, Direccion direccion,
+            Date fecha) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.fecha = fecha;
     }
 
     public int getId() {
@@ -93,8 +99,6 @@ public abstract class Persona implements Serializable {
         this.telefono = telefono;
     }
 
-    
-
     public Direccion getDireccion() {
         return direccion;
     }
@@ -102,5 +106,15 @@ public abstract class Persona implements Serializable {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    
 
 }

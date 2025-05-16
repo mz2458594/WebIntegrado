@@ -6,6 +6,7 @@ import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.UsuarioService;
+import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +30,6 @@ public class UserController {
 
    @Autowired
    EmailService emailService;
-
-   @PostMapping("/login")
-    public Usuario login(@RequestBody LoginDTO loginDTO){
-       return usuarioService.login(loginDTO);
-   }
 
    @PostMapping("/createDirection/{id}")
    public ResponseEntity<?> createDirection(

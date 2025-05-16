@@ -10,6 +10,12 @@ public class ProveedorDTO {
 
     private String email;
 
+    private String estado;
+
+    private String comentario;
+
+    
+
     public Long getRuc() {
         return ruc;
     }
@@ -40,6 +46,22 @@ public class ProveedorDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     

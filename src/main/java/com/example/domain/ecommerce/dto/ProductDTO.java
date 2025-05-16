@@ -3,13 +3,34 @@ package com.example.domain.ecommerce.dto;
 public class ProductDTO {
 
 
-    String nombre;
-    String descripcion;
-    String nombre_categoria;
-    String precio;
-    String stock;
-    String imagen1;
-    String proveedor;
+    private String nombre;
+    private String descripcion;
+    private String nombre_categoria;
+    private String precio;
+    private String stock;
+    private String imagen1;
+    private String proveedor;
+    private String marca;
+    private String precioCompra;
+    private String codigoBarras;
+
+
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(String precioCompra) {
+        this.precioCompra = precioCompra;
+    }
 
     public String getNombre() {
         return nombre;
@@ -65,6 +86,14 @@ public class ProductDTO {
 
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
     }
 
     

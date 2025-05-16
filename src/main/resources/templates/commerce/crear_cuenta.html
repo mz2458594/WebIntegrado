@@ -20,34 +20,42 @@
             <div class="illustrations">
                 <div class="illustration-item top-right">
                     <div class="avatar">
-                        <img src="https://static.grupojoly.com/clip/06db8897-19f6-4b74-a6ce-7811568269ec_source-aspect-ratio_1600w_0.jpg" alt="Avatar 1">
+                        <img src="https://static.grupojoly.com/clip/06db8897-19f6-4b74-a6ce-7811568269ec_source-aspect-ratio_1600w_0.jpg"
+                            alt="Avatar 1">
                     </div>
                 </div>
                 <div class="illustration-item left">
                     <div class="avatar">
-                        <img src="https://img.freepik.com/vector-premium/ilustracion-vector-grafico-personaje-dibujos-animados-registro-linea_516790-1808.jpg" alt="Avatar 2">
+                        <img src="https://img.freepik.com/vector-premium/ilustracion-vector-grafico-personaje-dibujos-animados-registro-linea_516790-1808.jpg"
+                            alt="Avatar 2">
                     </div>
                 </div>
                 <div class="illustration-item bottom-right">
                     <div class="avatar">
-                        <img src="https://img.freepik.com/vector-premium/chica-dibujos-animados-compra-tecnologia-linea-sitio-web-computadora-portatil-ventas-estacionales-tiendas-linea-grandes-ventas-descuentos-compras-internet-eleccion-ropa-productos-nuevos-forma-remota-vector_776652-2602.jpg" alt="Avatar 3">
+                        <img src="https://img.freepik.com/vector-premium/chica-dibujos-animados-compra-tecnologia-linea-sitio-web-computadora-portatil-ventas-estacionales-tiendas-linea-grandes-ventas-descuentos-compras-internet-eleccion-ropa-productos-nuevos-forma-remota-vector_776652-2602.jpg"
+                            alt="Avatar 3">
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="form-side">
             <div class="nav-links">
-                <a th:href="@{/iniciar_crear}" class="enlaces">Iniciar sesion</a> |
-                <a th:href="@{/form_crear}" class="enlaces">Crear cuenta</a>
+                <a th:href="@{/targus/principal/iniciar_crear}" class="enlaces">Iniciar sesion</a> |
+                <a th:href="@{/targus/principal/form_crear}" class="enlaces">Crear cuenta</a>
             </div>
-            
+
             <div class="container">
                 <h2 id="titulo">Crea tu cuenta</h2>
-                <form th:action="@{/form_crear}" method="POST">
+                <form th:action="@{/targus/usuario/form_crear}" method="POST">
                     <fieldset>
                         <hr><br>
-                        
+
+                        <div class="form-row">
+                            <label for="fecha_nac">Fecha de nacimiento:</label>
+                            <input type="date" id="fecha_nac" name="fecha_nac" required>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>
@@ -62,7 +70,8 @@
                             <div class="form-group">
                                 <label for="num_documento">Num documento:</label>
                                 <input type="text" id="num_documento" name="num_documento"
-                                    title="El DNI debe tener 8 dígitos" placeholder="Número de Documento" maxlength="8" required>
+                                    title="El DNI debe tener 8 dígitos" placeholder="Número de Documento" maxlength="8"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="celular">Celular:</label>
@@ -77,9 +86,9 @@
                             <div class="form-group">
                                 <label for="ciudad">Ciudad:</label>
                                 <input type="text" id="ciudad" name="ciudad">
-                            </div> 
+                            </div>
                         </div>
-                                                
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="distrito">Distrito:</label>
@@ -90,7 +99,7 @@
                                 <input type="text" id="provincia" name="provincia">
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="username">Nombre de Usuario:</label>
@@ -101,7 +110,6 @@
                                 <input type="email" id="correo" name="correo" required>
                             </div>
                         </div>
-                        
                         <!-- Password - 2 columns -->
                         <div class="form-row">
                             <div class="form-group">

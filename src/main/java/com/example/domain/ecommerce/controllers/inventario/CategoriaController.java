@@ -12,14 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "nombre", "id", "rol" })
+@RequestMapping("/inventario/categoria")
 public class CategoriaController {
 
     @Autowired
     private CategoriaService categoriaService;
 
 
-    @GetMapping("/categoria")
+    @GetMapping("/")
     public String listarCategorias(Model model) {
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
         return "venta/categoria";
@@ -30,7 +30,7 @@ public class CategoriaController {
             Model model) {
         categoriaService.createCategory(categoriaDTO);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "redirect:/categoria";
+        return "redirect:/inventario/categoria/";
     }
 
     @PostMapping("/actualizar_cat/{id}")
@@ -39,7 +39,7 @@ public class CategoriaController {
             Model model) {
         categoriaService.updateCategoria(categoriaDTO, id);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "redirect:/categoria";
+        return "redirect:/inventario/categoria/";
     }
 
     @PostMapping("/eliminar_cat/{id}")
@@ -47,6 +47,6 @@ public class CategoriaController {
             Model model) {
         categoriaService.eliminarCategoria(id);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "redirect:/categoria";
+        return "redirect:/inventario/categoria/";
     }
 }

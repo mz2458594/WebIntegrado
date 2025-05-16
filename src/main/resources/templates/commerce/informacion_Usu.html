@@ -25,30 +25,30 @@
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
-                <form  th:action="@{/actualizarUsu/{id} (id = ${user.idUsuario}) }" method="post">
+                <form  th:action="@{/targus/usuario/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
                     <div>
-                        <label>Nombre:</label>
-                        <input th:value="${session.user.persona.nombre}" type="text" id="nombre" name="nombre">
+                        <label>Nombre:</label> <br>
+                        <input th:value="${user.nombre}" type="text" id="nombre" name="nombre">
                     </div>
                     <div>
                         <label>Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}">
+                        <input type="text" id="apellido" name="apellido" th:value="${user.apellido}"><br>
                     </div>
                     <div>
-                        <label>Celular:</label> 
-                        <input th:value="${session.user.persona.telefono}" type="text" maxlength="9" id="celular" name="celular">
+                        <label>Celular:</label> <br>
+                        <input th:value="${user.telefono}" type="text" maxlength="9" id="celular" name="celular">
                     </div>
                     <div>
-                        <label>Documento:</label> 
-                        <input th:value="${session.user.persona.dni}" type="text" maxlength="11" id="num_documento" name="num_documento">
+                        <label>Documento:</label> <br>
+                        <input th:value="${user.dni}" type="text" maxlength="11" id="num_documento" name="num_documento">
                     </div>
                     <div>
-                        <label>Correo:</label>
-                        <input th:value="${session.user.email}" type="email" id="correo" name="correo">
+                        <label>Correo:</label> <br>
+                        <input th:value="${user.usuario.email}" type="email" id="correo" name="correo">
                     </div>
                     <div>
-                        <label>Username:</label>
-                        <input th:value="${session.user.username}" type="text" id="username" name="username">
+                        <label>Username:</label> <br>
+                        <input th:value="${user.usuario.username}" type="text" id="username" name="username">
                     </div>
 
                     <div class="botons">
@@ -61,11 +61,11 @@
             <section id="direccion">
                 <h2>Dirección de Envio</h2>
 
-                <form th:action="@{/actualizar_direccion/{id} (id = ${user.idUsuario})}" method="post">
+                <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}" method="post">
                     <div>
                         <label for="">Direccion</label> 
                         <input type="text" placeholder="Dirección" required 
-                        th:value = "${user.persona.direccion.calle}"
+                        th:value = "${user.direccion.calle}"
                         name="calle"
                         id="calle">
 
@@ -73,14 +73,14 @@
                     <div>
                         <label for="">Ciudad</label>
                         <input type="text" placeholder="Ciudad" required
-                        th:value = "${user.persona.direccion.ciudad}"
+                        th:value = "${user.direccion.ciudad}"
                         name="ciudad"
                         id="ciudad">
                     </div>
                     <div>
                         <label for="">Provincia</label>
                         <input type="text" placeholder="Provincia" required
-                        th:value = "${user.persona.direccion.provincia}"
+                        th:value = "${user.direccion.provincia}"
                         id="provincia"
                         name="provincia">
                     </div>
@@ -88,7 +88,7 @@
                     <div>
                         <label for="">Distrito</label>
                         <input type="text" placeholder="Distrito" required
-                        th:value = "${user.persona.direccion.distrito}"
+                        th:value = "${user.direccion.distrito}"
                         id="distrito"
                         name="distrito">
                     </div>

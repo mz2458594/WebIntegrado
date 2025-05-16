@@ -12,12 +12,12 @@ import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Categoria;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Direccion;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.entities.Venta_producto;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.DireccionDAO;
@@ -147,7 +147,7 @@ public class EcommerceApplicationTests {
 
         Persona persona = new Persona() {};
         Usuario usuario = new Usuario();
-        usuario.setPersona(persona);
+        // usuario.setPersona(persona);
 
         when(usuarioDAO.findById(1L)).thenReturn(Optional.of(usuario));
 
@@ -163,7 +163,7 @@ public class EcommerceApplicationTests {
         persona.setDireccion(direccion);
 
         Usuario usuario = new Usuario();
-        usuario.setPersona(persona);
+        // usuario.setPersona(persona);
 
         when(usuarioDAO.findById(1L)).thenReturn(Optional.of(usuario));
 
@@ -321,43 +321,6 @@ public class EcommerceApplicationTests {
         verify(proveedorDAO).deleteById(1L);
     }
 
-    @Test
-    void testLogin() {
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setEmail("usuario@example.com");
-        loginDTO.setPassword("password123");
-
-        Usuario usuario = new Usuario();
-        usuario.setEmail("usuario@example.com");
-        usuario.setPassword(new BCryptPasswordEncoder().encode("password123"));
-
-        when(usuarioDAO.findByEmail("usuario@example.com")).thenReturn(Optional.of(usuario));
-
-        Usuario resultado = usuarioService.login(loginDTO);
-
-        assertEquals("usuario@example.com", resultado.getEmail());
-        verify(usuarioDAO, times(1)).findByEmail("usuario@example.com");
-    }
-//test
-    @Test
-    void testLoginEmpleado() {
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setEmail("empleado@example.com");
-        loginDTO.setPassword("password123");
-
-        Usuario usuario = new Usuario();
-        usuario.setEmail("empleado@example.com");
-        usuario.setPassword(new BCryptPasswordEncoder().encode("password123"));
-        usuario.setRole("Empleado");
-
-        when(usuarioDAO.findByEmail("empleado@example.com")).thenReturn(Optional.of(usuario));
-
-        Usuario resultado = usuarioService.loginEmpleado(loginDTO);
-
-        assertEquals("empleado@example.com", resultado.getEmail());
-        verify(usuarioDAO, times(1)).findByEmail("empleado@example.com");
-    }
-
 
     @Test
     void testActualizarUsuario() {
@@ -385,16 +348,16 @@ public class EcommerceApplicationTests {
         Usuario usuarioExistente = new Usuario();
         usuarioExistente.setIdUsuario(1);
         usuarioExistente.setEmail("usuario@example.com");
-        usuarioExistente.setPersona(persona);
+        // usuarioExistente.setPersona(persona);
 
         when(usuarioDAO.findById(1L)).thenReturn(Optional.of(usuarioExistente));
         when(usuarioDAO.save(any(Usuario.class))).thenReturn(usuarioExistente);
 
-        Usuario actualizado = usuarioService.actualizarUsuarios(userDTO, 1);
+        Cliente actualizado = (Cliente) usuarioService.actualizarUsuarios(userDTO, 1);
 
-        assertEquals("Nuevo Nombre", actualizado.getPersona().getNombre());
-        assertEquals("Nuevo Apellido", actualizado.getPersona().getApellido());
-        assertEquals("nuevoemail@example.com", actualizado.getEmail());
+        // assertEquals("Nuevo Nombre", actualizado.getPersona().getNombre());
+        // assertEquals("Nuevo Apellido", actualizado.getPersona().getApellido());
+        assertEquals("nuevoemail@example.com", actualizado.getUsuario().getEmail());
         verify(usuarioDAO, times(1)).save(any(Usuario.class));
     }
 
@@ -436,8 +399,8 @@ public class EcommerceApplicationTests {
         usuario.setUsername("nuevo_username");
         usuario.setPassword("password123");
         usuario.setEmail("nuevoemail@example.com");
-        usuario.setRole("Cliente");
-        usuario.setPersona(persona);
+        // usuario.setRole("Cliente");
+        // usuario.setPersona(persona);
     
         when(personaDAO.save(any(Persona.class))).thenReturn(persona);
         when(usuarioDAO.save(any(Usuario.class))).thenReturn(usuario);

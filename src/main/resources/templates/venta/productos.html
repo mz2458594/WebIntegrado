@@ -22,7 +22,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Productos</p>
             </div>
-            <form class="form_modal" th:action="@{/agregar_prod}" method="post">
+            <form class="form_modal" th:action="@{/inventario/productos/agregar_prod}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
                     <input type="text" name="nombre">
@@ -50,13 +50,30 @@
                     <input type="number" name="stock">
                 </div>
                 <div class="input__box">
-                    <label for="">Precio</label><br>
+                    <label for="">Precio Venta</label><br>
                     <input type="text" name="precio">
+                </div>
+                <div class="input__box">
+                    <label for="">Precio Compra</label><br>
+                    <input type="text" name="precioCompra">
+                </div>
+                <div class="input__box">
+                    <label for="">Marca</label><br>
+                    <input type="text" name="marca">
                 </div>
                 <div class="input__box">
                     <label for="">Imagen</label><br>
                     <input type="text" name="imagen1">
                 </div>
+                <div class="input__box">
+                        <label for="">Codigo de barras</label><br>
+                        <input type="text" name="codigoBarras" 
+                        id="codigo_act" 
+                        maxlength="13" 
+                        pattern="\d{13}"
+                        title="El codigo debe tener exactamente 13 digitos numericos"
+                        required>
+                    </div>
                 <div class="button__modal">
                     <div class="btn-modal">
                         <input id="guardar-produc" type="submit" class="btn-guardar" value="Guardar">
@@ -120,8 +137,12 @@
                             <th>Descripcion</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
-                            <th>Precio S/.</th>
+                            <th>Precio Venta</th>
+                            <th>Precio Compra</th>
                             <th>Stock</th>
+                            <th>Marca</th>
+                            <th>Imagen</th>
+                            <th>Codigo de barras</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="producto: ${productos}">
@@ -130,8 +151,12 @@
                             <td th:text="${producto.descripcion}">Rico y nutritivos</td>
                             <td th:text="${producto.categoria.nombre}">Snacks</td>
                             <td th:text="${producto.proveedor.nombre}">Paperos</td>
-                            <td th:text="${producto.precio}">2</td>
+                            <td th:text="${producto.precioVenta}">2</td>
+                            <td th:text="${producto.precioCompra}">200</td>
                             <td th:text="${producto.stock}">200</td>
+                            <td th:text="${producto.marca}">200</td>
+                            <td th:text="${producto.imagen}"></td>
+                            <td th:text="${producto.codigoBarras}"></td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -163,7 +188,7 @@
                 <form class="form_modal" method="post" id="formEditar">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input id="nombre_act" type="text" name="nombre">
+                        <input id="nombre_act" type="text" name="nombre" required>
                     </div>
                     <div class="input__box">
                         <label for="">Descripcion</label><br>
@@ -185,10 +210,33 @@
                         <label for="">Stock</label><br>
                         <input type="number" id="stock_act" name="stock">
                     </div>
+
                     <div class="input__box">
-                        <label for="">Precio</label><br>
-                        <input type="text" id="precio_act" name="precio">
+                        <label for="">Precio Venta</label><br>
+                        <input type="text" name="precio" id="precio_act" required>
                     </div>
+                    <div class="input__box">
+                        <label for="">Precio Compra</label><br>
+                        <input type="text" name="precioCompra" id="precioC_act" required> 
+                    </div>
+                    <div class="input__box">
+                        <label for="">Marca</label><br>
+                        <input type="text" name="marca" id="marca_act" required>
+                    </div>
+                    <div class="input__box">
+                        <label for="">Imagen</label><br>
+                        <input type="text" name="imagen1" id="imagen_act" required>
+                    </div>
+                    <div class="input__box">
+                        <label for="">Codigo de barras</label><br>
+                        <input type="text" name="codigoBarras" 
+                        id="codigo_act" 
+                        maxlength="13" 
+                        pattern="\d{13}"
+                        title="El codigo debe tener exactamente 13 digitos numericos"
+                        required>
+                    </div>
+
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
@@ -211,11 +259,15 @@
                     document.getElementById("categoria_act").value = celdas[3].textContent;
                     document.getElementById("proveedor_act").value = celdas[4].textContent;
                     document.getElementById("precio_act").value = celdas[5].textContent;
-                    document.getElementById("stock_act").value = celdas[6].textContent;
+                    document.getElementById("precioC_act").value = celdas[6].textContent;
+                    document.getElementById("stock_act").value = celdas[7].textContent;
+                    document.getElementById("marca_act").value = celdas[8].textContent;
+                    document.getElementById("imagen_act").value = celdas[9].textContent;
+                    document.getElementById("codigo_act").value = celdas[10].textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();
-                    form.action = `/actualizar/${idProducto}`;
+                    form.action = `/inventario/productos/actualizar/${idProducto}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -239,7 +291,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idProducto = valores[0].trim();
-                    form.action = `/eliminar/${idProducto}`;
+                    form.action = `/inventario/productos/eliminar/${idProducto}`;
                 });
             });
         </script>

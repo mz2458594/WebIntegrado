@@ -21,7 +21,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Proveedor</p>
             </div>
-            <form class="form_modal" th:action="@{/agregar_prov}" method="post">
+            <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" method="post">
                 <div class="input__box">
                     <label for="">RUC</label><br>
                     <input type="text" name="ruc">
@@ -37,6 +37,18 @@
                 <div class="input__box">
                     <label for="">Email</label><br>
                     <input type="email" name="email">
+                </div>
+                <div class="input__box">
+                    <label for="">Estado</label><br>
+                    <select name="estado">
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select>
+                </div>
+
+                <div class="input__box">
+                    <label for="">Comentario</label><br>
+                    <input type="comentario" name="comentario">
                 </div>
                 <div class="button__modal">
                     <div class="btn-modal">
@@ -102,6 +114,8 @@
                             <th>Nombre</th>
                             <th>Telefono</th>
                             <th>Email</th>
+                            <th>Comentario</th>
+                            <th>Estado</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="proveedor: ${proveedores}">
@@ -110,6 +124,8 @@
                             <td th:text="${proveedor.nombre}">Chips</td>
                             <td th:text="${proveedor.telefono}">999999999</td>
                             <td th:text="${proveedor.email}">example@gmail.com</td>
+                            <td th:text="${proveedor.comentario}">example</td>
+                            <td th:text="${proveedor.estado}">example</td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -153,6 +169,17 @@
                         <label for="">Email</label><br>
                         <input type="email" name="email" id="email_act">
                     </div>
+                    <div class="input__box">
+                        <label for="">Estado</label><br>
+                        <select name="estado" id="estado_act">
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
+                        </select>
+                    </div>
+                    <div class="input__box">
+                        <label for="">Comentario</label><br>
+                        <input type="text" name="comentario" id="comentario_act">
+                    </div>
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input type="submit" class="btn-guardar" value="Guardar">
@@ -176,11 +203,12 @@
                     document.getElementById("nombre_act").value = celdas[2].textContent;
                     document.getElementById("telefono_act").value = celdas[3].textContent;
                     document.getElementById("email_act").value = celdas[4].textContent;
-
+                    document.getElementById("comentario_act").value = celdas[5].textContent;
+                    document.getElementById("estado_act").value = celdas[6].textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProveedor = celdas[0].textContent.trim();
-                    form.action = `/actualizar_prov/${idProveedor}`;
+                    form.action = `/inventario/proveedores/actualizar_prov/${idProveedor}`;
 
                     modalContEdit.style.opacity = "1";
                     modalContEdit.style.visibility = "visible";
@@ -202,7 +230,7 @@
 
                     const form = document.getElementById("formEliminar");
                     const idProveedor = valores[0].trim();
-                    form.action = `/eliminar_prov/${idProveedor}`;
+                    form.action = `/inventario/proveedores/eliminar_prov/${idProveedor}`;
                 });
             });
         </script>
