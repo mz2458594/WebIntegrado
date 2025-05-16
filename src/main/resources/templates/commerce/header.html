@@ -51,17 +51,19 @@
                     </ul>
                 </div>
                 <!--INICIO del Cambio del header al bajar-->
-                <script>
-                    const header = document.getElementById('encabezado');
+            <script>
+                const header = document.getElementById('encabezado');
             
-                window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('shrink');
-                } else {
-                    header.classList.remove('shrink');
-                }
-                });
+                  window.addEventListener('scroll', () => {
+                  if (window.scrollY > 50) {
+                  header.classList.add('shrink');
+                  } else {
+                  header.classList.remove('shrink');
+            }
+            });
+
               </script>
+ 
                 <!--FIN del Cambio del header al bajar-->
 
                 <script th:if="${user != null}">
@@ -73,7 +75,7 @@
 
                     function abrirMenu() {
                         document.getElementById('menu_usu').style.display = "block";
-                        document.getElementById('cuenta').style.marginTop = "80px";
+                        document.getElementById('cuenta').style.marginTop = "0px";
                     }
 
                     function cerrar_bloque() {

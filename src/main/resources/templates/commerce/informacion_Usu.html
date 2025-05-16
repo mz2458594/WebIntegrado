@@ -16,13 +16,12 @@
 <body>
     <div th:insert="commerce/header.html"></div>
 
-
-    <br /><br />
-
+<div>
+    <a class="volverr" th:href="@{/opcion}">Volver</a>
+</div>
 
     <div class="content">
-        <div class="Opciones">
-        </div>
+
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
@@ -64,7 +63,7 @@
 
                 <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}" method="post">
                     <div>
-                        <label for="">Direccion</label> <br>
+                        <label for="">Direccion</label> 
                         <input type="text" placeholder="Dirección" required 
                         th:value = "${user.direccion.calle}"
                         name="calle"
@@ -76,16 +75,14 @@
                         <input type="text" placeholder="Ciudad" required
                         th:value = "${user.direccion.ciudad}"
                         name="ciudad"
-                        id="ciudad"
-                        ><br>
-
+                        id="ciudad">
                     </div>
                     <div>
-                        <label for="">Provincia</label><br>
+                        <label for="">Provincia</label>
                         <input type="text" placeholder="Provincia" required
                         th:value = "${user.direccion.provincia}"
                         id="provincia"
-                        name="provincia"><br> 
+                        name="provincia">
                     </div>
 
                     <div>
@@ -93,7 +90,7 @@
                         <input type="text" placeholder="Distrito" required
                         th:value = "${user.direccion.distrito}"
                         id="distrito"
-                        name="distrito"><br>
+                        name="distrito">
                     </div>
                     <div class="botons">
                         <button   type="submit" class="bott">Actualizar</button>
@@ -104,8 +101,6 @@
 
         </div>
     </div>
-    <div th:insert="commerce/footer.html"></div>
-
 
 </body>
 <script th:src="@{/js/reemplazos.js}"></script>
