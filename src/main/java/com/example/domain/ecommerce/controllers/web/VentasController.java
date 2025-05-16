@@ -48,7 +48,7 @@ public class VentasController {
         session.removeAttribute("carrito");
 
         model.addAttribute("productos", productosService.listarProducto());
-        return "redirect:/";
+        return "redirect:/targus/principal/";
     }
 
     @PostMapping("/añadir/{id}")
@@ -89,7 +89,7 @@ public class VentasController {
         session.setAttribute("carrito", carrito);
         model.addAttribute("productos", productosService.listarProducto() );
 
-        return "redirect:/producto";
+        return "redirect:/targus/producto/";
     }
 
     @GetMapping("/eliminar_prod/{id}")
@@ -110,7 +110,7 @@ public class VentasController {
 
         model.addAttribute("productos", productosService.listarProducto());
 
-        return "redirect:/producto";
+        return "redirect:/targus/producto/";
 
     }
 

@@ -29,7 +29,7 @@
                     <tr class="pro" th:each="item : ${carrito.item}">
                         <td th:text="${item.producto.nombre}"></td>
                         <td class="quantity" th:text="${item.cantidad}"></td>
-                        <td  class="cost" th:text="${item.producto.precio}">${product.price}</td>
+                        <td  class="cost" th:text="${item.producto.precioVenta}">${product.price}</td>
                         <td class="sub" th:text="${item.total}"></td>
                     </tr>
                 </tbody>
@@ -70,11 +70,11 @@
         <form id="Form2">
             <h3>Información Personal</h3>
             <input type="text" placeholder="Ingrese su nombre" required th:if="${ usuario != null}"
-                th:value="${usuario.persona.nombre}"><br>
+                th:value="${usuario.nombre}"><br>
             <input type="text" placeholder="Ingrese su apellido" required th:if="${ usuario != null}"
-                th:value="${usuario.persona.apellido}"><br>
+                th:value="${usuario.apellido}"><br>
             <input type="text" placeholder="Ingrese su número teléfono" required th:if="${usuario != null}"
-                th:value="${usuario.persona.telefono}"><br>
+                th:value="${usuario.telefono}"><br>
             <div class="btn-box">
                 <button type="button" id="Back1">Atrás</button>
                 <button type="button" id="Next2">Siguiente</button>
@@ -83,7 +83,7 @@
 
         <form id="Form3" method="post">
             <h3>Dirección de Envío</h3>
-            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required th:value="${user.persona.direccion.calle}"><br>
+            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required th:value="${user.direccion.calle}"><br>
 
             <div class="Sele">
                 <h2>Ciudad</h2>
@@ -91,34 +91,34 @@
                 <h2>Distrito</h2>
 
                 <select id="ciudad" name="ciudad">
-                    <option value="Ica" th:if="${user.persona.direccion.ciudad == 'Ica'}"
-                        th:selected="${direccion.ciudad}">Ica</option>
+                    <option value="Ica" th:if="${user.direccion.ciudad == 'Ica'}"
+                        th:selected="${user.direccion.ciudad}">Ica</option>
                     <option value="Ica">Ica</option>
                 </select>
 
                 <select name="provincia" id="provincia">
-                    <option value="Ica" th:if="${user.persona.direccion.provincia == 'Ica'}"
-                        th:selected="${user.persona.direccion.provincia}">Ica</option>
+                    <option value="Ica" th:if="${user.direccion.provincia == 'Ica'}"
+                        th:selected="${user.direccion.provincia}">Ica</option>
                     <option value="Ica">Ica</option>
-                    <option value="Chincha" th:if="${user.persona.direccion.provincia == 'Chincha'}"
-                        th:selected="${user.persona.direccion.provincia}">Chincha</option>
+                    <option value="Chincha" th:if="${user.direccion.provincia == 'Chincha'}"
+                        th:selected="${user.direccion.provincia}">Chincha</option>
                     <option value="Chincha">Chincha</option>
-                    <option value="Pisco" th:if="${user.persona.direccion.provincia == 'Pisco'}"
-                        th:selected="${user.persona.direccion.provincia}">Pisco</option>
+                    <option value="Pisco" th:if="${user.direccion.provincia == 'Pisco'}"
+                        th:selected="${user.direccion.provincia}">Pisco</option>
                     <option value="Pisco">Pisco</option>
-                    <option value="Nazca" th:if="${user.persona.direccion.provincia == 'Nazca'}"
-                        th:selected="${user.persona.direccion.provincia}">Nazca</option>
+                    <option value="Nazca" th:if="${user.direccion.provincia == 'Nazca'}"
+                        th:selected="${user.direccion.provincia}">Nazca</option>
                     <option value="Nazca">Nazca</option>
-                    <option value="Palpa" th:if="${user.persona.direccion.provincia == 'Palpa'}"
-                        th:selected="${user.persona.direccion.provincia}">Palpa</option>
+                    <option value="Palpa" th:if="${user.direccion.provincia == 'Palpa'}"
+                        th:selected="${user.direccion.provincia}">Palpa</option>
                     <option value="Palpa">Palpa</option>
                 </select>
 
                 <select id="distrito" name="distrito">
-                    <option value="Pisco" th:if="${user.persona.direccion.distrito == 'Pisco'}"
-                        th:selected="${user.persona.direccion.distrito}">Pisco</option>
-                    <option value="San andres" th:if="${user.persona.direccion.distrito == 'San andres'}"
-                        th:selected="${user.persona.direccion.distrito}">San andres</option>
+                    <option value="Pisco" th:if="${user.direccion.distrito == 'Pisco'}"
+                        th:selected="${user.direccion.distrito}">Pisco</option>
+                    <option value="San andres" th:if="${user.direccion.distrito == 'San andres'}"
+                        th:selected="${user.direccion.distrito}">San andres</option>
                     <option value="Pisco">Pisco</option>
                     <option value="San andres">San andres</option>
                 </select>

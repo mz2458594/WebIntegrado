@@ -46,7 +46,7 @@ public class UsuarioController {
 
     @GetMapping("/pagar")
     public String abrirForm_pago(Model model, HttpSession session) {
-        Usuario user = (Usuario) session.getAttribute("user");
+        Cliente user = (Cliente) session.getAttribute("user");
 
         model.addAttribute("usuario", user);
         return "commerce/form_pago";
@@ -71,7 +71,7 @@ public class UsuarioController {
 
         session.setAttribute("user", cliente);
 
-        return "redirect:/info";
+        return "redirect:/targus/usuario/info";
 
     }
 
@@ -85,7 +85,7 @@ public class UsuarioController {
 
         session.setAttribute("user", cliente);
 
-        return "redirect:/info";
+        return "redirect:/targus/usuario/info";
     }
 
     @GetMapping("/actualizar_contrasena/{id}")

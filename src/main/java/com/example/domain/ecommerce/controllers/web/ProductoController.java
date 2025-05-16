@@ -27,5 +27,10 @@ public class ProductoController {
         return "commerce/productos";
     }
     
+    @GetMapping("/detalle/{id}")
+    public String detalle(Model model, @PathVariable int id){
+        model.addAttribute("producto", productosService.obtenerProductoPorId(id));
+        return "commerce/producto-detalle";
+    }
 
 }

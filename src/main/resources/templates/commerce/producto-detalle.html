@@ -16,7 +16,7 @@
     <main class="container">
 
         <div class="breadcrumb">
-            <a th:href="@{/productos}">Productos</a>
+            <a th:href="@{/targus/producto/}">Productos</a>
             <i class="fas fa-chevron-right"></i>
             <span th:text="${producto.nombre}">Nombre del Producto</span>
         </div>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="product-price">
-                    <span class="price-value">$<span th:text="${producto.precio}">99.99</span></span>
+                    <span class="price-value">$<span th:text="${producto.precioVenta}">99.99</span></span>
                 </div>
 
                 <div class="product-description">
@@ -51,7 +51,7 @@
                     </p>
                 </div>
 
-                <form th:action="@{/añadir/{id} (id = ${producto.idProducto}) }" method="post" class="purchase-form">
+                <form th:action="@{/targus/venta/añadir/{id} (id = ${producto.idProducto}) }" method="post" class="purchase-form">
                     <div class="quantity-control">
                         <span class="quantity-label">Cantidad:</span>
                         <div class="quantity-buttons">

@@ -100,7 +100,7 @@
                             <span id="id_pro" class="idd" name="id_pro" style="display: none;"></span>
                             <span class="cantidad_product" th:text="${item.cantidad}">0</span>
                             <span class="titulo_product" th:text="${item.producto.nombre}">Ningun producto</span>
-                            <span class="precio_product" th:text="${ item.producto.precio}">$0</span>
+                            <span class="precio_product" th:text="${ item.producto.precioVenta}">$0</span>
                             <a th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }" class="eliminar_prod_link"><img th:src="@{/images/x-regular-24.png}"
                                 alt="un icono" class="icono"></a>
                         </div>
