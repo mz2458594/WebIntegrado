@@ -213,15 +213,6 @@ public class UsuarioService {
         return usuario.get();
     }
 
-    public void enviarEmail(Usuario usuario) {
-        Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
-                "Registrar cuenta",
-                usuario.getUsername(),
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-
-        emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
-    }
-
     public boolean verificar(String correo, String num_documento, String celular) {
 
         Optional<Usuario> usuario = usuarioDAO.findByEmail(correo);
@@ -320,6 +311,15 @@ public class UsuarioService {
         Usuario user = usuario.get();
         user.setEstado(Estado.ACTIVO);
         usuarioDAO.save(user);
+    }
+
+    public void enviarEmail(Usuario usuario) {
+        Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
+                "Registrar cuenta",
+                usuario.getUsername(),
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+
+        emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
     }
 
     public void emailContraseña(String email) {
