@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 
@@ -19,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Component
-public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler{
+public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private UsuarioDAO usuarioDAO;
 
@@ -42,9 +43,18 @@ public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler{
             Empleado empleado = empleadoDAO.findByUsuario(usuario).get();
             session.setAttribute("empleado", empleado);
             response.sendRedirect("/inventario/principal/index");
+
+            // if (empleado.getUsuario().getEstado() == Estado.ACTIVO) {
+            //     session.setAttribute("empleado", empleado);
+            //     response.sendRedirect("/inventario/principal/index");
+            // } else if (empleado.getUsuario().getEstado() == Estado.INACTIVO) {
+            //     response.sendRedirect("/inventario/principal/login?error=true");
+
+            // }
+
         } else {
             response.sendRedirect("/inventario/principal/login?error=true");
         }
-      
+
     }
 }

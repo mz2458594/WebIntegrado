@@ -37,12 +37,13 @@ public class UsuarioController {
             Model model) {
 
         userDTO.setRol("Cliente");
-        usuarioService.createUser(userDTO);
+        Usuario usuario = usuarioService.createUser(userDTO);
+
+        // usuarioService.enviarEmail(usuario);
 
         return "commerce/iniciosesion";
 
     }
-
 
     @GetMapping("/pagar")
     public String abrirForm_pago(Model model, HttpSession session) {
@@ -88,10 +89,46 @@ public class UsuarioController {
         return "redirect:/targus/usuario/info";
     }
 
+    @GetMapping("/registrar/{id}")
+    public String activar(@PathVariable Integer id) {
+        usuarioService.activar(id);
+        return "redirect:/targus/principal/iniciar_crear";
+    }
+
+    @GetMapping("/recuperar")
+    public String enviar_email(Model model) {
+        return "commerce/recuperar_contraseña";
+    }
+
+    @PostMapping("/recuperar")
+    public String enviar_correo(
+            @RequestParam("email") String email,
+            Model model) {
+
+        usuarioService.emailContraseña(email);
+
+        return "redirect:/targus/principal/iniciar_crear";
+
+    }
+
     @GetMapping("/actualizar_contrasena/{id}")
     public String recuperarContraseña(Model model,
             @PathVariable Integer id) {
 
-        return "form_contraseña";
+        model.addAttribute("id", id);
+
+        return "commerce/form_contraseña";
     }
+
+    @PostMapping("/actualizar_contrasena/{id}")
+    public String actualizar_con(
+            @PathVariable Integer id,
+            @RequestParam("repassword") String password,
+            Model model, HttpSession session) {
+
+        usuarioService.actualizarContraseña(password, id);
+
+        return "redirect:/targus/principal/iniciar_crear";
+    }
+
 }

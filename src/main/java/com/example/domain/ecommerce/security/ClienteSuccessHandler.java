@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 
@@ -43,6 +44,14 @@ public class ClienteSuccessHandler implements AuthenticationSuccessHandler {
             Cliente cliente = clienteDAO.findByUsuario(usuario).get();
             session.setAttribute("user", cliente);
             response.sendRedirect("/targus/principal/");
+
+            // if (cliente.getUsuario().getEstado() == Estado.ACTIVO) {
+            //     session.setAttribute("user", cliente);
+            //     response.sendRedirect("/targus/principal/");
+            // } else if (cliente.getUsuario().getEstado() == Estado.INACTIVO) {
+            //     response.sendRedirect("/targus/principal/iniciar_crear?error=true");
+            // }
+
         } else {
             response.sendRedirect("/targus/principal/iniciar_crear?error=true");
         }

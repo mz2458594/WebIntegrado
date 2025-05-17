@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
 import com.example.domain.ecommerce.models.entities.*;
@@ -197,8 +196,8 @@ public class UsuarioService {
         } else if (empleado.isPresent()) {
             Empleado empleado2 = empleado.get();
             empleadoDAO.deleteById(Long.valueOf(empleado2.getId()));
-        } 
-        
+        }
+
         usuarioDAO.deleteById(Long.valueOf(id));
     }
 
@@ -214,20 +213,14 @@ public class UsuarioService {
         return usuario.get();
     }
 
-    public void actualizarContraseña(String contraseña, int id_usuario) {
+    public void enviarEmail(Usuario usuario) {
+        Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
+                "Registrar cuenta",
+                usuario.getUsername(),
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
-        usuarioDAO.findById(Long.valueOf(id_usuario)).get().setPassword(new BCryptPasswordEncoder().encode(contraseña));
-
+        emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
     }
-
-    // public void enviarEmail(Usuario usuario) {
-    // Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
-    // "Registrar cuenta",
-    // usuario.getUsername(),
-    // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-
-    // emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
-    // }
 
     public boolean verificar(String correo, String num_documento, String celular) {
 
@@ -262,6 +255,8 @@ public class UsuarioService {
         if (rol.isPresent()) {
             usuario.setRol(rol.get());
         }
+
+        // usuario.setEstado(Estado.INACTIVO);
         usuario.setEstado(Estado.ACTIVO);
 
         usuarioDAO.save(usuario);
@@ -312,6 +307,43 @@ public class UsuarioService {
 
             return cli.getUsuario();
         }
+
+    }
+
+    public void activar(int id) {
+        Optional<Usuario> usuario = usuarioDAO.findById(Long.valueOf(id));
+
+        if (usuario.isEmpty()) {
+            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
+        }
+
+        Usuario user = usuario.get();
+        user.setEstado(Estado.ACTIVO);
+        usuarioDAO.save(user);
+    }
+
+    public void emailContraseña(String email) {
+        Optional<Usuario> usuario = usuarioDAO.findByEmail(email);
+
+        if (usuario.isEmpty()) {
+            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
+        }
+
+        Usuario user = usuario.get();
+
+        Email correo = new Email("mz2458594@gmail.com", email, "Recuperar Contraseña", user.getUsername(),
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+        emailService.sendEmailTemplate(correo, user.getIdUsuario());
+    }
+
+    public void actualizarContraseña(String contraseña, int id_usuario) {
+
+        Usuario usuario = usuarioDAO.findById(Long.valueOf(id_usuario))
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id_usuario));
+
+        usuario.setPassword(new BCryptPasswordEncoder().encode(contraseña));
+
+        usuarioDAO.save(usuario);
 
     }
 

@@ -1,19 +1,14 @@
 package com.example.domain.ecommerce.services;
-
-import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.example.domain.ecommerce.dto.RequestDTO;
-import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.VentasDAO;
 
 import jakarta.persistence.EntityNotFoundException;
