@@ -56,6 +56,12 @@
                             <input type="date" id="fecha_nac" name="fecha_nac" required>
                         </div>
 
+                        <script>
+                            const inputFecha = document.getElementById("fecha_nac")
+                            const now = new Date().toISOString().split("T")[0]
+                            inputFecha.max = now;
+                        </script>
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>
@@ -134,7 +140,6 @@
         document.querySelector("form").addEventListener("submit", function (e) {
             const password = document.getElementById("contraseña").value;
             const repassword = document.getElementById("confirmar_contrasena").value;
-            console.log(password);
 
             if (password !== repassword) {
                 e.preventDefault();
