@@ -16,6 +16,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "productos")
 public class Producto implements Serializable {
@@ -37,12 +40,15 @@ public class Producto implements Serializable {
     private Categoria categoria;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Detalle_pedido> detalle_pedidos = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("productos")
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 

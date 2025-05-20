@@ -24,8 +24,7 @@ public class ProductController {
 
     @GetMapping("/")
     public List<Producto> getAllProducts() {
-        List<Producto> productos = productosService.listarProducto();
-        return productos;
+        return  productosService.listarProducto();
     }
 
     @PostMapping("/createProduct")
