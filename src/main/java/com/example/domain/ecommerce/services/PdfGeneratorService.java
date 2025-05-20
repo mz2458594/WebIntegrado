@@ -59,6 +59,7 @@ public class PdfGeneratorService {
             document.add(image);
         } catch (IOException e) {
             e.printStackTrace();
+            document.close();
             throw new RuntimeException("Error al generar el PDF", e);
         }
 
