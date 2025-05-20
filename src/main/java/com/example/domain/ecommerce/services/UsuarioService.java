@@ -1,5 +1,8 @@
 package com.example.domain.ecommerce.services;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -118,14 +121,20 @@ public class UsuarioService {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
 
+        LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
+
         usuario.setEmail(userDTO.getCorreo());
         usuario.setUsername(userDTO.getUsername());
         usuario.setComentario(userDTO.getComentario());
 
-        Optional<Rol> rol = rolDAO.findByNombre(userDTO.getRol());
-
-        if (rol.isPresent()) {
-            usuario.setRol(rol.get());
+        if (usuario.getRol().getNombre().equals("Empleado")) {
+            if (calcularEdad(fechaNacimineto) < 18) {
+                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
+            }
+        } else if (usuario.getRol().getNombre().equals("Cliente")) {
+            if (calcularEdad(fechaNacimineto) < 13) {
+                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
+            }
         }
 
         if (userDTO.getEstado() != null) {
@@ -247,13 +256,36 @@ public class UsuarioService {
             usuario.setRol(rol.get());
         }
 
-        // usuario.setEstado(Estado.INACTIVO);
-        usuario.setEstado(Estado.ACTIVO);
+        if (user.getEstado() == null) {
 
-        usuarioDAO.save(usuario);
+            usuario.setEstado(Estado.INACTIVO);
+
+        } else {
+            switch (user.getEstado()) {
+                case "ACTIVO":
+                    usuario.setEstado(Estado.ACTIVO);
+                    break;
+                case "INACTIVO":
+                    usuario.setEstado(Estado.INACTIVO);
+                    break;
+                default:
+                    usuario.setEstado(Estado.INACTIVO);
+                    break;
+            }
+        }
+
+        LocalDate fechaNacimineto = user.getFecha_nac().toLocalDate();
 
         if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
+
+            if (calcularEdad(fechaNacimineto) < 18) {
+                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
+            }
+
+            usuarioDAO.save(usuario);
+
             Empleado emp = new Empleado();
+
             emp.setCargo(user.getCargo());
             emp.setDni(user.getNum_documento());
             emp.setApellido(user.getApellido());
@@ -277,6 +309,13 @@ public class UsuarioService {
             return emp.getUsuario();
 
         } else {
+
+            if (calcularEdad(fechaNacimineto) < 13) {
+                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
+            }
+
+            usuarioDAO.save(usuario);
+
             Cliente cli = new Cliente();
             cli.setDni(user.getNum_documento());
             cli.setApellido(user.getApellido());
@@ -345,6 +384,10 @@ public class UsuarioService {
 
         usuarioDAO.save(usuario);
 
+    }
+
+    private int calcularEdad(LocalDate fecha) {
+        return Period.between(fecha, LocalDate.now()).getYears();
     }
 
 }
