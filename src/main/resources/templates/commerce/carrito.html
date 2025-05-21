@@ -2,203 +2,243 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carrito de compra</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" th:href="@{/css/carro.css}" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <link rel="icon" th:href="@{/images/logo.png}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito de compra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/carro.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="icon" th:href="@{/images/logo.png}" />
 </head>
 
 <body>
 
-  <div th:insert="commerce/header.html"></div>
+    <div th:insert="commerce/header.html"></div>
 
-  <div class="wrapper">
-    <main>
-      <div class="container-cart">
-        <div class="cart-products">
-          <!-- INICIO del Grid -->
-          <div class="grid">
+    <div class="wrapper">
+        <main>
+            <div class="container-cart">
+                <div class="cart-products">
+                    <!-- INICIO del Grid -->
+                    <div class="grid">
 
-            <div class="productos">
-              <div class="selec-total">
-                <input type="checkbox" class="selec-total__checkbox" id="selec-total">
-                <div class="selec-total__title">Seleccionar todo</div>
-              </div>
+                        <div class="productos">
+                            <div class="selec-total">
+                                <input type="checkbox" class="selec-total__checkbox" id="selec-total">
+                                <div class="selec-total__title">Seleccionar todo</div>
+                            </div>
 
-              <div class="info-product" th:if="${carrito != null}" th:each="item: ${carrito.item}" 
-                   th:data-price="${item.producto.precioVenta}" th:data-stock="${item.producto.stock}">
-                <div class="selec-product">
-                  <input type="checkbox" class="selec-product__checkbox">
-                </div>
+                            <div class="info-product" th:if="${carrito != null}" th:each="item: ${carrito.item}"
+                                th:data-price="${item.producto.precioVenta}" th:data-stock="${item.producto.stock}">
+                                <div class="selec-product">
+                                    <input type="checkbox" class="selec-product__checkbox">
+                                </div>
 
-                <div class="im_producto">
-                  <img th:src="${item.producto.imagen}" alt="Imagen del producto">
-                </div>
+                                <div class="im_producto">
+                                    <img th:src="${item.producto.imagen}" alt="Imagen del producto">
+                                </div>
 
-                <div class="det-product">
-                  <div class="nom-product" th:text="${item.producto.nombre}">
-                    Nombre del producto
-                  </div>
+                                <div class="det-product">
+                                    <div class="nom-product" th:text="${item.producto.nombre}">
+                                        Nombre del producto
+                                    </div>
 
-                  <div>
-                    <a class="acciones" th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }">Eliminar</a>
-                  </div>
-                </div>
+                                    <div>
+                                        <a class="acciones"
+                                            th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }">Eliminar</a>
+                                    </div>
+                                </div>
 
-                <div class="canti-product">
-                  <button class="btn-restar">-</button>
-                  <span class="cantidad" th:text="${item.cantidad}">1</span>
-                  <button class="btn-sumar">+</button>
-                </div>
+                                <div class="canti-product">
+                                    <button class="btn-restar" th:attr="data-id=${item.producto.idProducto}"
+                                    onclick="disminuir(this)">-</button>
+                                    <script>
+                                        function disminuir(button) {
+                                            const id = button.getAttribute("data-id")
+                                            
+                                            fetch(`/targus/venta/disminuir/${id}`, {
+                                                method: 'POST'
+                                            })
+                                            .then(response => {
+                                                if (response.redirected) {
+                                                    window.location.href = response.url
+                                                }
+                                            })
+                                            .catch(error => console.error("Error al disminuir la cantidad"))
+                                            
+                                            
+                                        }
+                                    </script>
+                                    <span class="cantidad" th:text="${item.cantidad}">1</span>
+                                    <button class="btn-sumar" th:attr="data-id=${item.producto.idProducto}"
+                                        onclick="añadirProducto(this)">+</button>
+                                    <script>
+                                        function añadirProducto(button) {
+                                            const id = button.getAttribute("data-id")
+                                            
+                                            fetch(`/targus/venta/agregar/${id}`, {
+                                                method: 'POST'
+                                            })
+                                            .then(response => {
+                                                if (response.redirected) {
+                                                    window.location.href = response.url
+                                                } else {
+                                                    console.log("Producto añadido al carrito")
+                                                }
+                                            })
+                                            .catch(error => console.error("Error al agregar cantidad"))
+                                            
+                                            
+                                        }
+                                    </script>
+                                </div>
 
-                <div class="precio-product">
-                  S/. <span class="precio-total" th:text="${item.producto.precioVenta}">0.00</span>
-                </div>
-              </div>
-            </div>
+                                <div class="precio-product">
+                                    S/. <span class="precio-total" th:text="${item.producto.precioVenta}">0.00</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="totales">
-              <div class="total-ti">
-              <strong>Resumen de compra</strong>
-              </div>
-              <div class="resumen">
-                <div class="resumen">
-                  <span class="resumen-text">Subtotal</span>
-                  <span class="resumen-valor" id="subtotal">S/. 0.00</span>
-                </div>
-                <div class="resumen">
-                  <span class="resumen-text">Envío</span>
-                  <span class="resumen-valor" id="envio">S/. 0.00</span>
-                </div>
-                <div class="resumen">
-                  <span class="resumen-text">Total</span>
-                  <span class="resumen-valor" id="total">S/. 0.00</span>
-                </div>
-              </div>
-              <div class="compra">
-              <button class="buy-button" type="button" id="comprar"
+                        <div class="totales">
+                            <div class="total-ti">
+                                <strong>Resumen de compra</strong>
+                            </div>
+                            <div class="resumen">
+                                <div class="resumen">
+                                    <span class="resumen-text">Subtotal</span>
+                                    <span class="resumen-valor" id="subtotal">S/. 0.00</span>
+                                </div>
+                                <div class="resumen">
+                                    <span class="resumen-text">Envío</span>
+                                    <span class="resumen-valor" id="envio">S/. 0.00</span>
+                                </div>
+                                <div class="resumen">
+                                    <span class="resumen-text">Total</span>
+                                    <span class="resumen-valor" id="total">S/. 0.00</span>
+                                </div>
+                            </div>
+                            <div class="compra">
+                                <button class="buy-button" type="button" id="comprar"
                                     onclick="location.href='/targus/principal/iniciar_crear'">Comprar</button>
                                 <script th:if="${user != null}">
                                     document.getElementById("comprar").addEventListener("click", function () {
                                         window.location.href = "/targus/usuario/pagar";
                                     });
                                 </script>
-              </div>    
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- FIN del Grid -->
+                </div>
             </div>
+        </main>
+    </div>
 
-          </div>
-          <!-- FIN del Grid -->
-        </div>
-      </div>
-    </main>
-  </div>
+    <div th:insert="commerce/footer.html"></div>
 
-  <div th:insert="commerce/footer.html"></div>
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const envioFijo = 10.00;
+            const subtotalSpan = document.getElementById('subtotal');
+            const envioSpan = document.getElementById('envio');
+            const totalSpan = document.getElementById('total');
+            const checkboxes = document.querySelectorAll('.selec-product__checkbox');
 
-  <!-- Scripts -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const envioFijo = 10.00;
-      const subtotalSpan = document.getElementById('subtotal');
-      const envioSpan = document.getElementById('envio');
-      const totalSpan = document.getElementById('total');
-      const checkboxes = document.querySelectorAll('.selec-product__checkbox');
+            function actualizarResumen() {
+                let subtotal = 0;
+                let haySeleccionados = false;
 
-      function actualizarResumen() {
-        let subtotal = 0;
-        let haySeleccionados = false;
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        const producto = checkbox.closest('.info-product');
+                        const precio = parseFloat(producto.querySelector('.precio-total').textContent);
+                        subtotal += precio;
+                        haySeleccionados = true;
+                    }
+                });
 
-        checkboxes.forEach((checkbox) => {
-          if (checkbox.checked) {
-            const producto = checkbox.closest('.info-product');
-            const precio = parseFloat(producto.querySelector('.precio-total').textContent);
-            subtotal += precio;
-            haySeleccionados = true;
-          }
+                const envio = haySeleccionados ? envioFijo : 0;
+                const total = subtotal + envio;
+
+                subtotalSpan.textContent = `S/. ${subtotal.toFixed(2)}`;
+                envioSpan.textContent = `S/. ${envio.toFixed(2)}`;
+                totalSpan.textContent = `S/. ${total.toFixed(2)}`;
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', actualizarResumen);
+            });
+
+            const checkboxTodos = document.getElementById('selec-total');
+            checkboxTodos.addEventListener('change', () => {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = checkboxTodos.checked;
+                });
+                actualizarResumen();
+            });
+
+            const productos = document.querySelectorAll('.info-product');
+
+            productos.forEach(producto => {
+                const btnSumar = producto.querySelector('.btn-sumar');
+                const btnRestar = producto.querySelector('.btn-restar');
+                const cantidadSpan = producto.querySelector('.cantidad');
+                const precioTotalSpan = producto.querySelector('.precio-total');
+                const precioUnitario = parseFloat(producto.dataset.price);
+                const stock = parseInt(producto.dataset.stock);
+                const checkbox = producto.querySelector('.selec-product__checkbox');
+                const btnEliminar = producto.querySelector('.acciones');
+
+                let cantidad = parseInt(cantidadSpan.textContent);
+
+                const actualizarPrecio = () => {
+                    const nuevoPrecio = (cantidad * precioUnitario).toFixed(2);
+                    precioTotalSpan.textContent = nuevoPrecio;
+                    actualizarResumen();
+                };
+
+                btnSumar.addEventListener('click', () => {
+                    if (cantidad < stock) {
+                        cantidad++;
+                        cantidadSpan.textContent = cantidad;
+                        actualizarPrecio();
+                    } else {
+                        alert("No hay más stock disponible.");
+                    }
+                });
+
+                btnRestar.addEventListener('click', () => {
+                    if (cantidad > 1) {
+                        cantidad--;
+                        cantidadSpan.textContent = cantidad;
+                        actualizarPrecio();
+                    }
+                });
+            });
+
+
+            negativo.addEventListener('click', (e) => {
+                const producto = e.target.closest('.info-product');
+                const cantidadSpan = producto.querySelector('.cantidad');
+                const cantidadActual = parseInt(cantidadSpan.textContent);
+
+                const nuevaCantidad = cantidadActual - 1;
+
+                if (nuevaCantidad < 1) {
+                    e.preventDefault(); // evita que se reste visualmente
+                    producto.remove();  // elimina el producto del DOM
+                    actualizarResumen(); // actualiza los totales
+                }
+            });
         });
 
-        const envio = haySeleccionados ? envioFijo : 0;
-        const total = subtotal + envio;
 
-        subtotalSpan.textContent = `S/. ${subtotal.toFixed(2)}`;
-        envioSpan.textContent = `S/. ${envio.toFixed(2)}`;
-        totalSpan.textContent = `S/. ${total.toFixed(2)}`;
-      }
-
-      checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', actualizarResumen);
-      });
-
-      const checkboxTodos = document.getElementById('selec-total');
-      checkboxTodos.addEventListener('change', () => {
-        checkboxes.forEach(checkbox => {
-          checkbox.checked = checkboxTodos.checked;
-        });
-        actualizarResumen();
-      });
-
-      const productos = document.querySelectorAll('.info-product');
-
-      productos.forEach(producto => {
-        const btnSumar = producto.querySelector('.btn-sumar');
-        const btnRestar = producto.querySelector('.btn-restar');
-        const cantidadSpan = producto.querySelector('.cantidad');
-        const precioTotalSpan = producto.querySelector('.precio-total');
-        const precioUnitario = parseFloat(producto.dataset.price);
-        const stock = parseInt(producto.dataset.stock);
-        const checkbox = producto.querySelector('.selec-product__checkbox');
-        const btnEliminar = producto.querySelector('.acciones');
-
-        let cantidad = parseInt(cantidadSpan.textContent);
-
-        const actualizarPrecio = () => {
-          const nuevoPrecio = (cantidad * precioUnitario).toFixed(2);
-          precioTotalSpan.textContent = nuevoPrecio;
-          actualizarResumen();
-        };
-
-        btnSumar.addEventListener('click', () => {
-          if (cantidad < stock) {
-            cantidad++;
-            cantidadSpan.textContent = cantidad;
-            actualizarPrecio();
-          } else {
-            alert("No hay más stock disponible.");
-          }
-        });
-
-        btnRestar.addEventListener('click', () => {
-          if (cantidad > 1) {
-            cantidad--;
-            cantidadSpan.textContent = cantidad;
-            actualizarPrecio();
-          }
-        });
-    });
-      
-
-      negativo.addEventListener('click', (e) => {
-  const producto = e.target.closest('.info-product');
-  const cantidadSpan = producto.querySelector('.cantidad');
-  const cantidadActual = parseInt(cantidadSpan.textContent);
-
-  const nuevaCantidad = cantidadActual - 1;
-
-  if (nuevaCantidad < 1) {
-    e.preventDefault(); // evita que se reste visualmente
-    producto.remove();  // elimina el producto del DOM
-    actualizarResumen(); // actualiza los totales
-  }
-});
-    });
-
-    
-  </script>
+    </script>
 
 </body>
+
 </html>

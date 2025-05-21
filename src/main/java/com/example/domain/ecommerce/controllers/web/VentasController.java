@@ -114,4 +114,63 @@ public class VentasController {
 
     }
 
+
+    @PostMapping("/agregar/{id}")
+    public String añadir(
+            @PathVariable int id,
+            HttpSession session,
+            Model model) {
+
+        RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
+        
+
+        if (carrito == null) {
+            carrito = new RequestDTO();
+            carrito.setItem(new ArrayList<>());
+        }
+
+        boolean encontrado = false;
+
+        for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
+            if (item.getProducto().getIdProducto() == id) {
+                item.setCantidad(item.getCantidad() + 1);
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
+            nuevo_item.setCantidad(1);
+            Producto p = productosService.obtenerProductoPorId(id);
+            nuevo_item.setProducto(p);
+            nuevo_item.setTotal(1 * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
+            carrito.getItem().add(nuevo_item);
+        }
+
+        session.setAttribute("carrito", carrito);
+        return "redirect:/targus/principal/carro";
+    }
+
+
+    @PostMapping("/disminuir/{id}")
+    public String disminuir(
+            @PathVariable int id,
+            HttpSession session,
+            Model model) {
+
+        RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
+
+       for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
+            if (item.getProducto().getIdProducto() == id) {
+                item.setCantidad(item.getCantidad() - 1);
+                break;
+            }
+       }
+
+        session.setAttribute("carrito", carrito);
+        return "redirect:/targus/principal/carro";
+    }
+
 }
