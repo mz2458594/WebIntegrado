@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @RequestMapping("/targus/venta")
-@SessionAttributes({"carrito" })
+@SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
 public class VentasController {
@@ -33,17 +33,16 @@ public class VentasController {
     @Autowired
     private ProductoService productosService;
 
-
     @GetMapping("/registrar_venta")
     public String registrarVenta(
-        
+
             Model model, HttpSession session, SessionStatus status) {
 
-        RequestDTO car = (RequestDTO)session.getAttribute("carrito");
-        
-        Cliente user = (Cliente)session.getAttribute("user");
+        RequestDTO car = (RequestDTO) session.getAttribute("carrito");
+
+        Cliente user = (Cliente) session.getAttribute("user");
         car.setId_usuario(user.getUsuario().getIdUsuario());
-        
+
         ventasService.crearVenta(car);
         session.removeAttribute("carrito");
 
@@ -59,7 +58,6 @@ public class VentasController {
             Model model) {
 
         RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
-        
 
         if (carrito == null) {
             carrito = new RequestDTO();
@@ -87,7 +85,7 @@ public class VentasController {
         }
 
         session.setAttribute("carrito", carrito);
-        model.addAttribute("productos", productosService.listarProducto() );
+        model.addAttribute("productos", productosService.listarProducto());
 
         return "redirect:/targus/producto/";
     }
@@ -98,22 +96,20 @@ public class VentasController {
             HttpSession session,
             Model model) {
 
-       RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
+        RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
 
-       for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
+        for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 carrito.getItem().remove(item);
                 break;
             }
-       }
-
+        }
 
         model.addAttribute("productos", productosService.listarProducto());
 
         return "redirect:/targus/producto/";
 
     }
-
 
     @PostMapping("/agregar/{id}")
     public String añadir(
@@ -122,7 +118,6 @@ public class VentasController {
             Model model) {
 
         RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
-        
 
         if (carrito == null) {
             carrito = new RequestDTO();
@@ -153,7 +148,6 @@ public class VentasController {
         return "redirect:/targus/principal/carro";
     }
 
-
     @PostMapping("/disminuir/{id}")
     public String disminuir(
             @PathVariable int id,
@@ -162,12 +156,17 @@ public class VentasController {
 
         RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
 
-       for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
+        for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
-                item.setCantidad(item.getCantidad() - 1);
-                break;
+                if (item.getCantidad() > 1) {
+                    item.setCantidad(item.getCantidad() - 1);
+                    item.setTotal(item.getCantidad() * Float.parseFloat(item.getProducto().getPrecioVenta()));
+                    break;
+                } else {
+                    break;
+                }
             }
-       }
+        }
 
         session.setAttribute("carrito", carrito);
         return "redirect:/targus/principal/carro";
