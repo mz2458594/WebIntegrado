@@ -1,26 +1,29 @@
-.contenedor_main{
-    min-height: 100%;
+.contenedor_main {
+    height: 100vh;
+    width: fit-content;
+    overflow: scroll;
 }
 
-.contenedor_modal{
+.contenedor_modal {
     border: 1px solid rgba(173, 173, 173, 0.467);
     border-radius: 5px;
     border-top: 3px solid #0078ff;
-    padding-bottom: 10px ;
+    padding-bottom: 10px;
+    width: fit-content;
 }
 
-.title__add--modal{
+.title__add--modal {
     display: flex;
     justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid rgba(173, 173, 173, 0.467);
 }
 
-.title__add--modal p{
+.title__add--modal p {
     font-weight: 600;
 }
 
-.addition{
+.addition {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -31,15 +34,15 @@
     border: none;
 }
 
-.addition:hover{
+.addition:hover {
     background-color: #3391fc;
 }
 
-.addition i{
+.addition i {
     padding-right: 5px;
 }
 
-.Cont__buscar{
+.Cont__buscar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,13 +50,14 @@
     font-weight: bold;
 }
 
-.cont-reportes{
+.cont-reportes {
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-.cont-reportes button{
+
+.cont-reportes button {
     padding: 5px 20px;
     font-weight: bold;
     color: #fff;
@@ -64,64 +68,72 @@
     border-radius: 4px;
 }
 
-.cont-reportes button i{
+.cont-reportes button i {
     font-size: 20px;
 }
 
-.cont-reportes button:first-child{
+.cont-reportes button:first-child {
     background-color: #b51308;
 }
 
-.cont-reportes button:last-child{
+.cont-reportes button:last-child {
     background-color: #0a7641;
 }
 
 
-.buscar_search input{
+.buscar_search input {
     padding: 7px;
     border-radius: 5px;
     border: 1px solid rgba(165, 165, 165, 0.467);
 
 }
 
-.buscar_search label{
+.buscar_search label {
     font-weight: 600;
 }
 
-.buscar_search input:focus-visible{
+.buscar_search input:focus-visible {
     outline: 2px solid #3391fc;
 }
 
-.cont_table{
+.cont_table {
     padding: 0 35px;
 }
 
-.table{
+.table {
     text-align: center;
     width: 100%;
     border-top: 1px solid rgba(173, 173, 173, 0.467);
-    border-collapse:collapse ;
+    border-collapse: collapse;
 }
 
-.thead{
+.thead {
     border-bottom: 2px solid #0002;
 }
 
-.table th, .table td{
+.table th,
+.table td {
     padding: 8px;
 }
 
-.table tr:nth-child(2n){
+.table tr:nth-child(2n) {
     background-color: #0001;
 }
 
-#imagen, #productList td{
-    word-break: break-word;   /* Para que corte palabras largas sin espacios */
-    white-space: normal;  /* Permite que el texto se ajuste en varias líneas */
+#productList td {
+    word-break: break-word;
+    max-width: 400px;
+    white-space: normal;
+    text-overflow: ellipsis;
+    text-align: center;
 }
 
 
-.container_action{
+#productList {
+    width: 100%;
+}
+
+.container_action {
     margin: auto;
     max-width: 100px;
     padding: 5px;
@@ -131,16 +143,19 @@
     box-shadow: 0 0 2px 2px #0004;
 }
 
-.name_action::selection{
+.name_action::selection {
     background-color: transparent;
 }
 
-.container_action, .name_action, .fa-caret-down, .cont_opciones button{
+.container_action,
+.name_action,
+.fa-caret-down,
+.cont_opciones button {
     cursor: pointer;
 }
 
 
-.cont_opciones{
+.cont_opciones {
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 0 3px 3px #0002;
@@ -154,29 +169,29 @@
 }
 
 
-#open_action{
+#open_action {
     padding: 0;
     margin: 0;
     display: none;
 }
 
-#open_action:checked ~ .cont_opciones{
+#open_action:checked~.cont_opciones {
     display: flex;
 }
 
-.fa-pen-to-square{
+.fa-pen-to-square {
     color: #00F;
 }
 
-.fa-trash-can{
+.fa-trash-can {
     color: #f00;
 }
 
-.cont_opciones button:first-child{
+.cont_opciones button:first-child {
     border-bottom: 1px solid rgba(173, 173, 173, 0.467);
 }
 
-.cont_opciones button{
+.cont_opciones button {
     background-color: #fff;
     font-weight: bold;
     padding: 10px;
@@ -187,3 +202,30 @@
 }
 
 
+.ACTIVO {
+    width: fit-content;
+    display: inline-block;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #d1fae5;
+    color: #065f46;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.INACTIVO {
+    width: fit-content;
+    display: inline-block;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #fef2f2;
+    color: #991b1b;
+    transition: background-color 0.2s ease-in-out;
+}

@@ -188,7 +188,10 @@
                             <td th:text="${usuario.correo}">kenn</td>
                             <td th:text="${usuario.username}">kenn</td>
                             <td th:text="${usuario.rol}">Admin</td>
-                            <td th:text="${usuario.estado}"></td>
+                            <td>
+                                <span th:text="${usuario.estado}"
+                                th:classappend="${usuario.estado}"></span>
+                            </td>
                             <td th:text="${usuario.comentario}"></td>
                             <th>
                                 <div class="container_action">
@@ -198,8 +201,6 @@
                                         <div class="cont_opciones">
                                             <button class="editproduc">Editar <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Eliminar <i
-                                                    class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                 </div>
                             </th>
@@ -307,7 +308,7 @@
                     document.getElementById("email_act").value = celdas[10].textContent;
                     document.getElementById("username_act").value = celdas[11].textContent;
                     // document.getElementById("rol_act").value = celdas[11].textContent;
-                    document.getElementById("estado_act").value = celdas[13].textContent;
+                    document.getElementById("estado_act").value = celdas[13].querySelector('span').textContent;
                     document.getElementById("comentario_act").value = celdas[14].textContent;
 
                     const form = document.getElementById("formEditarUser");

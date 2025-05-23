@@ -125,7 +125,9 @@
                             <td th:text="${proveedor.telefono}">999999999</td>
                             <td th:text="${proveedor.email}">example@gmail.com</td>
                             <td th:text="${proveedor.comentario}">example</td>
-                            <td th:text="${proveedor.estado}">example</td>
+                            <td>
+                                <span th:text="${proveedor.estado}" th:classappend="${proveedor.estado}"></span>
+                            </td>
                             <td>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -134,8 +136,6 @@
                                         <div class="cont_opciones">
                                             <button class="editproduc">Editar <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Eliminar <i
-                                                    class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                 </div>
                             </td>
@@ -204,7 +204,7 @@
                     document.getElementById("telefono_act").value = celdas[3].textContent;
                     document.getElementById("email_act").value = celdas[4].textContent;
                     document.getElementById("comentario_act").value = celdas[5].textContent;
-                    document.getElementById("estado_act").value = celdas[6].textContent;
+                    document.getElementById("estado_act").value = celdas[6].querySelector('span').textContent;
 
                     const form = document.getElementById("formEditar");
                     const idProveedor = celdas[0].textContent.trim();
