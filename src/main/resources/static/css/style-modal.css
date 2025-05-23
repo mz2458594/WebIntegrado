@@ -121,11 +121,11 @@
 }
 
 #productList td {
-    word-break: break-word;
     max-width: 400px;
     white-space: normal;
     text-overflow: ellipsis;
     text-align: center;
+    overflow: hidden;
 }
 
 
@@ -161,7 +161,6 @@
     box-shadow: 0 0 3px 3px #0002;
     position: absolute;
     left: 0;
-    bottom: -80px;
     min-width: 100%;
     display: none;
     flex-direction: column;
