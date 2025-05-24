@@ -10,36 +10,37 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 // import com.example.domain.ecommerce.security.JwtFilter;
-// import com.example.domain.ecommerce.security.JwtUtil;
+import com.example.domain.ecommerce.security.JwtUtil;
 
-// @Configuration
-// @EnableWebSecurity
-// public class SecurityConfig {
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
 
-//     private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-//     public SecurityConfig(JwtUtil jwtUtil) {
-//         this.jwtUtil = jwtUtil;
-//     }
+    public SecurityConfig(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
-//     @Bean
-//     public SecurityFilterChain securityFilterChain(HttpSecurity http
-//     // , AuthenticationProvider authenticationProvider
-//     )
-//             throws Exception {
-//         // http.authenticationProvider(authenticationProvider);
-//         http.csrf(csrf -> csrf.disable())
-//                 .cors(Customizer.withDefaults())
-//                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                 .authorizeHttpRequests(auth -> auth
-//                         .requestMatchers(
-//                             "/api/**",
-//                             "/swagger-ui/**"
-//                         ).permitAll()
-//                         .anyRequest().authenticated())
-//                 .addFilterBefore(new JwtFilter(jwtUtil), BasicAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http
+    , AuthenticationProvider authenticationProvider
+    )
+            throws Exception {
+        http.authenticationProvider(authenticationProvider);
+        http.csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                            "/api/**",
+                            "/swagger-ui/**"
+                        ).permitAll()
+                        .anyRequest()
+                        // .authenticated()
+                        );
 
-//         return http.build();
-//     }
+        return http.build();
+    }
 
-// }
+}
