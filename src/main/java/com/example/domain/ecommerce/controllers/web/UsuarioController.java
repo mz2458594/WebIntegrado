@@ -17,7 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/targus/usuario")
-@SessionAttributes({ "carrito" })
+@SessionAttributes({ "carrito", "seleccion" })
 @Controller
 @Slf4j
 public class UsuarioController {
@@ -43,14 +43,6 @@ public class UsuarioController {
 
         return "commerce/iniciosesion";
 
-    }
-
-    @GetMapping("/pagar")
-    public String abrirForm_pago(Model model, HttpSession session) {
-        Cliente user = (Cliente) session.getAttribute("user");
-
-        model.addAttribute("usuario", user);
-        return "commerce/form_pago";
     }
 
     @RequestMapping("/info")
@@ -118,6 +110,13 @@ public class UsuarioController {
         model.addAttribute("id", id);
 
         return "commerce/form_contraseña";
+    }
+
+    @GetMapping("/form_pago")
+    public String pago(Model model) {
+
+        return "commerce/form_pago";
+
     }
 
     @PostMapping("/actualizar_contrasena/{id}")

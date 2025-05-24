@@ -33,7 +33,8 @@
                             <div class="info-product" th:if="${carrito != null}" th:each="item: ${carrito.item}"
                                 th:data-price="${item.producto.precioVenta}" th:data-stock="${item.producto.stock}">
                                 <div class="selec-product">
-                                    <input type="checkbox" class="selec-product__checkbox">
+                                    <input type="checkbox" class="selec-product__checkbox"
+                                        th:attr="data-id=${item.producto.idProducto}">
                                 </div>
 
                                 <div class="im_producto">
@@ -120,11 +121,34 @@
                                 </div>
                             </div>
                             <div class="compra">
-                                <button class="buy-button" type="button" id="comprar"
-                                    onclick="location.href='/targus/principal/iniciar_crear'">Comprar</button>
+                                <button class="buy-button" type="button" id="comprar">Comprar</button>
                                 <script th:if="${user != null}">
                                     document.getElementById("comprar").addEventListener("click", function () {
-                                        window.location.href = "/targus/usuario/pagar";
+                                        const productos = obtenerProductos()
+
+                                        if (productos.length === 0) {
+                                            alert("Debes seleccionar al menos un producto")
+                                            return;
+                                        }
+
+
+                                        console.log("Productos seleccionados:", productos);
+
+                                        fetch('/targus/venta/pagar', {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            },
+                                            body: JSON.stringify(productos)
+                                        })
+                                            .then(response => response.text())
+                                            .then(url => {
+                                                window.location.href = url
+                                            })
+                                            .catch(error => {
+                                                console.error("Error al pasar la informacion: ", error)
+                                            })
+
                                     });
                                 </script>
                             </div>
@@ -185,6 +209,22 @@
 
         });
 
+
+        function obtenerProductos() {
+            const productosSeleccionados = []
+            const checkboxes = document.querySelectorAll(".selec-product__checkbox")
+
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    const producto = checkbox.closest('.info-product');
+                    const id = producto.querySelector('.btn-sumar').getAttribute('data-id');
+                    const cantidad = producto.querySelector('.cantidad').textContent.trim();
+                    productosSeleccionados.push({ cantidad: parseInt(cantidad), idProducto: parseInt(id) })
+                }
+            })
+
+            return productosSeleccionados
+        }
 
     </script>
 

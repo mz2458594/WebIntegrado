@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Completando Compra | Maxiahorro</title>
     <link rel="stylesheet" th:href="@{/css/form_Usu.css}">
-    <script th:src="@{/js/form_pago.js}"></script>
     <link rel="icon" th:href="@{/images/logo.png}">
     <script
         src="https://sandbox.paypal.com/sdk/js?client-id=AavLCw44MUQdDVM03rzqRJswCUwYOLqgcvwJ5WBn9-98YjsSBZ4nZxGKjPIWf-DyenNWp4CBTR7SYjOi&currency=USD"></script>
@@ -25,8 +24,8 @@
                         <th>Subtotal</th>
                     </tr>
                 </thead>
-                <tbody th:if="${carrito != null}">
-                    <tr class="pro" th:each="item : ${carrito.item}">
+                <tbody th:if="${seleccion != null}">
+                    <tr class="pro" th:each="item : ${seleccion.item}">
                         <td th:text="${item.producto.nombre}"></td>
                         <td class="quantity" th:text="${item.cantidad}"></td>
                         <td  class="cost" th:text="${item.producto.precioVenta}">${product.price}</td>
@@ -69,12 +68,12 @@
 
         <form id="Form2">
             <h3>Información Personal</h3>
-            <input type="text" placeholder="Ingrese su nombre" required th:if="${ usuario != null}"
-                th:value="${usuario.nombre}"><br>
-            <input type="text" placeholder="Ingrese su apellido" required th:if="${ usuario != null}"
-                th:value="${usuario.apellido}"><br>
-            <input type="text" placeholder="Ingrese su número teléfono" required th:if="${usuario != null}"
-                th:value="${usuario.telefono}"><br>
+            <input type="text" placeholder="Ingrese su nombre" required th:if="${ user != null}"
+                th:value="${user.nombre}"><br>
+            <input type="text" placeholder="Ingrese su apellido" required th:if="${ user != null}"
+                th:value="${user.apellido}"><br>
+            <input type="text" placeholder="Ingrese su número teléfono" required th:if="${user != null}"
+                th:value="${user.telefono}"><br>
             <div class="btn-box">
                 <button type="button" id="Back1">Atrás</button>
                 <button type="button" id="Next2">Siguiente</button>

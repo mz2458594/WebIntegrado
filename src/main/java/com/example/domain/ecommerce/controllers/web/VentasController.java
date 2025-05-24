@@ -1,28 +1,32 @@
 package com.example.domain.ecommerce.controllers.web;
 
+import com.example.domain.ecommerce.dto.ProductoSeleccionadoDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
+
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @RequestMapping("/targus/venta")
-@SessionAttributes({ "carrito" })
+@SessionAttributes({ "carrito", "seleccion" })
 @Controller
 @Slf4j
 public class VentasController {
@@ -38,13 +42,14 @@ public class VentasController {
 
             Model model, HttpSession session, SessionStatus status) {
 
-        RequestDTO car = (RequestDTO) session.getAttribute("carrito");
+        RequestDTO car = (RequestDTO) session.getAttribute("seleccion");
 
         Cliente user = (Cliente) session.getAttribute("user");
         car.setId_usuario(user.getUsuario().getIdUsuario());
 
         ventasService.crearVenta(car);
         session.removeAttribute("carrito");
+        session.removeAttribute("seleccion");
 
         model.addAttribute("productos", productosService.listarProducto());
         return "redirect:/targus/principal/";
@@ -170,6 +175,29 @@ public class VentasController {
 
         session.setAttribute("carrito", carrito);
         return "redirect:/targus/principal/carro";
+    }
+
+    @PostMapping("/pagar")
+    public ResponseEntity<String> seleccionados(
+            @RequestBody List<ProductoSeleccionadoDTO> productos,
+            HttpSession session) {
+
+        session.removeAttribute("seleccion");
+        RequestDTO productosSeleccionados = new RequestDTO();
+        productosSeleccionados.setItem(new ArrayList<>());
+
+        for (ProductoSeleccionadoDTO productoSeleccionadoDTO : productos) {
+            RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
+            nuevo_item.setCantidad(productoSeleccionadoDTO.getCantidad());
+            Producto p = productosService.obtenerProductoPorId(productoSeleccionadoDTO.getIdProducto());
+            nuevo_item.setProducto(p);
+            nuevo_item.setTotal(nuevo_item.getCantidad() * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
+            productosSeleccionados.getItem().add(nuevo_item);
+        }
+
+        session.setAttribute("seleccion", productosSeleccionados);
+
+        return ResponseEntity.ok("/targus/usuario/form_pago");
     }
 
 }
