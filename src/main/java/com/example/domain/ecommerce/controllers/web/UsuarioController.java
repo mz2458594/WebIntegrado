@@ -18,7 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/targus/usuario")
-@SessionAttributes({ "carrito", "seleccion" })
+@SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
 public class UsuarioController {
@@ -46,12 +46,13 @@ public class UsuarioController {
 
     }
 
-    @GetMapping("/pagar")
+    @GetMapping("/form_pago")
     public String abrirForm_pago(Model model, HttpSession session) {
-        RequestDTO car = (RequestDTO) session.getAttribute("seleccion");
+        RequestDTO lista = (RequestDTO) session.getAttribute("lista");
 
-        System.out.println(car.getItem().get(0).getProducto().getNombre());
-
+        if (lista != null) {
+            model.addAttribute("lista", lista); 
+        }
         return "commerce/form_pago";
     }
 

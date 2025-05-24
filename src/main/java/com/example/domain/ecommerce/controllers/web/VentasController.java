@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @RequestMapping("/targus/venta")
-@SessionAttributes({ "carrito", "seleccion" })
+@SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
 public class VentasController {
@@ -42,10 +42,11 @@ public class VentasController {
 
             Model model, HttpSession session, SessionStatus status) {
 
-        RequestDTO car = (RequestDTO) session.getAttribute("seleccion");
+        RequestDTO car = (RequestDTO) session.getAttribute("lista");
 
         Cliente user = (Cliente) session.getAttribute("user");
         car.setId_usuario(user.getUsuario().getIdUsuario());
+        car.setTipo("BOLETA");
 
         ventasService.crearVenta(car);
         session.removeAttribute("carrito");
@@ -180,10 +181,12 @@ public class VentasController {
     @PostMapping("/pagar")
     public String seleccionados(
             @RequestBody List<ProductoSeleccionadoDTO> productos,
-            HttpSession session) {
+            HttpSession session, SessionStatus status, Model model) {
 
-        RequestDTO seleccion = new RequestDTO();
-        seleccion.setItem(new ArrayList<>());
+        RequestDTO lista = new RequestDTO();
+        System.out.println("ACAAAAAAAAAAAAAAAAA" + lista);
+
+        lista.setItem(new ArrayList<>());
 
         for (ProductoSeleccionadoDTO productoSeleccionadoDTO : productos) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
@@ -191,12 +194,12 @@ public class VentasController {
             Producto p = productosService.obtenerProductoPorId(productoSeleccionadoDTO.getIdProducto());
             nuevo_item.setProducto(p);
             nuevo_item.setTotal(nuevo_item.getCantidad() * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
-            seleccion.getItem().add(nuevo_item);
+            lista.getItem().add(nuevo_item);
         }
 
-        session.setAttribute("seleccion", seleccion);
+        session.setAttribute("lista", lista);
 
-        return "redirect:/targus/usuario/pagar";
+        return "redirect:/targus/usuario/form_pago";
     }
 
 }
