@@ -26,7 +26,7 @@ public class ComprobanteController {
     @Autowired
     private PdfGeneratorService pdfGeneratorService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/boleta/{id}")
     public ResponseEntity<byte[]> generarBoleta(@PathVariable int id) {
         Comprobante comprobante = comprobanteService.obtenerComprobantePorId(id);
         ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);
