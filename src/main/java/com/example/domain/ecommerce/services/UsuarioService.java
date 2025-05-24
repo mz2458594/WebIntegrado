@@ -2,18 +2,15 @@ package com.example.domain.ecommerce.services;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
 import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
-import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;

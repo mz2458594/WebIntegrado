@@ -1,12 +1,11 @@
 package com.example.domain.ecommerce.services;
-import java.util.*;
 
+import java.util.*;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Email;
 import com.example.domain.ecommerce.models.entities.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;

@@ -3,15 +3,10 @@ package com.example.domain.ecommerce.controllers;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.services.VentaService;
-
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 @RestController
