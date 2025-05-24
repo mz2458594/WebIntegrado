@@ -41,25 +41,14 @@ public class UsuarioService {
     private RolDAO rolDAO;
 
     @Autowired
-    private PersonaDAO personaDAO;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<Usuario> listarUsuario() {
         return (List<Usuario>) usuarioDAO.findAll();
     }
 
-    public List<Rol> listarRoles() {
-        return (List<Rol>) rolDAO.findAll();
-    }
-
     public List<Cliente> listarClientes() {
         return (List<Cliente>) clienteDAO.findAll();
-    }
-
-    public Persona obtenerPersonaPorIdUsuario(int id) {
-        return personaDAO.findById(Long.valueOf(id)).get();
     }
 
     public List<UsuarioPersonaDTO> listarClientesYEmpleados() {
@@ -117,99 +106,6 @@ public class UsuarioService {
         return resultado;
     }
 
-    public Persona actualizarUsuarios(UserDTO userDTO, int id) {
-
-        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
-
-        LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
-
-        usuario.setEmail(userDTO.getCorreo());
-        usuario.setUsername(userDTO.getUsername());
-        usuario.setComentario(userDTO.getComentario());
-
-        if (usuario.getRol().getNombre().equals("Empleado")) {
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
-            }
-        } else if (usuario.getRol().getNombre().equals("Cliente")) {
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
-            }
-        }
-
-        if (userDTO.getEstado() != null) {
-
-            if (userDTO.getEstado().equals("ACTIVO")) {
-                usuario.setEstado(Estado.ACTIVO);
-            } else if (userDTO.getEstado().equals("INACTIVO")) {
-                usuario.setEstado(Estado.INACTIVO);
-            }
-        }
-
-        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
-        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
-
-        if (cliente.isPresent()) {
-
-            Cliente cliente2 = cliente.get();
-
-            actualizarPersona(cliente2, userDTO);
-
-            usuarioDAO.save(usuario);
-
-            clienteDAO.save(cliente2);
-
-            return cliente2;
-
-        } else if (empleado.isPresent()) {
-
-            Empleado empleado2 = empleado.get();
-            actualizarPersona(empleado2, userDTO);
-
-            usuarioDAO.save(usuario);
-
-            empleadoDAO.save(empleado2);
-
-            return empleado2;
-
-        } else {
-            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
-        }
-
-    }
-
-    public void actualizarPersona(Persona persona, UserDTO userDTO) {
-        persona.setNombre(userDTO.getNombre());
-        persona.setApellido(userDTO.getApellido());
-        persona.setDni(userDTO.getNum_documento());
-        persona.setTelefono(userDTO.getCelular());
-        persona.setFecha(userDTO.getFecha_nac());
-
-        if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
-                userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
-            persona.getDireccion().setCalle(userDTO.getCalle());
-            persona.getDireccion().setCiudad(userDTO.getCiudad());
-            persona.getDireccion().setDistrito(userDTO.getDistrito());
-            persona.getDireccion().setProvincia(userDTO.getProvincia());
-        }
-    }
-
-    public void eliminarUsuario(int id) {
-        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
-        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
-        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
-
-        if (cliente.isPresent()) {
-            Cliente cliente2 = cliente.get();
-            clienteDAO.deleteById(Long.valueOf(cliente2.getId()));
-        } else if (empleado.isPresent()) {
-            Empleado empleado2 = empleado.get();
-            empleadoDAO.deleteById(Long.valueOf(empleado2.getId()));
-        }
-
-        usuarioDAO.deleteById(Long.valueOf(id));
-    }
-
     public Usuario obtenerUsuarioPorId(int id) {
 
         Optional<Usuario> usuario = usuarioDAO.findById(Long.valueOf(id));
@@ -222,28 +118,6 @@ public class UsuarioService {
         return usuario.get();
     }
 
-    public boolean verificar(String correo, String num_documento, String celular) {
-
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(correo);
-
-        if (usuario.isPresent()) {
-            return true;
-        }
-
-        Optional<Cliente> cliente = clienteDAO.findByDni(num_documento);
-        if (cliente.isPresent()) {
-            return true;
-        }
-
-        Optional<Cliente> cliente2 = clienteDAO.findByTelefono(celular);
-        if (cliente2.isPresent()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // nuevos metodos
     public Usuario createUser(UserDTO user) {
 
         Usuario usuario = new Usuario();
@@ -340,6 +214,99 @@ public class UsuarioService {
 
     }
 
+    public Persona actualizarUsuarios(UserDTO userDTO, int id) {
+
+        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
+
+        LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
+
+        usuario.setEmail(userDTO.getCorreo());
+        usuario.setUsername(userDTO.getUsername());
+        usuario.setComentario(userDTO.getComentario());
+
+        if (usuario.getRol().getNombre().equals("Empleado")) {
+            if (calcularEdad(fechaNacimineto) < 18) {
+                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
+            }
+        } else if (usuario.getRol().getNombre().equals("Cliente")) {
+            if (calcularEdad(fechaNacimineto) < 13) {
+                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
+            }
+        }
+
+        if (userDTO.getEstado() != null) {
+
+            if (userDTO.getEstado().equals("ACTIVO")) {
+                usuario.setEstado(Estado.ACTIVO);
+            } else if (userDTO.getEstado().equals("INACTIVO")) {
+                usuario.setEstado(Estado.INACTIVO);
+            }
+        }
+
+        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
+        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
+
+        if (cliente.isPresent()) {
+
+            Cliente cliente2 = cliente.get();
+
+            actualizarPersona(cliente2, userDTO);
+
+            usuarioDAO.save(usuario);
+
+            clienteDAO.save(cliente2);
+
+            return cliente2;
+
+        } else if (empleado.isPresent()) {
+
+            Empleado empleado2 = empleado.get();
+            actualizarPersona(empleado2, userDTO);
+
+            usuarioDAO.save(usuario);
+
+            empleadoDAO.save(empleado2);
+
+            return empleado2;
+
+        } else {
+            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
+        }
+
+    }
+
+    public void actualizarPersona(Persona persona, UserDTO userDTO) {
+        persona.setNombre(userDTO.getNombre());
+        persona.setApellido(userDTO.getApellido());
+        persona.setDni(userDTO.getNum_documento());
+        persona.setTelefono(userDTO.getCelular());
+        persona.setFecha(userDTO.getFecha_nac());
+
+        if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
+                userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
+            persona.getDireccion().setCalle(userDTO.getCalle());
+            persona.getDireccion().setCiudad(userDTO.getCiudad());
+            persona.getDireccion().setDistrito(userDTO.getDistrito());
+            persona.getDireccion().setProvincia(userDTO.getProvincia());
+        }
+    }
+
+    public void eliminarUsuario(int id) {
+        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
+        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
+        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
+
+        if (cliente.isPresent()) {
+            Cliente cliente2 = cliente.get();
+            clienteDAO.deleteById(Long.valueOf(cliente2.getId()));
+        } else if (empleado.isPresent()) {
+            Empleado empleado2 = empleado.get();
+            empleadoDAO.deleteById(Long.valueOf(empleado2.getId()));
+        }
+
+        usuarioDAO.deleteById(Long.valueOf(id));
+    }
+
     public void activar(int id) {
         Optional<Usuario> usuario = usuarioDAO.findById(Long.valueOf(id));
 
@@ -352,7 +319,7 @@ public class UsuarioService {
         usuarioDAO.save(user);
     }
 
-    public void enviarEmail(Usuario usuario) {
+    public void enviarEmailRegistrar(Usuario usuario) {
         Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
                 "Registrar cuenta",
                 usuario.getUsername(),
@@ -375,19 +342,39 @@ public class UsuarioService {
         emailService.sendEmailTemplate(correo, user.getIdUsuario());
     }
 
-    public void actualizarContraseña(String contraseña, int id_usuario) {
+    public Usuario actualizarContraseña(String contraseña, int id_usuario) {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id_usuario))
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id_usuario));
 
         usuario.setPassword(new BCryptPasswordEncoder().encode(contraseña));
 
-        usuarioDAO.save(usuario);
-
+        return usuarioDAO.save(usuario);
     }
 
     private int calcularEdad(LocalDate fecha) {
         return Period.between(fecha, LocalDate.now()).getYears();
+    }
+
+    public boolean verificar(String correo, String num_documento, String celular) {
+
+        Optional<Usuario> usuario = usuarioDAO.findByEmail(correo);
+
+        if (usuario.isPresent()) {
+            return true;
+        }
+
+        Optional<Cliente> cliente = clienteDAO.findByDni(num_documento);
+        if (cliente.isPresent()) {
+            return true;
+        }
+
+        Optional<Cliente> cliente2 = clienteDAO.findByTelefono(celular);
+        if (cliente2.isPresent()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

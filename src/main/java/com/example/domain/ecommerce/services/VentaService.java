@@ -1,4 +1,5 @@
 package com.example.domain.ecommerce.services;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class VentaService {
 
     @Autowired
     private ComprobanteService comprobanteService;
+
+    public List<Venta> obtenerVentas() {
+        return (List<Venta>) ventasDAO.findAll();
+    }
 
     @Transactional
     public Venta crearVenta(RequestDTO data) {
@@ -75,10 +80,6 @@ public class VentaService {
 
     }
 
-    public List<Venta> getVentas() {
-        return (List<Venta>) ventasDAO.findAll();
-    }
-
     public void deleteVenta(int id) {
         Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
 
@@ -94,17 +95,5 @@ public class VentaService {
 
         ventasDAO.deleteById(Long.valueOf(id));
 
-    }
-
-    public Venta obtenerVentasPorId(int id) {
-
-        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
-
-        if (venta.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-
-        }
-
-        return venta.get();
     }
 }

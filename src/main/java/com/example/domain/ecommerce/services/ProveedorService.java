@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ public class ProveedorService {
     @Autowired
     private ProveedorDAO proveedorDAO;
 
-    public Iterable<Proveedor> obtenerProveedores() {
+    public List<Proveedor> obtenerProveedores() {
         return proveedorDAO.findAll();
     }
 
-    public void createProv(ProveedorDTO proveedorDTO) {
+    public Proveedor createProv(ProveedorDTO proveedorDTO) {
         Proveedor nuevo_proveedor = new Proveedor();
         nuevo_proveedor.setRuc(proveedorDTO.getRuc());
         nuevo_proveedor.setNombre(proveedorDTO.getNombre());
@@ -30,11 +31,11 @@ public class ProveedorService {
         nuevo_proveedor.setTelefono(proveedorDTO.getTelefono());
         nuevo_proveedor.setEstado(Estado.ACTIVO);
 
-        proveedorDAO.save(nuevo_proveedor);
+        return proveedorDAO.save(nuevo_proveedor);
 
     }
 
-    public void updateProv(ProveedorDTO proveedorDTO, int id) {
+    public Proveedor updateProv(ProveedorDTO proveedorDTO, int id) {
 
         Optional<Proveedor> prov = proveedorDAO.findById(Long.valueOf(id));
 
@@ -58,7 +59,7 @@ public class ProveedorService {
             }
         }
 
-        proveedorDAO.save(proveedor);
+        return proveedorDAO.save(proveedor);
     }
 
     public void eliminarProveedor(int id) {

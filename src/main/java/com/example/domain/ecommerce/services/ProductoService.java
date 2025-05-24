@@ -12,8 +12,6 @@ import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
-
-import org.hibernate.query.results.implicit.ImplicitFetchBuilderEmbeddable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductoService {
+
     @Autowired
     private ProductoDAO productoDAO;
 
@@ -32,10 +31,6 @@ public class ProductoService {
 
     @Autowired
     private ProveedorDAO proveedorDAO;
-
-    public Iterable<Categoria> obtenerCategorias() {
-        return categoriaDAO.findAll();
-    }
 
     public Iterable<Usuario> obtenerUsuarios() {
         return usuarioDAO.findAll();
@@ -76,7 +71,7 @@ public class ProductoService {
         } else {
             throw new IllegalArgumentException("El codigo de barras debe tener exactamente 13 digitos.");
         }
-        
+
         return productoDAO.save(producto);
 
     }
@@ -99,7 +94,7 @@ public class ProductoService {
         return digitoControlCalculado == digitoControlReal;
     }
 
-    public void actualizarProducto(ProductDTO productDTO, int id) {
+    public Producto actualizarProducto(ProductDTO productDTO, int id) {
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
         Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
@@ -118,7 +113,7 @@ public class ProductoService {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         }
 
-        productoDAO.save(producto);
+        return productoDAO.save(producto);
 
     }
 
@@ -138,8 +133,8 @@ public class ProductoService {
         productoDAO.save(product);
     }
 
-    public Producto buscarPorCodigoBarras(String codigo){
-        Optional<Producto> producto =  productoDAO.findByCodigoBarras(codigo);
+    public Producto buscarPorCodigoBarras(String codigo) {
+        Optional<Producto> producto = productoDAO.findByCodigoBarras(codigo);
 
         if (producto.isEmpty()) {
             throw new EntityNotFoundException("Producto con codigo " + codigo + " no encontrado");
