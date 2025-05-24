@@ -141,9 +141,10 @@
                                             },
                                             body: JSON.stringify(productos)
                                         })
-                                            .then(response => response.text())
-                                            .then(url => {
-                                                window.location.href = url
+                                            .then(response => {
+                                                if (response.redirected) {
+                                                    window.location.href = response.url
+                                                }
                                             })
                                             .catch(error => {
                                                 console.error("Error al pasar la informacion: ", error)

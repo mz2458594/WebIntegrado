@@ -178,13 +178,12 @@ public class VentasController {
     }
 
     @PostMapping("/pagar")
-    public ResponseEntity<String> seleccionados(
+    public String seleccionados(
             @RequestBody List<ProductoSeleccionadoDTO> productos,
             HttpSession session) {
 
-        session.removeAttribute("seleccion");
-        RequestDTO productosSeleccionados = new RequestDTO();
-        productosSeleccionados.setItem(new ArrayList<>());
+        RequestDTO seleccion = new RequestDTO();
+        seleccion.setItem(new ArrayList<>());
 
         for (ProductoSeleccionadoDTO productoSeleccionadoDTO : productos) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
@@ -192,12 +191,12 @@ public class VentasController {
             Producto p = productosService.obtenerProductoPorId(productoSeleccionadoDTO.getIdProducto());
             nuevo_item.setProducto(p);
             nuevo_item.setTotal(nuevo_item.getCantidad() * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
-            productosSeleccionados.getItem().add(nuevo_item);
+            seleccion.getItem().add(nuevo_item);
         }
 
-        session.setAttribute("seleccion", productosSeleccionados);
+        session.setAttribute("seleccion", seleccion);
 
-        return ResponseEntity.ok("/targus/usuario/form_pago");
+        return "redirect:/targus/usuario/pagar";
     }
 
 }

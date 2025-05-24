@@ -2,6 +2,7 @@ package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
+import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Persona;
@@ -43,6 +44,15 @@ public class UsuarioController {
 
         return "commerce/iniciosesion";
 
+    }
+
+    @GetMapping("/pagar")
+    public String abrirForm_pago(Model model, HttpSession session) {
+        RequestDTO car = (RequestDTO) session.getAttribute("seleccion");
+
+        System.out.println(car.getItem().get(0).getProducto().getNombre());
+
+        return "commerce/form_pago";
     }
 
     @RequestMapping("/info")
@@ -110,13 +120,6 @@ public class UsuarioController {
         model.addAttribute("id", id);
 
         return "commerce/form_contraseña";
-    }
-
-    @GetMapping("/form_pago")
-    public String pago(Model model) {
-
-        return "commerce/form_pago";
-
     }
 
     @PostMapping("/actualizar_contrasena/{id}")
