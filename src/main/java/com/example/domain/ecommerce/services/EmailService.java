@@ -1,6 +1,8 @@
 package com.example.domain.ecommerce.services;
 
 import java.util.*;
+
+import com.example.domain.ecommerce.dto.EmailDTO;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Email;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -30,22 +32,26 @@ public class EmailService {
     @Value("${mail.urlF}")
     private String urlF;
 
-    public void sendEmailTemplate(Email email, int id){
+    public void sendEmailPassword(EmailDTO emailDTO) {
+
+        Email correo = new Email("mz2458594@gmail.com", emailDTO.getMailTo(), "Recuperar Contraseña", emailDTO.getUserName(),
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message,true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
             Context context = new Context();
             Map<String, Object> model = new HashMap<>();
 
-            model.put("username", email.getUserName());
-            model.put("url", urlFront+"/"+id);
+            model.put("username", correo.getUserName());
+            model.put("url", urlFront + "/" + emailDTO.getId());
 
             context.setVariables(model);
 
             String htmlText = templateEngine.process("commerce/email_password", context);
-            helper.setFrom(email.getMailFrom());
-            helper.setTo(email.getMailTo());
-            helper.setSubject(email.getSubject());
+            helper.setFrom(correo.getMailFrom());
+            helper.setTo(correo.getMailTo());
+            helper.setSubject(correo.getSubject());
             helper.setText(htmlText, true);
 
             javaMailSender.send(message);
@@ -54,51 +60,28 @@ public class EmailService {
         }
     }
 
-    public void sendEmailVenta(Email email, List<Detalle_venta> detalle_ventas, double total, List<Producto> productos){
+    public void sendEmailRegistrar(EmailDTO emailDTO) {
+
+        Email correo = new Email("mz2458594@gmail.com", emailDTO.getMailTo(),
+                "Registrar cuenta",
+                emailDTO.getUserName(),
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message,true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
             Context context = new Context();
             Map<String, Object> model = new HashMap<>();
 
-            model.put("username", email.getUserName());
-            model.put("url", urlFront);
-            model.put("lista", detalle_ventas);
-            model.put("total", total);
-            model.put("productos", productos);
-
-
-            context.setVariables(model);
-
-            String htmlText = templateEngine.process("commerce/mail_detalle_pedido", context);
-            helper.setFrom(email.getMailFrom());
-            helper.setTo(email.getMailTo());
-            helper.setSubject(email.getSubject());
-            helper.setText(htmlText, true);
-
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void sendEmailRegistrar(Email email, int id){
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message,true);
-            Context context = new Context();
-            Map<String, Object> model = new HashMap<>();
-
-            model.put("username", email.getUserName());
-            model.put("url", urlF+"/"+id);
+            model.put("username", correo.getUserName());
+            model.put("url", urlF + "/" + emailDTO.getId());
 
             context.setVariables(model);
 
             String htmlText = templateEngine.process("commerce/email_registrar", context);
-            helper.setFrom(email.getMailFrom());
-            helper.setTo(email.getMailTo());
-            helper.setSubject(email.getSubject());
+            helper.setFrom(correo.getMailFrom());
+            helper.setTo(correo.getMailTo());
+            helper.setSubject(correo.getSubject());
             helper.setText(htmlText, true);
 
             javaMailSender.send(message);

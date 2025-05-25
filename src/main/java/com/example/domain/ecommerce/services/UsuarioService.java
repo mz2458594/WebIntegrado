@@ -316,29 +316,6 @@ public class UsuarioService {
         usuarioDAO.save(user);
     }
 
-    public void enviarEmailRegistrar(Usuario usuario) {
-        Email correo = new Email("mz2458594@gmail.com", usuario.getEmail(),
-                "Registrar cuenta",
-                usuario.getUsername(),
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-
-        emailService.sendEmailRegistrar(correo, usuario.getIdUsuario());
-    }
-
-    public void emailContraseña(String email) {
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(email);
-
-        if (usuario.isEmpty()) {
-            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
-        }
-
-        Usuario user = usuario.get();
-
-        Email correo = new Email("mz2458594@gmail.com", email, "Recuperar Contraseña", user.getUsername(),
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-        emailService.sendEmailTemplate(correo, user.getIdUsuario());
-    }
-
     public Usuario actualizarContraseña(String contraseña, int id_usuario) {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id_usuario))
