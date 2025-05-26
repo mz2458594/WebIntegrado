@@ -30,7 +30,7 @@
                     </div>
                     <div class="info-user-venta">
                         <p>Usuario</p>
-                        <span class="cod-user-regis" th:text="${venta.id_usuario}">7777777</span>
+                        <span class="cod-user-regis" th:text="${pedidos.id_usuario}">7777777</span>
                     </div>
                 </div><br>
                 <div class="cont-tabla-registro">
@@ -44,8 +44,8 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody th:if="${venta != null}">
-                            <tr th:each="item: ${venta.item}">
+                        <tbody th:if="${pedidos != null}">
+                            <tr th:each="item: ${pedidos.item}">
                                 <td th:text="${item.producto.nombre}">
                                     arroz</td>
                                 <td th:text="${item.producto.precioVenta}">
@@ -65,11 +65,11 @@
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
                             
-                            <form th:action="@{/inventario/ventas/saveVenta}" method="post">
+                            <form th:action="@{/inventario/pedido/savePedido}" method="post">
                                 <!-- <button class="btn-imprimir">Imprimir</button> -->
-                                <button type="button" th:if="${ocultar == null}" class="btn-editar" onclick="window.location.href='/inventario/ventas/editarVenta'">Editar</button>
+                                <button type="button" th:if="${ocultar == null}" class="btn-editar" onclick="window.location.href='/inventario/pedido/editarPedido'">Editar</button>
                                 <button type="submit" th:if="${ocultar == null}" class="btn-save">Guardar</button>
-                                <button type="button" class="btn-volver" onclick="window.location.href='/inventario/ventas/cancelar'">Volver</button>
+                                <button type="button" class="btn-volver" onclick="window.location.href='/inventario/pedido/cancelar'">Volver</button>
                             </form>
                         
                     </div>

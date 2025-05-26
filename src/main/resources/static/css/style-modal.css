@@ -1,7 +1,8 @@
 .contenedor_main {
     height: 100vh;
-    width: fit-content;
-    overflow: scroll;
+    width: 100%;
+    overflow: auto;
+    border: 3px solid red;
 }
 
 .contenedor_modal {
@@ -10,6 +11,7 @@
     border-top: 3px solid #0078ff;
     padding-bottom: 10px;
     width: fit-content;
+        border: 3px solid blue;
 }
 
 .title__add--modal {
@@ -125,6 +127,10 @@
     white-space: normal;
     text-overflow: ellipsis;
     text-align: center;
+    position: relative;
+}
+
+#productList td:not(.acciones) {
     overflow: hidden;
 }
 
@@ -141,6 +147,11 @@
     position: relative;
     border-radius: 5px;
     box-shadow: 0 0 2px 2px #0004;
+}
+
+#productList td.acciones {
+    overflow: visible;
+    position: relative;
 }
 
 .name_action::selection {
@@ -161,10 +172,10 @@
     box-shadow: 0 0 3px 3px #0002;
     position: absolute;
     left: 0;
-    min-width: 100%;
+    top: 100%;
     display: none;
     flex-direction: column;
-    z-index: 2;
+    z-index: 50;
 }
 
 
@@ -201,7 +212,7 @@
 }
 
 
-.ACTIVO {
+.ACTIVO, .COMPLETADO {
     width: fit-content;
     display: inline-block;
     align-items: center;
@@ -215,7 +226,7 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.INACTIVO {
+.INACTIVO, .CANCELADO {
     width: fit-content;
     display: inline-block;
     align-items: center;
@@ -226,5 +237,33 @@
     font-weight: 600;
     background-color: #fef2f2;
     color: #991b1b;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.PROCESANDO {
+    width: fit-content;
+    display: inline-block;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #FFF59D;
+    color: #795548;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.EN_ESPERA {
+    width: fit-content;
+    display: inline-block;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #d6eaf8;
+    color: #2980b9;
     transition: background-color 0.2s ease-in-out;
 }

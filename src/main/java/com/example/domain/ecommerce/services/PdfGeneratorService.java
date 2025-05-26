@@ -24,6 +24,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
@@ -56,6 +57,8 @@ public class PdfGeneratorService {
 
             ImageData imageData = ImageDataFactory.create(StreamUtil.inputStreamToArray(is));
             Image image = new Image(imageData);
+            image.scaleToFit(100, 100);
+            image.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(image);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,17 +80,17 @@ public class PdfGeneratorService {
         Venta venta = comprobante.getVenta();
         Usuario usuario = venta.getUsuario();
 
-        document.add(new Paragraph("\nCliente: " + usuario.getUsername()).setBold());
-
         Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
         Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
 
+        
+
         if (cliente.isPresent()) {
             Cliente cliente2 = cliente.get();
-            document.add(new Paragraph("DNI: " + cliente2.getDni()));
+            document.add(new Paragraph("\nVenta realizada por: " + cliente2.getNombre()).setBold());
         } else if (empleado.isPresent()) {
             Empleado empleado2 = empleado.get();
-            document.add(new Paragraph("DNI: " + empleado2.getDni()));
+            document.add(new Paragraph("\nVenta realizada por: " + empleado2.getNombre()).setBold());
         } else {
             document.add(new Paragraph("DNI: No disponible"));
         }

@@ -50,8 +50,6 @@ public class UsuarioInventarioController {
 
         usuarioService.actualizarUsuarios(userDTO, id);
 
-        System.out.println(usuarioService.listarClientesYEmpleados());
-
         model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 

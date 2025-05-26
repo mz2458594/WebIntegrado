@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
@@ -69,9 +70,11 @@ public class VentaService {
 
         Venta ventaGuardada = ventasDAO.save(venta);
 
-        comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(), data.getRazon());
+        Comprobante comprobante = comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(), data.getRazon());
 
+        ventaGuardada.setComprobante(comprobante);
         return ventaGuardada;
+        
 
     }
 
@@ -89,7 +92,7 @@ public class VentaService {
         Venta v = venta.get();
 
         for (Detalle_venta ve : v.getVentaProductos()) {
-            productosService.devolverStock(ve.getProducto(), ve.getCantidad());
+            productosService.actualizarStockProducto(ve.getProducto(), ve.getCantidad());
         }
 
         ventasDAO.deleteById(Long.valueOf(id));

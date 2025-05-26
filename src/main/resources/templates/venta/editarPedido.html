@@ -69,9 +69,9 @@
                             <th>Total S/.</th>
                         </tr>
                     </thead>
-                    <tbody th:if="${venta != null}">
-                        <tr th:each="item: ${venta.item}">
-                            <td><a th:href="@{/inventario/ventas/eliminarProd/{id} (id = ${item.producto.idProducto})} ">X</a></td>
+                    <tbody th:if="${pedidos != null}">
+                        <tr th:each="item: ${pedidos.item}">
+                            <td><a th:href="@{/inventario/pedido/eliminarPedido/{id} (id = ${item.producto.idProducto})} ">X</a></td>
                             <td th:text="${item.producto.nombre}">arroz</td>
                             <td th:text="${item.cantidad}">2</td>
                             <td th:text="${item.producto.precioVenta}">4.50</td>
@@ -94,7 +94,7 @@
                     <div class="sub-can">
                         <input value="Guardar" type="submit" class="btn-agreventa">
                         <input type="text" id="total_reg" name="total_reg" style="display: none;">
-                        <button type="reset" onclick="window.location.href='/inventario/ventas/cancelar'">Cancelar</button>
+                        <button type="reset" onclick="window.location.href='/inventario/pedido/cancelar'">Cancelar</button>
                     </div>
                 </div>
             </form>
@@ -159,7 +159,7 @@
             if (event.target.classList.contains('pro')) {
                 const nombre = event.target.textContent;
                 const id = event.target.getAttribute('data-id');
-                form.action = '/inventario/ventas/añadirProd/' + id;
+            form.action = '/inventario/pedido/añadirPedido/' + id;
             }
         });
 

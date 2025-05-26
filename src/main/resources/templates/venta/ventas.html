@@ -75,7 +75,8 @@
                             <td th:text="${venta.fechaVenta}">20/10/2024</td>
                             <td th:text="${venta.usuario.username}">2</td>
                             <td th:text="${venta.total}">9</td>
-                            <td>
+                            <td th:text="${venta.comprobante.id}" style="display: none;"></td>
+                            <td class="acciones">
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
                                         <label class="name_action">Accion <i class="fa-solid fa-caret-down"
@@ -83,8 +84,6 @@
                                         <div class="cont_opciones">
                                             <button class="editproduc">Ver detalle <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Anular <i
-                                                    class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                 </div>
                             </td>
@@ -100,30 +99,12 @@
                 boton.addEventListener('click', function () {
                     const fila = this.closest('tr');
                     const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-                    const idVenta = valores[0].trim();
-                    window.location.href = `/inventario/ventas/detalleVenta/${idVenta}`;
+                    const idComprobante = valores[4].trim();
+                    window.location.href = `/inventario/comprobante/${idComprobante}`;
                 });
             });
 
-            const boton3 = document.querySelectorAll(".deleteProduc");
-            boton3.forEach(boton => {
-                boton.addEventListener('click', function () {
-                    // Encontramos la fila asociada al botón
-                    const fila = this.closest('tr');
-
-                    // Recogemos los valores de las celdas de la fila
-                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                    modalContDele.style.opacity = "1";
-                    modalContDele.style.visibility = "visible";
-                    VentDelete.classList.toggle("ventana-close-delete");
-
-                    const form = document.getElementById("formEliminar")
-                    const idVenta = valores[0].trim();
-                    form.action = `/inventario/ventas/eliminarVenta/${idVenta}`;
-                });
-            });
-
+            
         </script>
 
 

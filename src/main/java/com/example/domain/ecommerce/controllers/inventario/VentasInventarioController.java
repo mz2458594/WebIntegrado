@@ -1,18 +1,23 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.example.domain.ecommerce.dto.ProductRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.dto.VentaRequestDTO;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -34,24 +39,15 @@ public class VentasInventarioController {
     @Autowired
     private ProductoService productosService;
 
-    @GetMapping("/nuevaVenta")
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/ventas")
     public String nuevaVenta(Model model) {
 
         model.addAttribute("ventas", ventasService.getVentas());
 
-        return "venta/nuevaVenta";
-    }
-
-    @PostMapping("/eliminarVenta/{id}")
-    public String eliminarVenta(
-            @PathVariable int id,
-            Model model) {
-
-        ventasService.deleteVenta(id);
-
-        model.addAttribute("ventas", ventasService.getVentas());
-        return "redirect:/inventario/ventas/nuevaVenta";
-
+        return "venta/ventas";
     }
 
     @GetMapping("/agregarVenta")
@@ -60,150 +56,109 @@ public class VentasInventarioController {
         return "venta/agregarVenta";
     }
 
-    @PostMapping("/añadirProd/{id}")
-    public String agregar(
-            @PathVariable int id,
-            @RequestParam("canti") int cantidad,
-            HttpSession session,
-            Model model) {
-
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-
-        if (sale == null) {
-            sale = new RequestDTO();
-            sale.setItem(new ArrayList<>());
-        }
-
-        boolean encontrado = false;
-
-        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
-            if (item.getProducto().getIdProducto() == id) {
-                item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
-                encontrado = true;
-                break;
-            }
-        }
-
-        if (!encontrado) {
-            RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
-            nuevo_item.setCantidad(cantidad);
-            Producto p = productosService.obtenerProductoPorId(id);
-            nuevo_item.setProducto(p);
-            nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
-            sale.getItem().add(nuevo_item);
-        }
-
-        session.setAttribute("sale", sale);
-        
-        model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("venta", sale);
-
-        return "venta/agregarVenta";
-    }
-
-    @GetMapping("/eliminarProd/{id}")
-    public String eliminarProd(
-            @PathVariable Integer id,
-            HttpSession session,
-            Model model) {
-
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-
-        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
-            if (item.getProducto().getIdProducto() == id) {
-                sale.getItem().remove(item);
-                break;
-            }
-        }
-
-        session.setAttribute("sale", sale);
-
-        model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("venta", sale);
-
-        return "venta/agregarVenta";
-
-    }
-
-    @PostMapping("/registroVenta")
-    public String registrarVenta(
-            @RequestParam("total_reg") double total,
-            Model model, HttpSession session, SessionStatus status) {
-
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Empleado empleado = (Empleado) session.getAttribute("empleado");
-
-        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
-        session.setAttribute("sale", sale);
-
-        model.addAttribute("venta", sale);
-        return "venta/registroVenta";
-    }
-
-    @PostMapping("/saveVenta")
-    public String saveVenta(HttpSession session, Model model) {
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Empleado empleado = (Empleado) session.getAttribute("empleado");
-
-        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
-        
-        sale.setTipo("BOLETA");
-        
-        ventasService.crearVenta(sale);
-
-        session.removeAttribute("sale");
-        model.addAttribute("ventas", ventasService.getVentas());
-        return "redirect:/inventario/ventas/nuevaVenta";
-    }
-
-    @GetMapping("/detalleVenta/{id}")
-    public String ver(
-            @PathVariable int id,
-            HttpSession session,
-            Model model) {
-
-        Venta ventas = ventasService.obtenerVentasPorId(id);
-
+    @PostMapping("/pago")
+    public String pago(Model model,
+            @ModelAttribute("productos") VentaRequestDTO ventaRequestDTOs,
+            @RequestParam("numero") String ruc,
+            @RequestParam("tipo") String tipo,
+            HttpSession session) {
         RequestDTO sale = new RequestDTO();
-        sale.setItem(new ArrayList<>());
-        sale.setId_usuario(ventas.getUsuario().getIdUsuario());
 
-        for (Detalle_venta venta : ventas.getVentaProductos()) {
+        float total = 0;
+
+        sale.setItem(new ArrayList<>());
+
+        if ("ruc".equalsIgnoreCase(tipo)) {
+            if (ruc == null || ruc.trim().isEmpty() || ruc.length() != 11) {
+                sale.setRuc(ruc);
+                model.addAttribute("error", "Debe ingresar un numero de RUC válido");
+                model.addAttribute("productos", productosService.listarProducto());
+
+                return "venta/agregarVenta";
+            }
+            sale.setRuc(ruc);
+            sale.setTipo("FACTURA");
+        } else {
+            sale.setTipo("BOLETA");
+        }
+
+        List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
+
+        if (productRequestDTOs == null && productRequestDTOs.isEmpty()) {
+            model.addAttribute("error", "No se han agregado productos");
+            model.addAttribute("productos", productosService.listarProducto());
+
+            return "venta/agregarVenta";
+        }
+
+        for (ProductRequestDTO productRequestDTO : productRequestDTOs) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
-            nuevo_item.setCantidad(venta.getCantidad());
-            nuevo_item.setProducto(venta.getProducto());
-            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()) * nuevo_item.getCantidad());
+            nuevo_item.setCantidad(productRequestDTO.getCantidad());
+            Producto p = productosService.obtenerProductoPorId(productRequestDTO.getId());
+            nuevo_item.setProducto(p);
+            nuevo_item.setTotal(
+                    productRequestDTO.getCantidad() * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
+            total += nuevo_item.getTotal();
             sale.getItem().add(nuevo_item);
-        }        
+        }
 
         session.setAttribute("sale", sale);
 
-
         model.addAttribute("venta", sale);
-        model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("ocultar", true);
-        return "venta/registroVenta";
+        return "venta/agregarMetodoPago";
     }
 
-    @GetMapping("/editarVenta")
-    public String editarVenta(Model model, HttpSession session, SessionStatus status) {
+    @GetMapping("/vuelto")
+    public String vuelto(Model model, HttpSession session, @RequestParam("efectivo") float efectivo) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        // Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        model.addAttribute("venta", sale);
-        model.addAttribute("productos", productosService.listarProducto());
+        // if (empleado == null) {
+        // model.addAttribute("venta", sale);
+        // model.addAttribute("error", "No hay usuario logeado en el sistema");
+        // }
 
-        return "venta/editarVenta";
-    }
+        double total = 0.00;
 
-    @GetMapping("/cancelar")
-    public String cancelar(Model model, HttpSession session) {
+        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
+            total += item.getTotal();
+        }
 
+        if (efectivo < total) {
+            model.addAttribute("error", "El efectivo ingresado es menor al total de la venta");
+            model.addAttribute("venta", sale);
+            return "venta/agregarMetodoPago";
+
+        }
+
+        sale.setId_usuario(1);
+        Venta venta = ventasService.crearVenta(sale);
+
+        model.addAttribute("efectivo", efectivo);
+        model.addAttribute("vuelto", efectivo - venta.getTotal());
+        model.addAttribute("id", venta.getComprobante().getId());
         session.removeAttribute("sale");
-
-        model.addAttribute("ventas", ventasService.getVentas());
-        return "venta/nuevaVenta";
+        return "venta/MostrarVuelto";
     }
+
+    @PostMapping("/anular")
+    public String anular(@RequestParam("email") String email,
+            @RequestParam("password") String password, Model model, HttpSession session) {
+
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
+
+        if (empleado.getUsuario().getEmail().equals(email)
+                && passwordEncoder.matches(password, empleado.getUsuario().getPassword())) {
+            model.addAttribute("ventas", ventasService.getVentas());
+            return "venta/ventas";
+        } else {
+            model.addAttribute("error", "Credenciales incorrectas");
+            model.addAttribute("productos", productosService.listarProducto());
+            return "venta/agregarVenta";
+        }
+
+    }
+
 
 }

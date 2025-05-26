@@ -4,159 +4,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Venta | Multiservicios Leo</title>
-    <link rel="icon" th:src="@{/images/logo.png}">
+    <title>ventana-venta</title>
+    <link rel="icon" th:href="@{/images/logo.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-venta.css}">
     <link rel="stylesheet" th:href="@{/css/style-agregarVenta.css}">
+
 </head>
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
-        <div class="contenedor_modal">
-            <div class="title__add--modal">
-                <p>Realizar Nueva Venta</p>
+        <form th:object="${venta}" class="ventana-venta" th:action="@{/inventario/ventas/pago}" id="formVenta"
+            method="post">
+            <div class="head-venta">
+                <div class="head-doctran">
+                    <select id="documentoTipo" class="select-doc" name="tipo">
+                        <option value="">-- Selecciona --</option>
+                        <option value="dni">Boleta</option>
+                        <option value="ruc">Factura</option>
+
+                    </select>
+                    <div id="input-doc-container">
+                        <input type="text" id="numeroDoc" name="numero" placeholder="Ingrese Documento"
+                            oninput="validarNumero(this)" autocomplete="off">
+                    </div>
+                    <button class="btn-anular">Anular transaccion</button>
+                </div>
             </div>
-            <div class="contenedor__form--venta">
-                <div class="info-produc-venta">
-                    <p>Informacion de la venta</p>
-                    <form method="post" id="formAgregarProducto">
-                        <div class="listar">
-                            <div class="list-produc">
-                                <label for="">Producto</label><br>
-                                <div class="dropdown-container">
-                                    <input type="text" class="dropdown-input" placeholder="Buscar producto..."
-                                        id="productInput" name="productInput" required autocomplete="off">
-                                    <div class="dropdown-list" id="productList">
-                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}"
-                                            th:attr="data-id=${producto.idProducto}">
-                                        </div>
-                                    </div>
+            <div class="body-venta-produc">
+                <div class="body-cca">
 
-                                </div>
+                    <div class="dropdown-container">
+                        <input type="text" class="dropdown-input" placeholder="Buscar producto..." id="productInput"
+                            name="productInput" autocomplete="off">
+                        <div class="dropdown-list" id="productList">
+                            <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}"
+                                th:attr="data-id=${producto.idProducto},data-nombre=${producto.nombre},data-precio=${producto.precioVenta}">
                             </div>
-                            <div class="cantidad-produc">
-                                <label for="">Cantidad</label><br>
-                                <input type="number" min="1" value="1" id="canti" name="canti">
-                            </div>
-                            <div class="btn-agregar-list">
-                                <button type="submit">Agregar</button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-
-                <div class="cont-table-list">
-                    <table id="tabla-listar" class="table-list">
-                        <thead>
-                            <tr>
-                                <th>Quitar</th>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio S/.</th>
-                                <th>Total S/.</th>
-                            </tr>
-                        </thead>
-                        <tbody th:if="${venta != null}">
-                            <tr th:each="item: ${venta.item}">
-                                <td><a th:href="@{/inventario/ventas/eliminarProd/{id} (id = ${item.producto.idProducto})} ">X</a></td>
-                                <td th:text="${item.producto.nombre}">arroz</td>
-                                <td th:text="${item.cantidad}">2</td>
-                                <td th:text="${item.producto.precioVenta}">4.50</td>
-                                <td id="tot" class="tot" th:text="${item.total}">9</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    <p>Monto Total</p>
-                                </td>
-                                <td id="finalTotal" th>S/.9.00</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <form th:action="@{/inventario/ventas/registroVenta}" method="post">
-                    <div class="container-submit-cancelar">
-                        <div class="sub-can">
-                            <input value="Guardar" type="submit" class="btn-agreventa">
-                            <input type="text" id="total_reg" name="total_reg" style="display: none;">
-                            <button type="reset" onclick="window.location.href='/cancelar'">Cancelar</button>
                         </div>
                     </div>
-                </form>
+
+                    <input class="body-cantidad" type="number" min="1" value="1" name="canti" id="canti">
+                    <button class="btn-anularI">Anular Item</button>
+                </div>
+
+                <div class="body-tabla">
+                    <table class="table-produc">
+                        <thead>
+                            <tr class="table-head">
+                                <th>Borrar</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaProductos">
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="body-irpago">
+                    <div class="body-errores" th:if="${error != null}">
+                        <p th:text="${error}">No hay un error</p>
+                        <button type="button" class="btn-limpiar" id="clear">Limpiar</button>
+                    </div>
+                    <div class="menu-pagar">
+                        <div class="menu-item-total">
+                            <div class="menu-pagar-item">
+                                <p>Item:</p>
+                                <p class="text-right" id="items">4</p>
+                            </div>
+                            <div class="menu-pagar-total">
+                                <p>Total:</p>
+                                <p class="text-right" id="total-produc"></p>
+                            </div>
+                        </div>
+
+                        <div class="bpago">
+                            <button class="btn-pago" type="submit">Ir a Pago</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <div class="foot-infoex">
+                <p>Fecha: <span id="fecha"></span></p>
+                <p>Hora: <span id="hora"></span></p>
+                <p>Nro. de transaccion: <span id="transac">0007</span></p>
+                <script th:src="@{/js/horafecha.js}"></script>
+            </div>
+        </form>
     </main>
-</body>
+    <section class="modal-container">
+        <div class="contenedor-modal-anular ventana-close">
+            <form th:action="@{/inventario/ventas/anular}" method="post">
+                <div class="modal-title-anular">
+                    <p>Datos de anulacion</p>
+                </div>
+                <div class="cont-datos-anul">
+                    <input type="text" placeholder="Ingrese Usuario" name="email">
+                    <input type="password" placeholder="Ingrese Contraseña" name="password">
+                </div>
+                <div class="cont-btns-anul">
+                    <button class="aceptar-anul">Anular</button>
+                    <button class="cancelar-anul">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- <script th:src="@{/js/general.js}"></script> -->
+    <script th:src="@{/js/Estilos.js}"></script>
 
-<script>
-    let total_pag = document.querySelectorAll("td.tot");
+    <script>
+        const productInput = document.getElementById("productInput");
+        const productList = document.getElementById("productList");
+        const tabla = document.getElementById('tablaProductos');
+        let productosAgregados = {}
+        let contador = 0;
 
-    const precios = Array.from(total_pag).map(precios => precios.textContent.trim());
+        // Función para mostrar y filtrar la lista
+        function filterProducts() {
+            const query = productInput.value.toLowerCase();
 
-    const t = precios.reduce((acc, precio) => parseFloat(acc) + parseFloat(precio), 0);
-    document.getElementById("finalTotal").innerHTML = t;
+            const allProducts = document.querySelectorAll("div.dropdown-list div.pro")
 
-    let total = document.getElementById("finalTotal").innerHTML;
-    total = parseFloat(total.replace("S/.", "").trim());
-    document.getElementById("total_reg").value = total;
+            allProducts.forEach(product => {
+                const nombre = product.textContent.toLowerCase()
+                if (nombre.includes(query)) {
+                    product.onclick = () => selectProduct(product.textContent)
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
 
-    const productInput = document.getElementById("productInput");
-    const productList = document.getElementById("productList");
+            });
 
-    // Función para mostrar y filtrar la lista
-    function filterProducts() {
-        const query = productInput.value.toLowerCase();
-        
-        const allProducts = document.querySelectorAll("div.dropdown-list div.pro")
+            productList.style.display = "block";
+        }
 
-        allProducts.forEach(product => {
-            const nombre = product.textContent.toLowerCase()
-            if (nombre.includes(query)) {
-                product.onclick = () => selectProduct(product.textContent)
-                product.style.display = "block";
-            } else {
-                product.style.display = "none";
-            }
-            
-        });
-
-        productList.style.display = "block";
-    }
-
-    // Función para seleccionar un producto
-    function selectProduct(product) {
-        productInput.value = product;
-        productList.style.display = "none";
-    }
-
-    // Eventos
-    productInput.addEventListener("input", filterProducts);
-    document.addEventListener("click", (e) => {
-        if (!productInput.contains(e.target)) {
+        // Función para seleccionar un producto
+        function selectProduct(product) {
+            productInput.value = product;
             productList.style.display = "none";
         }
-    });
 
-    const form = document.getElementById('formAgregarProducto');
-    const cantidadInput = document.getElementById('canti');
+        // Eventos
+        productInput.addEventListener("input", filterProducts);
+        document.addEventListener("click", (e) => {
+            if (!productInput.contains(e.target)) {
+                productList.style.display = "none";
+            }
+        });
 
-    productList.addEventListener('click', function (event) {
-        console.log(event.target.classList.contains('pro'))
-        
-        if (event.target.classList.contains('pro')) {
-            const nombre = event.target.textContent;
-            const id = event.target.getAttribute('data-id');
-            form.action = '/inventario/ventas/añadirProd/' + id;
+        const cantidadInput = document.getElementById('canti');
+
+        productList.addEventListener('click', function (event) {
+
+            if (event.target.classList.contains('pro')) {
+                const id = event.target.getAttribute('data-id');
+                const nombre = event.target.getAttribute('data-nombre');
+                const precio = parseFloat(event.target.getAttribute('data-precio'));
+                const cantidad = parseInt(cantidadInput.value);
+
+
+                if (productosAgregados[id]) {
+                    const fila = document.getElementById(`prod-${id}`)
+                    const nuevaCantidad = productosAgregados[id].cantidad + cantidad
+                    const nuevoTotal = (nuevaCantidad * precio).toFixed(2)
+
+                    fila.querySelector('.cantidad').textContent = nuevaCantidad
+                    fila.querySelector('.total').textContent = nuevoTotal
+                    fila.querySelector('.input-cantidad').value = nuevaCantidad
+
+                    productosAgregados[id].cantidad = nuevaCantidad
+
+                } else {
+                    const index = contador++;
+                    productosAgregados[id] = { cantidad: cantidad, index: index }
+
+                    const row = document.createElement('tr');
+                    row.id = `prod-${id}`;
+                    row.innerHTML = `
+                    <td><button type="button" onclick="eliminarProducto('${id}')">X</button></td>
+                    <td>${nombre}</td>
+                    <td class="cantidad">${cantidad}</td>
+                    <td>${precio}</td>
+                    <td class="total">${(cantidad * precio).toFixed(2)}</td>
+                    <input type="hidden" name="productos[${index}].id" value="${id}">
+                    <input type="hidden" class="input-cantidad" name="productos[${index}].cantidad" value="${cantidad}">
+                    `;
+                    tabla.appendChild(row);
+                    actualizar()
+                }
+
+                productInput.value = ''
+                cantidadInput.value = 1
+
+            }
+        });
+
+        function eliminarProducto(id) {
+            const fila = document.getElementById(`prod-${id}`)
+            if (fila) {
+                fila.remove()
+                delete productosAgregados[id]
+            }
+            actualizar()
         }
-    });
 
-</script>
+        function actualizar() {
+            let total = 0
+            document.querySelectorAll('.total').forEach(el => {
+                const valor = parseFloat(el.textContent) || 0
+                total += valor
+            })
+
+            document.getElementById('total-produc').textContent = total.toFixed(2);
+            console.log(productosAgregados.length)
+            document.getElementById("items").textContent = Object.keys(productosAgregados).length
+
+
+        }
+
+        // const botonLimpiar = document.getElementById("clear")
+        // botonLimpiar.addEventListener('click', (e) => {
+        //     e.preventDefault()
+        //     productosAgregados = {}
+        //     tabla.innerHTML = ''
+        // })
+
+    </script>
+</body>
 
 </html>

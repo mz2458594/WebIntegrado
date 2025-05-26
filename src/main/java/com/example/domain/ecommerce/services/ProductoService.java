@@ -132,7 +132,7 @@ public class ProductoService {
         productoDAO.save(product);
     }
 
-    public void devolverStock(Producto producto, int cantidad) {
+    public void aumentarStock(Producto producto, int cantidad) {
         Producto product = producto;
         product.setStock(String.valueOf(Integer.valueOf(product.getStock()) + cantidad));
         productoDAO.save(product);

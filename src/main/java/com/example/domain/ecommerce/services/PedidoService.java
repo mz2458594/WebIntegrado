@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Detalle_pedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
@@ -30,7 +31,12 @@ public class PedidoService {
     @Autowired
     private ProductoService productosService;
 
+    @Autowired
+    private ComprobanteService comprobanteService;
+
     public Pedido crearPedido(RequestDTO data) {
+
+        data.setTipo("FACTURA");
         Usuario usuario = usuarioService.obtenerUsuarioPorId(data.getId_usuario());
 
         Pedido pedido = new Pedido();
@@ -49,6 +55,8 @@ public class PedidoService {
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setPedido(pedido);
+            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioVenta());
+            vp.setSubtotal(subtotal);
 
             total += vp.getSubtotal();
 
@@ -56,10 +64,13 @@ public class PedidoService {
 
         }
 
+        pedido.setEstado(EstadoPedido.PROCESANDO);
         pedido.setTotal(total);
         pedido.setDetallePedidos(lista_pedidos);
 
-        return pedidoDAO.save(pedido);
+        Pedido pedido2 = pedidoDAO.save(pedido);
+
+        return pedido2;
 
     }
 
@@ -72,12 +83,6 @@ public class PedidoService {
 
         if (pedido.isEmpty()) {
             throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-        }
-
-        Pedido p = pedido.get();
-
-        for (Detalle_pedido pe : p.getDetallePedidos()) {
-            productosService.devolverStock(pe.getProducto(), pe.getCantidad());
         }
 
         pedidoDAO.deleteById(Long.valueOf(id));
@@ -96,7 +101,7 @@ public class PedidoService {
         return pedido.get();
     }
 
-    public void actualizarEstado(int id, String estado) {
+    public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
         Optional<Pedido> pedido = pedidoDAO.findById(Long.valueOf(id));
 
         if (pedido.isEmpty()) {
@@ -105,25 +110,34 @@ public class PedidoService {
 
         Pedido pedido2 = pedido.get();
 
-        if (estado != null) {
+        if (estadoRequestDTO.getEstado() != null) {
 
-            switch (estado) {
-                case "CANCELADO":
-                    pedido2.setEstado(EstadoPedido.CANCELADO);
-                    break;
-                case "COMPLETADO":
-                    pedido2.setEstado(EstadoPedido.COMPLETADO);
-                    break;
-                case "EN ESPERA":
-                    pedido2.setEstado(EstadoPedido.EN_ESPERA);
-                    break;
-                case "PROCESANDO":
-                    pedido2.setEstado(EstadoPedido.PROCESANDO);
-                    break;
-                default:
-                    break;
+            if (pedido2.getEstado().equals("COMPLETADO") || pedido2.getEstado().equals("CANCELADO")) {
+                return;
+            } else {
+                switch (estadoRequestDTO.getEstado()) {
+                    case "CANCELADO":
+                        pedido2.setEstado(EstadoPedido.CANCELADO);
+                        break;
+                    case "COMPLETADO":
+                        pedido2.setEstado(EstadoPedido.COMPLETADO);
+                        for (Detalle_pedido pe : pedido2.getDetallePedidos()) {
+                            productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
+                        }
+                        break;
+                    case "EN ESPERA":
+                        pedido2.setEstado(EstadoPedido.EN_ESPERA);
+                        break;
+                    case "PROCESANDO":
+                        pedido2.setEstado(EstadoPedido.PROCESANDO);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+
+        pedidoDAO.save(pedido2);
 
     }
 
