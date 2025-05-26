@@ -120,12 +120,9 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setUsername(user.getUsername());
         usuario.setEmail(user.getCorreo());
-        usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
+        usuario.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Optional<Rol> rol = rolDAO.findByNombre(user.getRol());
-        if (rol.isPresent()) {
-            usuario.setRol(rol.get());
-        }
+        rolDAO.findByNombre(user.getRol()).ifPresent(usuario::setRol);
 
         if (user.getEstado() == null) {
 
@@ -145,69 +142,7 @@ public class UsuarioService {
             }
         }
 
-        LocalDate fechaNacimineto = user.getFecha_nac().toLocalDate();
-
-        if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
-
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
-            }
-
-            usuarioDAO.save(usuario);
-
-            Empleado emp = new Empleado();
-
-            emp.setCargo(user.getCargo());
-            emp.setDni(user.getNum_documento());
-            emp.setApellido(user.getApellido());
-            emp.setNombre(user.getNombre());
-            emp.setTelefono(user.getCelular());
-            emp.setFecha(user.getFecha_nac());
-
-            Direccion nueva_direccion = new Direccion();
-            nueva_direccion.setCalle(user.getCalle());
-            nueva_direccion.setCiudad(user.getCiudad());
-            nueva_direccion.setDistrito(user.getDistrito());
-            nueva_direccion.setProvincia(user.getProvincia());
-            nueva_direccion.setPersona(emp);
-
-            emp.setDireccion(nueva_direccion);
-
-            emp.setUsuario(usuario);
-
-            empleadoDAO.save(emp);
-
-            return emp.getUsuario();
-
-        } else {
-
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
-            }
-
-            usuarioDAO.save(usuario);
-
-            Cliente cli = new Cliente();
-            cli.setDni(user.getNum_documento());
-            cli.setApellido(user.getApellido());
-            cli.setNombre(user.getNombre());
-            cli.setTelefono(user.getCelular());
-            cli.setFecha(user.getFecha_nac());
-
-            Direccion nueva_direccion = new Direccion();
-            nueva_direccion.setCalle(user.getCalle());
-            nueva_direccion.setCiudad(user.getCiudad());
-            nueva_direccion.setDistrito(user.getDistrito());
-            nueva_direccion.setProvincia(user.getProvincia());
-            nueva_direccion.setPersona(cli);
-
-            cli.setDireccion(nueva_direccion);
-            cli.setUsuario(usuario);
-
-            clienteDAO.save(cli);
-
-            return cli.getUsuario();
-        }
+        return usuarioDAO.save(usuario);
 
     }
 

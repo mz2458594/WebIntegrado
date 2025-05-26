@@ -193,7 +193,7 @@ public class RestTests {
         userDTO.setProvincia("Lima");
         userDTO.setCorreo("test" + timestamp + "@example.com");
         userDTO.setUsername("testuser" + timestamp);
-        userDTO.setContraseña("password123");
+        userDTO.setPassword("password123");
         userDTO.setRol("CLIENTE");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users/createUser")
@@ -308,7 +308,7 @@ public void testUpdateUser() throws Exception {
             userDTO.setCelular("987654326");
             userDTO.setCorreo("password"+timestamp+"@example.com");
             userDTO.setUsername("passworduser"+timestamp);
-            userDTO.setContraseña("oldpassword");
+            userDTO.setPassword("oldpassword");
             userDTO.setRol("CLIENTE");
             
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/createUser")
@@ -340,7 +340,7 @@ public void testUpdateUser() throws Exception {
             userDTO.setCelular("987654327");
             userDTO.setCorreo("delete"+timestamp+"@example.com");
             userDTO.setUsername("deleteuser"+timestamp);
-            userDTO.setContraseña("deletepass");
+            userDTO.setPassword("deletepass");
             userDTO.setRol("CLIENTE");
             
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/createUser")

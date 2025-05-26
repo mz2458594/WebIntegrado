@@ -15,6 +15,7 @@ import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.TokenResponse;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.security.JwtUtil;
+import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.CustomUserDetailsService;
 
 // Controlador que maneja todas las operaciones relacionadas con la autenticación
@@ -26,18 +27,26 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+    private final AuthService authService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, 
-                                  JwtUtil jwtUtil,
-                                  CustomUserDetailsService userDetailsService) {
+
+
+
+
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil,
+            CustomUserDetailsService userDetailsService, AuthService authService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.authService = authService;
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register(@RequestBody UserDTO userDTO) {
+
+
+        authService.register(userDTO);
+
         // Carga los detalles del usuario recién creado
         UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getCorreo());
         

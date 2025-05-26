@@ -390,7 +390,7 @@ public class EcommerceApplicationTests {
         userDTO.setProvincia("Provincia Falsa");
         userDTO.setCorreo("nuevoemail@example.com");
         userDTO.setUsername("nuevo_username");
-        userDTO.setContraseña("password123");
+        userDTO.setPassword("password123");
         userDTO.setRol("Cliente");
     
         Persona persona = mock(Persona.class);
