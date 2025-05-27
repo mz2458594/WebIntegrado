@@ -1,19 +1,28 @@
 package com.example.domain.ecommerce.controllers.web;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.models.entities.Producto;
+import com.example.domain.ecommerce.services.ProductoService;
 
 import jakarta.servlet.http.HttpSession;
 
 @ControllerAdvice
 public class GlobalModelAtributte {
-    
+
+    @Autowired
+    private ProductoService productoService;
+
     @ModelAttribute
-    public void addUserModel(HttpSession session, Model model){
+    public void addUserModel(HttpSession session, Model model) {
         Cliente user = (Cliente) session.getAttribute("user");
         Empleado empleado = (Empleado) session.getAttribute("empleado");
         if (user != null) {
@@ -22,6 +31,14 @@ public class GlobalModelAtributte {
 
         if (empleado != null) {
             model.addAttribute("empleado", empleado);
+            List<Producto> productos = productoService.listarProducto();
+
+            List<String> notificaciones = productos.stream()
+                    .filter(p -> Integer.parseInt(p.getStock()) < 5)
+                    .map(p -> "El producto " + p.getNombre() + "tiene stock bajo (" + p.getStock() + " unidades)")
+                    .collect(Collectors.toList());
+
+            model.addAttribute("notificaciones", notificaciones);
         }
     }
 
