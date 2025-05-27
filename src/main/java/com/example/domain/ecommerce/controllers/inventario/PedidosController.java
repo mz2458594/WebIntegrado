@@ -79,7 +79,7 @@ public class PedidosController {
         for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
                 item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) *
+                item.setTotal(Float.parseFloat(item.getProducto().getPrecioCompra()) *
                         item.getCantidad());
                 encontrado = true;
                 break;
@@ -92,7 +92,7 @@ public class PedidosController {
             Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
             nuevo_item.setTotal(cantidad *
-                    Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
+                    Float.parseFloat(nuevo_item.getProducto().getPrecioCompra()));
             sale.getItem().add(nuevo_item);
         }
 
@@ -173,7 +173,7 @@ public class PedidosController {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(pedido.getCantidad());
             nuevo_item.setProducto(pedido.getProducto());
-            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioVenta())
+            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioCompra())
                     * nuevo_item.getCantidad());
             sale.getItem().add(nuevo_item);
         }

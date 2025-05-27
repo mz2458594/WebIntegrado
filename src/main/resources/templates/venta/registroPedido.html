@@ -48,7 +48,7 @@
                             <tr th:each="item: ${pedidos.item}">
                                 <td th:text="${item.producto.nombre}">
                                     arroz</td>
-                                <td th:text="${item.producto.precioVenta}">
+                                <td th:text="${item.producto.precioCompra}">
                                     4.50</td>
                                 <td th:text="${item.cantidad}">2</td>
                                 <td id="tot" class="tot" th:text="${item.total}">9</td>

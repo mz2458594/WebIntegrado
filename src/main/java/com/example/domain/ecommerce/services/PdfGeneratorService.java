@@ -1,17 +1,23 @@
 package com.example.domain.ecommerce.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Comprobante;
+import com.example.domain.ecommerce.models.entities.Detalle_pedido;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
@@ -24,7 +30,9 @@ import com.itextpdf.io.util.StreamUtil;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.*;
+import java.util.List;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
@@ -105,7 +113,8 @@ public class PdfGeneratorService {
         if (comprobante.getTipo() == TipoComprobante.FACTURA) {
             document.add(
                     new Paragraph(
-                            "\nRUC: " + comprobante.getRucCliente() + "    \nRazón social: " + comprobante.getRazonSocial()));
+                            "\nRUC: " + comprobante.getRucCliente() + "    \nRazón social: "
+                                    + comprobante.getRazonSocial()));
         }
 
         // 5. Tabla de productos
@@ -146,5 +155,118 @@ public class PdfGeneratorService {
 
         document.close();
         return baos;
+    }
+
+    public ByteArrayInputStream generateFacturaPDF(Comprobante comprobante) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PdfWriter writer = new PdfWriter(out);
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document document = new Document(pdfDoc);
+
+        try {
+            // Imagen de encabezado
+            InputStream is = getClass().getResourceAsStream("/static/images/logo.png");
+            if (is == null) {
+                throw new FileNotFoundException("No se encontró la imagen: /images/logo.png");
+            }
+            ImageData imageData = ImageDataFactory.create(StreamUtil.inputStreamToArray(is));
+            Image image = new Image(imageData);
+            image.scaleToFit(100, 100);
+            image.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(image);
+
+            // Encabezado general de la factura
+            document.add(new Paragraph("TARGUS S.A.C").setFontSize(14).setBold()).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("CALLE LAS NORMAS 123").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("Teléf: 987 654 321").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("Correo: Targusgaming@tgame.com").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("Web: www.targus.com").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("RUC: 1234567890").setFontSize(10).setBold()).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("FACTURA - ORDEN DE COMPRA").setBold()).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph(comprobante.getNumero()).setBold()).setTextAlignment(TextAlignment.CENTER);
+            document.add(new Paragraph("\n"));
+
+            // Agrupar productos por proveedor
+            Map<Proveedor, List<Detalle_pedido>> productosPorProveedor = comprobante.getPedidos().getDetallePedidos()
+                    .stream()
+                    .collect(Collectors.groupingBy(item -> item.getProducto().getProveedor()));
+
+            for (Map.Entry<Proveedor, List<Detalle_pedido>> entry : productosPorProveedor.entrySet()) {
+                Proveedor proveedor = entry.getKey();
+                List<Detalle_pedido> detalles = entry.getValue();
+
+                for (Detalle_pedido item : detalles) {
+                    // Datos del proveedor (se repiten en cada página)
+                    Table proveedorTable = new Table(UnitValue.createPercentArray(new float[] { 25, 75 }));
+                    proveedorTable.setWidth(UnitValue.createPercentValue(100));
+                    proveedorTable.addCell(getCell("Razón Social: " + safe(proveedor.getNombre()), true));
+                    proveedorTable.addCell(getCell("RUC: " + safe(String.valueOf(proveedor.getRuc())), true));
+                    proveedorTable.addCell(getCell("Correo: " + safe(proveedor.getEmail()), false));
+                    document.add(proveedorTable);
+
+                    document.add(new Paragraph("\n"));
+
+                    // Tabla con un solo producto
+                    Table table = new Table(UnitValue.createPercentArray(new float[] { 10, 10, 40, 20, 20 }));
+                    table.setWidth(UnitValue.createPercentValue(100));
+                    table.addHeaderCell("CANTIDAD");
+                    table.addHeaderCell("U.M");
+                    table.addHeaderCell("DESCRIPCIÓN");
+                    table.addHeaderCell("PRECIO U.");
+                    table.addHeaderCell("IMPORTE (inc. IGV)");
+
+                    table.addCell(String.valueOf(item.getCantidad()));
+                    table.addCell("UNIDAD");
+                    table.addCell(safe(item.getProducto().getNombre()));
+                    table.addCell(item.getProducto().getPrecioCompra());
+                    table.addCell(String.format("%.2f", item.getSubtotal()));
+
+                    document.add(table);
+                    document.add(new Paragraph("\n-----------------------------------------------\n"));
+
+                    // Añadir página nueva solo si no es el último producto
+                    if (!(entry.equals(productosPorProveedor.entrySet().toArray()[productosPorProveedor.size() - 1])
+                            && item.equals(detalles.get(detalles.size() - 1)))) {
+                        pdfDoc.addNewPage();
+                    }
+                }
+            }
+
+            // Totales generales en la última página
+            Table totales = new Table(UnitValue.createPercentArray(new float[] { 80, 20 }));
+            totales.setWidth(UnitValue.createPercentValue(100));
+            double opGravada = comprobante.getPedidos().getTotal() / 1.18;
+            double igv = comprobante.getPedidos().getTotal() - opGravada;
+            double total = comprobante.getPedidos().getTotal();
+
+            totales.addCell(getCell("OP. GRAVADA (S/.)", true));
+            totales.addCell(getCell(String.format("%.2f", opGravada), false));
+            totales.addCell(getCell("TOTAL IGV (S/.)", true));
+            totales.addCell(getCell(String.format("%.2f", igv), false));
+            totales.addCell(getCell("IMPORTE TOTAL (S/.)", true));
+            totales.addCell(getCell(String.format("%.2f", total), false));
+            document.add(totales);
+
+            document.close();
+            return new ByteArrayInputStream(out.toByteArray());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            document.close();
+            throw new RuntimeException("Error al generar el PDF", e);
+        }
+    }
+
+    private Cell getCell(String text, boolean isBold) {
+        Cell cell = new Cell().add(new Paragraph(text).setFontSize(9));
+        cell.setBorder(Border.NO_BORDER);
+        if (isBold) {
+            cell.setBold();
+        }
+        return cell;
+    }
+
+    private String safe(String text) {
+        return text == null ? "" : text;
     }
 }

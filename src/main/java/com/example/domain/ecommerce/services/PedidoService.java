@@ -56,7 +56,7 @@ public class PedidoService {
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setPedido(pedido);
-            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioVenta());
+            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioCompra());
             vp.setSubtotal(subtotal);
 
             total += vp.getSubtotal();

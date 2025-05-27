@@ -1,9 +1,12 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +35,7 @@ public class BoletaController {
     private PedidoService pedidoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<byte[]> verPdf(@PathVariable int id){
+    public ResponseEntity<byte[]> verPdf(@PathVariable int id) {
         Comprobante comprobante = comprobanteService.obtenerComprobantePorId(id);
         ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);
 
@@ -46,12 +49,19 @@ public class BoletaController {
     }
 
     @GetMapping("/pedido/{id}")
-    public ResponseEntity<byte[]> verFactura(@PathVariable int id){
+    public ResponseEntity<byte[]> verFactura(@PathVariable int id) {
 
         Pedido pedido = pedidoService.obtenerPedidoPorId(id);
 
         Comprobante comprobante = pedido.getComprobante();
-        ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);
+        ByteArrayInputStream pdfStream = pdfGeneratorService.generateFacturaPDF(comprobante);
+        byte[] pdfBytes;
+
+        try {
+            pdfBytes = pdfStream.readAllBytes(); // Convertir InputStream a byte[]
+        } catch (com.itextpdf.io.exceptions.IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -59,6 +69,6 @@ public class BoletaController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(pdfStream.toByteArray());
+                .body(pdfBytes);
     }
 }
