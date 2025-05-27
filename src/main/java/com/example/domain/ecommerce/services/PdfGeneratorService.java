@@ -27,10 +27,12 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.io.util.StreamUtil;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import java.util.List;
 import com.itextpdf.layout.properties.HorizontalAlignment;
@@ -176,14 +178,17 @@ public class PdfGeneratorService {
             document.add(image);
 
             // Encabezado general de la factura
-            document.add(new Paragraph("TARGUS S.A.C").setFontSize(14).setBold()).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("CALLE LAS NORMAS 123").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("Teléf: 987 654 321").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("Correo: Targusgaming@tgame.com").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("Web: www.targus.com").setFontSize(10)).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("RUC: 1234567890").setFontSize(10).setBold()).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph("FACTURA - ORDEN DE COMPRA").setBold()).setTextAlignment(TextAlignment.CENTER);
-            document.add(new Paragraph(comprobante.getNumero()).setBold()).setTextAlignment(TextAlignment.CENTER);
+            document.add(
+                    new Paragraph("TARGUS S.A.C").setFontSize(14).setBold().setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("CALLE LAS NORMAS 123").setFontSize(10).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Teléf: 987 654 321").setFontSize(10).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Correo: Targusgaming@tgame.com").setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Web: www.targus.com").setFontSize(10).setTextAlignment(TextAlignment.CENTER));
+            document.add(
+                    new Paragraph("RUC: 1234567890").setFontSize(10).setBold().setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("ORDEN DE COMPRA").setBold().setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph(comprobante.getNumero()).setBold().setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph("\n"));
 
             // Agrupar productos por proveedor
@@ -197,16 +202,13 @@ public class PdfGeneratorService {
 
                 for (Detalle_pedido item : detalles) {
                     // Datos del proveedor (se repiten en cada página)
-                    Table proveedorTable = new Table(UnitValue.createPercentArray(new float[] { 25, 75 }));
+                    Table proveedorTable = new Table(UnitValue.createPercentArray(new float[] { 33, 33, 34 }));
                     proveedorTable.setWidth(UnitValue.createPercentValue(100));
-                    proveedorTable.addCell(getCell("Razón Social: " + safe(proveedor.getNombre()), true));
-                    proveedorTable.addCell(getCell("RUC: " + safe(String.valueOf(proveedor.getRuc())), true));
-                    proveedorTable.addCell(getCell("Correo: " + safe(proveedor.getEmail()), false));
+                    proveedorTable.addCell(getCell("Razón Social:\n" + safe(proveedor.getNombre()), true));
+                    proveedorTable.addCell(getCell("RUC:\n" + safe(String.valueOf(proveedor.getRuc())), true));
+                    proveedorTable.addCell(getCell("Correo:\n" + safe(proveedor.getEmail()), true));
                     document.add(proveedorTable);
 
-                    document.add(new Paragraph("\n"));
-
-                    // Tabla con un solo producto
                     Table table = new Table(UnitValue.createPercentArray(new float[] { 10, 10, 40, 20, 20 }));
                     table.setWidth(UnitValue.createPercentValue(100));
                     table.addHeaderCell("CANTIDAD");
@@ -222,13 +224,14 @@ public class PdfGeneratorService {
                     table.addCell(String.format("%.2f", item.getSubtotal()));
 
                     document.add(table);
-                    document.add(new Paragraph("\n-----------------------------------------------\n"));
+                    document.add(new Paragraph("\n"));
 
                     // Añadir página nueva solo si no es el último producto
                     if (!(entry.equals(productosPorProveedor.entrySet().toArray()[productosPorProveedor.size() - 1])
                             && item.equals(detalles.get(detalles.size() - 1)))) {
                         pdfDoc.addNewPage();
                     }
+
                 }
             }
 
@@ -257,12 +260,11 @@ public class PdfGeneratorService {
         }
     }
 
-    private Cell getCell(String text, boolean isBold) {
-        Cell cell = new Cell().add(new Paragraph(text).setFontSize(9));
-        cell.setBorder(Border.NO_BORDER);
-        if (isBold) {
+    private Cell getCell(String content, boolean bold) {
+        Cell cell = new Cell().add(new Paragraph(content));
+        if (bold)
             cell.setBold();
-        }
+        cell.setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)); // Borde negro delgado
         return cell;
     }
 

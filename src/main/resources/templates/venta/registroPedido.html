@@ -67,7 +67,7 @@
 
                         <form th:action="@{/inventario/pedido/savePedido}" method="post">
                             <button type="button" th:if="${mostrar == true}" class="btn-imprimir"
-                                onclick="window.location.href='/inventario/comprobante/pedido/[[${id}]]'">Imprimir</button>
+                                th:onclick="'window.location.href=\'/inventario/comprobante/pedido/' + ${id} + '\';'">Imprimir</button>
                             <button type="button" th:if="${mostrar == null}" class="btn-editar"
                                 onclick="window.location.href='/inventario/pedido/editarPedido'">Editar</button>
                             <button type="submit" th:if="${mostrar == null}" class="btn-save">Guardar</button>
