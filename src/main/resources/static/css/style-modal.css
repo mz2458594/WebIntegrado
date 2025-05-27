@@ -2,7 +2,6 @@
     height: 100vh;
     width: 100%;
     overflow: auto;
-    border: 3px solid red;
 }
 
 .contenedor_modal {
@@ -11,7 +10,6 @@
     border-top: 3px solid #0078ff;
     padding-bottom: 10px;
     width: fit-content;
-        border: 3px solid blue;
 }
 
 .title__add--modal {
