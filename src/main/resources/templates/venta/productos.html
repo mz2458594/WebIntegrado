@@ -22,7 +22,7 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Productos</p>
             </div>
-            <form class="form_modal" th:action="@{/inventario/productos/agregar_prod}" method="post">
+            <form id="formulario_produc" class="form_modal" th:action="@{/inventario/productos/agregar_prod}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
                     <input type="text" name="nombre">
