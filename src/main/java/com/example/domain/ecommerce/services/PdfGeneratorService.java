@@ -14,6 +14,7 @@ import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
+import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -72,8 +73,13 @@ public class PdfGeneratorService {
         document.add(new Paragraph("CALLE LAS LOMAS 123\nTel: 987 654 321\nCorreo: Targusgaming@tgame.com")
                 .setTextAlignment(TextAlignment.CENTER));
 
-        document.add(new Paragraph("\nBOLETA DE VENTA ELECTRONICA")
-                .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(10));
+        if (comprobante.getTipo() == TipoComprobante.BOLETA) {
+            document.add(new Paragraph("\nBOLETA DE VENTA ELECTRONICA")
+                    .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(10));
+        } else {
+            document.add(new Paragraph("\nFactura DE VENTA ELECTRONICA")
+                    .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(10));
+        }
         document.add(new Paragraph(comprobante.getNumero()).setTextAlignment(TextAlignment.CENTER).setFontSize(10));
 
         // 3. Cliente
@@ -82,8 +88,6 @@ public class PdfGeneratorService {
 
         Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
         Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
-
-        
 
         if (cliente.isPresent()) {
             Cliente cliente2 = cliente.get();
@@ -99,6 +103,12 @@ public class PdfGeneratorService {
         LocalDateTime fecha = comprobante.getFechaEmision();
         document.add(
                 new Paragraph("\nFECHA: " + fecha.toLocalDate() + "    \nHORA: " + fecha.toLocalTime().withSecond(0)));
+
+        if (comprobante.getTipo() == TipoComprobante.FACTURA) {
+            document.add(
+                    new Paragraph(
+                            "\nRUC: " + comprobante.getRucCliente() + "    \nRazón social: " + comprobante.getRazonSocial()));
+        }
 
         // 5. Tabla de productos
         float[] columnWidths = { 50F, 100F, 50F, 60F };
@@ -131,7 +141,7 @@ public class PdfGeneratorService {
         document.add(new Paragraph("Observaciones:"));
 
         // 8. Pie de página
-        document.add(new Paragraph("\nRepresentación impresa de boleta electrónica.")
+        document.add(new Paragraph("\nRepresentación impresa de documento electrónico.")
                 .setFontSize(8).setTextAlignment(TextAlignment.CENTER).setFontSize(10));
         document.add(new Paragraph("www.targus.com.pe").setFontSize(8).setTextAlignment(TextAlignment.CENTER)
                 .setFontSize(10));

@@ -70,7 +70,6 @@ public class VentasInventarioController {
 
         if ("ruc".equalsIgnoreCase(tipo)) {
             if (ruc == null || ruc.trim().isEmpty() || ruc.length() != 11) {
-                sale.setRuc(ruc);
                 model.addAttribute("error", "Debe ingresar un numero de RUC válido");
                 model.addAttribute("productos", productosService.listarProducto());
 
@@ -78,8 +77,12 @@ public class VentasInventarioController {
             }
             sale.setRuc(ruc);
             sale.setTipo("FACTURA");
-        } else {
+        } else if ("boleta".equalsIgnoreCase(tipo)) {
             sale.setTipo("BOLETA");
+        } else {
+            model.addAttribute("error", "Debe seleccionar un tipo de comprobante válido");
+            model.addAttribute("productos", productosService.listarProducto());
+            return "venta/agregarVenta";
         }
 
         List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
@@ -159,6 +162,5 @@ public class VentasInventarioController {
         }
 
     }
-
 
 }
