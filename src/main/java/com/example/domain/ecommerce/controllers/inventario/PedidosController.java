@@ -33,7 +33,6 @@ public class PedidosController {
     @Autowired
     private PedidoService pedidoService;
 
-
     @GetMapping("/pedidos")
     public String pedidos(Model model) {
 
@@ -55,7 +54,15 @@ public class PedidosController {
     }
 
     @GetMapping("/agregarPedido")
-    public String agregarPedido(Model model) {
+    public String agregarPedido(Model model, HttpSession session) {
+
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
+
+        if (empleado == null) {
+            model.addAttribute("error", "No hay usuario logeado en el sistema");
+            return "venta/pedidos";
+        }
+
         model.addAttribute("productos", productosService.listarProducto());
         return "venta/agregarPedido";
     }
@@ -208,8 +215,7 @@ public class PedidosController {
     }
 
     @PostMapping("/actualizar/{id}")
-    public String actualizarPedido(Model model, @PathVariable int id
-    ,EstadoRequestDTO estadoRequestDTO){
+    public String actualizarPedido(Model model, @PathVariable int id, EstadoRequestDTO estadoRequestDTO) {
 
         try {
             pedidoService.actualizarEstado(id, estadoRequestDTO);

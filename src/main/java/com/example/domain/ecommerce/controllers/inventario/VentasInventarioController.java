@@ -51,7 +51,15 @@ public class VentasInventarioController {
     }
 
     @GetMapping("/agregarVenta")
-    public String agregarVenta(Model model) {
+    public String agregarVenta(Model model, HttpSession session) {
+
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
+
+        if (empleado == null) {
+            model.addAttribute("error", "No hay usuario logeado en el sistema");
+            return "venta/ventas";
+        }
+
         model.addAttribute("productos", productosService.listarProducto());
         return "venta/agregarVenta";
     }
