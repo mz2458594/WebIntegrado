@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.ecommerce.models.entities.Comprobante;
+import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.services.ComprobanteService;
 import com.example.domain.ecommerce.services.PdfGeneratorService;
+import com.example.domain.ecommerce.services.PedidoService;
 
 @RestController
 @RequestMapping("/inventario/comprobante")
@@ -26,6 +28,9 @@ public class BoletaController {
     @Autowired
     private PdfGeneratorService pdfGeneratorService;
 
+    @Autowired
+    private PedidoService pedidoService;
+
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> verPdf(@PathVariable int id){
         Comprobante comprobante = comprobanteService.obtenerComprobantePorId(id);
@@ -34,6 +39,23 @@ public class BoletaController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.inline().filename("comprobante.pdf").build());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfStream.toByteArray());
+    }
+
+    @GetMapping("/pedido/{id}")
+    public ResponseEntity<byte[]> verFactura(@PathVariable int id){
+
+        Pedido pedido = pedidoService.obtenerPedidoPorId(id);
+
+        Comprobante comprobante = pedido.getComprobante();
+        ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("pedido.pdf").build());
 
         return ResponseEntity.ok()
                 .headers(headers)

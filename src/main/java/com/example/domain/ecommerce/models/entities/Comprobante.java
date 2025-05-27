@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,8 +32,12 @@ public class Comprobante {
     private TipoComprobante tipo;
 
     @OneToOne
-    @JoinColumn(name = "venta_id", nullable = false)
+    @JoinColumn(name = "venta_id", nullable = true)
     private Venta venta;
+
+    @OneToOne
+    @JoinColumn(name = "pedido_id", nullable = true)
+    private Pedido pedidos;
 
     @Column(nullable = true)
     private String rucCliente;
@@ -54,6 +59,8 @@ public class Comprobante {
         this.razonSocial = razonSocial;
     }
 
+
+    
     public int getId() {
         return id;
     }
@@ -109,6 +116,16 @@ public class Comprobante {
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
+
+    public Pedido getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(Pedido pedidos) {
+        this.pedidos = pedidos;
+    }
+
+  
 
     
 

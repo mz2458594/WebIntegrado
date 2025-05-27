@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_pedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -69,6 +70,10 @@ public class PedidoService {
         pedido.setDetallePedidos(lista_pedidos);
 
         Pedido pedido2 = pedidoDAO.save(pedido);
+
+        Comprobante comprobante = comprobanteService.generarComprobantePedido(pedido2, data.getRuc(), data.getRazon());
+
+        pedido2.setComprobante(comprobante);
 
         return pedido2;
 

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.ControlComprobante;
+import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.ComprobanteDAO;
@@ -51,6 +52,36 @@ public class ComprobanteService {
 
         return comprobanteDAO.save(comprobante);
     }
+
+
+    @Transactional
+    public Comprobante generarComprobantePedido(Pedido pedido, String ruc, String razon) {
+
+        
+        ControlComprobante control = controlComprobanteDAO.findByTipo(TipoComprobante.FACTURA)
+                .orElseThrow(() -> new RuntimeException("Control de boleta no figurado"));
+
+        int nuevoNumero = control.getUltimoNumero() + 1;
+        control.setUltimoNumero(nuevoNumero);
+        control.setActualizacion(LocalDateTime.now());
+        controlComprobanteDAO.save(control);
+
+        String formato = control.getSerie() + "-" + String.format("%07d", nuevoNumero);
+
+        Comprobante comprobante = new Comprobante();
+        comprobante.setNumero(formato);
+        comprobante.setFechaEmision(LocalDateTime.now());
+        comprobante.setTipo(control.getTipo());
+        comprobante.setPedidos(pedido);
+
+        if (comprobante.getTipo() == TipoComprobante.FACTURA) {
+            comprobante.setRazonSocial(razon);
+            comprobante.setRucCliente(ruc);
+        }
+
+        return comprobanteDAO.save(comprobante);
+    }
+
 
     public void guardarComprobante(Comprobante comprobante) {
         comprobanteDAO.save(comprobante);

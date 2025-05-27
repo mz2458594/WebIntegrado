@@ -48,8 +48,6 @@ public class PdfGeneratorService {
 
         document.setMargins(20, 20, 20, 20);
 
-        // 1. Logo (si tienes uno)
-
         try {
             InputStream is = getClass().getResourceAsStream("/static/images/logo.png");
             if (is == null) {

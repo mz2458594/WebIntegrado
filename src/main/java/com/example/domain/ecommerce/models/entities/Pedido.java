@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +38,9 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<Detalle_pedido> detallePedidos = new ArrayList<>();
+
+    @OneToOne(mappedBy = "pedidos", cascade = CascadeType.ALL)
+    private Comprobante comprobante;
 
     private double total;
 
@@ -101,4 +105,14 @@ public class Pedido {
         this.total = total;
     }
 
+    public Comprobante getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
+    }
+
+
+    
 }

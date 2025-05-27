@@ -182,7 +182,8 @@ public class PedidosController {
 
         model.addAttribute("pedidos", sale);
         model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("ocultar", true);
+        model.addAttribute("id", pedidos.getIdPedido());
+        model.addAttribute("mostrar", true);
         return "venta/registroPedido";
     }
 

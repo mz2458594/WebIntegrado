@@ -87,7 +87,7 @@ public class VentasInventarioController {
 
         List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
 
-        if (productRequestDTOs == null && productRequestDTOs.isEmpty()) {
+        if (productRequestDTOs == null) {
             model.addAttribute("error", "No se han agregado productos");
             model.addAttribute("productos", productosService.listarProducto());
 
@@ -120,6 +120,7 @@ public class VentasInventarioController {
         // if (empleado == null) {
         // model.addAttribute("venta", sale);
         // model.addAttribute("error", "No hay usuario logeado en el sistema");
+        // return "venta/agregarMetodoPago";
         // }
 
         double total = 0.00;
@@ -151,14 +152,20 @@ public class VentasInventarioController {
 
         Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        if (empleado.getUsuario().getEmail().equals(email)
-                && passwordEncoder.matches(password, empleado.getUsuario().getPassword())) {
-            model.addAttribute("ventas", ventasService.getVentas());
-            return "venta/ventas";
-        } else {
-            model.addAttribute("error", "Credenciales incorrectas");
+        if (empleado == null) {
             model.addAttribute("productos", productosService.listarProducto());
+            model.addAttribute("error", "No hay usuario logeado en el sistema");
             return "venta/agregarVenta";
+        } else {
+            if (empleado.getUsuario().getEmail().equals(email)
+                    && passwordEncoder.matches(password, empleado.getUsuario().getPassword())) {
+                model.addAttribute("ventas", ventasService.getVentas());
+                return "venta/ventas";
+            } else {
+                model.addAttribute("error", "Credenciales incorrectas");
+                model.addAttribute("productos", productosService.listarProducto());
+                return "venta/agregarVenta";
+            }
         }
 
     }

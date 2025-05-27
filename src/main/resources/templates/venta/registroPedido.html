@@ -64,14 +64,17 @@
                 </div>
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
-                            
-                            <form th:action="@{/inventario/pedido/savePedido}" method="post">
-                                <!-- <button type="button" class="btn-imprimir" onclick="window.location.href='/inventario/comprobante/factPedido'">Imprimir</button> -->
-                                <button type="button" th:if="${ocultar == null}" class="btn-editar" onclick="window.location.href='/inventario/pedido/editarPedido'">Editar</button>
-                                <button type="submit" th:if="${ocultar == null}" class="btn-save">Guardar</button>
-                                <button type="button" class="btn-volver" onclick="window.location.href='/inventario/pedido/cancelar'">Volver</button>
-                            </form>
-                        
+
+                        <form th:action="@{/inventario/pedido/savePedido}" method="post">
+                            <button type="button" th:if="${mostrar == true}" class="btn-imprimir"
+                                onclick="window.location.href='/inventario/comprobante/pedido/[[${id}]]'">Imprimir</button>
+                            <button type="button" th:if="${mostrar == null}" class="btn-editar"
+                                onclick="window.location.href='/inventario/pedido/editarPedido'">Editar</button>
+                            <button type="submit" th:if="${mostrar == null}" class="btn-save">Guardar</button>
+                            <button type="button" class="btn-volver"
+                                onclick="window.location.href='/inventario/pedido/cancelar'">Volver</button>
+                        </form>
+
                     </div>
                 </div>
             </div>
