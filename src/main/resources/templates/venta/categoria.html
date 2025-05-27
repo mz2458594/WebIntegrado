@@ -46,7 +46,7 @@
             </form>
         </div>
     </div>
-    
+
 
     <div class="container_modal--delete">
         <div class="ventana_modal--delete ventana-close-delete">
@@ -110,14 +110,14 @@
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
-                                    <label class="name_action">Accion <i class="fa-solid fa-caret-down"
-                                            id="vuelta"></i></label>
-                                    <div class="cont_opciones">
-                                        <button class="editproduc">Editar <i
-                                                class="fa-solid fa-pen-to-square"></i></button>
-                                        <button class="deleteProduc">Eliminar <i
-                                                class="fa-solid fa-trash-can"></i></button>
-                                    </div>
+                                        <label class="name_action">Accion <i class="fa-solid fa-caret-down"
+                                                id="vuelta"></i></label>
+                                        <div class="cont_opciones">
+                                            <button class="editproduc">Editar <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                            <button class="deleteProduc">Eliminar <i
+                                                    class="fa-solid fa-trash-can"></i></button>
+                                        </div>
                                 </div>
                             </th>
                         </tr>
@@ -146,7 +146,7 @@
                         <label for="">Link Imagen</label><br>
                         <input type="text" name="imagen" id="imagen_act">
                     </div>
-    
+
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input type="submit" class="btn-guardar" value="Guardar">
@@ -215,7 +215,7 @@
                 // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
                 const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
                 const productName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-                
+
                 if (productId.includes(query) || productName.includes(query)) {
                     row.style.display = ""; // Mostrar fila
                 } else {
@@ -229,73 +229,76 @@
         productInput.addEventListener("input", filterProducts);
     </script>
 
-<script>
-    document.querySelector('.btn-pdf').addEventListener('click', function () {
-        const filteredRows = Array.from(document.querySelectorAll("#productList"))
-            .filter(row => row.style.display !== "none") // Solo filas visibles
-            .map(row => {
-                const cells = row.querySelectorAll("td");
-                return {
-                    idCategoria: cells[0].textContent.trim(),
-                    nombre: cells[1].textContent.trim(),
-                    descripcion: cells[2].textContent.trim(),
-                };
-            });
+    <script>
+        document.querySelector('.btn-pdf').addEventListener('click', function () {
+            const filteredRows = Array.from(document.querySelectorAll("#productList"))
+                .filter(row => row.style.display !== "none") // Solo filas visibles
+                .map(row => {
+                    const cells = row.querySelectorAll("td");
+                    return {
+                        idCategoria: cells[0].textContent.trim(),
+                        nombre: cells[1].textContent.trim(),
+                        descripcion: cells[2].textContent.trim(),
+                    };
+                });
 
-        fetch('/reporteCategorias-pdf', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(filteredRows),
-        })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Reporte_Categorias.pdf';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
+            fetch('/reporteCategorias-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filteredRows),
             })
-            .catch(error => console.error('Error al generar el PDF:', error));
-    });
-</script>
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Reporte_Categorias.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => console.error('Error al generar el PDF:', error));
+        });
+    </script>
 
-<script>
-    document.querySelector('.btn-excel').addEventListener('click', function () {
-        const filteredRows = Array.from(document.querySelectorAll("#productList"))
-            .filter(row => row.style.display !== "none") // Solo filas visibles
-            .map(row => {
-                const cells = row.querySelectorAll("td");
-                return {
-                    idCategoria: cells[0].textContent.trim(),
-                    nombre: cells[1].textContent.trim(),
-                    descripcion: cells[2].textContent.trim(),
-                };
-            });
+    <script>
+        document.querySelector('.btn-excel').addEventListener('click', function () {
+            const filteredRows = Array.from(document.querySelectorAll("#productList"))
+                .filter(row => row.style.display !== "none") // Solo filas visibles
+                .map(row => {
+                    const cells = row.querySelectorAll("td");
+                    return {
+                        idCategoria: cells[0].textContent.trim(),
+                        nombre: cells[1].textContent.trim(),
+                        descripcion: cells[2].textContent.trim(),
+                    };
+                });
 
-        fetch('/excelCat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(filteredRows)
-        })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'reporte_categorias.xlsx';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
+            fetch('/excelCat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filteredRows)
             })
-            .catch(error => console.error('Error al generar el Excel:', error));
-    });
-</script>
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'reporte_categorias.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => console.error('Error al generar el Excel:', error));
+        });
+    </script>
+    <script th:if="${error != '' && error != null}">
+        alert("[[${error}]]");
+    </script>
 
 </body>
 

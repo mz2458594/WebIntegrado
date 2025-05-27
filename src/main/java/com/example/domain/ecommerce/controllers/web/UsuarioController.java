@@ -10,6 +10,8 @@ import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.UsuarioService;
+
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +40,15 @@ public class UsuarioController {
             Model model) {
 
         userDTO.setRol("Cliente");
-        Usuario usuario = usuarioService.createUser(userDTO);
+        try {
+            Usuario usuario = usuarioService.createUser(userDTO);
+            // usuarioService.enviarEmail(usuario);
 
-        // usuarioService.enviarEmail(usuario);
-
-        return "commerce/iniciosesion";
+            return "commerce/iniciosesion";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "commerce/crear_cuenta";
+        }
 
     }
 
@@ -51,7 +57,7 @@ public class UsuarioController {
         RequestDTO lista = (RequestDTO) session.getAttribute("lista");
 
         if (lista != null) {
-            model.addAttribute("lista", lista); 
+            model.addAttribute("lista", lista);
         }
         return "commerce/form_pago";
     }
@@ -71,9 +77,12 @@ public class UsuarioController {
             HttpSession session,
             Model model) {
 
-        Persona cliente = usuarioService.actualizarUsuarios(userDTO, id);
-
-        session.setAttribute("user", cliente);
+        try {
+            Persona cliente = usuarioService.actualizarUsuarios(userDTO, id);
+            session.setAttribute("user", cliente);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         return "redirect:/targus/usuario/info";
 
@@ -85,9 +94,13 @@ public class UsuarioController {
             @PathVariable int id,
             Model model, HttpSession session) {
 
-        Cliente cliente = direccionService.updateDirection(direccionDTO, id);
+        try {
+            Cliente cliente = direccionService.updateDirection(direccionDTO, id);
+            session.setAttribute("user", cliente);
 
-        session.setAttribute("user", cliente);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         return "redirect:/targus/usuario/info";
     }

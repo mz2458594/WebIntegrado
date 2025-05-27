@@ -129,11 +129,11 @@ public class UsuarioService {
 
         if (usuario.getRol().getNombre().equals("Empleado")) {
             if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
+                throw new RuntimeException("*No se puede registrar a un empleado menor de 18 años");
             }
         } else if (usuario.getRol().getNombre().equals("Cliente")) {
             if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
+                throw new RuntimeException("*No se puede registrar a un cliente menor de 13 años");
             }
         }
 
@@ -173,7 +173,7 @@ public class UsuarioService {
             return empleado2;
 
         } else {
-            throw new RuntimeException("El usuario no esta asignado ni como cliente o empleado");
+            throw new RuntimeException("*El usuario no esta asignado ni como cliente o empleado");
         }
 
     }
@@ -205,6 +205,8 @@ public class UsuarioService {
         } else if (empleado.isPresent()) {
             Empleado empleado2 = empleado.get();
             empleadoDAO.deleteById(Long.valueOf(empleado2.getId()));
+        } else {
+            throw new RuntimeException("*El usuario no esta asociado a ninguna entidad");
         }
 
         usuarioDAO.deleteById(Long.valueOf(id));

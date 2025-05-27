@@ -14,7 +14,6 @@ import com.example.domain.ecommerce.services.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Controller
 @Slf4j
 @RequestMapping("/inventario/usuarios")
@@ -34,12 +33,16 @@ public class UsuarioInventarioController {
             @ModelAttribute UserDTO userDTO,
             Model model) {
 
-        usuarioService.createUser(userDTO);
+        try {
+            usuarioService.createUser(userDTO);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/inventario/usuarios/";
+        return "venta/usuarios";
     }
 
     @PostMapping("/actualizar_usu/{id}")
@@ -48,12 +51,16 @@ public class UsuarioInventarioController {
             @PathVariable int id,
             Model model) {
 
-        usuarioService.actualizarUsuarios(userDTO, id);
+        try {
+            usuarioService.actualizarUsuarios(userDTO, id);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/inventario/usuarios/";
+        return "venta/usuarios";
     }
 
     @PostMapping("/eliminarUsuario/{id}")
@@ -61,12 +68,16 @@ public class UsuarioInventarioController {
             @PathVariable int id,
             Model model) {
 
-        usuarioService.eliminarUsuario(id);
+        try {
+            usuarioService.eliminarUsuario(id);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
         model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/inventario/usuarios/";
+        return "venta/usuarios";
 
     }
 }

@@ -155,6 +155,9 @@
         productInput.addEventListener("input", filterProducts);
     </script>
     <script th:src="@{/js/modalDelete.js}"></script>
+    <script th:if="${error != '' && error != null}">
+        alert("[[${error}]]");
+    </script>
 </body>
 
 </html>

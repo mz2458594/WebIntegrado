@@ -2,7 +2,6 @@ package com.example.domain.ecommerce.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Categoria;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -12,8 +11,6 @@ import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
-
-import org.hibernate.query.results.implicit.ImplicitFetchBuilderEmbeddable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,9 +71,9 @@ public class ProductoService {
         if (validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         } else {
-            throw new IllegalArgumentException("El codigo de barras debe tener exactamente 13 digitos.");
+            throw new IllegalArgumentException("El codigo de barras ingresado no es válido.");
         }
-        
+
         return productoDAO.save(producto);
 
     }
@@ -116,6 +113,8 @@ public class ProductoService {
 
         if (validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
+        } else {
+            throw new IllegalArgumentException("El codigo de barras ingresado no es válido.");
         }
 
         productoDAO.save(producto);
@@ -136,16 +135,6 @@ public class ProductoService {
         Producto product = producto;
         product.setStock(String.valueOf(Integer.valueOf(product.getStock()) + cantidad));
         productoDAO.save(product);
-    }
-
-    public Producto buscarPorCodigoBarras(String codigo){
-        Optional<Producto> producto =  productoDAO.findByCodigoBarras(codigo);
-
-        if (producto.isEmpty()) {
-            throw new EntityNotFoundException("Producto con codigo " + codigo + " no encontrado");
-        }
-
-        return producto.get();
     }
 
 }

@@ -44,7 +44,7 @@ public class DireccionService {
         Optional<Usuario> user = usuarioDAO.findById(Long.valueOf(id));
 
         if (user.isEmpty()) {
-            throw new EntityNotFoundException("Usuario con id " + id + " no encontrado");
+            throw new EntityNotFoundException("*Usuario no encontrado");
         }
 
         Optional<Cliente> cliente = clienteDAO.findByUsuario(user.get());
@@ -65,14 +65,14 @@ public class DireccionService {
         Optional<Usuario> user = usuarioDAO.findById(Long.valueOf(id));
 
         if (user.isEmpty()) {
-            throw new EntityNotFoundException("Usuario con id " + id + " no encontrado");
+            throw new EntityNotFoundException("*Usuario no encontrado");
 
         }
 
         Optional<Cliente> cliente = clienteDAO.findByUsuario(user.get());
 
         if (cliente.isEmpty()) {
-            throw new EntityNotFoundException("Cliente no encontrado");
+            throw new EntityNotFoundException("*Cliente no encontrado");
 
         }
 

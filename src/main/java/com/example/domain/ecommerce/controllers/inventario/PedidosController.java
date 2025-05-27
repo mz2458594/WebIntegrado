@@ -20,6 +20,7 @@ import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.ProductoService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -209,7 +210,11 @@ public class PedidosController {
     public String actualizarPedido(Model model, @PathVariable int id
     ,EstadoRequestDTO estadoRequestDTO){
 
-        pedidoService.actualizarEstado(id, estadoRequestDTO);
+        try {
+            pedidoService.actualizarEstado(id, estadoRequestDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("pedidos", pedidoService.getPedidos());
         return "venta/pedidos";

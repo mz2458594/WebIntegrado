@@ -35,7 +35,7 @@ public class CategoriaService {
         Optional<Categoria> cat = categoriaDAO.findById(Long.valueOf(id));
 
         if (cat.isEmpty()) {
-            throw new EntityNotFoundException("Usuario con id " + id + " no encontrado");
+            throw new EntityNotFoundException("Categoria con id " + id + " no encontrado");
 
         }
 

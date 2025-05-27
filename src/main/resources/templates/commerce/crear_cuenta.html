@@ -50,7 +50,10 @@
                 <form th:action="@{/targus/usuario/form_crear}" method="POST">
                     <fieldset>
                         <hr><br>
-
+                        <div th:if="${error != null}">
+                            *<span style="font-weight: bold; text-align: center;" th:text="${error}">Error al ingresar el usuario</span>
+                            <br><br>
+                        </div>
                         <div class="form-row">
                             <label for="fecha_nac">Fecha de nacimiento:</label>
                             <input type="date" id="fecha_nac" name="fecha_nac" required>
@@ -147,9 +150,6 @@
         });
     </script>
 
-    <script th:if="${error != '' && error != null}">
-        alert("[[${error}]]");
-    </script>
 </body>
 
 </html>

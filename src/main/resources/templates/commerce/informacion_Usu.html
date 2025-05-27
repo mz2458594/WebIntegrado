@@ -16,16 +16,19 @@
 <body>
     <div th:insert="commerce/header.html"></div>
 
-<div>
-    <a class="volverr" th:href="@{/targus/principal/opcion}">Volver</a>
-</div>
+    <div>
+        <a class="volverr" th:href="@{/targus/principal/opcion}">Volver</a>
+    </div>
 
     <div class="content">
 
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
-                <form  th:action="@{/targus/usuario/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
+                <form th:action="@{/targus/usuario/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
+                    <div th:if="${error != null}">
+                        <span style="font-weight: bold;" th:text="${error}">Error al ingresar el usuario</span>
+                    </div>
                     <div>
                         <label>Nombre:</label> <br>
                         <input th:value="${user.nombre}" type="text" id="nombre" name="nombre">
@@ -40,7 +43,8 @@
                     </div>
                     <div>
                         <label>Documento:</label> <br>
-                        <input th:value="${user.dni}" type="text" maxlength="11" id="num_documento" name="num_documento">
+                        <input th:value="${user.dni}" type="text" maxlength="11" id="num_documento"
+                            name="num_documento">
                     </div>
                     <div>
                         <label>Correo:</label> <br>
@@ -61,39 +65,35 @@
             <section id="direccion">
                 <h2>Dirección de Envio</h2>
 
-                <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}" method="post">
+                <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}"
+                    method="post">
+                    <div th:if="${error != null}">
+                        <span style="font-weight: bold;" th:text="${error}">Error al ingresar el usuario</span>
+                    </div>
                     <div>
-                        <label for="">Direccion</label> 
-                        <input type="text" placeholder="Dirección" required 
-                        th:value = "${user.direccion.calle}"
-                        name="calle"
-                        id="calle">
+                        <label for="">Direccion</label>
+                        <input type="text" placeholder="Dirección" required th:value="${user.direccion.calle}"
+                            name="calle" id="calle">
 
                     </div>
                     <div>
                         <label for="">Ciudad</label>
-                        <input type="text" placeholder="Ciudad" required
-                        th:value = "${user.direccion.ciudad}"
-                        name="ciudad"
-                        id="ciudad">
+                        <input type="text" placeholder="Ciudad" required th:value="${user.direccion.ciudad}"
+                            name="ciudad" id="ciudad">
                     </div>
                     <div>
                         <label for="">Provincia</label>
-                        <input type="text" placeholder="Provincia" required
-                        th:value = "${user.direccion.provincia}"
-                        id="provincia"
-                        name="provincia">
+                        <input type="text" placeholder="Provincia" required th:value="${user.direccion.provincia}"
+                            id="provincia" name="provincia">
                     </div>
 
                     <div>
                         <label for="">Distrito</label>
-                        <input type="text" placeholder="Distrito" required
-                        th:value = "${user.direccion.distrito}"
-                        id="distrito"
-                        name="distrito">
+                        <input type="text" placeholder="Distrito" required th:value="${user.direccion.distrito}"
+                            id="distrito" name="distrito">
                     </div>
                     <div class="botons">
-                        <button   type="submit" class="bott">Actualizar</button>
+                        <button type="submit" class="bott">Actualizar</button>
                         <button type="reset" class="bott">Revertir</button>
                     </div>
                 </form>

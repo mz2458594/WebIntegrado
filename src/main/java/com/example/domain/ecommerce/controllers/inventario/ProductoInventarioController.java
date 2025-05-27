@@ -38,24 +38,34 @@ public class ProductoInventarioController {
     public String agregarProd(
             @ModelAttribute ProductDTO productDTO,
             Model model) {
-        ;
-        productoService.agregarProducto(productDTO);
+
+        try {
+            productoService.agregarProducto(productDTO);
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/inventario/productos/";
+        return "venta/productos";
     }
 
     @PostMapping("/actualizar/{id}")
     public String actualizarProd(
-            @ModelAttribute ProductDTO productDTO, 
+            @ModelAttribute ProductDTO productDTO,
             @PathVariable int id,
             Model model) {
 
-        productoService.actualizarProducto(productDTO, id);
+        try {
+            productoService.actualizarProducto(productDTO, id);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/inventario/productos/";
+        return "venta/productos";
     }
 
     @PostMapping("/eliminar/{id}")
@@ -65,7 +75,6 @@ public class ProductoInventarioController {
 
         productoService.eliminarProducto(id);
 
-        
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
         return "redirect:/inventario/productos/";
