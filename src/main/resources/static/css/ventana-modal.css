@@ -15,8 +15,8 @@
 
 
 
-#formulario, #formEditarUser, .formulario_produc, .formEditar{
-    height: 500px;
+#formulario, #formEditarUser, #formulario_produc, #formEditar{
+    max-height: 500px;
     overflow-y: scroll;
     scrollbar-width: none;
 }
