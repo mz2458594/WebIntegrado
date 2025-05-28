@@ -79,7 +79,7 @@
             <a th:href="@{/targus/principal/carro}">
                 <img th:src="@{/images/bolsita.png}" alt="Carrito de compra" id="carrito">
                 <div class="cantidad_productos">
-                    <span id="contador">0</span>
+                    <span id="contador" class="cantidad_productos">0</span>
                 </div>
             </a>
             <div class="info_producto">
@@ -102,15 +102,16 @@
                 </div>
                 <script>
                     let valor_total = 0
+                    let contador = 0;
                     document.querySelectorAll('.info_product').forEach(function(element) {
                         let cantidad = parseInt(element.querySelector(".cantidad_product").innerText)
                         let precio = parseFloat(element.querySelector(".precio_product").innerText)
-                        
+                        contador = contador + cantidad
                         valor_total += cantidad * precio
-
                     });
                     
                     document.querySelector('.total_pagar').innerText = "S/" + valor_total.toFixed(2);
+                    document.querySelector('.cantidad_productos').innerText = contador;
 
                 </script>
             </div>
