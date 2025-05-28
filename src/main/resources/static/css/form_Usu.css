@@ -2,18 +2,18 @@
     margin: 0;
     padding: 0;
     font-family: "Nunito", sans-serif;
-    color: #1D2937;
+    color: #fff;
 }
 body{
-    background-color: #AD0000;
+    background-color: #171a21;
 }
 
 .container{
-    width: 600px;
+    width: 65%; 
     height: 450px;
     margin: 8% auto;
-    background-color: #fff;
-    border: 2px solid #AD0000;
+    background-color: #1D2937;
+    border: 2px solid #66c0f4;
     border-radius: 5px;
     box-shadow: 0 0 35px 5px #1D2937;
     position: relative;
@@ -23,12 +23,13 @@ body{
 h3{
     font-size: 30px;
     text-align: center;
-    margin-bottom:40px;
-    color: #DE0900;
+    margin-bottom:20px;
+    color: #66c0f4;
+    text-transform: uppercase;
 }
 
 .container form{
-    width: 600px;
+    width: 100%;
     height: 450px;
     margin: 8% auto;
     position: absolute;
@@ -40,9 +41,10 @@ h3{
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-#Form1{
+#Form1::-webkit-scrollbar{
     overflow: scroll;
     scrollbar-width: thin;
+    
 }
 
 .container form.active {
@@ -54,16 +56,16 @@ h3{
 form input{
     width: 80%;
     padding: 10px 5px;
-    margin: 8px 10%;
+    margin: 8px 10%;        
     border: 0;
-    border-bottom: 1px solid #DE0900;
-    border-left: 1px solid #DE0900;
+    border-bottom: 1px solid #2a3f5a;
+    border-left: 1px solid #2a3f5a;
     border-radius: 10px;
     outline: none;
     background-color: transparent;
 }
 ::placeholder{
-    color: #AD0000;
+    color: #66c0f4;
 }
 
 .btn-box{
@@ -76,7 +78,7 @@ form button{
     width: 110px;
     height: 35px;
     margin: 0 10px;
-    background: linear-gradient(to right, #DE0900, #FEDA00);
+    background: linear-gradient(to right, #2a3f5a, #66c0f4);
     border-radius: 30px;
     border: 0;
     outline: none;
@@ -87,7 +89,7 @@ form button{
 }
 
 button:hover{
-    background: linear-gradient(to left, #DE0900, #FEDA00);
+    background: linear-gradient(to left, #2a3f5a, #66c0f4);
 
 }
 #Form1,#Form2,#Form3,#Form4{
@@ -99,8 +101,8 @@ button:hover{
 }
 
 .prod{
-    width: 100%;
-    text-align: center;
+    width: 90%;
+    margin: auto;
 }
 .Sele{
     display: grid;
@@ -108,16 +110,17 @@ button:hover{
     gap: 14px 20px;
     margin: 25px 10%;
     select{
-        color: #AD0000;
+        color: #2a3f5a;
         border: 0;
-        border: 2px solid #FEDA00;
+        border: 2px solid #66c0f4;
         border-radius: 10px;
         padding: 6px;
 }
     h2{
         text-align: center;
         font-size: 20px;
-        color: #AD0000;
+        color: #66c0f4;
+        text-transform: uppercase;
     }
 }
 
@@ -127,7 +130,7 @@ button:hover{
     margin: 0 auto;
     display: flex;
     align-items: center;
-    box-shadow: 0 -1px 5px -1px #eb0000;
+    box-shadow: 0 -1px 5px -1px #2a3f5a;
     position: relative;
 }
 
@@ -142,27 +145,41 @@ button:hover{
     position: absolute;
     height: 100%;
     width: 120px;
-    background: linear-gradient(to right, #AD0000, #FEDA00);
+    background: linear-gradient(to right, #66c0f4, #2a3f5a);
     transition: width 0.5s;
 }
 
+/*Flecha de progreso*/                      
 #progreso::after{
     content: '';
     height: 0;
     width: 0;
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
-    border-left: 20px solid #FEDA00;
+    border-left: 20px solid #2a3f5a;
     position: absolute;
     right:-20px;
     top: 0;
 }
 
-.fi{
-    text-align: end;
+thead{
+    text-transform: uppercase;
+    height: 50px;
+    text-align: center;
 }
-
-.T{
-    font-weight: bolder;
+tr .Cen{
+        text-align: center;
+        width: 20%;
+    
 }
-
+tfoot {
+    height: 50px;
+    color: #66c0f4;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+tfoot td {
+    text-align: center;
+    padding-right: 20px;
+    border-top: 1px solid #66c0f4;
+}

@@ -15,7 +15,7 @@
     <div class="container">
         <form id="Form1" class="active">
             <h3>Productos</h3>
-            <table class="prod" id="orderTable">
+            <table class="prod" id="orderTable">    
                 <thead>
                     <tr>
                         <th>Producto</th>
@@ -27,37 +27,41 @@
                 <tbody th:if="${lista != null}">
                     <tr class="pro" th:each="item : ${lista.item}">
                         <td th:text="${item.producto.nombre}"></td>
-                        <td class="quantity" th:text="${item.cantidad}"></td>
-                        <td  class="cost" th:text="${item.producto.precioVenta}">${product.price}</td>
-                        <td class="sub" th:text="${item.total}"></td>
+                        <td class="quantity Cen" th:text="${item.cantidad}"></td>
+                        <td  class="cost Cen" th:text="${item.producto.precioVenta}">${product.price}</td>
+                        <td class="sub Cen" th:text="${item.total}"></td>
                     </tr>
                 </tbody>
                 <tfoot>
 
-                    <!-- <tr>
-                        <td colspan="4" class="fi">Precio de Envío</td>
-                        <td id="Envio" class="fi">0</td>
-                    </tr> -->
                     <tr>
-                        <td colspan="4" class="fi T">Total</td>
+                        <td colspan="3" class="T">Precio de Envío</td>
+                        <td id="Envio" class="en">s/.10.00</td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3" class="T">Total</td>
                         <td class="fi"></td>
                     </tr>
                     <script>
-                        let total = 0;
+    let total = 0;
+    let envio = 10.00; // Precio de envío fijo
 
-                        document.querySelectorAll('.pro').forEach(function (element) {
-                            let cantidad = parseInt(element.querySelector(".quantity").innerText)
-                            let precio = parseFloat(element.querySelector(".cost").innerText)
+    document.querySelectorAll('.pro').forEach(function (element) {
+        let cantidad = parseInt(element.querySelector(".quantity").innerText);
+        let precio = parseFloat(element.querySelector(".cost").innerText);
 
-                            total += cantidad * precio
-                            
-                            element.querySelector(".sub").innerText = cantidad * precio
-                        });
+        let subtotal = cantidad * precio;
+        total += subtotal;
 
-                        
-                        const subtotalElement = document.querySelector('.fi');
-                        subtotalElement.innerText = `${total.toFixed(2)}`
-                        </script>
+        element.querySelector(".sub").innerText = subtotal.toFixed(2);
+    });
+
+    total += envio; // Solo una vez se suma el envío
+
+    const subtotalElement = document.querySelector('.fi');
+    subtotalElement.innerText = `S/. ${total.toFixed(2)}`;
+</script>
+
                 </tfoot>
             </table>
             <div class="btn-box">
@@ -89,38 +93,9 @@
                 <h2>Provincia</h2>
                 <h2>Distrito</h2>
 
-                <select id="ciudad" name="ciudad">
-                    <option value="Ica" th:if="${user.direccion.ciudad == 'Ica'}"
-                        th:selected="${user.direccion.ciudad}">Ica</option>
-                    <option value="Ica">Ica</option>
-                </select>
-
-                <select name="provincia" id="provincia">
-                    <option value="Ica" th:if="${user.direccion.provincia == 'Ica'}"
-                        th:selected="${user.direccion.provincia}">Ica</option>
-                    <option value="Ica">Ica</option>
-                    <option value="Chincha" th:if="${user.direccion.provincia == 'Chincha'}"
-                        th:selected="${user.direccion.provincia}">Chincha</option>
-                    <option value="Chincha">Chincha</option>
-                    <option value="Pisco" th:if="${user.direccion.provincia == 'Pisco'}"
-                        th:selected="${user.direccion.provincia}">Pisco</option>
-                    <option value="Pisco">Pisco</option>
-                    <option value="Nazca" th:if="${user.direccion.provincia == 'Nazca'}"
-                        th:selected="${user.direccion.provincia}">Nazca</option>
-                    <option value="Nazca">Nazca</option>
-                    <option value="Palpa" th:if="${user.direccion.provincia == 'Palpa'}"
-                        th:selected="${user.direccion.provincia}">Palpa</option>
-                    <option value="Palpa">Palpa</option>
-                </select>
-
-                <select id="distrito" name="distrito">
-                    <option value="Pisco" th:if="${user.direccion.distrito == 'Pisco'}"
-                        th:selected="${user.direccion.distrito}">Pisco</option>
-                    <option value="San andres" th:if="${user.direccion.distrito == 'San andres'}"
-                        th:selected="${user.direccion.distrito}">San andres</option>
-                    <option value="Pisco">Pisco</option>
-                    <option value="San andres">San andres</option>
-                </select>
+                <input type="text" name="ciudad" id="ciudad" placeholder="Ingrese su ciudad" required th:value="${user.direccion.ciudad}">
+                <input type="text" name="provincia" id="provincia" placeholder="Ingrese su provincia" required th:value="${user.direccion.provincia}">
+                <input type="text" name="distrito" id="distrito" placeholder="Ingrese su distrito" required th:value="${user.direccion.distrito}"><br>
 
             </div>
 
