@@ -123,13 +123,13 @@ public class VentasInventarioController {
     public String vuelto(Model model, HttpSession session, @RequestParam("efectivo") float efectivo) {
 
         RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        // Empleado empleado = (Empleado) session.getAttribute("empleado");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        // if (empleado == null) {
-        // model.addAttribute("venta", sale);
-        // model.addAttribute("error", "No hay usuario logeado en el sistema");
-        // return "venta/agregarMetodoPago";
-        // }
+        if (empleado == null) {
+        model.addAttribute("venta", sale);
+        model.addAttribute("error", "No hay usuario logeado en el sistema");
+        return "venta/agregarMetodoPago";
+        }
 
         double total = 0.00;
 
@@ -144,11 +144,11 @@ public class VentasInventarioController {
 
         }
 
-        sale.setId_usuario(1);
+        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
         Venta venta = ventasService.crearVenta(sale);
 
         model.addAttribute("efectivo", efectivo);
-        model.addAttribute("vuelto", efectivo - venta.getTotal());
+        model.addAttribute("vuelto", (efectivo - total));
         model.addAttribute("id", venta.getComprobante().getId());
         session.removeAttribute("sale");
         return "venta/MostrarVuelto";

@@ -184,7 +184,6 @@ public class VentasController {
             HttpSession session, SessionStatus status, Model model) {
 
         RequestDTO lista = new RequestDTO();
-        System.out.println("ACAAAAAAAAAAAAAAAAA" + lista);
 
         lista.setItem(new ArrayList<>());
 

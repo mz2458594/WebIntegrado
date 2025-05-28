@@ -23,21 +23,27 @@
             </div>
             <div class="contenido">
                 <div class="item">
-                    <i class="fa-solid fa-cart-shopping"></i><a th:href="@{/inventario/ventas/ventas}">Venta nueva</a></li>
+                    <i class="fa-solid fa-cart-shopping"></i><a th:href="@{/inventario/ventas/ventas}">Venta nueva</a>
+                    </li>
                 </div>
-                <div class="item">
-                    <i class="fa-solid fa-basket-shopping"></i><a th:href="@{/inventario/pedido/pedidos}">Pedidos</a></li>
+                <div class="item" th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
+                    <i class="fa-solid fa-basket-shopping"></i><a th:href="@{/inventario/pedido/pedidos}">Pedidos</a>
+                    </li>
                 </div>
-                <div class="item item-admin">
+                <div class="item item-admin"
+                    th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
                     <i class="fa-solid fa-truck-field-un"></i><a th:href="@{/inventario/proveedores/}">Proveedores</a>
                 </div>
-                <div class="item item-admin">
+                <div class="item item-admin"
+                    th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
                     <i class="fa-solid fa-layer-group"></i><a th:href="@{/inventario/categoria/}">Categorias</a>
                 </div>
-                <div class="item item-admin">
+                <div class="item item-admin"
+                    th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
                     <i class="fa-brands fa-product-hunt"></i><a th:href="@{/inventario/productos/}">Productos</a>
                 </div>
-                <div class="item item-admin" >
+                <div class="item item-admin"
+                    th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
                     <i class="fa-solid fa-users"></i><a th:href="@{/inventario/usuarios/}">Usuario</a>
                 </div>
             </div>

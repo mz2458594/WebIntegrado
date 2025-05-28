@@ -141,7 +141,10 @@ public class PdfGeneratorService {
         double total = subtotal;
 
         document.add(new Paragraph("\nSUBTOTAL: S/ " + String.format("%.2f", subtotal)));
-        document.add(new Paragraph("IGV (18%): S/ " + String.format("%.2f", igv)));
+
+        if (comprobante.getTipo() == TipoComprobante.FACTURA) {
+            document.add(new Paragraph("IGV (18%): S/ " + String.format("%.2f", igv)));
+        }
         document.add(new Paragraph("TOTAL: S/ " + String.format("%.2f", total)).setBold());
 
         // 7. Método de pago y otros
