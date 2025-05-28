@@ -15,7 +15,7 @@
     <div class="container">
         <form id="Form1" class="active">
             <h3>Productos</h3>
-            <table class="prod" id="orderTable">    
+            <table class="prod" id="orderTable">
                 <thead>
                     <tr>
                         <th>Producto</th>
@@ -28,7 +28,7 @@
                     <tr class="pro" th:each="item : ${lista.item}">
                         <td th:text="${item.producto.nombre}"></td>
                         <td class="quantity Cen" th:text="${item.cantidad}"></td>
-                        <td  class="cost Cen" th:text="${item.producto.precioVenta}">${product.price}</td>
+                        <td class="cost Cen" th:text="${item.producto.precioVenta}">${product.price}</td>
                         <td class="sub Cen" th:text="${item.total}"></td>
                     </tr>
                 </tbody>
@@ -43,24 +43,24 @@
                         <td class="fi"></td>
                     </tr>
                     <script>
-    let total = 0;
-    let envio = 10.00; // Precio de envío fijo
+                        let total = 0;
+                        let envio = 10.00; // Precio de envío fijo
 
-    document.querySelectorAll('.pro').forEach(function (element) {
-        let cantidad = parseInt(element.querySelector(".quantity").innerText);
-        let precio = parseFloat(element.querySelector(".cost").innerText);
+                        document.querySelectorAll('.pro').forEach(function (element) {
+                            let cantidad = parseInt(element.querySelector(".quantity").innerText);
+                            let precio = parseFloat(element.querySelector(".cost").innerText);
 
-        let subtotal = cantidad * precio;
-        total += subtotal;
+                            let subtotal = cantidad * precio;
+                            total += subtotal;
 
-        element.querySelector(".sub").innerText = subtotal.toFixed(2);
-    });
+                            element.querySelector(".sub").innerText = subtotal.toFixed(2);
+                        });
 
-    total += envio; // Solo una vez se suma el envío
+                        total += envio; // Solo una vez se suma el envío
 
-    const subtotalElement = document.querySelector('.fi');
-    subtotalElement.innerText = `S/. ${total.toFixed(2)}`;
-</script>
+                        const subtotalElement = document.querySelector('.fi');
+                        subtotalElement.innerText = `${total.toFixed(2)}`;
+                    </script>
 
                 </tfoot>
             </table>
@@ -86,16 +86,20 @@
 
         <form id="Form3" method="post">
             <h3>Dirección de Envío</h3>
-            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required th:value="${user.direccion.calle}"><br>
+            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required
+                th:value="${user.direccion.calle}"><br>
 
             <div class="Sele">
                 <h2>Ciudad</h2>
                 <h2>Provincia</h2>
                 <h2>Distrito</h2>
 
-                <input type="text" name="ciudad" id="ciudad" placeholder="Ingrese su ciudad" required th:value="${user.direccion.ciudad}">
-                <input type="text" name="provincia" id="provincia" placeholder="Ingrese su provincia" required th:value="${user.direccion.provincia}">
-                <input type="text" name="distrito" id="distrito" placeholder="Ingrese su distrito" required th:value="${user.direccion.distrito}"><br>
+                <input type="text" name="ciudad" id="ciudad" placeholder="Ingrese su ciudad" required
+                    th:value="${user.direccion.ciudad}">
+                <input type="text" name="provincia" id="provincia" placeholder="Ingrese su provincia" required
+                    th:value="${user.direccion.provincia}">
+                <input type="text" name="distrito" id="distrito" placeholder="Ingrese su distrito" required
+                    th:value="${user.direccion.distrito}"><br>
 
             </div>
 
@@ -175,7 +179,7 @@
 
             onApprove: function (data, actions) {
                 actions.order.capture().then(
-                    
+
                     window.location.href = "/targus/venta/registrar_venta"
                 )
             }

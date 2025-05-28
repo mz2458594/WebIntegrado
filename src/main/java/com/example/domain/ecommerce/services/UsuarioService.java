@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
@@ -245,17 +247,64 @@ public class UsuarioService {
         return false;
     }
 
+    public boolean validarContraseña(String contraseña) {
+        if (contraseña.length() < 8) {
+            throw new RuntimeException("La contraseña debe tener como minimo 8 caracteres");
+        }
+
+        boolean mayusucla = false;
+        boolean numero = false;
+        boolean especial = false;
+
+        for (char l : contraseña.toCharArray()) {
+            if (Character.isUpperCase(l))
+                mayusucla = true;
+            else if (Character.isDigit(l))
+                numero = true;
+            else if ("?!¡@¿.,´)".indexOf(l) >= 0)
+                especial = true;
+        }
+
+        if (mayusucla && numero && especial) {
+            return true;
+        } else {
+            throw new RuntimeException(
+                    "La constraseña debe tener al menos una mayuscula, un numero y carracter especial ");
+        }
+
+    }
+
+    public Direccion crearDireccion(UserDTO user, Persona persona) {
+        Direccion nueva_direccion = new Direccion();
+        nueva_direccion.setCalle(user.getCalle());
+        nueva_direccion.setCiudad(user.getCiudad());
+        nueva_direccion.setDistrito(user.getDistrito());
+        nueva_direccion.setProvincia(user.getProvincia());
+        nueva_direccion.setPersona(persona);
+
+        return nueva_direccion;
+    }
+
     // nuevos metodos
     public Usuario createUser(UserDTO user) {
 
         Usuario usuario = new Usuario();
         usuario.setUsername(user.getUsername());
+        if (usuarioDAO.findByEmail(user.getCorreo()).isPresent()) {
+            throw new RuntimeException("El correo ingresado ya existe");
+        }
+
         usuario.setEmail(user.getCorreo());
-        usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
+
+        if (validarContraseña(user.getContraseña())) {
+            usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
+        }
 
         Optional<Rol> rol = rolDAO.findByNombre(user.getRol());
         if (rol.isPresent()) {
             usuario.setRol(rol.get());
+        } else {
+            throw new RuntimeException("Error interno del sistema, contacte con el administrador");
         }
 
         if (user.getEstado() == null) {
@@ -295,14 +344,7 @@ public class UsuarioService {
             emp.setTelefono(user.getCelular());
             emp.setFecha(user.getFecha_nac());
 
-            Direccion nueva_direccion = new Direccion();
-            nueva_direccion.setCalle(user.getCalle());
-            nueva_direccion.setCiudad(user.getCiudad());
-            nueva_direccion.setDistrito(user.getDistrito());
-            nueva_direccion.setProvincia(user.getProvincia());
-            nueva_direccion.setPersona(emp);
-
-            emp.setDireccion(nueva_direccion);
+            emp.setDireccion(crearDireccion(user, emp));
 
             emp.setUsuario(usuario);
 
@@ -310,7 +352,7 @@ public class UsuarioService {
 
             return emp.getUsuario();
 
-        } else {
+        } else if (user.getRol().equals("Cliente")) {
 
             if (calcularEdad(fechaNacimineto) < 13) {
                 throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
@@ -325,19 +367,14 @@ public class UsuarioService {
             cli.setTelefono(user.getCelular());
             cli.setFecha(user.getFecha_nac());
 
-            Direccion nueva_direccion = new Direccion();
-            nueva_direccion.setCalle(user.getCalle());
-            nueva_direccion.setCiudad(user.getCiudad());
-            nueva_direccion.setDistrito(user.getDistrito());
-            nueva_direccion.setProvincia(user.getProvincia());
-            nueva_direccion.setPersona(cli);
-
-            cli.setDireccion(nueva_direccion);
+            cli.setDireccion(crearDireccion(user, cli));
             cli.setUsuario(usuario);
 
             clienteDAO.save(cli);
 
             return cli.getUsuario();
+        } else {
+            throw new RuntimeException("Error interno al crear el usuario, contactar con el administrador");
         }
 
     }

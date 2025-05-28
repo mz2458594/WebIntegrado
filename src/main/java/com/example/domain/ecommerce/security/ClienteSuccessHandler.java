@@ -43,14 +43,13 @@ public class ClienteSuccessHandler implements AuthenticationSuccessHandler {
         if (clienteDAO.findByUsuario(usuario).isPresent()) {
             Cliente cliente = clienteDAO.findByUsuario(usuario).get();
             session.setAttribute("user", cliente);
-            response.sendRedirect("/targus/principal/");
 
-            // if (cliente.getUsuario().getEstado() == Estado.ACTIVO) {
-            //     session.setAttribute("user", cliente);
-            //     response.sendRedirect("/targus/principal/");
-            // } else if (cliente.getUsuario().getEstado() == Estado.INACTIVO) {
-            //     response.sendRedirect("/targus/principal/iniciar_crear?error=true");
-            // }
+            if (cliente.getUsuario().getEstado() == Estado.ACTIVO) {
+                session.setAttribute("user", cliente);
+                response.sendRedirect("/targus/principal/");
+            } else if (cliente.getUsuario().getEstado() == Estado.INACTIVO) {
+                response.sendRedirect("/targus/principal/iniciar_crear?error=true");
+            }
 
         } else {
             response.sendRedirect("/targus/principal/iniciar_crear?error=true");

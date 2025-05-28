@@ -14,12 +14,12 @@
             <ul>
                 <li><i class="fa-solid fa-gauge"></i><a th:href="@{/inventario/principal/index}">Inicio</a></li>
                 <li><i class="fa-solid fa-cart-shopping"></i><a th:href="@{/inventario/ventas/ventas}">Venta nueva</a></li>
-                <li><i class="fa-solid fa-basket-shopping"></i><a th:href="@{/inventario/pedido/pedidos}">Pedidos</a></li>
+                <li th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}"><i class="fa-solid fa-basket-shopping"></i><a th:href="@{/inventario/pedido/pedidos}">Pedidos</a></li>
             </ul>
         </div>
         <!-- Para restringir el acceso al empleado -->
         <!-- th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}" -->
-        <div class="accesoAdmin">
+        <div th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}" class="accesoAdmin">
             <p>Mantenimiento: </p>
             <ul>
                 <li><i class="fa-solid fa-truck-field-un"></i><a th:href="@{/inventario/proveedores/}">Proveedores</a></li>
