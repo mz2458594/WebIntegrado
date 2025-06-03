@@ -1,21 +1,14 @@
 package com.example.domain.ecommerce.services;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.dto.UsuarioPersonaDTO;
 import com.example.domain.ecommerce.models.entities.*;
 import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
-import com.example.domain.ecommerce.repositories.PersonaDAO;
 import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +36,6 @@ public class UsuarioService {
     private RolDAO rolDAO;
 
     @Autowired
-    private PersonaDAO personaDAO;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<Usuario> listarUsuario() {
@@ -54,14 +44,6 @@ public class UsuarioService {
 
     public List<Rol> listarRoles() {
         return (List<Rol>) rolDAO.findAll();
-    }
-
-    public List<Cliente> listarClientes() {
-        return (List<Cliente>) clienteDAO.findAll();
-    }
-
-    public Persona obtenerPersonaPorIdUsuario(int id) {
-        return personaDAO.findById(Long.valueOf(id)).get();
     }
 
     public List<UsuarioPersonaDTO> listarClientesYEmpleados() {
@@ -119,25 +101,51 @@ public class UsuarioService {
         return resultado;
     }
 
-    public Persona actualizarUsuarios(UserDTO userDTO, int id) {
+    public Usuario createUser(UserDTO user) {
+
+        Usuario usuario = new Usuario();
+        usuario.setUsername(user.getUsername());
+        if (usuarioDAO.findByEmail(user.getCorreo()).isPresent()) {
+            throw new RuntimeException("El correo ingresado ya existe");
+        }
+
+        usuario.setEmail(user.getCorreo());
+
+        if (validarContraseña(user.getContraseña())) {
+            usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
+        }
+
+        rolDAO.findByNombre(user.getRol()).ifPresent(usuario::setRol);
+
+        if (user.getEstado() == null) {
+
+            usuario.setEstado(Estado.INACTIVO);
+
+        } else {
+            switch (user.getEstado()) {
+                case "ACTIVO":
+                    usuario.setEstado(Estado.ACTIVO);
+                    break;
+                case "INACTIVO":
+                    usuario.setEstado(Estado.INACTIVO);
+                    break;
+                default:
+                    usuario.setEstado(Estado.INACTIVO);
+                    break;
+            }
+        }
+
+        return usuarioDAO.save(usuario);
+
+    }
+
+    public Usuario actualizarUsuarios(UserDTO userDTO, int id) {
 
         Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
-
-        LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
 
         usuario.setEmail(userDTO.getCorreo());
         usuario.setUsername(userDTO.getUsername());
         usuario.setComentario(userDTO.getComentario());
-
-        if (usuario.getRol().getNombre().equals("Empleado")) {
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("*No se puede registrar a un empleado menor de 18 años");
-            }
-        } else if (usuario.getRol().getNombre().equals("Cliente")) {
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("*No se puede registrar a un cliente menor de 13 años");
-            }
-        }
 
         if (userDTO.getEstado() != null) {
 
@@ -148,52 +156,7 @@ public class UsuarioService {
             }
         }
 
-        Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
-        Optional<Empleado> empleado = empleadoDAO.findByUsuario(usuario);
-
-        if (cliente.isPresent()) {
-
-            Cliente cliente2 = cliente.get();
-
-            actualizarPersona(cliente2, userDTO);
-
-            usuarioDAO.save(usuario);
-
-            clienteDAO.save(cliente2);
-
-            return cliente2;
-
-        } else if (empleado.isPresent()) {
-
-            Empleado empleado2 = empleado.get();
-            actualizarPersona(empleado2, userDTO);
-
-            usuarioDAO.save(usuario);
-
-            empleadoDAO.save(empleado2);
-
-            return empleado2;
-
-        } else {
-            throw new RuntimeException("*El usuario no esta asignado ni como cliente o empleado");
-        }
-
-    }
-
-    public void actualizarPersona(Persona persona, UserDTO userDTO) {
-        persona.setNombre(userDTO.getNombre());
-        persona.setApellido(userDTO.getApellido());
-        persona.setDni(userDTO.getNum_documento());
-        persona.setTelefono(userDTO.getCelular());
-        persona.setFecha(userDTO.getFecha_nac());
-
-        if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
-                userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
-            persona.getDireccion().setCalle(userDTO.getCalle());
-            persona.getDireccion().setCiudad(userDTO.getCiudad());
-            persona.getDireccion().setDistrito(userDTO.getDistrito());
-            persona.getDireccion().setProvincia(userDTO.getProvincia());
-        }
+        return usuarioDAO.save(usuario);
     }
 
     public void eliminarUsuario(int id) {
@@ -226,27 +189,6 @@ public class UsuarioService {
         return usuario.get();
     }
 
-    public boolean verificar(String correo, String num_documento, String celular) {
-
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(correo);
-
-        if (usuario.isPresent()) {
-            return true;
-        }
-
-        Optional<Cliente> cliente = clienteDAO.findByDni(num_documento);
-        if (cliente.isPresent()) {
-            return true;
-        }
-
-        Optional<Cliente> cliente2 = clienteDAO.findByTelefono(celular);
-        if (cliente2.isPresent()) {
-            return true;
-        }
-
-        return false;
-    }
-
     public boolean validarContraseña(String contraseña) {
         if (contraseña.length() < 8) {
             throw new RuntimeException("La contraseña debe tener como minimo 8 caracteres");
@@ -274,110 +216,6 @@ public class UsuarioService {
 
     }
 
-    public Direccion crearDireccion(UserDTO user, Persona persona) {
-        Direccion nueva_direccion = new Direccion();
-        nueva_direccion.setCalle(user.getCalle());
-        nueva_direccion.setCiudad(user.getCiudad());
-        nueva_direccion.setDistrito(user.getDistrito());
-        nueva_direccion.setProvincia(user.getProvincia());
-        nueva_direccion.setPersona(persona);
-
-        return nueva_direccion;
-    }
-
-    // nuevos metodos
-    public Usuario createUser(UserDTO user) {
-
-        Usuario usuario = new Usuario();
-        usuario.setUsername(user.getUsername());
-        if (usuarioDAO.findByEmail(user.getCorreo()).isPresent()) {
-            throw new RuntimeException("El correo ingresado ya existe");
-        }
-
-        usuario.setEmail(user.getCorreo());
-
-        if (validarContraseña(user.getContraseña())) {
-            usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
-        }
-
-        Optional<Rol> rol = rolDAO.findByNombre(user.getRol());
-        if (rol.isPresent()) {
-            usuario.setRol(rol.get());
-        } else {
-            throw new RuntimeException("Error interno del sistema, contacte con el administrador");
-        }
-
-        if (user.getEstado() == null) {
-
-            usuario.setEstado(Estado.INACTIVO);
-
-        } else {
-            switch (user.getEstado()) {
-                case "ACTIVO":
-                    usuario.setEstado(Estado.ACTIVO);
-                    break;
-                case "INACTIVO":
-                    usuario.setEstado(Estado.INACTIVO);
-                    break;
-                default:
-                    usuario.setEstado(Estado.INACTIVO);
-                    break;
-            }
-        }
-
-        LocalDate fechaNacimineto = user.getFecha_nac().toLocalDate();
-
-        if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
-
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
-            }
-
-            usuarioDAO.save(usuario);
-
-            Empleado emp = new Empleado();
-
-            emp.setCargo(user.getCargo());
-            emp.setDni(user.getNum_documento());
-            emp.setApellido(user.getApellido());
-            emp.setNombre(user.getNombre());
-            emp.setTelefono(user.getCelular());
-            emp.setFecha(user.getFecha_nac());
-
-            emp.setDireccion(crearDireccion(user, emp));
-
-            emp.setUsuario(usuario);
-
-            empleadoDAO.save(emp);
-
-            return emp.getUsuario();
-
-        } else if (user.getRol().equals("Cliente")) {
-
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
-            }
-
-            usuarioDAO.save(usuario);
-
-            Cliente cli = new Cliente();
-            cli.setDni(user.getNum_documento());
-            cli.setApellido(user.getApellido());
-            cli.setNombre(user.getNombre());
-            cli.setTelefono(user.getCelular());
-            cli.setFecha(user.getFecha_nac());
-
-            cli.setDireccion(crearDireccion(user, cli));
-            cli.setUsuario(usuario);
-
-            clienteDAO.save(cli);
-
-            return cli.getUsuario();
-        } else {
-            throw new RuntimeException("Error interno al crear el usuario, contactar con el administrador");
-        }
-
-    }
 
     public void activar(int id) {
         Optional<Usuario> usuario = usuarioDAO.findById(Long.valueOf(id));
@@ -423,10 +261,6 @@ public class UsuarioService {
 
         usuarioDAO.save(usuario);
 
-    }
-
-    private int calcularEdad(LocalDate fecha) {
-        return Period.between(fecha, LocalDate.now()).getYears();
     }
 
 }

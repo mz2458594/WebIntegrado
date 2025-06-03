@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.example.domain.ecommerce.dto.UserDTO;
+import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UsuarioInventarioController {
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private AuthService authService;
 
     @GetMapping("/")
     public String usuarios(Model model) {
@@ -34,7 +37,7 @@ public class UsuarioInventarioController {
             Model model) {
 
         try {
-            usuarioService.createUser(userDTO);
+            authService.register(userDTO);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }
@@ -52,7 +55,7 @@ public class UsuarioInventarioController {
             Model model) {
 
         try {
-            usuarioService.actualizarUsuarios(userDTO, id);
+            authService.update(userDTO, id);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }

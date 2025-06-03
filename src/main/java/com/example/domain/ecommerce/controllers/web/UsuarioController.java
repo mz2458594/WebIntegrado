@@ -7,6 +7,7 @@ import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.UsuarioService;
@@ -26,11 +27,13 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
     @Autowired
-    DireccionService direccionService;
+    private DireccionService direccionService;
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+    @Autowired
+    private AuthService authService;
 
     int contador = 0;
 
@@ -41,7 +44,7 @@ public class UsuarioController {
 
         userDTO.setRol("Cliente");
         try {
-            Usuario usuario = usuarioService.createUser(userDTO);
+            authService.register(userDTO);
             // usuarioService.enviarEmail(usuario);
 
             return "commerce/iniciosesion";
@@ -78,7 +81,7 @@ public class UsuarioController {
             Model model) {
 
         try {
-            Persona cliente = usuarioService.actualizarUsuarios(userDTO, id);
+            Persona cliente = authService.update(userDTO, id);
             session.setAttribute("user", cliente);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());

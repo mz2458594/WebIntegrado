@@ -1,9 +1,9 @@
 package com.example.domain.ecommerce.services;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
@@ -11,7 +11,6 @@ import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.repositories.VentasDAO;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,44 +67,15 @@ public class VentaService {
 
         Venta ventaGuardada = ventasDAO.save(venta);
 
-        Comprobante comprobante = comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(), data.getRazon());
+        Comprobante comprobante = comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(),
+                data.getRazon());
 
         ventaGuardada.setComprobante(comprobante);
         return ventaGuardada;
-        
-
     }
 
     public List<Venta> getVentas() {
         return (List<Venta>) ventasDAO.findAll();
     }
 
-    public void deleteVenta(int id) {
-        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
-
-        if (venta.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-        }
-
-        Venta v = venta.get();
-
-        for (Detalle_venta ve : v.getVentaProductos()) {
-            productosService.actualizarStockProducto(ve.getProducto(), ve.getCantidad());
-        }
-
-        ventasDAO.deleteById(Long.valueOf(id));
-
-    }
-
-    public Venta obtenerVentasPorId(int id) {
-
-        Optional<Venta> venta = ventasDAO.findById(Long.valueOf(id));
-
-        if (venta.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-
-        }
-
-        return venta.get();
-    }
 }

@@ -6,35 +6,19 @@ import java.sql.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "clientes")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cliente extends Persona implements Serializable{
 
     @OneToOne
     private Usuario usuario;
-
-    public Cliente() {
-
-    }
-
-    public Cliente(int id, String dni, String nombre, String apellido, String telefono, Direccion direccion, Date fecha,
-            Usuario usuario) {
-        super(id, dni, nombre, apellido, telefono, direccion, fecha);
-        this.usuario = usuario;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    
-
-
 
 }

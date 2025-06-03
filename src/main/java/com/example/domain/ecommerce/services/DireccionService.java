@@ -3,9 +3,11 @@ package com.example.domain.ecommerce.services;
 import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.DireccionDTO;
+import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Direccion;
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.DireccionDAO;
@@ -27,37 +29,19 @@ public class DireccionService {
     @Autowired
     private ClienteDAO clienteDAO;
 
-    @Autowired
-    private EmpleadoDAO empleadoDAO;
-
     public Iterable<Direccion> obtenerCategorias() {
         return direccionDAO.findAll();
     }
 
-    public void createDirection(DireccionDTO direccion, int id) {
+    public Direccion createDirection(UserDTO user, Persona persona) {
         Direccion nueva_direccion = new Direccion();
-        nueva_direccion.setCalle(direccion.getCalle());
-        nueva_direccion.setCiudad(direccion.getCalle());
-        nueva_direccion.setDistrito(direccion.getDistrito());
-        nueva_direccion.setProvincia(direccion.getProvincia());
+        nueva_direccion.setCalle(user.getCalle());
+        nueva_direccion.setCiudad(user.getCiudad());
+        nueva_direccion.setDistrito(user.getDistrito());
+        nueva_direccion.setProvincia(user.getProvincia());
+        nueva_direccion.setPersona(persona);
 
-        Optional<Usuario> user = usuarioDAO.findById(Long.valueOf(id));
-
-        if (user.isEmpty()) {
-            throw new EntityNotFoundException("*Usuario no encontrado");
-        }
-
-        Optional<Cliente> cliente = clienteDAO.findByUsuario(user.get());
-        Optional<Empleado> empleado = empleadoDAO.findByUsuario(user.get());
-
-        if (cliente.isPresent()) {
-            nueva_direccion.setPersona(cliente.get());
-        } else if (empleado.isPresent()) {
-            nueva_direccion.setPersona(empleado.get());
-        }
-
-        direccionDAO.save(nueva_direccion);
-
+        return nueva_direccion;
     }
 
     public Cliente updateDirection(DireccionDTO direccion, int id) {

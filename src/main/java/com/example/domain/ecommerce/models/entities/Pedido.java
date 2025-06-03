@@ -18,9 +18,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pedidos")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pedido {
 
     @Id
@@ -44,75 +50,4 @@ public class Pedido {
 
     private double total;
 
-    public Pedido() {
-    }
-
-    public Pedido(int idPedido, Timestamp fechaPedido, EstadoPedido estado, Usuario user,
-            List<Detalle_pedido> detallePedidos, double total) {
-        this.idPedido = idPedido;
-        this.fechaPedido = fechaPedido;
-        this.estado = estado;
-        this.user = user;
-        this.detallePedidos = detallePedidos;
-        this.total = total;
-    }
-
-    public int getIdPedido() {
-        return idPedido;
-    }
-
-    public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
-    }
-
-    public Timestamp getFechaPedido() {
-        return fechaPedido;
-    }
-
-    public void setFechaPedido(Timestamp fechaPedido) {
-        this.fechaPedido = fechaPedido;
-    }
-
-    public EstadoPedido getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoPedido estado) {
-        this.estado = estado;
-    }
-
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
-
-    public List<Detalle_pedido> getDetallePedidos() {
-        return detallePedidos;
-    }
-
-    public void setDetallePedidos(List<Detalle_pedido> detallePedidos) {
-        this.detallePedidos = detallePedidos;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public Comprobante getComprobante() {
-        return comprobante;
-    }
-
-    public void setComprobante(Comprobante comprobante) {
-        this.comprobante = comprobante;
-    }
-
-
-    
 }

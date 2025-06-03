@@ -31,28 +31,6 @@ public class UserController {
    @Autowired
    EmailService emailService;
 
-   @PostMapping("/createDirection/{id}")
-   public ResponseEntity<?> createDirection(
-           @RequestBody DireccionDTO direccion,
-           @PathVariable("id") int id_usuario) {
-
-       direccionService.createDirection(direccion, id_usuario);
-
-       return ResponseEntity.ok("Direccion agregada al usuario con id: " + id_usuario);
-
-   }
-
-   @PutMapping("/updateDirection/{id}")
-   public ResponseEntity<?> updateDirection(
-           @PathVariable("id") int id_usuario,
-           @RequestBody DireccionDTO direccion) {
-
-       direccionService.updateDirection(direccion, id_usuario);
-
-       return ResponseEntity.ok("Dirección actualizada con éxito");
-
-   }
-
 
    @GetMapping("/")
    public List<Usuario> obteneUsuarios() {
@@ -75,10 +53,6 @@ public class UserController {
 
    @PutMapping("/updateUser/{id}")
    public ResponseEntity<?> updateUser(@RequestBody UserDTO user, @PathVariable("id") int id) {
-
-       if (usuarioService.verificar(user.getCorreo(), user.getNum_documento(), user.getCelular())) {
-           return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe un usuario con esos datos");
-       }
 
        usuarioService.actualizarUsuarios(user, id);
 
