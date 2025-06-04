@@ -1,16 +1,11 @@
-package com.example.domain.ecommerce.models.entities;
+package com.example.domain.ecommerce.dto;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity(name = "Laptops")
-public class Laptop extends Producto{
-
+public class LaptopDTO {
     private String procesador;
     private String tarjetaGrafica;
     private String sistemaOperativo;

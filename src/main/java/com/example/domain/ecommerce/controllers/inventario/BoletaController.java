@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.ecommerce.models.entities.Comprobante;
-import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.services.ComprobanteService;
 import com.example.domain.ecommerce.services.PdfGeneratorService;
 import com.example.domain.ecommerce.services.PedidoService;
@@ -51,7 +51,7 @@ public class BoletaController {
     @GetMapping("/pedido/{id}")
     public ResponseEntity<byte[]> verFactura(@PathVariable int id) {
 
-        Pedido pedido = pedidoService.obtenerPedidoPorId(id);
+        PedidoProveedor pedido = pedidoService.obtenerPedidoPorId(id);
 
         Comprobante comprobante = pedido.getComprobante();
         ByteArrayInputStream pdfStream = pdfGeneratorService.generateFacturaPDF(comprobante);

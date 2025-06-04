@@ -13,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Comprobante;
-import com.example.domain.ecommerce.models.entities.Detalle_pedido;
+import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
@@ -192,50 +193,53 @@ public class PdfGeneratorService {
             document.add(new Paragraph(comprobante.getNumero()).setBold().setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph("\n"));
 
-            // Agrupar productos por proveedor
-            Map<Proveedor, List<Detalle_pedido>> productosPorProveedor = comprobante.getPedidos().getDetallePedidos()
-                    .stream()
-                    .collect(Collectors.groupingBy(item -> item.getProducto().getProveedor()));
+            if (comprobante.getPedidos() != null && comprobante.getPedidos() instanceof PedidoProveedor) {
+                // Agrupar productos por proveedor
+                Map<Proveedor, List<DetallePedido>> productosPorProveedor = ((PedidoProveedor) comprobante.getPedidos())
+                        .getDetallePedidos()
+                        .stream()
+                        .collect(Collectors.groupingBy(item -> item.getProducto().getProveedor()));
 
-            for (Map.Entry<Proveedor, List<Detalle_pedido>> entry : productosPorProveedor.entrySet()) {
-                Proveedor proveedor = entry.getKey();
-                List<Detalle_pedido> detalles = entry.getValue();
+                for (Map.Entry<Proveedor, List<DetallePedido>> entry : productosPorProveedor.entrySet()) {
+                    Proveedor proveedor = entry.getKey();
+                    List<DetallePedido> detalles = entry.getValue();
 
-                for (Detalle_pedido item : detalles) {
-                    // Datos del proveedor (se repiten en cada página)
-                    Table proveedorTable = new Table(UnitValue.createPercentArray(new float[] { 33, 33, 34 }));
-                    proveedorTable.setWidth(UnitValue.createPercentValue(100));
-                    proveedorTable.addCell(getCell("Razón Social:\n" + safe(proveedor.getNombre()), true));
-                    proveedorTable.addCell(getCell("RUC:\n" + safe(String.valueOf(proveedor.getRuc())), true));
-                    proveedorTable.addCell(getCell("Correo:\n" + safe(proveedor.getEmail()), true));
-                    document.add(proveedorTable);
+                    for (DetallePedido item : detalles) {
+                        // Datos del proveedor (se repiten en cada página)
+                        Table proveedorTable = new Table(UnitValue.createPercentArray(new float[] { 33, 33, 34 }));
+                        proveedorTable.setWidth(UnitValue.createPercentValue(100));
+                        proveedorTable.addCell(getCell("Razón Social:\n" + safe(proveedor.getNombre()), true));
+                        proveedorTable.addCell(getCell("RUC:\n" + safe(String.valueOf(proveedor.getRuc())), true));
+                        proveedorTable.addCell(getCell("Correo:\n" + safe(proveedor.getEmail()), true));
+                        document.add(proveedorTable);
 
-                    Table table = new Table(UnitValue.createPercentArray(new float[] { 10, 10, 40, 20, 20 }));
-                    table.setWidth(UnitValue.createPercentValue(100));
-                    table.addHeaderCell("CANTIDAD");
-                    table.addHeaderCell("U.M");
-                    table.addHeaderCell("DESCRIPCIÓN");
-                    table.addHeaderCell("PRECIO U.");
-                    table.addHeaderCell("IMPORTE (inc. IGV)");
+                        Table table = new Table(UnitValue.createPercentArray(new float[] { 10, 10, 40, 20, 20 }));
+                        table.setWidth(UnitValue.createPercentValue(100));
+                        table.addHeaderCell("CANTIDAD");
+                        table.addHeaderCell("U.M");
+                        table.addHeaderCell("DESCRIPCIÓN");
+                        table.addHeaderCell("PRECIO U.");
+                        table.addHeaderCell("IMPORTE (inc. IGV)");
 
-                    table.addCell(String.valueOf(item.getCantidad()));
-                    table.addCell("UNIDAD");
-                    table.addCell(safe(item.getProducto().getNombre()));
-                    table.addCell(item.getProducto().getPrecioCompra());
-                    table.addCell(String.format("%.2f", item.getSubtotal()));
+                        table.addCell(String.valueOf(item.getCantidad()));
+                        table.addCell("UNIDAD");
+                        table.addCell(safe(item.getProducto().getNombre()));
+                        table.addCell(item.getProducto().getPrecioCompra());
+                        table.addCell(String.format("%.2f", item.getSubtotal()));
 
-                    document.add(table);
-                    document.add(new Paragraph("\n"));
+                        document.add(table);
+                        document.add(new Paragraph("\n"));
 
-                    // Añadir página nueva solo si no es el último producto
-                    if (!(entry.equals(productosPorProveedor.entrySet().toArray()[productosPorProveedor.size() - 1])
-                            && item.equals(detalles.get(detalles.size() - 1)))) {
-                        pdfDoc.addNewPage();
+                        // Añadir página nueva solo si no es el último producto
+                        if (!(entry.equals(productosPorProveedor.entrySet().toArray()[productosPorProveedor.size() - 1])
+                                && item.equals(detalles.get(detalles.size() - 1)))) {
+                            pdfDoc.addNewPage();
+                        }
+
                     }
-
                 }
-            }
 
+            }
             // Totales generales en la última página
             Table totales = new Table(UnitValue.createPercentArray(new float[] { 80, 20 }));
             totales.setWidth(UnitValue.createPercentValue(100));

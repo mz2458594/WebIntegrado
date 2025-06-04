@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
-import com.example.domain.ecommerce.models.entities.Detalle_pedido;
+import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Empleado;
-import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.ProductoService;
@@ -170,13 +170,13 @@ public class PedidosController {
             HttpSession session,
             Model model) {
 
-        Pedido pedidos = pedidoService.obtenerPedidoPorId(id);
+        PedidoProveedor pedidos = pedidoService.obtenerPedidoPorId(id);
 
         RequestDTO sale = new RequestDTO();
         sale.setItem(new ArrayList<>());
         sale.setId_usuario(pedidos.getUser().getIdUsuario());
 
-        for (Detalle_pedido pedido : pedidos.getDetallePedidos()) {
+        for (DetallePedido pedido : pedidos.getDetallePedidos()) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(pedido.getCantidad());
             nuevo_item.setProducto(pedido.getProducto());

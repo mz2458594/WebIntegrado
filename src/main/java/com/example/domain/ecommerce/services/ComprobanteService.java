@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.ControlComprobante;
-import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.ComprobanteDAO;
@@ -55,7 +55,7 @@ public class ComprobanteService {
 
 
     @Transactional
-    public Comprobante generarComprobantePedido(Pedido pedido, String ruc, String razon) {
+    public Comprobante generarComprobantePedido(PedidoProveedor pedido, String ruc, String razon) {
 
         
         ControlComprobante control = controlComprobanteDAO.findByTipo(TipoComprobante.FACTURA)

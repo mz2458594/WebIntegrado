@@ -3,9 +3,9 @@ package com.example.domain.ecommerce.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 
 @Repository
-public interface PedidoDAO extends JpaRepository<Pedido, Long> {
+public interface PedidoProveedorDAO extends JpaRepository<PedidoProveedor, Long> {
     
 }

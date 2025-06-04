@@ -13,20 +13,24 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pedidos")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Pedido {
 
     @Id
@@ -41,9 +45,6 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Usuario user;
-
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<Detalle_pedido> detallePedidos = new ArrayList<>();
 
     @OneToOne(mappedBy = "pedidos", cascade = CascadeType.ALL)
     private Comprobante comprobante;
