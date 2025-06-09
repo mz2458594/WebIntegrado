@@ -16,6 +16,5 @@ public class ProductDTO {
     private String marca;
     private String precioCompra;
     private String codigoBarras;
-    private LaptopDTO laptopDTO;
     
 }

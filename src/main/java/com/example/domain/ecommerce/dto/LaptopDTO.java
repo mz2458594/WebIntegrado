@@ -1,11 +1,9 @@
 package com.example.domain.ecommerce.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-public class LaptopDTO {
+public class LaptopDTO extends ProductDTO{
     private String procesador;
     private String tarjetaGrafica;
     private String sistemaOperativo;
