@@ -41,7 +41,6 @@ public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler {
 
         if (empleadoDAO.findByUsuario(usuario).isPresent()) {
             Empleado empleado = empleadoDAO.findByUsuario(usuario).get();
-            session.setAttribute("empleado", empleado);
 
             if (empleado.getUsuario().getEstado() == Estado.ACTIVO) {
                 session.setAttribute("empleado", empleado);

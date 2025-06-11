@@ -5,17 +5,23 @@ import com.example.domain.ecommerce.dto.LoginDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
+import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
+import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,18 +30,20 @@ import org.springframework.web.bind.annotation.*;
 @SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
+@AllArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
-    @Autowired
-    private DireccionService direccionService;
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private AuthService authService;
+    private final UsuarioService usuarioService;
+    
+    private final DireccionService direccionService;
+    
+    private final  EmailService emailService;
+    
+    private final AuthService authService;
 
-    int contador = 0;
+    private final PedidoService pedidoService;
+
+    private final int contador = 0;
 
     @PostMapping("/form_crear")
     public String crearCuenta(
@@ -65,12 +73,20 @@ public class UsuarioController {
         return "commerce/form_pago";
     }
 
-    @RequestMapping("/info")
+    @GetMapping("/info")
     public String abrirInfo(Model model, HttpSession session) {
 
         Cliente user = (Cliente) session.getAttribute("user");
         model.addAttribute("user", user);
         return "commerce/informacion_Usu";
+    }
+
+    @GetMapping("/pedidos")
+    public String mostrarPedidos(Model model, HttpSession session){
+        Cliente user = (Cliente) session.getAttribute("user");
+        List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getId());
+        model.addAttribute("pedidos", pedidos);
+        return "commerce/nombre_pagina";
     }
 
     @PostMapping("/actualizarUsu/{id}")

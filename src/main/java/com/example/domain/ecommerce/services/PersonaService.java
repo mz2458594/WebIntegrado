@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Direccion;
@@ -16,16 +14,17 @@ import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class PersonaService {
-    @Autowired
-    private EmpleadoDAO empleadoDAO;
 
-    @Autowired
-    private ClienteDAO clienteDAO;
+    private final EmpleadoDAO empleadoDAO;
 
-    @Autowired
-    private DireccionService direccionService;
+    private final ClienteDAO clienteDAO;
+
+    private final DireccionService direccionService;
 
     public void createPersona(UserDTO user, Usuario usuario) {
         Persona persona;

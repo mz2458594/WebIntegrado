@@ -16,5 +16,13 @@ public class ProductDTO {
     private String marca;
     private String precioCompra;
     private String codigoBarras;
+
+    // LAPTOP
+    private String procesador;
+    private String tarjetaGrafica;
+    private String sistemaOperativo;
+    private String tamañoPantalla;
+    private String memoriaRam;
+    private String color;
     
 }

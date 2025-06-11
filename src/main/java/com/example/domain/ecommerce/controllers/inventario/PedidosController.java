@@ -36,21 +36,9 @@ public class PedidosController {
     @GetMapping("/pedidos")
     public String pedidos(Model model) {
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
 
         return "venta/pedidos";
-    }
-
-    @PostMapping("/eliminarP/{id}")
-    public String eliminarP(
-            @PathVariable int id,
-            Model model) {
-
-        pedidoService.deletePedido(id);
-
-        model.addAttribute("pedidos", pedidoService.getPedidos());
-        return "redirect:/inventario/pedido/pedidos";
-
     }
 
     @GetMapping("/agregarPedido")
@@ -156,11 +144,12 @@ public class PedidosController {
         Empleado empleado = (Empleado) session.getAttribute("empleado");
 
         sale.setId_usuario(empleado.getUsuario().getIdUsuario());
+        sale.setTipo("FACTURA");
 
-        pedidoService.crearPedido(sale);
+        pedidoService.crearPedidoProveedor(sale);
 
         session.removeAttribute("sale");
-        model.addAttribute("ventas", pedidoService.getPedidos());
+        model.addAttribute("ventas", pedidoService.getPedidosProveedor());
         return "redirect:/inventario/pedido/pedidos";
     }
 
@@ -170,7 +159,7 @@ public class PedidosController {
             HttpSession session,
             Model model) {
 
-        PedidoProveedor pedidos = pedidoService.obtenerPedidoPorId(id);
+        PedidoProveedor pedidos = pedidoService.obtenerPedidoProveedorPorId(id);
 
         RequestDTO sale = new RequestDTO();
         sale.setItem(new ArrayList<>());
@@ -210,7 +199,7 @@ public class PedidosController {
 
         session.removeAttribute("sale");
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
         return "venta/pedidos";
     }
 
@@ -223,7 +212,7 @@ public class PedidosController {
             model.addAttribute("error", e.getMessage());
         }
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
         return "venta/pedidos";
     }
 

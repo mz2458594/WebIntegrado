@@ -81,6 +81,5 @@ public class UsuarioInventarioController {
         model.addAttribute("roles", usuarioService.listarRoles());
 
         return "venta/usuarios";
-
     }
 }

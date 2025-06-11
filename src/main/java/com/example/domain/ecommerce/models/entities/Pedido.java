@@ -39,6 +39,8 @@ public class Pedido {
 
     private Timestamp fechaPedido;
 
+    private Timestamp fechaEntrega;
+
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 

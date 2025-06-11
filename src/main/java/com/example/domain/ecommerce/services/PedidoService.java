@@ -1,86 +1,95 @@
 package com.example.domain.ecommerce.services;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
-import com.example.domain.ecommerce.models.entities.Comprobante;
+import com.example.domain.ecommerce.factories.PedidoProveedorFactory;
+import com.example.domain.ecommerce.factories.PedidoUsuarioFactory;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
+import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
-import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.enums.EstadoPedido;
+import com.example.domain.ecommerce.repositories.PedidoDAO;
 import com.example.domain.ecommerce.repositories.PedidoProveedorDAO;
+import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class PedidoService {
-    @Autowired
-    private PedidoProveedorDAO pedidoProveedorDAO;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final PedidoProveedorDAO pedidoProveedorDAO;
 
-    @Autowired
-    private ProductoService productosService;
+    private final PedidoUsuarioDAO pedidoUsuarioDAO;
 
-    @Autowired
-    private ComprobanteService comprobanteService;
+    private final ProductoService productosService;
 
-    public PedidoProveedor crearPedido(RequestDTO data) {
+    private final PedidoProveedorFactory pedidoProveedorFactory;
 
-        data.setTipo("FACTURA");
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(data.getId_usuario());
+    private final PedidoUsuarioFactory pedidoUsuarioFactory;
 
-        PedidoProveedor pedido = new PedidoProveedor();
-        pedido.setFechaPedido(Timestamp.from(Instant.now()));
-        pedido.setUser(usuario);
+    private final PedidoDAO pedidoDAO;
 
-        List<DetallePedido> lista_pedidos = new ArrayList<>();
-
-        double total = 0.00;
-
-        for (RequestDTO.ItemsVentaDTO productos : data.getItem()) {
-
-            Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
-
-            DetallePedido vp = new DetallePedido();
-            vp.setCantidad(productos.getCantidad());
-            vp.setProducto(p);
-            vp.setPedido(pedido);
-            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioCompra());
-            vp.setSubtotal(subtotal);
-
-            total += vp.getSubtotal();
-
-            lista_pedidos.add(vp);
-
-        }
-
-        pedido.setEstado(EstadoPedido.PROCESANDO);
-        pedido.setTotal(total);
-        pedido.setDetallePedidos(lista_pedidos);
-
-        PedidoProveedor pedido2 = pedidoProveedorDAO.save(pedido);
-
-        Comprobante comprobante = comprobanteService.generarComprobantePedido(pedido2, data.getRuc(), data.getRazon());
-
-        pedido2.setComprobante(comprobante);
-
-        return pedido2;
-
+    public List<Pedido> getPedidos(){
+        return (List<Pedido>) pedidoDAO.findAll();
     }
 
-    public List<PedidoProveedor> getPedidos() {
+    public List<PedidoProveedor> getPedidosProveedor() {
         return (List<PedidoProveedor>) pedidoProveedorDAO.findAll();
+    }
+
+    public List<PedidoUsuario> getPedidosUsuario() {
+        return (List<PedidoUsuario>) pedidoUsuarioDAO.findAll();
+    }
+
+    public Pedido obtenerPedidoPorId(int id){
+        Optional<Pedido> pedidos = pedidoDAO.findById(Long.valueOf(id));
+
+        if (pedidos.isEmpty()) {
+            throw new RuntimeException("Pedido con id " + id + " no encontrado");
+        }
+
+        return pedidos.get();
+    }
+
+    public PedidoProveedor obtenerPedidoProveedorPorId(int id) {
+
+        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
+
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+        }
+
+        return pedido.get();
+    }
+
+    public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
+        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+        }
+
+        return pedido.get();
+    }
+
+    public List<PedidoUsuario> getPedidosUsuarioPorId(int id) {
+        if (!pedidoUsuarioDAO.existsById(Long.valueOf(id))) {
+            throw new RuntimeException("No se encontro pedidos para el usuario con ID: " + id);
+        }
+        return pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(id));
+    }
+
+    public Pedido crearPedidoProveedor(RequestDTO data) {
+        return pedidoProveedorFactory.crearPedido(data);
+    }
+
+    public Pedido crearPedidoUsuario(RequestDTO data) {
+        return pedidoUsuarioFactory.crearPedido(data);
     }
 
     public void deletePedido(int id) {
@@ -92,18 +101,6 @@ public class PedidoService {
 
         pedidoProveedorDAO.deleteById(Long.valueOf(id));
 
-    }
-
-    public PedidoProveedor obtenerPedidoPorId(int id) {
-
-        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
-
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-
-        }
-
-        return pedido.get();
     }
 
     public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {

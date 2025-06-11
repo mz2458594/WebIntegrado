@@ -1,17 +1,13 @@
 package com.example.domain.ecommerce.controllers.rest;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
-import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.services.ProductoService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,30 +19,35 @@ public class ProductController {
     private ProductoService productosService;
 
     @GetMapping("/")
-    public List<Producto> getAllProducts() {
-        return  productosService.listarProducto();
+    public ResponseEntity<List<Producto>> getAllProducts() {
+        return ResponseEntity.ok(productosService.listarProducto());
     }
 
-    @PostMapping("/createProduct")
+    @GetMapping("/{id}")
+    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable int id) {
+        return ResponseEntity.ok(productosService.obtenerProductoPorId(id));
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<Producto> createProduct(@RequestBody ProductDTO productDTO) {
+
         Producto producto = productosService.agregarProducto(productDTO);
 
-        return new ResponseEntity<>(producto, HttpStatus.OK);
+        return ResponseEntity.status(201).body(producto);
     }
 
-    @DeleteMapping("/deleteProduct/{id}")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Producto> updateProduct(@RequestBody @Valid ProductDTO productDTO, @PathVariable int id) {
+
+        Producto producto = productosService.actualizarProducto(productDTO, id);
+        return ResponseEntity.ok(producto);
+
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
         productosService.eliminarProducto(id);
-        return new ResponseEntity<>("Producto eliminado con éxito", HttpStatus.OK);
-    }
-
-    @PutMapping("/updateProduct/{id}")
-    public ResponseEntity<?> updateProduct(@RequestBody ProductDTO productDTO, @PathVariable int id) {
-
-        productosService.actualizarProducto(productDTO, id);
-
-        return ResponseEntity.ok("Producto actualizado correctamente");
-
+        return ResponseEntity.noContent().build();
     }
 
 }

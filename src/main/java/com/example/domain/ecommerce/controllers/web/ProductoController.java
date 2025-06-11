@@ -1,11 +1,15 @@
 package com.example.domain.ecommerce.controllers.web;
 
-
 import com.example.domain.ecommerce.dto.ProductDTO;
+import com.example.domain.ecommerce.models.entities.Laptop;
+import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.ProductoService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +30,14 @@ public class ProductoController {
         model.addAttribute("categorias", productosService.obtenerCategorias());
         return "commerce/productos";
     }
-    
+
     @GetMapping("/detalle/{id}")
-    public String detalle(Model model, @PathVariable int id){
-        model.addAttribute("producto", productosService.obtenerProductoPorId(id));
+    public String detalle(Model model, @PathVariable int id) {
+        Producto producto = productosService.obtenerProductoPorId(id);
+        Map<String, String> detalles = productosService.obtenerDetalleProducto(producto);
+
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("producto", producto);
         return "commerce/producto-detalle";
     }
 

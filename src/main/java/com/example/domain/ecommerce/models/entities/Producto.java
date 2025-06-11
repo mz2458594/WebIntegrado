@@ -52,7 +52,6 @@ public class Producto implements Serializable {
     @JsonIgnore
     private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
-
     @ManyToOne
     @JsonIgnoreProperties("productos")
     @JoinColumn(name = "proveedor_id")
@@ -64,5 +63,23 @@ public class Producto implements Serializable {
 
     @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
     private String codigoBarras;
+
+    public boolean validarCodigo(String codigo) {
+        if (codigo == null || !codigo.matches("\\d{13}")) {
+            return false;
+        }
+
+        int suma = 0;
+
+        for (int i = 0; i < 12; i++) {
+            int digito = Character.getNumericValue(codigo.charAt(i));
+            suma += (i % 2 == 0) ? digito : digito * 3;
+        }
+
+        int digitoControlCalculado = (10 - (suma % 10)) % 10;
+        int digitoControlReal = Character.getNumericValue(codigo.charAt(12));
+
+        return digitoControlCalculado == digitoControlReal;
+    }
 
 }

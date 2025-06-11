@@ -11,12 +11,14 @@ import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class ProveedorService {
 
-    @Autowired
-    private ProveedorDAO proveedorDAO;
+    
+    private final ProveedorDAO proveedorDAO;
 
     public Iterable<Proveedor> obtenerProveedores() {
         return proveedorDAO.findAll();

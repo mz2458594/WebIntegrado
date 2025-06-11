@@ -2,40 +2,36 @@ package com.example.domain.ecommerce.controllers.inventario;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.services.ComprobanteService;
 import com.example.domain.ecommerce.services.PdfGeneratorService;
 import com.example.domain.ecommerce.services.PedidoService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/inventario/comprobante")
+@AllArgsConstructor
 public class BoletaController {
 
-    @Autowired
-    private ComprobanteService comprobanteService;
+    private final ComprobanteService comprobanteService;
 
-    @Autowired
-    private PdfGeneratorService pdfGeneratorService;
+    private final PdfGeneratorService pdfGeneratorService;
 
-    @Autowired
-    private PedidoService pedidoService;
+    private final PedidoService pedidoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<byte[]> verPdf(@PathVariable int id) {
+    public ResponseEntity<byte[]> verBoleta(@PathVariable int id) {
         Comprobante comprobante = comprobanteService.obtenerComprobantePorId(id);
         ByteArrayOutputStream pdfStream = pdfGeneratorService.generarBoletaPDF(comprobante);
 
@@ -49,9 +45,9 @@ public class BoletaController {
     }
 
     @GetMapping("/pedido/{id}")
-    public ResponseEntity<byte[]> verFactura(@PathVariable int id) {
+    public ResponseEntity<byte[]> verFacturaOrdenCompra(@PathVariable int id) {
 
-        PedidoProveedor pedido = pedidoService.obtenerPedidoPorId(id);
+        PedidoProveedor pedido = pedidoService.obtenerPedidoProveedorPorId(id);
 
         Comprobante comprobante = pedido.getComprobante();
         ByteArrayInputStream pdfStream = pdfGeneratorService.generateFacturaPDF(comprobante);
@@ -71,4 +67,6 @@ public class BoletaController {
                 .headers(headers)
                 .body(pdfBytes);
     }
+
+    
 }

@@ -39,8 +39,7 @@ public class VentasController {
 
     @GetMapping("/registrar_venta")
     public String registrarVenta(
-
-            Model model, HttpSession session, SessionStatus status) {
+            Model model, HttpSession session) {
 
         RequestDTO car = (RequestDTO) session.getAttribute("lista");
 

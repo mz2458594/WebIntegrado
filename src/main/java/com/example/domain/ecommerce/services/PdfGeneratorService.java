@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Comprobante;
@@ -38,14 +37,15 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class PdfGeneratorService {
 
-    @Autowired
-    private ClienteDAO clienteDAO;
+    private final ClienteDAO clienteDAO;
 
-    @Autowired
-    private EmpleadoDAO empleadoDAO;
+    private final EmpleadoDAO empleadoDAO;
 
     public ByteArrayOutputStream generarBoletaPDF(Comprobante comprobante) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
