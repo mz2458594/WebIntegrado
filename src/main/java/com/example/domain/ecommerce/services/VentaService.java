@@ -11,24 +11,23 @@ import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.repositories.VentasDAO;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class VentaService {
 
-    @Autowired
-    private VentasDAO ventasDAO;
+    private final VentasDAO ventasDAO;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private ProductoService productosService;
+    private final ProductoService productosService;
 
-    @Autowired
-    private ComprobanteService comprobanteService;
+    private final ComprobanteService comprobanteService;
+
+    private final PedidoService pedidoService;
 
     @Transactional
     public Venta crearVenta(RequestDTO data) {
@@ -67,10 +66,13 @@ public class VentaService {
 
         Venta ventaGuardada = ventasDAO.save(venta);
 
-        Comprobante comprobante = comprobanteService.generarComprobante(ventaGuardada, data.getTipo(), data.getRuc(),
+        Comprobante comprobante = comprobanteService.generarComprobanteVenta(ventaGuardada, data.getTipo(), data.getRuc(),
                 data.getRazon());
 
         ventaGuardada.setComprobante(comprobante);
+
+        pedidoService.crearPedidoUsuario(data);
+
         return ventaGuardada;
     }
 

@@ -11,32 +11,28 @@ import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.RolDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class UsuarioService {
-    @Autowired
-    private UsuarioDAO usuarioDAO;
 
-    @Autowired
-    EmailService emailService;
+    private final UsuarioDAO usuarioDAO;
 
-    @Autowired
-    private ClienteDAO clienteDAO;
+    private final EmailService emailService;
 
-    @Autowired
-    private EmpleadoDAO empleadoDAO;
+    private final ClienteDAO clienteDAO;
 
-    @Autowired
-    private RolDAO rolDAO;
+    private final EmpleadoDAO empleadoDAO;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final RolDAO rolDAO;
+
+    private final PasswordEncoder passwordEncoder;
 
     public List<Usuario> listarUsuario() {
         return (List<Usuario>) usuarioDAO.findAll();
@@ -111,9 +107,12 @@ public class UsuarioService {
 
         usuario.setEmail(user.getCorreo());
 
-        if (validarContraseña(user.getContraseña())) {
-            usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
-        }
+        // PARA EL AVANCE DE PROYECTO 3
+        // if (validarContraseña(user.getContraseña())) {
+        // usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
+        // }
+
+        usuario.setPassword(passwordEncoder.encode(user.getContraseña()));
 
         rolDAO.findByNombre(user.getRol()).ifPresent(usuario::setRol);
 
@@ -215,7 +214,6 @@ public class UsuarioService {
         }
 
     }
-
 
     public void activar(int id) {
         Optional<Usuario> usuario = usuarioDAO.findById(Long.valueOf(id));

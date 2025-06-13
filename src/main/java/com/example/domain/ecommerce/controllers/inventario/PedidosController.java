@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
-import com.example.domain.ecommerce.models.entities.Detalle_pedido;
+import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Empleado;
-import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.ProductoService;
@@ -36,21 +36,9 @@ public class PedidosController {
     @GetMapping("/pedidos")
     public String pedidos(Model model) {
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
 
         return "venta/pedidos";
-    }
-
-    @PostMapping("/eliminarP/{id}")
-    public String eliminarP(
-            @PathVariable int id,
-            Model model) {
-
-        pedidoService.deletePedido(id);
-
-        model.addAttribute("pedidos", pedidoService.getPedidos());
-        return "redirect:/inventario/pedido/pedidos";
-
     }
 
     @GetMapping("/agregarPedido")
@@ -156,11 +144,12 @@ public class PedidosController {
         Empleado empleado = (Empleado) session.getAttribute("empleado");
 
         sale.setId_usuario(empleado.getUsuario().getIdUsuario());
+        sale.setTipo("FACTURA");
 
-        pedidoService.crearPedido(sale);
+        pedidoService.crearPedidoProveedor(sale);
 
         session.removeAttribute("sale");
-        model.addAttribute("ventas", pedidoService.getPedidos());
+        model.addAttribute("ventas", pedidoService.getPedidosProveedor());
         return "redirect:/inventario/pedido/pedidos";
     }
 
@@ -170,13 +159,13 @@ public class PedidosController {
             HttpSession session,
             Model model) {
 
-        Pedido pedidos = pedidoService.obtenerPedidoPorId(id);
+        PedidoProveedor pedidos = pedidoService.obtenerPedidoProveedorPorId(id);
 
         RequestDTO sale = new RequestDTO();
         sale.setItem(new ArrayList<>());
         sale.setId_usuario(pedidos.getUser().getIdUsuario());
 
-        for (Detalle_pedido pedido : pedidos.getDetallePedidos()) {
+        for (DetallePedido pedido : pedidos.getDetallePedidos()) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(pedido.getCantidad());
             nuevo_item.setProducto(pedido.getProducto());
@@ -210,7 +199,7 @@ public class PedidosController {
 
         session.removeAttribute("sale");
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
         return "venta/pedidos";
     }
 
@@ -223,7 +212,7 @@ public class PedidosController {
             model.addAttribute("error", e.getMessage());
         }
 
-        model.addAttribute("pedidos", pedidoService.getPedidos());
+        model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
         return "venta/pedidos";
     }
 

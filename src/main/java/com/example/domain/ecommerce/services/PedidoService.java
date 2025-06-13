@@ -1,119 +1,116 @@
 package com.example.domain.ecommerce.services;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
-import com.example.domain.ecommerce.models.entities.Comprobante;
-import com.example.domain.ecommerce.models.entities.Detalle_pedido;
+import com.example.domain.ecommerce.factories.PedidoProveedorFactory;
+import com.example.domain.ecommerce.factories.PedidoUsuarioFactory;
+import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
-import com.example.domain.ecommerce.models.entities.Producto;
-import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.enums.EstadoPedido;
 import com.example.domain.ecommerce.repositories.PedidoDAO;
+import com.example.domain.ecommerce.repositories.PedidoProveedorDAO;
+import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class PedidoService {
-    @Autowired
-    private PedidoDAO pedidoDAO;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final PedidoProveedorDAO pedidoProveedorDAO;
 
-    @Autowired
-    private ProductoService productosService;
+    private final PedidoUsuarioDAO pedidoUsuarioDAO;
 
-    @Autowired
-    private ComprobanteService comprobanteService;
+    private final ProductoService productosService;
 
-    public Pedido crearPedido(RequestDTO data) {
+    private final PedidoProveedorFactory pedidoProveedorFactory;
 
-        data.setTipo("FACTURA");
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(data.getId_usuario());
+    private final PedidoUsuarioFactory pedidoUsuarioFactory;
 
-        Pedido pedido = new Pedido();
-        pedido.setFechaPedido(Timestamp.from(Instant.now()));
-        pedido.setUser(usuario);
+    private final PedidoDAO pedidoDAO;
 
-        List<Detalle_pedido> lista_pedidos = new ArrayList<>();
-
-        double total = 0.00;
-
-        for (RequestDTO.ItemsVentaDTO productos : data.getItem()) {
-
-            Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
-
-            Detalle_pedido vp = new Detalle_pedido();
-            vp.setCantidad(productos.getCantidad());
-            vp.setProducto(p);
-            vp.setPedido(pedido);
-            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioCompra());
-            vp.setSubtotal(subtotal);
-
-            total += vp.getSubtotal();
-
-            lista_pedidos.add(vp);
-
-        }
-
-        pedido.setEstado(EstadoPedido.PROCESANDO);
-        pedido.setTotal(total);
-        pedido.setDetallePedidos(lista_pedidos);
-
-        Pedido pedido2 = pedidoDAO.save(pedido);
-
-        Comprobante comprobante = comprobanteService.generarComprobantePedido(pedido2, data.getRuc(), data.getRazon());
-
-        pedido2.setComprobante(comprobante);
-
-        return pedido2;
-
-    }
-
-    public List<Pedido> getPedidos() {
+    public List<Pedido> getPedidos(){
         return (List<Pedido>) pedidoDAO.findAll();
     }
 
-    public void deletePedido(int id) {
-        Optional<Pedido> pedido = pedidoDAO.findById(Long.valueOf(id));
-
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-        }
-
-        pedidoDAO.deleteById(Long.valueOf(id));
-
+    public List<PedidoProveedor> getPedidosProveedor() {
+        return (List<PedidoProveedor>) pedidoProveedorDAO.findAll();
     }
 
-    public Pedido obtenerPedidoPorId(int id) {
+    public List<PedidoUsuario> getPedidosUsuario() {
+        return (List<PedidoUsuario>) pedidoUsuarioDAO.findAll();
+    }
 
-        Optional<Pedido> pedido = pedidoDAO.findById(Long.valueOf(id));
+    public Pedido obtenerPedidoPorId(int id){
+        Optional<Pedido> pedidos = pedidoDAO.findById(Long.valueOf(id));
+
+        if (pedidos.isEmpty()) {
+            throw new RuntimeException("Pedido con id " + id + " no encontrado");
+        }
+
+        return pedidos.get();
+    }
+
+    public PedidoProveedor obtenerPedidoProveedorPorId(int id) {
+
+        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
 
         if (pedido.isEmpty()) {
             throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-
         }
 
         return pedido.get();
     }
 
+    public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
+        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+        }
+
+        return pedido.get();
+    }
+
+    public List<PedidoUsuario> getPedidosUsuarioPorId(int id) {
+        if (!pedidoUsuarioDAO.existsById(Long.valueOf(id))) {
+            throw new RuntimeException("No se encontro pedidos para el usuario con ID: " + id);
+        }
+        return pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(id));
+    }
+
+    public Pedido crearPedidoProveedor(RequestDTO data) {
+        return pedidoProveedorFactory.crearPedido(data);
+    }
+
+    public Pedido crearPedidoUsuario(RequestDTO data) {
+        return pedidoUsuarioFactory.crearPedido(data);
+    }
+
+    public void deletePedido(int id) {
+        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
+
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+        }
+
+        pedidoProveedorDAO.deleteById(Long.valueOf(id));
+
+    }
+
     public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
-        Optional<Pedido> pedido = pedidoDAO.findById(Long.valueOf(id));
+        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
 
         if (pedido.isEmpty()) {
             throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
         }
 
-        Pedido pedido2 = pedido.get();
+        PedidoProveedor pedido2 = pedido.get();
 
         if (estadoRequestDTO.getEstado() != null) {
 
@@ -126,7 +123,7 @@ public class PedidoService {
                         break;
                     case "COMPLETADO":
                         pedido2.setEstado(EstadoPedido.COMPLETADO);
-                        for (Detalle_pedido pe : pedido2.getDetallePedidos()) {
+                        for (DetallePedido pe : pedido2.getDetallePedidos()) {
                             productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
                         }
                         break;
@@ -142,7 +139,7 @@ public class PedidoService {
             }
         }
 
-        pedidoDAO.save(pedido2);
+        pedidoProveedorDAO.save(pedido2);
 
     }
 

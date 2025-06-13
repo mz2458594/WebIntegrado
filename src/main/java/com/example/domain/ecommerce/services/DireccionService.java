@@ -6,28 +6,28 @@ import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Direccion;
-import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.DireccionDAO;
-import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class DireccionService {
     @Autowired
-    private DireccionDAO direccionDAO;
+    private final DireccionDAO direccionDAO;
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private final UsuarioDAO usuarioDAO;
 
     @Autowired
-    private ClienteDAO clienteDAO;
+    private final ClienteDAO clienteDAO;
 
     public Iterable<Direccion> obtenerCategorias() {
         return direccionDAO.findAll();

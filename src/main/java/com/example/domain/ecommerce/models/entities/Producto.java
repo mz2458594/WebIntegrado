@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -27,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "productos")
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Producto implements Serializable {
 
     @Id
@@ -49,10 +52,6 @@ public class Producto implements Serializable {
     @JsonIgnore
     private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Detalle_pedido> detalle_pedidos = new ArrayList<>();
-
     @ManyToOne
     @JsonIgnoreProperties("productos")
     @JoinColumn(name = "proveedor_id")
@@ -64,5 +63,23 @@ public class Producto implements Serializable {
 
     @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
     private String codigoBarras;
+
+    public boolean validarCodigo(String codigo) {
+        if (codigo == null || !codigo.matches("\\d{13}")) {
+            return false;
+        }
+
+        int suma = 0;
+
+        for (int i = 0; i < 12; i++) {
+            int digito = Character.getNumericValue(codigo.charAt(i));
+            suma += (i % 2 == 0) ? digito : digito * 3;
+        }
+
+        int digitoControlCalculado = (10 - (suma % 10)) % 10;
+        int digitoControlReal = Character.getNumericValue(codigo.charAt(12));
+
+        return digitoControlCalculado == digitoControlReal;
+    }
 
 }

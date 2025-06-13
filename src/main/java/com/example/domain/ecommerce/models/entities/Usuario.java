@@ -59,5 +59,9 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<Pedido> pedidos = new ArrayList<>();
+    List<Pedido> pedidoUsuario = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<PedidoProveedor> pedidoProveedor = new ArrayList<>();
 }

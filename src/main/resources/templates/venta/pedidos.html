@@ -161,6 +161,7 @@
                         <tr class="thead">
                             <th>ID</th>
                             <th>Fecha Creacion</th>
+                            <th>Fecha de entrega</th>
                             <th>ID usuario</th>
                             <th>Monto Total</th>
                             <th>Estado</th>
@@ -169,6 +170,7 @@
                         <tr id="productList" th:each="pedido : ${pedidos}">
                             <td th:text="${pedido.idPedido}">1</td>
                             <td th:text="${pedido.fechaPedido}">20/10/2024</td>
+                            <td th:text="${pedido.fechaEntrega}"></td>
                             <td th:text="${pedido.user.username}">2</td>
                             <td th:text="${pedido.total}">9</td>
                             <td>

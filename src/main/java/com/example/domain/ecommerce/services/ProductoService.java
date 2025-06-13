@@ -1,41 +1,42 @@
 package com.example.domain.ecommerce.services;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import com.example.domain.ecommerce.dto.ProductDTO;
+import com.example.domain.ecommerce.factories.ProductoFactory;
 import com.example.domain.ecommerce.models.entities.Categoria;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Proveedor;
-import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
-import com.example.domain.ecommerce.repositories.UsuarioDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class ProductoService {
-    @Autowired
-    private ProductoDAO productoDAO;
 
-    @Autowired
-    private CategoriaDAO categoriaDAO;
+    private final ProductoDAO productoDAO;
 
-    @Autowired
-    private UsuarioDAO usuarioDAO;
+    private final CategoriaDAO categoriaDAO;
 
-    @Autowired
-    private ProveedorDAO proveedorDAO;
+    private final ProveedorDAO proveedorDAO;
 
-    public Iterable<Categoria> obtenerCategorias() {
+    private final List<ProductoFactory> factories;
+
+    public List<Categoria> obtenerCategorias() {
         return categoriaDAO.findAll();
     }
 
-    public Iterable<Usuario> obtenerUsuarios() {
-        return usuarioDAO.findAll();
+    public List<Producto> listarProducto() {
+        return (List<Producto>) productoDAO.findAll();
     }
 
     public Producto obtenerProductoPorId(int id) {
@@ -49,15 +50,31 @@ public class ProductoService {
         return producto.get();
     }
 
-    public List<Producto> listarProducto() {
-        return (List<Producto>) productoDAO.findAll();
+    public Map<String, String> obtenerDetalleProducto(Producto producto) {
+        Map<String, String> detalles = new LinkedHashMap<>();
+        if (producto instanceof Laptop laptop) {
+            detalles.put("Memoria RAM", laptop.getMemoriaRam());
+            detalles.put("Procesador", laptop.getProcesador());
+            detalles.put("Tarjeta Grafica", laptop.getTarjetaGrafica());
+            detalles.put("Sistema Operativo", laptop.getSistemaOperativo());
+            detalles.put("Tamaño de Pantalla", laptop.getTamañoPantalla());
+            detalles.put("Color", laptop.getColor());
+        }
+
+        return detalles;
     }
 
     public Producto agregarProducto(ProductDTO productDTO) {
+
+        Producto producto = factories.stream()
+                .filter(f -> f.supports(productDTO.getNombre_categoria()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Tipo de producto no soportado"))
+                .crearProducto(productDTO);
+
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
         Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
 
-        Producto producto = new Producto();
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
         producto.setImagen(productDTO.getImagen1());
@@ -68,7 +85,7 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
-        if (validarCodigo(productDTO.getCodigoBarras())) {
+        if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         } else {
             throw new IllegalArgumentException("El codigo de barras ingresado no es válido.");
@@ -78,30 +95,17 @@ public class ProductoService {
 
     }
 
-    public boolean validarCodigo(String codigo) {
-        if (codigo == null || !codigo.matches("\\d{13}")) {
-            return false;
-        }
+    public Producto actualizarProducto(ProductDTO productDTO, int id) {
 
-        int suma = 0;
-
-        for (int i = 0; i < 12; i++) {
-            int digito = Character.getNumericValue(codigo.charAt(i));
-            suma += (i % 2 == 0) ? digito : digito * 3;
-        }
-
-        int digitoControlCalculado = (10 - (suma % 10)) % 10;
-        int digitoControlReal = Character.getNumericValue(codigo.charAt(12));
-
-        return digitoControlCalculado == digitoControlReal;
-    }
-
-    public void actualizarProducto(ProductDTO productDTO, int id) {
+        Producto producto = factories.stream()
+                .filter(f -> f.supports(productDTO.getNombre_categoria()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Tipo de producto no soportado"))
+                .actualizar(productDTO, id);
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
         Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
 
-        Producto producto = productoDAO.findById(Long.valueOf(id)).get();
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
         producto.setNombre(productDTO.getNombre());
@@ -111,13 +115,13 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
-        if (validarCodigo(productDTO.getCodigoBarras())) {
+        if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         } else {
             throw new IllegalArgumentException("El codigo de barras ingresado no es válido.");
         }
 
-        productoDAO.save(producto);
+        return productoDAO.save(producto);
 
     }
 
