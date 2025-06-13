@@ -1,20 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-body{
+body {
     font-family: 'Montserrat';
 }
 
-div, nav, ul, body, header, main{
+div,
+nav,
+ul,
+body,
+header,
+main {
     box-sizing: border-box;
 }
 
-p, ul, body, h1{
+p,
+ul,
+body,
+h1 {
     margin: 0;
     padding: 0;
 }
+
 /* ----- HEADER ----- */
 
-.header{
+.header {
     width: 100%;
     display: flex;
     color: white;
@@ -27,17 +36,17 @@ p, ul, body, h1{
     box-shadow: 0 0 3px 3px #0003;
 }
 
-.contenedor__logo img{
+.contenedor__logo img {
     width: 100%;
     height: 80px;
 }
 
-.title__inicio p{
+.title__inicio p {
     font-size: 20px;
     font-weight: 700;
 }
 
-.contenedor__perfil{
+.contenedor__perfil {
     display: flex;
     align-items: center;
     background-color: #fff;
@@ -45,29 +54,31 @@ p, ul, body, h1{
     color: black;
     border-radius: 10px;
 }
-.contenedor__perfil i{
+
+.contenedor__perfil i {
     font-size: 30px;
 }
 
-.icon__notifi{
-    padding-right: 20px ;
+.icon__notifi {
+    padding-right: 20px;
 }
 
-.name_profile{
+.name_profile {
     text-align: right;
     padding: 0 20px;
 }
 
-.name_profile span{
+.name_profile span {
     font-weight: 700;
 }
-.linea{
+
+.linea {
     width: 1px;
     height: 35px;
     background-color: #000;
 }
 
-.profile{
+.profile {
     display: flex;
     align-items: center;
 }
@@ -75,7 +86,7 @@ p, ul, body, h1{
 
 /* ----- NAVBAR ----- */
 
-.navbar{
+.navbar {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -88,49 +99,56 @@ p, ul, body, h1{
     z-index: 10;
     box-shadow: 0 0 5px 1px #0007;
 }
-    
 
-.contenedor__navbar i{
+
+.contenedor__navbar i {
     font-size: 20px;
     margin-right: 10px;
     color: #fff9;
 }
-.contenedor__navbar{
+
+.contenedor__navbar {
     display: flex;
     flex-direction: column;
     gap: 40px;
 }
 
 
-.accesoAdmin ul, .accesoUser ul{
+.accesoAdmin ul,
+.accesoUser ul {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.accesoAdmin li, .accesoUser li{
+.accesoAdmin li,
+.accesoUser li {
     padding: 10px;
     list-style: none;
 }
 
-.accesoAdmin li:hover, .accesoUser li:hover, .pagina_activa{
+.accesoAdmin li:hover,
+.accesoUser li:hover,
+.pagina_activa {
     background-color: #1c3e6a;
     border-radius: 4px;
     color: #fff;
 }
 
-.contenedor__navbar a:hover{
+.contenedor__navbar a:hover {
     color: #fff;
 }
 
-.accesoUser a, .accesoAdmin a{
+.accesoUser a,
+.accesoAdmin a {
     color: #fff9;
     text-decoration: none;
     font-size: 16px;
     font-weight: 600;
     padding-left: 10px;
 }
-.accesoAdmin p{
+
+.accesoAdmin p {
     color: #fff;
     font-size: 16px;
     margin-bottom: 10px;
@@ -138,7 +156,7 @@ p, ul, body, h1{
 
 /* main */
 
-.contenedor_main{
+.contenedor_main {
     max-width: 80%;
     position: relative;
     z-index: 1;
@@ -148,24 +166,24 @@ p, ul, body, h1{
     background-color: #f4f6fa;
 }
 
-.contenedor__inicio .title_cont{
+.contenedor__inicio .title_cont {
     width: 100%;
     border-bottom: 1px solid #0005;
     padding-bottom: 20px;
 }
 
-.title_cont h1{
+.title_cont h1 {
     font-weight: 500;
 }
 
-.contenido{
-    display: grid; 
+.contenido {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding-top: 20px;
 }
 
-.item{
+.item {
     background-color: #343a44;
     border-radius: 4px;
     padding: 8px;
@@ -175,51 +193,59 @@ p, ul, body, h1{
     box-shadow: 0 0 10px 1px #0008;
 }
 
-.item a{
+.item a {
     text-decoration: none;
     color: #fff;
     padding-left: 10px;
 }
 
-.item i{
+.item i {
     font-size: 30px;
     color: #fff;
     padding: 15px;
     border-radius: 3px;
 }
 
-.item:nth-child(1) i{
+.item:nth-child(1) i {
     background-color: #0078ff;
 }
-.item:nth-child(2) i{
-    background-color: #0e96b6   ;
+
+.item:nth-child(2) i {
+    background-color: #0e96b6;
 }
-.item:nth-child(3) i{
+
+.item:nth-child(3) i {
     background-color: #ffbb01;
 }
-.item:nth-child(4) i{
+
+.item:nth-child(4) i {
     background-color: #001d43;
 }
-.item:nth-child(5) i{
+
+.item:nth-child(5) i {
     background-color: #ff850d;
 }
-.item:nth-child(6) i{
+
+.item:nth-child(6) i {
     background-color: #744dc6;
 }
-.item:nth-child(7) i{
+
+.item:nth-child(7) i {
     background-color: #e83260;
 }
-.item:nth-child(8) i{
+
+.item:nth-child(8) i {
     background-color: #4cba74;
 }
 
-.cerrar-sesion{
+.cerrar-sesion {
     margin: auto;
     padding: 10px;
     background-color: #fff3;
     border-radius: 5px;
 }
-.cerrar-sesion div{
+
+.cerrar-sesion div {
     padding: 10px 15px;
     outline: none;
     background-color: #fff;
@@ -227,16 +253,114 @@ p, ul, body, h1{
 }
 
 
-.cerrar-sesion i{
+.cerrar-sesion i {
     margin-right: 5px;
 }
 
-.cerrar-sesion a{
+.cerrar-sesion a {
     text-decoration: none;
     color: #000;
 }
 
-.cerrar-sesion a:hover{
+.cerrar-sesion a:hover {
     font-weight: 500;
     transition: 1.5s;
+}
+
+
+/*NOTIFICACIONES*/
+
+.icon__notifi {
+    position: relative;
+    padding-right: 20px;
+}
+
+.notificacion-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+    color: #000;
+    transition: transform 0.2s ease;
+}
+
+.notificacion-btn:hover {
+    transform: scale(1.1);
+}
+
+.badge-notificacion {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.notifi-panel {
+    position: absolute;
+    right: 0;
+    top: 55px;
+    width: 400px;
+    overflow: auto;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    scrollbar-width: none;
+}
+
+.notifi-panel.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+}
+
+.header-notifi {
+    color: #f00;
+    position: sticky;
+    top: 0;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    background-color: #fff;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notifi-lista {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-item strong {
+    display: block;
+}
+
+.notification-item small {
+    color: gray;
+}
+
+.notification-item:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.nohay-notifi{
+    font-weight: bold;
 }
