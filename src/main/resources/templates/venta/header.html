@@ -15,7 +15,19 @@
     </div>
     <div class="contenedor__perfil">
         <div class="icon__notifi">
-            <p><i class="fa-regular fa-bell"></i></p>
+            <button id="btn-notificacion" class="notificacion-btn">
+                <i class="fa-regular fa-bell"></i>
+                <span id="contar-notificacion" class="badge-notificacion"></span>
+            </button>
+            <div id="panel-notifi" class="notifi-panel hidden">
+                <div class="header-notifi">
+                    <p>Notificaciones</p>
+
+                </div>
+                <div id="lista-notifi" class="notifi-lista">
+
+                </div>
+            </div>
         </div>
         <div class="linea"></div>
         <div class="profile">
@@ -26,6 +38,7 @@
             <div class="img_perfil"><i class="fa-solid fa-user"></i></div>
         </div>
     </div>
+    <script th:src="@{/js/notificaciones.js}"></script>
 </body>
 
 </html>
