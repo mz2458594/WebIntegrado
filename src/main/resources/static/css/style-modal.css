@@ -1,7 +1,5 @@
 .contenedor_main {
-    height: 100vh;
     width: 100%;
-    overflow: auto;
 }
 
 .contenedor_modal {
@@ -9,7 +7,7 @@
     border-radius: 5px;
     border-top: 3px solid #0078ff;
     padding-bottom: 10px;
-    width: fit-content;
+    height: 80dvh;
 }
 
 .title__add--modal {
@@ -98,6 +96,12 @@
 
 .cont_table {
     padding: 0 35px;
+    width: 100%;
+}
+
+.table__modal, .table__product{
+    height: 450px;
+    overflow: auto;
 }
 
 .table {
