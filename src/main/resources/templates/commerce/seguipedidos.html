@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Steam Store - Gestión de Pedidos</title>
+        <link rel="stylesheet" th:href="@{/css/seguipedidos.css}">
+        <link rel="icon" th:href="@{/images/logo.png}">
+    </head>
+    <body>
+        <div th:insert="commerce/header.html"></div>
+        <div class="container">
+
+            <div style="margin-bottom: 1rem;">
+                <button class="btn-back" onclick="window.history.back()">← Volver</button>
+            </div>
+
+            <div class="table-container">
+                <h2>📦 Lista de Pedidos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Dirección</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#PED-001</td>
+                            <td>15/12/2024</td>
+                            <td><span
+                                    class="status entregado">Entregado</span></td>
+                            <td>Av. Principal 123, Ciudad</td>
+                            <td class="total">$125.50</td>
+                            <td><button class="btn" onclick="openModal('PED-001')">Ver Detalle</button></td>
+                        </tr>
+                        <tr>
+                            <td>#PED-002</td>
+                            <td>14/12/2024</td>
+                            <td><span class="status enviado">Enviado</span></td>
+                            <td>Calle Secundaria 456, Pueblo</td>
+                            <td class="total">$89.99</td>
+                            <td><button class="btn" onclick="openModal('PED-002')">Ver Detalle</button></td>
+                        </tr>
+                        <tr>
+                        <td>#PED-003</td>
+                        <td>13/12/2024</td>
+                        <td><span class="status pendiente">Pendiente</span></td>
+                        <td>Plaza Central 789, Villa</td>
+                        <td class="total">$234.75</td>
+                        <td><button class="btn" onclick="openModal('PED-003')">Ver Detalle</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="orderModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">🛒 Detalle del Pedido</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="products-section">
+                        <h4>Productos Comprados</h4>
+                        <div id="productsList">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="total-section"
+                        style="width: 100%; text-align: center;">
+                        <div class="total-label">Total del Pedido</div>
+                        <div class="total-amount" id="orderTotal">$125.50</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        // Datos para los pedidos
+        const ordersData = {
+            'PED-001': {
+                number: '#PED-001',
+                date: '15/12/2024',
+                status: 'entregado',
+                statusText: 'Entregado',
+                address: 'Av. Principal 123, Ciudad',
+                total: '$125.50',
+                products: [
+                    { 
+                        name: 'Cyberpunk 2077', 
+                        quantity: 1, 
+                        unitPrice: 59.99, 
+                        total: 59.99,
+                        image: 'https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/54TDYNQK7ZIXZGIWJ7ICAV4U4E.jpg'
+                    },
+                    { 
+                        name: 'The Witcher 3: Wild Hunt', 
+                        quantity: 1, 
+                        unitPrice: 39.99, 
+                        total: 39.99,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyqMX21xpK_mOALMLsbk2awWFKNYg8AeS0KQ&s'
+                    },
+                    { 
+                        name: 'Steam Wallet Card $25', 
+                        quantity: 1, 
+                        unitPrice: 25.52, 
+                        total: 25.52,
+                        image: '/placeholder.svg?height=80&width=80'
+                    }
+                ]
+            },
+            'PED-002': {
+                number: '#PED-002',
+                date: '14/12/2024',
+                status: 'enviado',
+                statusText: 'Enviado',
+                address: 'Calle Secundaria 456, Pueblo',
+                total: '$89.99',
+                products: [
+                    { 
+                        name: 'Counter-Strike 2', 
+                        quantity: 1, 
+                        unitPrice: 0.00, 
+                        total: 0.00,
+                        image: '/placeholder.svg?height=80&width=80'
+                    },
+                    { 
+                        name: 'Valve Index Controllers', 
+                        quantity: 1, 
+                        unitPrice: 89.99, 
+                        total: 89.99,
+                        image: '/placeholder.svg?height=80&width=80'
+                    }
+                ]
+            },
+            'PED-003': {
+                number: '#PED-003',
+                date: '13/12/2024',
+                status: 'pendiente',
+                statusText: 'Pendiente',
+                address: 'Plaza Central 789, Villa',
+                total: '$234.75',
+                products: [
+                    { 
+                        name: 'Half-Life: Alyx', 
+                        quantity: 1, 
+                        unitPrice: 59.99, 
+                        total: 59.99,
+                        image: '/placeholder.svg?height=80&width=80'
+                    },
+                    { 
+                        name: 'Portal 2', 
+                        quantity: 2, 
+                        unitPrice: 19.99, 
+                        total: 39.98,
+                        image: '/placeholder.svg?height=80&width=80'
+                    },
+                    { 
+                        name: 'Steam Deck 512GB', 
+                        quantity: 1, 
+                        unitPrice: 134.78, 
+                        total: 134.78,
+                        image: '/placeholder.svg?height=80&width=80'
+                    }
+                ]
+            },
+        };
+
+        function openModal(orderId) {
+            const order = ordersData[orderId];
+            if (!order) return;
+
+            // Actualizar título del modal
+            document.getElementById('modalTitle').textContent = `🛒 Pedido ${order.number}`;
+            
+            // Actualizar total
+            document.getElementById('orderTotal').textContent = order.total;
+
+            // Actualizar lista de productos
+            const productsList = document.getElementById('productsList');
+            productsList.innerHTML = '';
+            
+            order.products.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-details">Cantidad: ${product.quantity} × $${product.unitPrice.toFixed(2)}</div>
+                    </div>
+                    <div class="product-total">${product.total.toFixed(2)}</div>
+                `;
+                productsList.appendChild(productItem);
+            });
+
+            document.getElementById('orderModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+    </script>
+    <div th:insert="commerce/footer.html"></div>
+    </body>
+</html>
