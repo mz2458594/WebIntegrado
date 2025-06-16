@@ -17,7 +17,8 @@
         <div class="icon__notifi">
             <button id="btn-notificacion" class="notificacion-btn">
                 <i class="fa-regular fa-bell"></i>
-                <span id="contar-notificacion" class="badge-notificacion"></span>
+                <span id="contar-notificacion" class="badge-notificacion"
+                th:text="${notificaciones != null ? notificaciones.size() : 0}"></span>
             </button>
             <div id="panel-notifi" class="notifi-panel hidden">
                 <div class="header-notifi">
@@ -25,6 +26,12 @@
 
                 </div>
                 <div id="lista-notifi" class="notifi-lista">
+
+                    <div class="notification-item" th:if="${notificaciones != null}" th:each="notificacion : ${notificaciones}">
+                        <strong>Stock bajo</strong>
+                        <div th:text="${notificacion}">descripcion</div>
+                        <small>tiempo</small>
+                    </div>
 
                 </div>
             </div>
