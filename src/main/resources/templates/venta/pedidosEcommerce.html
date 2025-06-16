@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas Ecommerce | Targus</title>
+    <link rel="icon" th:href="@{/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
+</head>
+<style>
+    #estadoC{
+        border-radius: 10px;
+        padding: 2px;
+    }
+    #estad-produc{
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <header class="header" th:insert="venta/header.html"></header>
+    <nav class="navbar" th:insert="venta/navbar.html"></nav>
+    <main class="contenedor_main">
+        <div class="contenedor_modal">
+            <div class="title__add--modal">
+                <p>Pedidos del Ecommerce</p>
+            </div>
+            <div class="Cont__buscar">
+                <div class="buscar_search">
+                    <label for="">Buscar :</label>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="cont_table">
+                <div class="table__product">
+                    <table id="table" class="table">
+                        <tr class="thead">
+                            <th>ID</th>
+                            <th>Fecha Creacion</th>
+                            <th>Fecha entrega estimada</th>
+                            <th>Cliente</th>
+                            <th>Productos</th>
+                            <th>Cantidad de <br>Productos</th>
+                            <th>Monto Total</th>
+                            <th>Estado</th>
+                            <th>Accion</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>20/10/2024</td>
+                            <td>14/06/2025</td>
+                            <td>El chivito</td>
+                            <td>Laptop</td>
+                            <td>2</td>
+                            <td>6000</td>
+                            <td>
+                                <p id="estadoC">Recibido</p>
+                            </td>
+                            <script>
+                                //PARA CAMBIAR DE COLOR AL ESTADO
+                                const estadoC = document.getElementById("estadoC");
+                                const colorE = estadoC.innerText;
+                                if (colorE === "Recibido") {
+                                    estadoC.style.backgroundColor = '#9c2525';
+                                    estadoC.style.color = '#FFFFFF'
+                                } else if(colorE === "Confirmado"){
+                                    estadoC.style.backgroundColor = '#edaf13';
+                                    estadoC.style.color = '#FFFFFF'
+                                } else if(colorE === "En camino"){
+                                    estadoC.style.backgroundColor = '#21388a';
+                                    estadoC.style.color = '#FFFFFF'
+                                }else if(colorE === "Entregado"){
+                                    estadoC.style.backgroundColor = '#0e8a0c';
+                                    estadoC.style.color = '#FFFFFF'
+                                }
+                            </script>
+                            <td>
+                                <div class="container_action">
+                                    <input id="open_action" type="checkbox" class="action_checkbox">
+                                    <label class="name_action" for="open_action">Accion <i
+                                            class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                    <div class="cont_opciones">
+                                        <button class="editproduc">Editar <i
+                                                class="fa-solid fa-pen-to-square"></i></button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="container-modal--edit">
+        <div class="ventana_modal--edit ventana-close-edit">
+            <div class="form__name--add">
+                <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Editar Producto</p>
+            </div>
+            <form class="form_modal" action="">
+                <div class="input__box">
+                    <label for="">Fecha de Creacion</label><br>
+                    <input disabled id="fechaCreacion" type="text">
+                </div>
+                <!-- <div class="input__box">
+                    <label for="">Descripcion</label><br>
+                    <textarea name="" id="Descrip-produc"></textarea>
+                </div> -->
+                <div class="input__box">
+                    <label for="">Fecha de entrega estimida</label><br>
+                    <input disabled type="text" id="FechaEntrega"></input>
+                </div>
+                <div class="input__box">
+                    <label for="">Cliente</label><br>
+                    <input disabled id="cliente"></input>
+                </div>
+                <div class="input__box">
+                    <label for="">Productos</label><br>
+                    <textarea id="Productos-list" style="max-width: 100%; min-width: 100%;" disabled></textarea>
+                </div>
+                <div class="input__box">
+                    <label for="">Total</label><br>
+                    <input type="text" disabled id="precio-produc">
+                </div>
+                <div class="input__box">
+                    <label for="">Estado</label><br>
+                    <select name="" id="estad-produc">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Confirmado">Confirmado</option>
+                        <option value="En camino">En camino</option>
+                        <option value="Entregado">Entregado</option>
+                    </select>
+                </div>
+                <div class="button__modal">
+                    <div class="btn-modal">
+                        <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
+                        <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        //PARA EL EDIT
+        let cerrarEdit = document.querySelectorAll(".btn-cancelar-edit")[0];
+        let abrirEdit = document.querySelectorAll(".editproduc")[0];
+        let VentEdit = document.querySelectorAll(".ventana_modal--edit")[0];
+        let modalContEdit = document.querySelectorAll(".container-modal--edit")[0];
+
+        abrirEdit.addEventListener("click", function (e) {
+            e.preventDefault();
+            modalContEdit.style.opacity = "1";
+            modalContEdit.style.visibility = "visible";
+            VentEdit.classList.toggle("ventana-close-edit");
+        });
+
+        cerrarEdit.addEventListener("click", function (e) {
+            VentEdit.classList.toggle("ventana-close-edit");
+            setTimeout(function () {
+                modalContEdit.style.opacity = "0";
+                modalContEdit.style.visibility = "hidden";
+            }, 600);
+        });
+
+        window.addEventListener("click", function (e) {
+            console.log(e.target);
+            if (e.target == modalContEdit) {
+                VentEdit.classList.toggle("ventana-close-edit");
+                setTimeout(function () {
+                    modalContEdit.style.opacity = "0";
+                    modalContEdit.style.visibility = "hidden";
+                }, 600);
+            }
+        });
+    </script>
+    <script src="@{/js/general.js}"></script>
+    <script th:src="@{/js/notificaciones.js}"></script>
+</body>
+
+</html>
