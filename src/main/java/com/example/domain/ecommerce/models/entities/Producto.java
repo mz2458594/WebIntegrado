@@ -64,6 +64,8 @@ public class Producto implements Serializable {
     @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
     private String codigoBarras;
 
+    private float peso;
+
     public boolean validarCodigo(String codigo) {
         if (codigo == null || !codigo.matches("\\d{13}")) {
             return false;
@@ -81,5 +83,7 @@ public class Producto implements Serializable {
 
         return digitoControlCalculado == digitoControlReal;
     }
+
+
 
 }
