@@ -53,10 +53,6 @@ public class ControladorREST {
      public String abrirSoporte(Model model) {
          return "commerce/soporte_Usu";
      }
-     @RequestMapping("/seguimientopedidos")
-     public String abrirseguipedidos(Model model) {
-         return "commerce/seguipedidos";
-     }
 
      @RequestMapping("/cerrar")
      public String cerrar_sesion(HttpSession request, SessionStatus status) {

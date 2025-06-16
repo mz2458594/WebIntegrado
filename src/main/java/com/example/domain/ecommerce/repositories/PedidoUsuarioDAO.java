@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 
 public interface PedidoUsuarioDAO extends JpaRepository<PedidoUsuario, Long>{
-    @Query("SELECT p FROM PedidoUsuario p WHERE p.user.idUsuario =: idUsuario")
+    @Query("SELECT p FROM PedidoUsuario p WHERE p.user.idUsuario = :idUsuario")
     List<PedidoUsuario> obtenerPedidosPorIdUsuario(@Param("idUsuario") Long idUsuario);
 }

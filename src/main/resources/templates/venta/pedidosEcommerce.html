@@ -45,41 +45,19 @@
                             <th>Fecha Creacion</th>
                             <th>Fecha entrega estimada</th>
                             <th>Cliente</th>
-                            <th>Productos</th>
-                            <th>Cantidad de <br>Productos</th>
                             <th>Monto Total</th>
                             <th>Estado</th>
                             <th>Accion</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>20/10/2024</td>
-                            <td>14/06/2025</td>
-                            <td>El chivito</td>
-                            <td>Laptop</td>
-                            <td>2</td>
-                            <td>6000</td>
+                        <tr th:each="pedido : ${pedidos}">
+                            <td th:text="${pedido.idPedido}">1</td>
+                            <td th:text="${pedido.fechaPedido}">20/10/2024</td>
+                            <td th:text="${pedido.fechaEntrega}">14/06/2025</td>
+                            <td th:text="${pedido.user.username}">El chivito</td>
+                            <td th:text="${pedido.total}" ></td>
                             <td>
-                                <p id="estadoC">Recibido</p>
+                                <p id="estadoC" th:text="${pedido.estado}" th:classappend="${pedido.estado}">Recibido</p>
                             </td>
-                            <script>
-                                //PARA CAMBIAR DE COLOR AL ESTADO
-                                const estadoC = document.getElementById("estadoC");
-                                const colorE = estadoC.innerText;
-                                if (colorE === "Recibido") {
-                                    estadoC.style.backgroundColor = '#9c2525';
-                                    estadoC.style.color = '#FFFFFF'
-                                } else if(colorE === "Confirmado"){
-                                    estadoC.style.backgroundColor = '#edaf13';
-                                    estadoC.style.color = '#FFFFFF'
-                                } else if(colorE === "En camino"){
-                                    estadoC.style.backgroundColor = '#21388a';
-                                    estadoC.style.color = '#FFFFFF'
-                                }else if(colorE === "Entregado"){
-                                    estadoC.style.backgroundColor = '#0e8a0c';
-                                    estadoC.style.color = '#FFFFFF'
-                                }
-                            </script>
                             <td>
                                 <div class="container_action">
                                     <input id="open_action" type="checkbox" class="action_checkbox">

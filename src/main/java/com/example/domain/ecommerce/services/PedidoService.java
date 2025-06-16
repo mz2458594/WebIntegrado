@@ -1,9 +1,11 @@
 package com.example.domain.ecommerce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
+import com.example.domain.ecommerce.dto.PedidoDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.factories.PedidoProveedorFactory;
 import com.example.domain.ecommerce.factories.PedidoUsuarioFactory;
@@ -68,20 +70,54 @@ public class PedidoService {
         return pedido.get();
     }
 
-    public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
-        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-        }
+    // public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
+    //     Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
+    //     if (pedido.isEmpty()) {
+    //         throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+    //     }
 
-        return pedido.get();
+    //     return pedido.get();
+    // }
+
+    public List<PedidoUsuario> getPedidosUsuarioPorId(int idUsuario) {
+        List<PedidoUsuario> pedidos = pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(idUsuario));
+        
+        if (pedidos.isEmpty()) {
+            throw new RuntimeException("No se encontro pedidos para el usuario con ID: " + idUsuario);
+        }
+        return pedidos;
     }
 
-    public List<PedidoUsuario> getPedidosUsuarioPorId(int id) {
-        if (!pedidoUsuarioDAO.existsById(Long.valueOf(id))) {
-            throw new RuntimeException("No se encontro pedidos para el usuario con ID: " + id);
+    public List<PedidoDTO> convertirPedidoDTO(List<PedidoUsuario> pedidoUsuarios){
+        List<PedidoDTO> dtoList = new ArrayList<>();
+
+        for (PedidoUsuario pedidoUsuario : pedidoUsuarios) {
+            PedidoDTO dto = new PedidoDTO();
+            dto.setIdPedido(pedidoUsuario.getIdPedido());
+            dto.setFechaPedido(pedidoUsuario.getFechaPedido().toString());
+            dto.setEstado(pedidoUsuario.getEstado().toString());
+            dto.setTotal(pedidoUsuario.getTotal());
+
+            List<PedidoDTO.DetalleDTO> detallePedidos = new ArrayList<>();
+            for (DetallePedido detalle : pedidoUsuario.getDetallePedidos()) {
+                PedidoDTO.DetalleDTO detalleDTO = new PedidoDTO.DetalleDTO();
+                detalleDTO.setNombreProducto(detalle.getProducto().getNombre());
+                detalleDTO.setCantidad(detalle.getCantidad());
+                detalleDTO.setImagen(detalle.getProducto().getImagen());
+                detalleDTO.setPrecioVenta(detalle.getProducto().getPrecioVenta());
+                detalleDTO.setSubtotal(detalle.getSubtotal());
+            
+                detallePedidos.add(detalleDTO);
+            }
+
+            dto.setDetallePedidos(detallePedidos);
+            dtoList.add(dto);
+
+
         }
-        return pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(id));
+
+        return dtoList;
+
     }
 
     public Pedido crearPedidoProveedor(RequestDTO data) {

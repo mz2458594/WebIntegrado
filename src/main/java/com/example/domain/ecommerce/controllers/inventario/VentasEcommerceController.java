@@ -18,7 +18,7 @@ public class VentasEcommerceController {
     @GetMapping("/pedidos")
     public String nuevaVenta(Model model) {
 
-        model.addAttribute("ventas", pedidoService.getPedidosUsuario());
+        model.addAttribute("pedidos", pedidoService.getPedidosUsuario());
 
         return "venta/pedidosEcommerce";
     }

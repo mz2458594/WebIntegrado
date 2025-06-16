@@ -2,6 +2,7 @@ package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
+import com.example.domain.ecommerce.dto.PedidoDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
@@ -14,6 +15,8 @@ import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
@@ -82,11 +85,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/pedidos")
-    public String mostrarPedidos(Model model, HttpSession session){
+    public String mostrarPedidos(Model model, HttpSession session) throws JsonProcessingException{
         Cliente user = (Cliente) session.getAttribute("user");
-        List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getId());
-        model.addAttribute("pedidos", pedidos);
-        return "commerce/nombre_pagina";
+        List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getUsuario().getIdUsuario());
+
+        List<PedidoDTO> dtoList = pedidoService.convertirPedidoDTO(pedidos);
+
+        model.addAttribute("pedidos", dtoList);
+        return "commerce/seguipedidos";
     }
 
     @PostMapping("/actualizarUsu/{id}")
