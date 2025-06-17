@@ -1,7 +1,6 @@
 package com.example.domain.ecommerce.factories;
 
 import org.springframework.stereotype.Component;
-import com.example.domain.ecommerce.dto.LaptopDTO;
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
@@ -22,7 +21,7 @@ public class LaptopFactory implements ProductoFactory {
 
     @Override
     public Producto crearProducto(ProductDTO productDTO) {
-    
+
         Laptop laptop = new Laptop();
 
         laptop.setProcesador(productDTO.getProcesador());
@@ -31,6 +30,7 @@ public class LaptopFactory implements ProductoFactory {
         laptop.setTamañoPantalla(productDTO.getTamañoPantalla());
         laptop.setMemoriaRam(productDTO.getMemoriaRam());
         laptop.setColor(productDTO.getColor());
+        laptop.setAlmacenamiento(productDTO.getAlmacenamiento());
         return laptop;
     }
 
@@ -44,6 +44,7 @@ public class LaptopFactory implements ProductoFactory {
         laptop.setTamañoPantalla(productDTO.getTamañoPantalla());
         laptop.setMemoriaRam(productDTO.getMemoriaRam());
         laptop.setColor(productDTO.getColor());
+        laptop.setAlmacenamiento(productDTO.getAlmacenamiento());
 
         return laptop;
     }

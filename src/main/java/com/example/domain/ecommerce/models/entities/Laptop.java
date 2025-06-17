@@ -17,4 +17,5 @@ public class Laptop extends Producto{
     private String tamañoPantalla;
     private String memoriaRam;
     private String color;
+    private String almacenamiento;
 }

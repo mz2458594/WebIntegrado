@@ -30,6 +30,7 @@ public class ProductDTO {
     private String procesador;
     private String tarjetaGrafica;
     private String color;
+    private String almacenamiento;
 
     // SMARTPHONE
     private String resolucionCamara;
