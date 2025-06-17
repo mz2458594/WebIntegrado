@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tablets")
+@Entity
 public class Tablet extends Producto{
     
     private String tamañoPantalla;
@@ -17,7 +19,7 @@ public class Tablet extends Producto{
 
     private String almacenamientoInterno;
 
-    private String resoluciónCamara;
+    private String resolucionCamara;
 
     private String sistemaOperativo;
 

@@ -7,10 +7,19 @@ import java.util.Map;
 import java.util.Optional;
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.factories.ProductoFactory;
+import com.example.domain.ecommerce.models.entities.Auricular;
+import com.example.domain.ecommerce.models.entities.Camara;
 import com.example.domain.ecommerce.models.entities.Categoria;
+import com.example.domain.ecommerce.models.entities.Impresora;
 import com.example.domain.ecommerce.models.entities.Laptop;
+import com.example.domain.ecommerce.models.entities.Monitor;
+import com.example.domain.ecommerce.models.entities.Mouse;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Proveedor;
+import com.example.domain.ecommerce.models.entities.Smartphone;
+import com.example.domain.ecommerce.models.entities.Smartwatch;
+import com.example.domain.ecommerce.models.entities.Tablet;
+import com.example.domain.ecommerce.models.entities.Teclado;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
@@ -59,6 +68,73 @@ public class ProductoService {
             detalles.put("Sistema Operativo", laptop.getSistemaOperativo());
             detalles.put("Tamaño de Pantalla", laptop.getTamañoPantalla());
             detalles.put("Color", laptop.getColor());
+        } else if (producto instanceof Smartphone smartphone) {
+
+            detalles.put("Tamaño de pantalla", smartphone.getTamañoPantalla());
+            detalles.put("Memoria Ram", smartphone.getMemoriaRam());
+            detalles.put("Almacenamiento interno", smartphone.getAlmacenamientoInterno());
+            detalles.put("Resolucion de camara", smartphone.getResolucionCamara());
+            detalles.put("Capacidad de bateria", smartphone.getCapacidadBateria());
+            detalles.put("Sistemas operativo", smartphone.getSistemaOperativo());
+
+        } else if (producto instanceof Auricular auricular) {
+            detalles.put("Tipo", auricular.getTipo());
+            detalles.put("Duracion", auricular.getDuracion());
+            detalles.put("Cancelacion de ruido", auricular.getCancelacionRuido());
+            detalles.put("Conector", auricular.getConector());
+
+        } else if (producto instanceof Monitor monitor) {
+
+            detalles.put("Tamaño de pantalla", monitor.getTamañoPantalla());
+            detalles.put("Resolucion", monitor.getResolución());
+            detalles.put("Tipo de panel", monitor.getTipoPanel());
+            detalles.put("Frecuencia de actualizacion", monitor.getFrecuenciaActualizacion());
+            detalles.put("Puertos de entrada", monitor.getPuertosEntrada());
+
+        } else if (producto instanceof Teclado teclado) {
+
+            detalles.put("Tipo", teclado.getTipo());
+            detalles.put("Conectividad", teclado.getConectividad());
+            detalles.put("Distribucion", teclado.getDistribución());
+            detalles.put("Retroiluminacion", teclado.getRetroiluminación());
+
+        } else if (producto instanceof Mouse mouse) {
+
+            detalles.put("Tipo", mouse.getTipo());
+            detalles.put("Conectividad", mouse.getConectividad());
+            detalles.put("DPI", mouse.getDpi());
+            detalles.put("Cantidad de botones", mouse.getCantidadBotones());
+
+        } else if (producto instanceof Smartwatch smartwatch) {
+
+            detalles.put("Compatibilidad", smartwatch.getCompatibilidad());
+            detalles.put("Monitoreo de salud", smartwatch.getMonitoreoSalud());
+            detalles.put("Resistencia al agua", smartwatch.getResistenciaAgua());
+            detalles.put("Duracion", smartwatch.getDuracion());
+
+        } else if (producto instanceof Tablet tablet) {
+
+            detalles.put("Tamaño de pantalla", tablet.getTamañoPantalla());
+            detalles.put("Memoria RAM", tablet.getMemoriaRam());
+            detalles.put("Almacenamiento interno", tablet.getAlmacenamientoInterno());
+            detalles.put("Resolucion de camara", tablet.getResolucionCamara());
+            detalles.put("Sistema operativo", tablet.getSistemaOperativo());
+
+        } else if (producto instanceof Camara camara) {
+
+            detalles.put("Tipo", camara.getTipo());
+            detalles.put("Resolucion", camara.getResolución());
+            detalles.put("Zoom optico", camara.getZoomOptico());
+            detalles.put("Estabilizacion de imagen", camara.getEstabilizacionImagen());
+
+        } else if (producto instanceof Impresora impresora) {
+
+            detalles.put("Tipo", impresora.getTipo());
+            detalles.put("Funciones", impresora.getFunciones());
+            detalles.put("Conectividad", impresora.getConectividad());
+            detalles.put("Velocidad de impresion", impresora.getVelocidadImpresion());
+            detalles.put("Doble cara automatica", impresora.getDobleCaraAutomatica());
+
         }
 
         return detalles;

@@ -1,6 +1,7 @@
 package com.example.domain.ecommerce.models.entities;
 
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "impresoras")
 public class Impresora extends Producto{
     // (Inyección de tinta, Láser)
@@ -18,7 +20,7 @@ public class Impresora extends Producto{
 
     private String conectividad;
 
-    private String velocidadImpresión;
+    private String velocidadImpresion;
 
     private String dobleCaraAutomatica;
 }
