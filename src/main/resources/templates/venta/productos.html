@@ -14,7 +14,13 @@
     <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
     <link rel="stylesheet" th:href="@{/css/style-modal-delete.css}">
 </head>
-
+<style>
+    
+    .category-fields {
+        display: none;
+        margin-top: 10px;
+    }
+    </style>
 <body>
 
     <div class="modal__container--add">
@@ -22,7 +28,8 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Productos</p>
             </div>
-            <form id="formulario_produc" class="form_modal" th:action="@{/inventario/productos/agregar_prod}" method="post">
+            <form id="formulario_produc" class="form_modal" th:action="@{/inventario/productos/agregar_prod}"
+                method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
                     <input type="text" name="nombre">
@@ -33,7 +40,8 @@
                 </div>
                 <div class="input__box">
                     <label for="">Categoria</label><br>
-                    <select name="nombre_categoria">
+                    <select name="nombre_categoria" id="categoria" onchange="mostrarCamposCategoria()">
+                        <option value="" disabled selected>Seleccione la categoria</option>
                         <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
                             th:text="${categoria.nombre}"></option>
                     </select>
@@ -66,14 +74,13 @@
                     <input type="text" name="imagen1">
                 </div>
                 <div class="input__box">
-                        <label for="">Codigo de barras</label><br>
-                        <input type="text" name="codigoBarras" 
-                        id="codigo_act" 
-                        maxlength="13" 
-                        pattern="\d{13}"
-                        title="El codigo debe tener exactamente 13 digitos numericos"
-                        required>
-                    </div>
+                    <label for="">Codigo de barras</label><br>
+                    <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}" title="El codigo debe tener exactamente 13 digitos numericos" required>
+                </div>
+
+                <!-- Campos dinámicos -->
+                <div id="camposCategoria" class="category-fields"></div>
+
                 <div class="button__modal">
                     <div class="btn-modal">
                         <input id="guardar-produc" type="submit" class="btn-guardar" value="Guardar">
@@ -83,7 +90,6 @@
             </form>
         </div>
     </div>
-
 
     <div class="container_modal--delete">
         <div class="ventana_modal--delete ventana-close-delete">
@@ -212,7 +218,7 @@
                     </div>
                     <div class="input__box">
                         <label for="">Precio Compra</label><br>
-                        <input type="text" name="precioCompra" id="precioC_act" required> 
+                        <input type="text" name="precioCompra" id="precioC_act" required>
                     </div>
                     <div class="input__box">
                         <label for="">Marca</label><br>
@@ -224,12 +230,8 @@
                     </div>
                     <div class="input__box">
                         <label for="">Codigo de barras</label><br>
-                        <input type="text" name="codigoBarras" 
-                        id="codigo_act" 
-                        maxlength="13" 
-                        pattern="\d{13}"
-                        title="El codigo debe tener exactamente 13 digitos numericos"
-                        required>
+                        <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}"
+                            title="El codigo debe tener exactamente 13 digitos numericos" required>
                     </div>
 
                     <div class="button__modal">
@@ -289,14 +291,8 @@
                 });
             });
         </script>
-
-
-
-
-
-
     </main>
-
+    <script th:src="@{/js/caracteristicasCateg.js}"></script>
     <script th:src="@{/js/modalAdd.js}"></script>
 
     <script>
