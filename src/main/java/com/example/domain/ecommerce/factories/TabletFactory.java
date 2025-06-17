@@ -27,7 +27,7 @@ public class TabletFactory implements ProductoFactory {
         tablet.setTamañoPantalla(productDTO.getTamañoPantalla());
         tablet.setMemoriaRam(productDTO.getMemoriaRam());
         tablet.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno());
-        tablet.setResoluciónCamara(productDTO.getResoluciónCamara());
+        tablet.setResolucionCamara(productDTO.getResolucionCamara());
         tablet.setSistemaOperativo(productDTO.getSistemaOperativo());
 
         return tablet;
@@ -40,7 +40,7 @@ public class TabletFactory implements ProductoFactory {
         tablet.setTamañoPantalla(productDTO.getTamañoPantalla());
         tablet.setMemoriaRam(productDTO.getMemoriaRam());
         tablet.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno());
-        tablet.setResoluciónCamara(productDTO.getResoluciónCamara());
+        tablet.setResolucionCamara(productDTO.getResolucionCamara());
         tablet.setSistemaOperativo(productDTO.getSistemaOperativo());
 
         return tablet;

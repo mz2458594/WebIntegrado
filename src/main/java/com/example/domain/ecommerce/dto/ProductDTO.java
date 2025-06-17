@@ -25,6 +25,7 @@ public class ProductDTO {
     private String duracion;
     private String almacenamientoInterno;
     private String resolución;
+    private String resolucionCamara;
 
     // LAPTOP
     private String procesador;
@@ -33,7 +34,6 @@ public class ProductDTO {
     private String almacenamiento;
 
     // SMARTPHONE
-    private String resolucionCamara;
     private String capacidadBateria;
 
     // AURICULAR
@@ -59,7 +59,6 @@ public class ProductDTO {
     private String resistenciaAgua;
 
     // TABLET
-    private String resoluciónCamara;
 
     // CAMARA
     private String zoomOptico;
@@ -67,7 +66,7 @@ public class ProductDTO {
 
     // IMPRESORA
     private String funciones;
-    private String velocidadImpresión;
+    private String velocidadImpresion;
     private String dobleCaraAutomatica;
 
 }

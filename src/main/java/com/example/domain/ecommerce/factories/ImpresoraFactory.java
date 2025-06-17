@@ -26,7 +26,7 @@ public class ImpresoraFactory implements ProductoFactory {
         impresora.setTipo(productDTO.getTipo());
         impresora.setFunciones(productDTO.getFunciones());
         impresora.setConectividad(productDTO.getConectividad());
-        impresora.setVelocidadImpresión(productDTO.getVelocidadImpresión());
+        impresora.setVelocidadImpresion(productDTO.getVelocidadImpresion());
         impresora.setDobleCaraAutomatica(productDTO.getDobleCaraAutomatica());
 
         return impresora;
@@ -39,7 +39,7 @@ public class ImpresoraFactory implements ProductoFactory {
         impresora.setTipo(productDTO.getTipo());
         impresora.setFunciones(productDTO.getFunciones());
         impresora.setConectividad(productDTO.getConectividad());
-        impresora.setVelocidadImpresión(productDTO.getVelocidadImpresión());
+        impresora.setVelocidadImpresion(productDTO.getVelocidadImpresion());
         impresora.setDobleCaraAutomatica(productDTO.getDobleCaraAutomatica());
 
         return impresora;
