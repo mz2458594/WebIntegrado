@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "tablets")
 public class Tablet extends Producto{
+    
     private String tamañoPantalla;
 
     private String memoriaRam;

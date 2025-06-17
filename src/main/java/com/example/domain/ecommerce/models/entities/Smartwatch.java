@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "smartwatches")
-public class Smartwatch extends Producto{
+public class Smartwatch extends Producto {
     private String compatibilidad;
 
     private String monitoreoSalud;

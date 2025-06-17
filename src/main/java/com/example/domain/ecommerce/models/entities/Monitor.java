@@ -10,13 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "monitores")
 public class Monitor extends Producto{
+    
     private String tamañoPantalla;
-
     private String resolución;
-
     private String tipoPanel;
-
     private String frecuenciaActualizacion;
-
     private String puertosEntrada;
 }
