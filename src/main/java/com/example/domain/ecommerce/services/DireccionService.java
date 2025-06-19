@@ -36,7 +36,7 @@ public class DireccionService {
     public Direccion createDirection(UserDTO user, Persona persona) {
         Direccion nueva_direccion = new Direccion();
         nueva_direccion.setCalle(user.getCalle());
-        nueva_direccion.setCiudad(user.getCiudad());
+        nueva_direccion.setDepartamento(user.getDepartamento());
         nueva_direccion.setDistrito(user.getDistrito());
         nueva_direccion.setProvincia(user.getProvincia());
         nueva_direccion.setPersona(persona);
@@ -62,7 +62,7 @@ public class DireccionService {
 
         Direccion direccionn = cliente.get().getDireccion();
         direccionn.setCalle(direccion.getCalle());
-        direccionn.setCiudad(direccion.getCiudad());
+        direccionn.setDepartamento(direccion.getDepartamento());
         direccionn.setDistrito(direccion.getDistrito());
         direccionn.setProvincia(direccion.getProvincia());
 

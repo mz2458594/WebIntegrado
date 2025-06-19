@@ -3,9 +3,12 @@ package com.example.domain.ecommerce.dto;
 public class DireccionDTO {
 
     private String calle;
-    private String ciudad;
     private String provincia;
     private String distrito;
+    private String departamento;
+
+
+    
 
     public String getCalle() {
         return calle;
@@ -15,13 +18,7 @@ public class DireccionDTO {
         this.calle = calle;
     }
 
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
+    
 
     public String getProvincia() {
         return provincia;
@@ -37,5 +34,13 @@ public class DireccionDTO {
 
     public void setDistrito(String distrito) {
         this.distrito = distrito;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 }

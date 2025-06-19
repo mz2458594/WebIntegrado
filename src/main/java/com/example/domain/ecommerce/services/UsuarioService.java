@@ -57,7 +57,7 @@ public class UsuarioService {
             dto.setFecha(c.getFecha());
             dto.setCelular(c.getTelefono());
             dto.setCalle(c.getDireccion().getCalle());
-            dto.setCiudad(c.getDireccion().getCiudad());
+            dto.setDepartamento(c.getDireccion().getDepartamento());
             dto.setDistrito(c.getDireccion().getDistrito());
             dto.setProvincia(c.getDireccion().getProvincia());
             dto.setCorreo(u.getEmail());
@@ -81,7 +81,7 @@ public class UsuarioService {
             dto.setFecha(e.getFecha());
             dto.setCelular(e.getTelefono());
             dto.setCalle(e.getDireccion().getCalle());
-            dto.setCiudad(e.getDireccion().getCiudad());
+            dto.setDepartamento(e.getDireccion().getDepartamento());
             dto.setDistrito(e.getDireccion().getDistrito());
             dto.setProvincia(e.getDireccion().getProvincia());
             dto.setCorreo(u.getEmail());

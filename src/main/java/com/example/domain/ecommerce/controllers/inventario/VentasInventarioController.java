@@ -38,6 +38,11 @@ public class VentasInventarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @GetMapping("/pagoTarjeta")
+    public String pagoTarjeta(Model model) {
+        return "venta/pagoTarjeta";
+    }
+
     @GetMapping("/ventas")
     public String nuevaVenta(Model model) {
 
@@ -122,9 +127,9 @@ public class VentasInventarioController {
         Empleado empleado = (Empleado) session.getAttribute("empleado");
 
         if (empleado == null) {
-        model.addAttribute("venta", sale);
-        model.addAttribute("error", "No hay usuario logeado en el sistema");
-        return "venta/agregarMetodoPago";
+            model.addAttribute("venta", sale);
+            model.addAttribute("error", "No hay usuario logeado en el sistema");
+            return "venta/agregarMetodoPago";
         }
 
         double total = 0.00;

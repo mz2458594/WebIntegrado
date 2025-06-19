@@ -8,7 +8,7 @@ public class UserDTO {
     private String num_documento;
     private String celular;
     private String calle;
-    private String ciudad;
+    private String departamento;
     private String distrito;
     private String provincia;
     private String correo;
@@ -54,14 +54,6 @@ public class UserDTO {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
     }
 
     public String getCalle() {
@@ -150,6 +142,14 @@ public class UserDTO {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 
     

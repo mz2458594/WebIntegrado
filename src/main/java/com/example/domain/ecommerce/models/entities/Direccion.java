@@ -29,20 +29,17 @@ public class Direccion implements Serializable {
     @Column(name = "calle")
     private String calle;
 
-    @Column(name = "ciudad")
-    private String ciudad;
-
     @Column(name = "provincia")
     private String provincia;
 
     @Column(name = "distrito")
     private String distrito;
 
+    @Column(name = "departamento")
+    private String departamento;
+
     @OneToOne
     @JoinColumn(name = "persona_id", unique = true)
     Persona persona;
-
-
-
 
 }

@@ -54,7 +54,7 @@ public class PedidoUsuarioFactory implements PedidoFactory {
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setPedido(pedido);
-            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioCompra());
+            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioVenta());
             vp.setSubtotal(subtotal);
 
             total += vp.getSubtotal();

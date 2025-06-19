@@ -107,10 +107,10 @@ public class PersonaService {
         persona.setTelefono(userDTO.getCelular());
         persona.setFecha(userDTO.getFecha_nac());
 
-        if (userDTO.getCalle() != null && userDTO.getCiudad() != null &&
+        if (userDTO.getCalle() != null && userDTO.getDepartamento() != null &&
                 userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
             persona.getDireccion().setCalle(userDTO.getCalle());
-            persona.getDireccion().setCiudad(userDTO.getCiudad());
+            persona.getDireccion().setDepartamento(userDTO.getDepartamento());
             persona.getDireccion().setDistrito(userDTO.getDistrito());
             persona.getDireccion().setProvincia(userDTO.getProvincia());
         }

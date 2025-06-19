@@ -169,7 +169,6 @@ public class EcommerceApplicationTests {
 
         DireccionDTO direccionDTO = new DireccionDTO();
         direccionDTO.setCalle("Nueva Calle");
-        direccionDTO.setCiudad("Nueva Ciudad");
         direccionDTO.setDistrito("Nuevo Distrito");
         direccionDTO.setProvincia("Nueva Provincia");
 
@@ -177,7 +176,6 @@ public class EcommerceApplicationTests {
 
         verify(direccionDAO, times(1)).save(direccion);
         assertEquals("Nueva Calle", direccion.getCalle());
-        assertEquals("Nueva Ciudad", direccion.getCiudad());
         assertEquals("Nuevo Distrito", direccion.getDistrito());
         assertEquals("Nueva Provincia", direccion.getProvincia());
     }
@@ -345,7 +343,6 @@ public class EcommerceApplicationTests {
         userDTO.setNum_documento("12345678");
         userDTO.setCelular("987654321");
         userDTO.setCalle("Calle Falsa");
-        userDTO.setCiudad("Ciudad Falsa");
         userDTO.setDistrito("Distrito Falso");
         userDTO.setProvincia("Provincia Falsa");
         userDTO.setCorreo("nuevoemail@example.com");
