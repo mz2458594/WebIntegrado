@@ -11,7 +11,7 @@
 <body>
     <div class="contenedor__logo"> <img th:src="@{/images/logo.png}" alt=""></div>
     <div class="title__inicio">
-        <p>Sistemas de Gestion de Inventario</p>
+        <p>Sistema de Gestión de Ventas e Inventario</p>
     </div>
     <div class="contenedor__perfil">
         <div class="icon__notifi">
@@ -29,8 +29,8 @@
 
                     <div class="notification-item" th:if="${notificaciones != null}" th:each="notificacion : ${notificaciones}">
                         <strong>Stock bajo</strong>
-                        <div th:text="${notificacion}">descripcion</div>
-                        <small>tiempo</small>
+                        <div th:text="${notificacion.mensaje}">descripcion</div>
+                        <small th:text="${notificacion.fecha}">tiempo</small>
                     </div>
 
                 </div>

@@ -220,4 +220,8 @@ public class ProductoService {
         productoDAO.save(product);
     }
 
+    public List<Producto> obtenerStockBajo(){
+        return productoDAO.obtenerProductosStockBajo();
+    }
+
 }

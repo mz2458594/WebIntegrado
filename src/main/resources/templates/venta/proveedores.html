@@ -21,10 +21,12 @@
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Proveedor</p>
             </div>
-            <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" method="post">
+            <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" id="formCrear" method="post">
                 <div class="input__box">
                     <label for="">RUC</label><br>
                     <input type="text" name="ruc">
+                    <br><br>
+                    <span id="mensajeRUC">MENSAJE DE ERROR</span>
                 </div>
                 <div class="input__box">
                     <label for="">Nombre</label><br>
@@ -191,6 +193,41 @@
         </div>
 
         <script>
+
+
+            const formCrear = document.getElementById("formCrear");
+
+            formCrear.addEventListener('submit', async function () {
+                const ruc = document.getElementById('ruc_act').value
+                
+                try {
+                    const response = await fetch("https://apiperu.dev/api/ruc", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer cefa320c438dd612f47210d678d31fe7f612c9475522675dd56be4fa43a02484`
+                        },
+                        body: JSON.stringify({ ruc: ruc })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        document.getElementById("mensajeRUC").textContent = "El RUC no es válido";
+                        return;
+                    }
+                } catch (error) {
+                    document.getElementById("mensajeRUC").textContent = "Error al validar el RUC";
+                    console.error("Error", error)
+                    return;
+                }
+
+
+                formCrear.submit()
+            })
+
+
             const boton2 = document.querySelectorAll(".editproduc");
 
             boton2.forEach(boton => {

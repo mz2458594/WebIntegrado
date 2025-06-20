@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.controllers.web;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.models.entities.Notificacion;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.ProductoService;
 
@@ -33,9 +35,9 @@ public class GlobalModelAtributte {
             model.addAttribute("empleado", empleado);
             List<Producto> productos = productoService.listarProducto();
 
-            List<String> notificaciones = productos.stream()
+            List<Notificacion> notificaciones = productos.stream()
                     .filter(p -> Integer.parseInt(p.getStock()) < 5)
-                    .map(p -> "El producto " + p.getNombre() + "tiene stock bajo (" + p.getStock() + " unidades)")
+                    .map(p -> new Notificacion("El producto " + p.getNombre() + "tiene stock bajo (" + p.getStock() + " unidades)", LocalDateTime.now()))
                     .collect(Collectors.toList());
 
             model.addAttribute("notificaciones", notificaciones);

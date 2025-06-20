@@ -67,7 +67,7 @@ public class VentasInventarioController {
 
     @PostMapping("/pago")
     public String pago(Model model,
-            @ModelAttribute("productos") VentaRequestDTO ventaRequestDTOs,
+            VentaRequestDTO ventaRequestDTOs,
             @RequestParam("numero") String ruc,
             @RequestParam("tipo") String tipo,
             HttpSession session) {

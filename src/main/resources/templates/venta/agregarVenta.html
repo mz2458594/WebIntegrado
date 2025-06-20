@@ -19,7 +19,7 @@
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
-        <form th:object="${venta}" class="ventana-venta" id="formVenta" method="post">
+        <form class="ventana-venta" id="formVenta" method="post">
             <div class="head-venta">
                 <div class="head-doctran">
                     <select id="documentoTipo" class="select-doc" name="tipo">
@@ -146,7 +146,7 @@
         let productosAgregados = {}
 
         const formularioVenta = document.getElementById("formVenta")
-        formularioVenta.addEventListener('submit', function (event) {
+        formularioVenta.addEventListener('submit', async function (event) {
             event.preventDefault()
 
             const documento = document.getElementById("documentoTipo")
@@ -159,9 +159,35 @@
             if (documento.value === "FACTURA") {
                 const ruc = document.getElementById("numeroDoc").value
                 if (ruc == "") {
-                    document.getElementById("mensaje").textContent = "Debe ingresar un numero de RUC válido";
+                    document.getElementById("mensaje").textContent = "Ingrese el RUC";
                     return;
                 }
+
+
+                try {
+                    const response = await fetch("https://apiperu.dev/api/ruc", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer cefa320c438dd612f47210d678d31fe7f612c9475522675dd56be4fa43a02484`
+                        },
+                        body: JSON.stringify({ ruc: ruc })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        document.getElementById("mensaje").textContent = "El RUC no es válido";
+                        return;
+                    }
+                } catch (error) {
+                    document.getElementById("mensaje").textContent = "Error al validar el RUC";
+                    console.error("Error", error)
+                    return;
+                }
+
+
             }
 
             if (Object.keys(productosAgregados).length === 0) {
@@ -178,7 +204,7 @@
         const productInput = document.getElementById("productInput");
         const productList = document.getElementById("productList");
         const tabla = document.getElementById('tablaProductos');
-        let contador = 0;
+        let index = 0;
 
         // Función para mostrar y filtrar la lista
         function filterProducts() {
@@ -237,7 +263,7 @@
                     productosAgregados[id].cantidad = nuevaCantidad
 
                 } else {
-                    const index = contador++;
+
                     productosAgregados[id] = { cantidad: cantidad, index: index }
 
                     const row = document.createElement('tr');
@@ -251,8 +277,10 @@
                     <input type="hidden" name="productos[${index}].id" value="${id}">
                     <input type="hidden" class="input-cantidad" name="productos[${index}].cantidad" value="${cantidad}">
                     `;
+                    index++;
                     tabla.appendChild(row);
                     actualizar()
+                    reindexarProductos()
                 }
 
                 productInput.value = ''
@@ -268,6 +296,7 @@
                 delete productosAgregados[id]
             }
             actualizar()
+            reindexarProductos()
         }
 
         function actualizar() {
@@ -288,6 +317,25 @@
             e.preventDefault()
             document.getElementById("mensaje").textContent = "";
         })
+
+        function reindexarProductos() {
+            const filas = document.querySelectorAll("#tablaProductos tr")
+            let nuevoIndex = 0
+            productosAgregados = {};
+
+            filas.forEach(fila => {
+                const id = fila.id.split("-")[1];
+                const cantidad = parseInt(fila.querySelector(".cantidad").textContent)
+
+                fila.querySelector('[name$=".id"]').setAttribute("name", `productos[${nuevoIndex}].id`)
+                fila.querySelector('[name$=".cantidad"]').setAttribute("name", `productos[${nuevoIndex}].cantidad`)
+
+                productosAgregados[id] = {cantidad: cantidad, index: nuevoIndex}
+                nuevoIndex++ 
+            })
+
+            index = nuevoIndex;
+        }
 
     </script>
 </body>
