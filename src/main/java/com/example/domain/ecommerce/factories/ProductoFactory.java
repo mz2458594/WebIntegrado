@@ -7,4 +7,5 @@ public interface ProductoFactory {
     boolean supports(String tipo);
     Producto crearProducto(ProductDTO productDTO);
     Producto actualizar(ProductDTO productDTO, int id);
+    Producto obtener(int id);
 }

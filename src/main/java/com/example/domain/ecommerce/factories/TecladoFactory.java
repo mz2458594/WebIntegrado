@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Auricular;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Teclado;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -43,6 +44,12 @@ public class TecladoFactory implements ProductoFactory {
         teclado.setDistribución(productDTO.getDistribución());
         teclado.setRetroiluminación(productDTO.getRetroiluminación());
 
+        return teclado;
+    }
+
+    @Override
+    public Producto obtener(int id){
+        Teclado teclado = (Teclado) productoDAO.findById(Long.valueOf(id)).get();
         return teclado;
     }
 

@@ -3,6 +3,7 @@ package com.example.domain.ecommerce.factories;
 import org.springframework.stereotype.Component;
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Auricular;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 
@@ -41,6 +42,12 @@ public class AuricularesFactory implements ProductoFactory {
         auricular.setCancelacionRuido(productDTO.getCancelacionRuido());
         auricular.setConector(productDTO.getConector());
 
+        return auricular;
+    }
+
+    @Override
+    public Producto obtener(int id){
+        Auricular auricular = (Auricular) productoDAO.findById(Long.valueOf(id)).get();
         return auricular;
     }
 

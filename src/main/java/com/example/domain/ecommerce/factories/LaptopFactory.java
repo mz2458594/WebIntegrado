@@ -48,4 +48,10 @@ public class LaptopFactory implements ProductoFactory {
 
         return laptop;
     }
+
+    @Override
+    public Producto obtener(int id){
+        Laptop laptop = (Laptop) productoDAO.findById(Long.valueOf(id)).get();
+        return laptop;
+    }
 }

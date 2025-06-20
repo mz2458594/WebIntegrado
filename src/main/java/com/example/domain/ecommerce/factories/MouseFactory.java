@@ -3,6 +3,7 @@ package com.example.domain.ecommerce.factories;
 import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Mouse;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -41,6 +42,12 @@ public class MouseFactory implements ProductoFactory {
         mouse.setDpi(productDTO.getDpi());
         mouse.setCantidadBotones(productDTO.getCantidadBotones());
 
+        return mouse;
+    }
+
+    @Override
+    public Producto obtener(int id){
+        Mouse mouse = (Mouse) productoDAO.findById(Long.valueOf(id)).get();
         return mouse;
     }
 }

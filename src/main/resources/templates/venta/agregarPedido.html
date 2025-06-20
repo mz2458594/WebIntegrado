@@ -57,6 +57,7 @@
                             <tr>
                                 <th>Quitar</th>
                                 <th>Producto</th>
+                                <th>Proveedor</th>
                                 <th>Cantidad</th>
                                 <th>Precio S/.</th>
                                 <th>Total S/.</th>
@@ -66,6 +67,7 @@
                             <tr th:each="item: ${pedidos.item}">
                                 <td><a th:href="@{/inventario/pedido/eliminarPedido/{id} (id = ${item.producto.idProducto})} ">X</a></td>
                                 <td th:text="${item.producto.nombre}">arroz</td>
+                                <th th:text="${item.producto.proveedor.nombre}"></th>
                                 <td th:text="${item.cantidad}">2</td>
                                 <td th:text="${item.producto.precioCompra}">4.50</td>
                                 <td id="tot" class="tot" th:text="${item.total}">9</td>

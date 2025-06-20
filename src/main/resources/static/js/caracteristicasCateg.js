@@ -28,8 +28,8 @@ function mostrarCamposCategoria() {
                     <input type="text" id="tamañoPantalla" name="tamañoPantalla" required>
                 </div>
                 <div class="input__box">
-                    <label for="ram">Memoria RAM</label>
-                    <input type="text" id="ram" name="ram" required>
+                    <label for="memoriaRam">Memoria RAM</label>
+                    <input type="text" id="memoriaRam" name="memoriaRam" required>
                 </div>
                 <div class="input__box">
                     <label for="almacenamiento">Almacenamiento</label>
@@ -46,8 +46,8 @@ function mostrarCamposCategoria() {
                     <input type="text" id="tamañoPantalla" name="tamañoPantalla" required>
                 </div>
                 <div class="input__box">
-                    <label for="ram">Memoria RAM</label>
-                    <input type="text" id="ram" name="ram" required>
+                    <label for="memoriaRam">Memoria RAM</label>
+                    <input type="text" id="memoriaRam" name="memoriaRam" required>
                 </div>
                 <div class="input__box">
                     <label for="almacenamientoInterno">Almacenamiento interno</label>
@@ -190,8 +190,8 @@ function mostrarCamposCategoria() {
                     <input type="text" id="tamañoPantalla" name="tamañoPantalla" required>
                 </div>
                 <div class="input__box">
-                    <label for="ram">Memoria Ram</label>
-                    <input type="text" id="ram" name="ram" required>
+                    <label for="memoriaRam">Memoria Ram</label>
+                    <input type="text" id="memoriaRam" name="memoriaRam" required>
                 </div>
                 <div class="input__box">
                     <label for="almacenamientoInterno">Almacenamiento interno</label>
@@ -255,55 +255,7 @@ function mostrarCamposCategoria() {
                 break;
         }
 
-        // if (categoria === 'Laptops') {
-        //     camposCategoria.style.display = 'block';
-        //     camposCategoria.innerHTML = `
-        //         <h3>Características de Laptop</h3>
-        //         <div class="input__box"">
-        //             <label for="procesador">Procesador</label>
-        //             <input type="text" id="procesador" name="procesador" required>
-        //         </div>
-        //         <div class="input__box"">
-        //             <label for="ram">Memoria RAM</label>
-        //             <input type="text" id="ram" name="ram" required>
-        //         </div>
-        //         <div class="input__box"">
-        //             <label for="almacenamiento">Almacenamiento</label>
-        //             <input type="text" id="almacenamiento" name="almacenamiento" required>
-        //         </div>
-        //     `;
-        // } 
-        // else if (categoria === 'audifonos') {
-        //     camposCategoria.style.display = 'block';
-        //     camposCategoria.innerHTML = `
-        //         <h3>Características de Audífonos</h3>
-        //         <div class="input__box"">
-        //             <label for="tipoConexion">Tipo de Conexión</label>
-        //             <input type="text" id="tipoConexion" name="tipoConexion" required>
-        //         </div>
-        //         <div class="input__box"">
-        //             <label for="inalambrico">¿Es inalámbrico? (Sí/No)</label>
-        //             <input type="text" id="inalambrico" name="inalambrico" required>
-        //         </div>
-        //     `;
-        // } else if (categoria === 'celular') {
-        //     camposCategoria.style.display = 'block';
-        //     camposCategoria.innerHTML = `
-        //         <h3>Características de Celular</h3>
-        //         <div class="input__box"">
-        //             <label for="pantalla">Tamaño de Pantalla</label>
-        //             <input type="text" id="pantalla" name="pantalla" required>
-        //         </div>
-        //         <div class="input__box"">
-        //             <label for="bateria">Capacidad de Batería (mAh)</label>
-        //             <input type="text" id="bateria" name="bateria" required>
-        //         </div>
-        //         <div class="input__box"">
-        //             <label for="camara">Resolución de Cámara</label>
-        //             <input type="text" id="camara" name="camara" required>
-        //         </div>
-        //     `;
-        // }
+        
     }
 
     // Ejemplo de cómo puedes manejar el submit

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Impresora;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,12 @@ public class ImpresoraFactory implements ProductoFactory {
         impresora.setVelocidadImpresion(productDTO.getVelocidadImpresion());
         impresora.setDobleCaraAutomatica(productDTO.getDobleCaraAutomatica());
 
+        return impresora;
+    }
+
+    @Override
+    public Producto obtener(int id){
+        Impresora impresora = (Impresora) productoDAO.findById(Long.valueOf(id)).get();
         return impresora;
     }
 }

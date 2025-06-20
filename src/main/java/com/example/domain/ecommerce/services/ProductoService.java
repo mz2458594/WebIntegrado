@@ -55,8 +55,12 @@ public class ProductoService {
         if (producto.isEmpty()) {
             throw new EntityNotFoundException("Producto con id " + id + " no encontrado");
         }
-
-        return producto.get();
+        
+        return  factories.stream()
+                .filter(f -> f.supports(producto.get().getCategoria().getNombre()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Tipo de producto no soportado"))
+                .obtener(id);
     }
 
     public Map<String, String> obtenerDetalleProducto(Producto producto) {
@@ -187,7 +191,6 @@ public class ProductoService {
         producto.setNombre(productDTO.getNombre());
         producto.setPrecioVenta(productDTO.getPrecio());
         producto.setProveedor(proveedor);
-        producto.setStock(productDTO.getStock());
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 

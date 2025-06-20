@@ -48,6 +48,7 @@ public class PedidosController {
 
         if (empleado == null) {
             model.addAttribute("error", "No hay usuario logeado en el sistema");
+            model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
             return "venta/pedidos";
         }
 

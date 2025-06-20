@@ -69,12 +69,13 @@ public class PedidoProveedorFactory implements PedidoFactory{
         pedido.setEstado(EstadoPedido.PROCESANDO);
         pedido.setTotal(total);
         pedido.setDetallePedidos(lista_pedidos);
+        PedidoProveedor pedidoSave = pedidoProveedorDAO.save(pedido);
         
-        Comprobante comprobante = comprobanteService.generarComprobantePedido(pedido, data.getTipo(), data.getRuc(),
+        Comprobante comprobante = comprobanteService.generarComprobantePedido(pedidoSave, data.getTipo(), data.getRuc(),
                 data.getRazon());
 
-        pedido.setComprobante(comprobante);
+        pedidoSave.setComprobante(comprobante);
 
-        return pedidoProveedorDAO.save(pedido);
+        return pedidoProveedorDAO.save(pedidoSave);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
 import com.example.domain.ecommerce.models.entities.Camara;
+import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Tablet;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -42,6 +43,12 @@ public class CamaraFactory implements ProductoFactory{
         camara.setZoomOptico(productDTO.getZoomOptico());
         camara.setEstabilizacionImagen(productDTO.getEstabilizacionImagen());
 
+        return camara;
+    }
+
+    @Override
+    public Producto obtener(int id){
+        Camara camara = (Camara) productoDAO.findById(Long.valueOf(id)).get();
         return camara;
     }
 }
