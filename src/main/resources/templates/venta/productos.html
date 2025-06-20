@@ -236,7 +236,21 @@
                     </div>
                     <!-- Campos dinamicos -->
                     <div id="camposCategorias" class="category-fields"></div>
-                    <div class="button__modal">
+                    <div class="button__modal" style="display: flex; justify-content: space-between;">
+                        <button id="editCaracte" type="button">Activar Características</button>
+                        <style>
+                            #editCaracte{
+                                border: none;
+                                cursor: pointer;
+                                background-color: #e7d009;
+                                color: #fff;
+                                font-weight: bold;
+                                border-radius: 5px;
+                            }
+                            #editCaracte:hover{
+                                background-color: #bcb360;
+                            }
+                        </style>
                         <div class="btn-modal">
                             <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
                             <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
@@ -247,6 +261,15 @@
         </div>
 
         <script>
+            document.getElementById('editCaracte').addEventListener('click', function () {
+                // Obtiene todos los inputs dentro del contenedor
+                const inputs = document.querySelectorAll('#camposCategorias input');
+
+                // Recorre y habilita cada input
+                inputs.forEach(input => {
+                    input.disabled = false;
+                });
+            });
             const boton2 = document.querySelectorAll(".editproduc");
             boton2.forEach(boton => {
                 boton.addEventListener('click', function () {
@@ -296,27 +319,27 @@
                             <h3>Características de Laptop</h3>
                             <div class="input__box">
                                 <label for="procesador">Procesador</label>
-                                <input type="text" id="procesador" name="procesador" value="${detalle.procesador}" required>
+                                <input disabled  type="text" id="procesador" name="procesador" value="${detalle.procesador}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tarjetaGrafica">Tarjeta grafica</label>
-                                <input type="text" id="tarjetaGrafica" name="tarjetaGrafica" value="${detalle.tarjetaGrafica}" required>
+                                <input disabled type="text" id="tarjetaGrafica" name="tarjetaGrafica" value="${detalle.tarjetaGrafica}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema Operativo</label>
-                                <input type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria RAM</label>
-                                <input type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamiento">Almacenamiento</label>
-                                <input type="text" id="almacenamiento" name="almacenamiento" value="${detalle.almacenamiento}" required>
+                                <input disabled type="text" id="almacenamiento" name="almacenamiento" value="${detalle.almacenamiento}" required>
                             </div>
 
                             `;
@@ -327,27 +350,27 @@
                             <h3>Características de Smartphones</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria RAM</label>
-                                <input type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamientoInterno">Almacenamiento interno</label>
-                                <input type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
+                                <input disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucionCamara">Resolucion de camara</label>
-                                <input type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
+                                <input disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
                                 <label for="capacidadBateria">Capacidad de bateria</label>
-                                <input type="text" id="capacidadBateria" name="capacidadBateria" value="${detalle.capacidadBateria}" required>
+                                <input disabled type="text" id="capacidadBateria" name="capacidadBateria" value="${detalle.capacidadBateria}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema operativo</label>
-                                <input type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             `;
                                     break;
@@ -357,19 +380,19 @@
                             <h3>Características de Auriculares</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="duracion">Duracion</label>
-                                <input type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
+                                <input disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="cancelacionRuido">Cancelacion de ruido</label>
-                                <input type="text" id="cancelacionRuido" name="cancelacionRuido" value="${detalle.cancelacionRuido}" required>
+                                <input disabled type="text" id="cancelacionRuido" name="cancelacionRuido" value="${detalle.cancelacionRuido}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conector">Conector</label>
-                                <input type="text" id="conector" name="conector" value="${detalle.conector}" required>
+                                <input disabled type="text" id="conector" name="conector" value="${detalle.conector}" required>
                             </div>
                             `;
                                     break;
@@ -379,23 +402,23 @@
                             <h3>Características de Monitores</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucion">Resolucion</label>
-                                <input type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
+                                <input disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tipoPanel">Tipo de panel</label>
-                                <input type="text" id="tipoPanel" name="tipoPanel" value="${detalle.tipoPanel}" required>
+                                <input disabled type="text" id="tipoPanel" name="tipoPanel" value="${detalle.tipoPanel}" required>
                             </div>
                             <div class="input__box">
                                 <label for="frecuenciaActualizacion">Frecuencia de actualizacion</label>
-                                <input type="text" id="frecuenciaActualizacion" name="frecuenciaActualizacion" value="${detalle.frecuenciaActualizacion}" required>
+                                <input disabled type="text" id="frecuenciaActualizacion" name="frecuenciaActualizacion" value="${detalle.frecuenciaActualizacion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="puertosEntrada">Puertos de entrada</label>
-                                <input type="text" id="puertosEntrada" name="puertosEntrada" value="${detalle.puertosEntrada}" required>
+                                <input disabled type="text" id="puertosEntrada" name="puertosEntrada" value="${detalle.puertosEntrada}" required>
                             </div>
                             `;
                                     break;
@@ -405,19 +428,19 @@
                             <h3>Características de Teclados</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="distribucion">Distribucion</label>
-                                <input type="text" id="distribucion" name="distribucion" value="${detalle.distribución}" required>
+                                <input disabled type="text" id="distribucion" name="distribucion" value="${detalle.distribución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="retroiluminacion">Retroiluminacion</label>
-                                <input type="text" id="retroiluminacion" name="retroiluminacion" value="${detalle.retroiluminación}" required>
+                                <input disabled type="text" id="retroiluminacion" name="retroiluminacion" value="${detalle.retroiluminación}" required>
                             </div>
                             `;
                                     break;
@@ -427,19 +450,19 @@
                             <h3>Características de Mouses</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="dpi">DPI</label>
-                                <input type="text" id="dpi" name="dpi" value="${detalle.dpi}" required>
+                                <input disabled type="text" id="dpi" name="dpi" value="${detalle.dpi}" required>
                             </div>
                             <div class="input__box">
                                 <label for="cantidadBotones">Cantidad de botones</label>
-                                <input type="text" id="cantidadBotones" name="cantidadBotones" value="${detalle.cantidadBotones}" required>
+                                <input disabled type="text" id="cantidadBotones" name="cantidadBotones" value="${detalle.cantidadBotones}" required>
                             </div>
                             `;
                                     break;
@@ -449,19 +472,19 @@
                             <h3>Características de SmartWatches</h3>
                             <div class="input__box">
                                 <label for="compatibilidad">Compatibilidad</label>
-                                <input type="text" id="compatibilidad" name="compatibilidad" value="${detalle.compatibilidad}" required>
+                                <input disabled type="text" id="compatibilidad" name="compatibilidad" value="${detalle.compatibilidad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="monitoreoSalud">Monitoreo de salud</label>
-                                <input type="text" id="monitoreoSalud" name="monitoreoSalud" value="${detalle.monitoreoSalud}" required>
+                                <input disabled type="text" id="monitoreoSalud" name="monitoreoSalud" value="${detalle.monitoreoSalud}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resistenciaAgua">Resistencia al agua</label>
-                                <input type="text" id="resistenciaAgua" name="resistenciaAgua" value="${detalle.resistenciaAgua}" required>
+                                <input disabled type="text" id="resistenciaAgua" name="resistenciaAgua" value="${detalle.resistenciaAgua}" required>
                             </div>
                             <div class="input__box">
                                 <label for="duracion">Duracion</label>
-                                <input type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
+                                <input disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             `;
                                     break;
@@ -471,23 +494,23 @@
                             <h3>Características de Tablets</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria Ram</label>
-                                <input type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamientoInterno">Almacenamiento interno</label>
-                                <input type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
+                                <input disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucionCamara">Resolucion de la camara</label>
-                                <input type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
+                                <input disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema operativo</label>
-                                <input type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             `;
                                     break;
@@ -497,19 +520,19 @@
                             <h3>Características de Camara</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucion">Resolución</label>
-                                <input type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
+                                <input disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="zoomOptico">Zoom Optico</label>
-                                <input type="text" id="zoomOptico" name="zoomOptico" value="${detalle.zoomOptico}" required>
+                                <input disabled type="text" id="zoomOptico" name="zoomOptico" value="${detalle.zoomOptico}" required>
                             </div>
                             <div class="input__box">
                                 <label for="estabilizacionImagen">Estabilización de imagen</label>
-                                <input type="text" id="estabilizacionImagen" name="estabilizacionImagen" value="${detalle.estabilizacionImagen}"  required>
+                                <input disabled type="text" id="estabilizacionImagen" name="estabilizacionImagen" value="${detalle.estabilizacionImagen}"  required>
                             </div>
                             `;
                                     break;
@@ -519,23 +542,23 @@
                             <h3>Características de Impresoras</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="funciones">Funciones</label>
-                                <input type="text" id="funciones" name="funciones" value="${detalle.funciones}" required>
+                                <input disabled type="text" id="funciones" name="funciones" value="${detalle.funciones}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="velocidadImpresion">Velocidad de Impresion</label>
-                                <input type="text" id="velocidadImpresion" name="velocidadImpresion" value="${detalle.velocidadImpresion}" required>
+                                <input disabled type="text" id="velocidadImpresion" name="velocidadImpresion" value="${detalle.velocidadImpresion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="dobleCaraAutomatica">Doble cara automatica</label>
-                                <input type="text" id="dobleCaraAutomatica" name="dobleCaraAutomatica" value="${detalle.dobleCaraAutomatica}" required>
+                                <input disabled type="text" id="dobleCaraAutomatica" name="dobleCaraAutomatica" value="${detalle.dobleCaraAutomatica}" required>
                             </div>
                             `;
                                     break;
