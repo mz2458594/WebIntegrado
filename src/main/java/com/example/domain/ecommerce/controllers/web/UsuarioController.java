@@ -37,11 +37,11 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    
+
     private final DireccionService direccionService;
-    
-    private final  EmailService emailService;
-    
+
+    private final EmailService emailService;
+
     private final AuthService authService;
 
     private final PedidoService pedidoService;
@@ -85,13 +85,17 @@ public class UsuarioController {
     }
 
     @GetMapping("/pedidos")
-    public String mostrarPedidos(Model model, HttpSession session) throws JsonProcessingException{
+    public String mostrarPedidos(Model model, HttpSession session) throws JsonProcessingException {
         Cliente user = (Cliente) session.getAttribute("user");
-        List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getUsuario().getIdUsuario());
+        try {
+            List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getUsuario().getIdUsuario());
 
-        List<PedidoDTO> dtoList = pedidoService.convertirPedidoDTO(pedidos);
+            List<PedidoDTO> dtoList = pedidoService.convertirPedidoDTO(pedidos);
 
-        model.addAttribute("pedidos", dtoList);
+            model.addAttribute("pedidos", dtoList);
+        } catch (RuntimeException e) {
+            return "commerce/seguipedidos";
+        }
         return "commerce/seguipedidos";
     }
 

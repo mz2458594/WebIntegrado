@@ -31,6 +31,7 @@ public class SaleController {
     public ResponseEntity<Venta> createSale(@RequestBody RequestDTO request) {
         Venta venta = ventasService.crearVenta(request);
         return ResponseEntity.status(201).body(venta);
-    }
+    }    
+
 
 }

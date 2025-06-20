@@ -53,7 +53,10 @@
             <div class="foot-infoex">
                 <p>Fecha: <span id="fecha"></span></p>
                 <p>Hora: <span id="hora"></span></p>
-                <p>Nro. de transaccion: <span id="transac">0007</span></p>
+                <p>Nro. de transaccion: <span id="transac"></span></p>
+                <script>
+                    document.getElementById("transac").textContent = localStorage.getItem("transac") ?? "0007"
+                </script>
                 <script th:src="@{/js/horafecha.js}"></script>
             </div>
         </div>

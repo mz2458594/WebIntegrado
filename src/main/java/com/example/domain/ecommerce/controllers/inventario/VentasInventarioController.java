@@ -71,25 +71,23 @@ public class VentasInventarioController {
             @RequestParam("numero") String ruc,
             @RequestParam("tipo") String tipo,
             HttpSession session) {
+            System.out.println(ventaRequestDTOs);
         RequestDTO sale = new RequestDTO();
 
         float total = 0;
 
         sale.setItem(new ArrayList<>());
 
-        if ("ruc".equalsIgnoreCase(tipo)) {
+        if ("FACTURA".equalsIgnoreCase(tipo)) {
             if (ruc == null || ruc.trim().isEmpty() || ruc.length() != 11) {
-                model.addAttribute("error", "Debe ingresar un numero de RUC válido");
                 model.addAttribute("productos", productosService.listarProducto());
-
                 return "venta/agregarVenta";
             }
             sale.setRuc(ruc);
             sale.setTipo("FACTURA");
-        } else if ("boleta".equalsIgnoreCase(tipo)) {
+        } else if ("BOLETA".equalsIgnoreCase(tipo)) {
             sale.setTipo("BOLETA");
         } else {
-            model.addAttribute("error", "Debe seleccionar un tipo de comprobante válido");
             model.addAttribute("productos", productosService.listarProducto());
             return "venta/agregarVenta";
         }
@@ -97,7 +95,6 @@ public class VentasInventarioController {
         List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
 
         if (productRequestDTOs == null) {
-            model.addAttribute("error", "No se han agregado productos");
             model.addAttribute("productos", productosService.listarProducto());
 
             return "venta/agregarVenta";

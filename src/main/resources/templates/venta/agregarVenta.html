@@ -19,21 +19,41 @@
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
-        <form th:object="${venta}" class="ventana-venta" th:action="@{/inventario/ventas/pago}" id="formVenta"
-            method="post">
+        <form th:object="${venta}" class="ventana-venta" id="formVenta" method="post">
             <div class="head-venta">
                 <div class="head-doctran">
                     <select id="documentoTipo" class="select-doc" name="tipo">
                         <option value="">-- Selecciona --</option>
-                        <option value="boleta">Boleta</option>
-                        <option value="ruc">Factura</option>
-
+                        <option value="BOLETA">Boleta</option>
+                        <option value="FACTURA">Factura</option>
                     </select>
+
+                    <script>
+                        const documentoTipo = document.getElementById("documentoTipo")
+                        documentoTipo.addEventListener("change", function () {
+                            fetch(`http://localhost:8080/api/control/transaccion?tipo=${documentoTipo.value}`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error("Error el obtener la transaccion")
+                                    }
+                                    return response.text();
+                                })
+                                .then(transaccion => {
+                                    document.getElementById("transac").textContent = transaccion;
+                                    localStorage.setItem("transac", transaccion)
+                                })
+                                .catch(error => {
+                                    console.error("Error ", error)
+                                    document.getElementById("transac").textContent = ""
+                                })
+
+                        })
+                    </script>
                     <div id="input-doc-container">
                         <input type="text" id="numeroDoc" name="numero" placeholder="Ingrese Documento"
                             oninput="validarNumero(this)" autocomplete="off">
                     </div>
-                    <button class="btn-anular">Anular transaccion</button>
+                    <button class="btn-anular" type="button">Anular transaccion</button>
                 </div>
             </div>
             <div class="body-venta-produc">
@@ -50,7 +70,6 @@
                     </div>
 
                     <input class="body-cantidad" type="number" min="1" value="1" name="canti" id="canti">
-                    <button class="btn-anularI">Anular Item</button>
                 </div>
 
                 <div class="body-tabla">
@@ -70,8 +89,8 @@
                     </table>
                 </div>
                 <div class="body-irpago">
-                    <div class="body-errores" th:if="${error != null}">
-                        <p th:text="${error}">No hay un error</p>
+                    <div class="body-errores">
+                        <p id="mensaje">No hay error</p>
                         <button type="button" class="btn-limpiar" id="clear">Limpiar</button>
                     </div>
                     <div class="menu-pagar">
@@ -96,7 +115,7 @@
             <div class="foot-infoex">
                 <p>Fecha: <span id="fecha"></span></p>
                 <p>Hora: <span id="hora"></span></p>
-                <p>Nro. de transaccion: <span id="transac">0007</span></p>
+                <p>Nro. de transaccion: <span id="transac"></span></p>
                 <script th:src="@{/js/horafecha.js}"></script>
             </div>
         </form>
@@ -112,7 +131,7 @@
                     <input type="password" placeholder="Ingrese Contraseña" name="password">
                 </div>
                 <div class="cont-btns-anul">
-                    <button class="aceptar-anul">Anular</button>
+                    <button class="aceptar-anul" type="submit">Anular</button>
                     <button class="cancelar-anul">Cancelar</button>
                 </div>
             </form>
@@ -121,11 +140,44 @@
     <!-- <script th:src="@{/js/general.js}"></script> -->
     <script th:src="@{/js/Estilos.js}"></script>
 
+
     <script>
+
+        let productosAgregados = {}
+
+        const formularioVenta = document.getElementById("formVenta")
+        formularioVenta.addEventListener('submit', function (event) {
+            event.preventDefault()
+
+            const documento = document.getElementById("documentoTipo")
+            if (documento.value === "") {
+                document.getElementById("mensaje").textContent = "Debe seleccionar un tipo de comprobante";
+                return;
+            }
+
+
+            if (documento.value === "FACTURA") {
+                const ruc = document.getElementById("numeroDoc").value
+                if (ruc == "") {
+                    document.getElementById("mensaje").textContent = "Debe ingresar un numero de RUC válido";
+                    return;
+                }
+            }
+
+            if (Object.keys(productosAgregados).length === 0) {
+                document.getElementById("mensaje").textContent = "No se han agregado productos";
+                return
+            }
+
+
+            formularioVenta.action = `/inventario/ventas/pago`;
+            formularioVenta.submit()
+
+        })
+
         const productInput = document.getElementById("productInput");
         const productList = document.getElementById("productList");
         const tabla = document.getElementById('tablaProductos');
-        let productosAgregados = {}
         let contador = 0;
 
         // Función para mostrar y filtrar la lista
@@ -191,7 +243,7 @@
                     const row = document.createElement('tr');
                     row.id = `prod-${id}`;
                     row.innerHTML = `
-                    <td><button type="button" onclick="eliminarProducto('${id}')">X</button></td>
+                    <td><button type="button" onclick="eliminarProducto(${id})">X</button></td>
                     <td>${nombre}</td>
                     <td class="cantidad">${cantidad}</td>
                     <td>${precio}</td>
@@ -226,18 +278,16 @@
             })
 
             document.getElementById('total-produc').textContent = total.toFixed(2);
-            console.log(productosAgregados.length)
             document.getElementById("items").textContent = Object.keys(productosAgregados).length
 
 
         }
 
-        // const botonLimpiar = document.getElementById("clear")
-        // botonLimpiar.addEventListener('click', (e) => {
-        //     e.preventDefault()
-        //     productosAgregados = {}
-        //     tabla.innerHTML = ''
-        // })
+        const botonLimpiar = document.getElementById("clear")
+        botonLimpiar.addEventListener('click', (e) => {
+            e.preventDefault()
+            document.getElementById("mensaje").textContent = "";
+        })
 
     </script>
 </body>

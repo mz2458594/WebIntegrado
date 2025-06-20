@@ -25,7 +25,7 @@ select.addEventListener("change", function () {
     if (select.value === "dni") {
         inputContainer.style.display = "none";
         
-    } else if (select.value === "ruc") {
+    } else if (select.value === "FACTURA") {
         inputNumero.placeholder = "Ingrese RUC";
         inputNumero.maxLength = 11;
         inputContainer.style.display = "inline";

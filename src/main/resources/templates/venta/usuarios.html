@@ -45,8 +45,8 @@
                     <input type="text" name="calle" required>
                 </div>
                 <div class="input__box">
-                    <label for="">Ciudad</label><br>
-                    <input type="text" name="ciudad" required>
+                    <label for="">Departamento</label><br>
+                    <input type="text" name="departamento" required>
                 </div>
                 <div class="input__box">
                     <label for="">Distrito</label><br>
@@ -163,7 +163,7 @@
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>Calle</th>
-                            <th>Ciudad</th>
+                            <th>Departamento</th>
                             <th>Distrito</th>
                             <th>Provincia</th>
                             <th>Email</th>
@@ -182,7 +182,7 @@
                             <td th:text="${usuario.num_documento}">Kenneth</td>
                             <td th:text="${usuario.celular}">Kenneth</td>
                             <td th:text="${usuario.calle}">Kenneth</td>
-                            <td th:text="${usuario.ciudad}">Kenneth</td>
+                            <td th:text="${usuario.departamento}">Kenneth</td>
                             <td th:text="${usuario.distrito}">Kenneth</td>
                             <td th:text="${usuario.provincia}">Kenneth</td>
                             <td th:text="${usuario.correo}">kenn</td>
@@ -247,8 +247,8 @@
                         <input type="text" id="calle_act" name="calle" required>
                     </div>
                     <div class="input__box">
-                        <label for="">Ciudad</label><br>
-                        <input type="text" id="ciudad_act" name="ciudad" required>
+                        <label for="">Departamento</label><br>
+                        <input type="text" id="departamento_act" name="departamento" required>
                     </div>
                     <div class="input__box">
                         <label for="">Distrito</label><br>
@@ -301,7 +301,7 @@
                     document.getElementById("num_act").value = celdas[4].textContent;
                     document.getElementById("cel_act").value = celdas[5].textContent;
                     document.getElementById("calle_act").value = celdas[6].textContent;
-                    document.getElementById("ciudad_act").value = celdas[7].textContent;
+                    document.getElementById("departamento_act").value = celdas[7].textContent;
                     document.getElementById("distrito_act").value = celdas[8].textContent;
                     document.getElementById("provincia_act").value = celdas[9].textContent;
                     document.getElementById("email_act").value = celdas[10].textContent;

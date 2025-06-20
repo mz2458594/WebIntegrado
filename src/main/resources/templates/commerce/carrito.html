@@ -29,75 +29,76 @@
                                 <input type="checkbox" class="selec-total__checkbox" id="selec-total">
                                 <div class="selec-total__title">Seleccionar todo</div>
                             </div>
-
-                            <div class="info-product" th:if="${carrito != null}" th:each="item: ${carrito.item}"
-                                th:data-price="${item.producto.precioVenta}" th:data-stock="${item.producto.stock}">
-                                <div class="selec-product">
-                                    <input type="checkbox" class="selec-product__checkbox"
-                                        th:attr="data-id=${item.producto.idProducto}">
-                                </div>
-
-                                <div class="im_producto">
-                                    <img th:src="${item.producto.imagen}" alt="Imagen del producto">
-                                </div>
-
-                                <div class="det-product">
-                                    <div class="nom-product" th:text="${item.producto.nombre}">
-                                        Nombre del producto
+                            <div th:if="${carrito != null}">
+                                <div class="info-product" th:each="item: ${carrito.item}"
+                                    th:data-price="${item.producto.precioVenta}" th:data-stock="${item.producto.stock}">
+                                    <div class="selec-product">
+                                        <input type="checkbox" class="selec-product__checkbox"
+                                            th:attr="data-id=${item.producto.idProducto}">
                                     </div>
 
-                                    <div>
-                                        <a class="acciones"
-                                            th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }">Eliminar</a>
+                                    <div class="im_producto">
+                                        <img th:src="${item.producto.imagen}" alt="Imagen del producto">
                                     </div>
-                                </div>
 
-                                <div class="canti-product">
-                                    <button class="btn-restar" th:attr="data-id=${item.producto.idProducto}"
-                                        onclick="disminuir(this)">-</button>
-                                    <script>
-                                        function disminuir(button) {
-                                            const id = button.getAttribute("data-id")
+                                    <div class="det-product">
+                                        <div class="nom-product" th:text="${item.producto.nombre}">
+                                            Nombre del producto
+                                        </div>
 
-                                            fetch(`/targus/venta/disminuir/${id}`, {
-                                                method: 'POST'
-                                            })
-                                                .then(response => {
-                                                    if (response.redirected) {
-                                                        window.location.href = response.url
-                                                    }
+                                        <div>
+                                            <a class="acciones"
+                                                th:href="@{/targus/venta/eliminar_prod/{id} (id = ${item.producto.idProducto}) }">Eliminar</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="canti-product">
+                                        <button class="btn-restar" th:attr="data-id=${item.producto.idProducto}"
+                                            onclick="disminuir(this)">-</button>
+                                        <script>
+                                            function disminuir(button) {
+                                                const id = button.getAttribute("data-id")
+
+                                                fetch(`/targus/venta/disminuir/${id}`, {
+                                                    method: 'POST'
                                                 })
-                                                .catch(error => console.error("Error al disminuir la cantidad"))
+                                                    .then(response => {
+                                                        if (response.redirected) {
+                                                            window.location.href = response.url
+                                                        }
+                                                    })
+                                                    .catch(error => console.error("Error al disminuir la cantidad"))
 
 
-                                        }
-                                    </script>
-                                    <span class="cantidad" th:text="${item.cantidad}">1</span>
-                                    <button class="btn-sumar" th:attr="data-id=${item.producto.idProducto}"
-                                        onclick="añadirProducto(this)">+</button>
-                                    <script>
-                                        function añadirProducto(button) {
-                                            const id = button.getAttribute("data-id")
+                                            }
+                                        </script>
+                                        <span class="cantidad" th:text="${item.cantidad}">1</span>
+                                        <button class="btn-sumar" th:attr="data-id=${item.producto.idProducto}"
+                                            onclick="añadirProducto(this)">+</button>
+                                        <script>
+                                            function añadirProducto(button) {
+                                                const id = button.getAttribute("data-id")
 
-                                            fetch(`/targus/venta/agregar/${id}`, {
-                                                method: 'POST'
-                                            })
-                                                .then(response => {
-                                                    if (response.redirected) {
-                                                        window.location.href = response.url
-                                                    } else {
-                                                        console.log("Producto añadido al carrito")
-                                                    }
+                                                fetch(`/targus/venta/agregar/${id}`, {
+                                                    method: 'POST'
                                                 })
-                                                .catch(error => console.error("Error al agregar cantidad"))
+                                                    .then(response => {
+                                                        if (response.redirected) {
+                                                            window.location.href = response.url
+                                                        } else {
+                                                            console.log("Producto añadido al carrito")
+                                                        }
+                                                    })
+                                                    .catch(error => console.error("Error al agregar cantidad"))
 
 
-                                        }
-                                    </script>
-                                </div>
+                                            }
+                                        </script>
+                                    </div>
 
-                                <div class="precio-product">
-                                    S/. <span class="precio-total" th:text="${item.total}">0.00</span>
+                                    <div class="precio-product">
+                                        S/. <span class="precio-total" th:text="${item.total}">0.00</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
