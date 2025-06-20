@@ -193,9 +193,9 @@ public class PdfGeneratorService {
             document.add(new Paragraph(comprobante.getNumero()).setBold().setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph("\n"));
 
-            if (comprobante.getPedidos() != null && comprobante.getPedidos() instanceof PedidoProveedor) {
+            if (comprobante.getPedidoProveedor() != null) {
                 // Agrupar productos por proveedor
-                Map<Proveedor, List<DetallePedido>> productosPorProveedor = ((PedidoProveedor) comprobante.getPedidos())
+                Map<Proveedor, List<DetallePedido>> productosPorProveedor = comprobante.getPedidoProveedor()
                         .getDetallePedidos()
                         .stream()
                         .collect(Collectors.groupingBy(item -> item.getProducto().getProveedor()));
@@ -243,9 +243,9 @@ public class PdfGeneratorService {
             // Totales generales en la última página
             Table totales = new Table(UnitValue.createPercentArray(new float[] { 80, 20 }));
             totales.setWidth(UnitValue.createPercentValue(100));
-            double opGravada = comprobante.getPedidos().getTotal() / 1.18;
-            double igv = comprobante.getPedidos().getTotal() - opGravada;
-            double total = comprobante.getPedidos().getTotal();
+            double opGravada = comprobante.getPedidoProveedor().getTotal() / 1.18;
+            double igv = comprobante.getPedidoProveedor().getTotal() - opGravada;
+            double total = comprobante.getPedidoProveedor().getTotal();
 
             totales.addCell(getCell("OP. GRAVADA (S/.)", true));
             totales.addCell(getCell(String.format("%.2f", opGravada), false));

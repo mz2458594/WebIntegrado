@@ -48,9 +48,6 @@ public class Pedido {
     @JoinColumn(name = "user_id")
     private Usuario user;
 
-    @OneToOne(mappedBy = "pedidos", cascade = CascadeType.ALL)
-    private Comprobante comprobante;
-
     private double total;
 
 }

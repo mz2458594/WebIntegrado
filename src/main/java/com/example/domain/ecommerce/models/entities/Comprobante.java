@@ -1,7 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
 import java.time.LocalDateTime;
-
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 
 import jakarta.persistence.Column;
@@ -16,7 +15,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "comprobantes")
@@ -41,8 +42,10 @@ public class Comprobante {
     private Venta venta;
 
     @OneToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "pedido_id", nullable = true)
-    private Pedido pedidos;
+    private PedidoProveedor pedidoProveedor;
 
     @Column(nullable = true)
     private String rucCliente;

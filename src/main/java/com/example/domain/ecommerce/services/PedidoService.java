@@ -70,16 +70,16 @@ public class PedidoService {
         return pedido.get();
     }
 
-    // public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
-    //     Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
-    //     if (pedido.isEmpty()) {
-    //         throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
-    //     }
+    public PedidoUsuario obtenerPedidoUsuarioPorId(int id) {
+        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById((Long.valueOf(id)));
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Pedido con id " + id + " no encontrado");
+        }
 
-    //     return pedido.get();
-    // }
+        return pedido.get();
+    }
 
-    public List<PedidoUsuario> getPedidosUsuarioPorId(int idUsuario) {
+    public List<PedidoUsuario> getPedidosUsuarioPorIdUsuario(int idUsuario) {
         List<PedidoUsuario> pedidos = pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(idUsuario));
         
         if (pedidos.isEmpty()) {
@@ -87,6 +87,7 @@ public class PedidoService {
         }
         return pedidos;
     }
+
 
     public List<PedidoDTO> convertirPedidoDTO(List<PedidoUsuario> pedidoUsuarios){
         List<PedidoDTO> dtoList = new ArrayList<>();

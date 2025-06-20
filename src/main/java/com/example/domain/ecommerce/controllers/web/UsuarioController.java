@@ -88,7 +88,7 @@ public class UsuarioController {
     public String mostrarPedidos(Model model, HttpSession session) throws JsonProcessingException {
         Cliente user = (Cliente) session.getAttribute("user");
         try {
-            List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorId(user.getUsuario().getIdUsuario());
+            List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorIdUsuario(user.getUsuario().getIdUsuario());
 
             List<PedidoDTO> dtoList = pedidoService.convertirPedidoDTO(pedidos);
 
