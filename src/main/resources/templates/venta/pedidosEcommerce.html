@@ -4,21 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ventas Ecommerce | Targus</title>
+    <title>Pedidos Ecommerce | Targus</title>
     <link rel="icon" th:href="@{/images/logo.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/style-modal.css}">
     <link rel="stylesheet" th:href="@{/css/ventana-modal.css}">
 </head>
 <style>
-    #estadoC{
+    #estadoC {
         border-radius: 10px;
         padding: 2px;
     }
-    #estad-produc{
+
+    #estad-produc {
         cursor: pointer;
     }
 </style>
@@ -54,9 +55,10 @@
                             <td th:text="${pedido.fechaPedido}">20/10/2024</td>
                             <td th:text="${pedido.fechaEntrega}">14/06/2025</td>
                             <td th:text="${pedido.user.username}">El chivito</td>
-                            <td th:text="${pedido.total}" ></td>
+                            <td th:text="${pedido.total}"></td>
                             <td>
-                                <p id="estadoC" th:text="${pedido.estado}" th:classappend="${pedido.estado}">Recibido</p>
+                                <p id="estadoC" th:text="${pedido.estado}" th:classappend="${pedido.estado}">Recibido
+                                </p>
                             </td>
                             <td>
                                 <div class="container_action">
@@ -81,15 +83,11 @@
             <div class="form__name--add">
                 <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Detalle del pedido</p>
             </div>
-            <form class="form_modal" action="">
+            <form class="form_modal" action="" id="formEditar">
                 <div class="input__box">
                     <label for="">Fecha de Creacion</label><br>
                     <input disabled id="fechaCreacion" type="text">
                 </div>
-                <!-- <div class="input__box">
-                    <label for="">Descripcion</label><br>
-                    <textarea name="" id="Descrip-produc"></textarea>
-                </div> -->
                 <div class="input__box">
                     <label for="">Fecha de entrega estimida</label><br>
                     <input disabled type="text" id="FechaEntrega"></input>
@@ -100,21 +98,54 @@
                 </div>
                 <div class="input__box">
                     <label for="">Productos</label><br>
-                    <textarea id="Productos-list" style="max-width: 100%; min-width: 100%;" disabled></textarea>
+                    <table class="tabla_detalle_p">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Precio U.</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        <tr>
+                            <td>Laptop</td>
+                            <td>2</td>
+                            <td>4500</td>
+                            <td>9000</td>
+                        </tr>
+                    </table>
                 </div>
+                <style>
+                    .tabla_detalle_p {
+                        width: 100%;
+                        border: 1px solid #a5a5a5;
+                        border-radius: 6px;
+                        border-collapse: collapse;
+                    }
+
+                    .tabla_detalle_p th {
+                        padding: 10px 0;
+                        background-color: #a2a2a2;
+                    }
+
+                    .tabla_detalle_p td,
+                    .tabla_detalle_p th {
+                        text-align: center;
+                        padding: 10px 0;
+                    }
+                </style>
                 <div class="input__box">
                     <label for="">Total</label><br>
-                    <input type="text" disabled id="precio-produc">
+                    <input type="text" disabled id="total_pedido">
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="" id="estad-produc">
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Confirmado">Confirmado</option>
-                        <option value="En camino">En camino</option>
-                        <option value="Entregado">Entregado</option>
+                    <select name="" id="estad-pedido-produc" onchange="campoMotivo()">
+                        <option value="CONFIRMADO">Confirmado</option>
+                        <option value="EN CAMINO">En camino</option>
+                        <option value="ENTREGADO">Entregado</option>
+                        <option value="CANCELADO">Cancelado</option>
                     </select>
                 </div>
+                <div id="conte_motivo_cacel" style="display: none;"></div>
                 <div class="button__modal">
                     <div class="btn-modal">
                         <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
@@ -156,9 +187,30 @@
                 }, 600);
             }
         });
+
+        function campoMotivo() {
+            const estadoP = document.getElementById("estad-pedido-produc").value;
+            const motivoP = document.getElementById("conte_motivo_cacel");
+
+            motivoP.innerHTML = '';
+            motivoP.style.display = 'none';
+
+            switch (estadoP) {
+                case "CANCELADO":
+                    motivoP.style.display = 'block';
+                    motivoP.innerHTML = `
+                    <div class="input__box">
+                        <label for="">Motivo de cancelacion</label><br>
+                        <input type="text" disabled id="motivo_cancel" name="motivoCanelado">
+                    </div>
+                    `
+                    break;
+            }
+
+            const mot = document.getElementById("motivo_cancel");
+            mot.disabled = false;
+        }
     </script>
-    <script src="@{/js/general.js}"></script>
-    <script th:src="@{/js/notificaciones.js}"></script>
 </body>
 
 </html>
