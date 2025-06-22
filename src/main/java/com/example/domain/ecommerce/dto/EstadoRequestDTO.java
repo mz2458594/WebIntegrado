@@ -1,16 +1,10 @@
 package com.example.domain.ecommerce.dto;
 
+import lombok.Data;
+
+@Data
 public class EstadoRequestDTO {
     private String estado;
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-
+    private String comentario;
     
 }

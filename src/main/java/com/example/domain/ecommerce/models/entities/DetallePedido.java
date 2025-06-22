@@ -1,5 +1,7 @@
 package com.example.domain.ecommerce.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ public class DetallePedido {
     private int cantidad;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 

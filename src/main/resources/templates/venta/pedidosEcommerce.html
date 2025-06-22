@@ -84,17 +84,50 @@
                 <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Detalle del pedido</p>
             </div>
             <form class="form_modal" action="" id="formEditar">
-                <div class="input__box">
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let modalContEdit = document.querySelector(".container-modal--edit");
+        let VentEdit = document.querySelector(".ventana_modal--edit");
+
+
+        const boton2 = document.querySelectorAll('.editproduc')
+        boton2.forEach(boton => {
+            boton.addEventListener('click', async function () {
+                const fila = this.closest('tr')
+                const celdas = fila.querySelectorAll('td')
+                const idPedido = celdas[0].textContent.trim()
+
+                fetch(`http://localhost:8080/api/order/user/${idPedido}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Error al obtener el detalle del pedido")
+                        }
+                        return response.json()
+                    })
+                    .then(detalle => {
+                        modalContEdit.style.opacity = "1";
+                        modalContEdit.style.visibility = "visible";
+                        VentEdit.classList.remove("ventana-close-edit");
+
+                        const form = document.getElementById("formEditar")
+
+                        form.innerHTML =
+                            `
+                    <div class="input__box">
                     <label for="">Fecha de Creacion</label><br>
-                    <input disabled id="fechaCreacion" type="text">
+                    <input disabled id="fechaCreacion" type="text" value="${detalle.fechaPedido}">
                 </div>
                 <div class="input__box">
                     <label for="">Fecha de entrega estimida</label><br>
-                    <input disabled type="text" id="FechaEntrega"></input>
+                    <input disabled type="text" id="FechaEntrega" value="${detalle.fechaEntrega}"></input>
                 </div>
                 <div class="input__box">
                     <label for="">Cliente</label><br>
-                    <input disabled id="cliente"></input>
+                    <input disabled id="cliente" value="${detalle.user.username}"></input>
                 </div>
                 <div class="input__box">
                     <label for="">Productos</label><br>
@@ -105,12 +138,16 @@
                             <th>Precio U.</th>
                             <th>Subtotal</th>
                         </tr>
+                    ${detalle.detallePedidos.map(element =>
+                                `
                         <tr>
-                            <td>Laptop</td>
-                            <td>2</td>
-                            <td>4500</td>
-                            <td>9000</td>
+                            <td>${element.producto.nombre}</td>
+                            <td>${element.cantidad}</td>
+                            <td>${element.producto.precioVenta}</td>
+                            <td>${element.subtotal}</td>
                         </tr>
+                        `
+                            ).join("")}
                     </table>
                 </div>
                 <style>
@@ -134,11 +171,12 @@
                 </style>
                 <div class="input__box">
                     <label for="">Total</label><br>
-                    <input type="text" disabled id="total_pedido">
+                    <input type="text" disabled id="total_pedido" value="${detalle.total}">
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="" id="estad-pedido-produc" onchange="campoMotivo()">
+                    <select name="estado" id="estad-pedido-produc" onchange="campoMotivo()" value="${detalle.estado}">
+                        <option value="PENDIENTE">Pendiente</option>
                         <option value="CONFIRMADO">Confirmado</option>
                         <option value="EN CAMINO">En camino</option>
                         <option value="ENTREGADO">Entregado</option>
@@ -152,30 +190,35 @@
                         <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
+                     `
+                        let cerrarEdit = document.querySelector(".btn-cancelar-edit");
+                        cerrarEdit.addEventListener("click", function (e) {
+                            VentEdit.classList.toggle("ventana-close-edit");
+                            setTimeout(function () {
+                                modalContEdit.style.opacity = "0";
+                                modalContEdit.style.visibility = "hidden";
+                            }, 600);
+                        });
+
+                    })
+            })
+        })
+
+
+        window.addEventListener("click", function (e) {
+            console.log(e.target);
+            if (e.target == modalContEdit) {
+                VentEdit.classList.toggle("ventana-close-edit");
+                setTimeout(function () {
+                    modalContEdit.style.opacity = "0";
+                    modalContEdit.style.visibility = "hidden";
+                }, 600);
+            }
+        });
+
+    </script>
+
     <script>
-        //PARA EL EDIT
-        let cerrarEdit = document.querySelectorAll(".btn-cancelar-edit")[0];
-        let abrirEdit = document.querySelectorAll(".editproduc")[0];
-        let VentEdit = document.querySelectorAll(".ventana_modal--edit")[0];
-        let modalContEdit = document.querySelectorAll(".container-modal--edit")[0];
-
-        abrirEdit.addEventListener("click", function (e) {
-            e.preventDefault();
-            modalContEdit.style.opacity = "1";
-            modalContEdit.style.visibility = "visible";
-            VentEdit.classList.toggle("ventana-close-edit");
-        });
-
-        cerrarEdit.addEventListener("click", function (e) {
-            VentEdit.classList.toggle("ventana-close-edit");
-            setTimeout(function () {
-                modalContEdit.style.opacity = "0";
-                modalContEdit.style.visibility = "hidden";
-            }, 600);
-        });
 
         window.addEventListener("click", function (e) {
             console.log(e.target);

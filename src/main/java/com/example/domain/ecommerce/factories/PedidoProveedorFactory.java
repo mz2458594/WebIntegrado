@@ -66,7 +66,7 @@ public class PedidoProveedorFactory implements PedidoFactory{
 
         }
 
-        pedido.setEstado(EstadoPedido.PROCESANDO);
+        pedido.setEstado(EstadoPedido.PENDIENTE);
         pedido.setTotal(total);
         pedido.setDetallePedidos(lista_pedidos);
         PedidoProveedor pedidoSave = pedidoProveedorDAO.save(pedido);

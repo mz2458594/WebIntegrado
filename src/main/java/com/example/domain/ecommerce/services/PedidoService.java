@@ -37,7 +37,7 @@ public class PedidoService {
 
     private final PedidoDAO pedidoDAO;
 
-    public List<Pedido> getPedidos(){
+    public List<Pedido> getPedidos() {
         return (List<Pedido>) pedidoDAO.findAll();
     }
 
@@ -49,7 +49,7 @@ public class PedidoService {
         return (List<PedidoUsuario>) pedidoUsuarioDAO.findAll();
     }
 
-    public Pedido obtenerPedidoPorId(int id){
+    public Pedido obtenerPedidoPorId(int id) {
         Optional<Pedido> pedidos = pedidoDAO.findById(Long.valueOf(id));
 
         if (pedidos.isEmpty()) {
@@ -81,15 +81,14 @@ public class PedidoService {
 
     public List<PedidoUsuario> getPedidosUsuarioPorIdUsuario(int idUsuario) {
         List<PedidoUsuario> pedidos = pedidoUsuarioDAO.obtenerPedidosPorIdUsuario(Long.valueOf(idUsuario));
-        
+
         if (pedidos.isEmpty()) {
             throw new RuntimeException("No se encontro pedidos para el usuario con ID: " + idUsuario);
         }
         return pedidos;
     }
 
-
-    public List<PedidoDTO> convertirPedidoDTO(List<PedidoUsuario> pedidoUsuarios){
+    public List<PedidoDTO> convertirPedidoDTO(List<PedidoUsuario> pedidoUsuarios) {
         List<PedidoDTO> dtoList = new ArrayList<>();
 
         for (PedidoUsuario pedidoUsuario : pedidoUsuarios) {
@@ -107,13 +106,12 @@ public class PedidoService {
                 detalleDTO.setImagen(detalle.getProducto().getImagen());
                 detalleDTO.setPrecioVenta(detalle.getProducto().getPrecioVenta());
                 detalleDTO.setSubtotal(detalle.getSubtotal());
-            
+
                 detallePedidos.add(detalleDTO);
             }
 
             dto.setDetallePedidos(detallePedidos);
             dtoList.add(dto);
-
 
         }
 
@@ -151,24 +149,25 @@ public class PedidoService {
 
         if (estadoRequestDTO.getEstado() != null) {
 
-            if (pedido2.getEstado().equals("COMPLETADO") || pedido2.getEstado().equals("CANCELADO")) {
+            if (pedido2.getEstado().equals("ENTREGADO") || pedido2.getEstado().equals("CANCELADO")) {
                 return;
             } else {
                 switch (estadoRequestDTO.getEstado()) {
                     case "CANCELADO":
                         pedido2.setEstado(EstadoPedido.CANCELADO);
+                        pedido2.setComentario(estadoRequestDTO.getComentario());
                         break;
-                    case "COMPLETADO":
-                        pedido2.setEstado(EstadoPedido.COMPLETADO);
+                    case "CONFIRMADO":
+                        pedido2.setEstado(EstadoPedido.CONFIRMADO);
                         for (DetallePedido pe : pedido2.getDetallePedidos()) {
                             productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
                         }
                         break;
-                    case "EN ESPERA":
-                        pedido2.setEstado(EstadoPedido.EN_ESPERA);
+                    case "EN CAMINO":
+                        pedido2.setEstado(EstadoPedido.EN_CAMINO);
                         break;
-                    case "PROCESANDO":
-                        pedido2.setEstado(EstadoPedido.PROCESANDO);
+                    case "PENDIENTE":
+                        pedido2.setEstado(EstadoPedido.PENDIENTE);
                         break;
                     default:
                         break;

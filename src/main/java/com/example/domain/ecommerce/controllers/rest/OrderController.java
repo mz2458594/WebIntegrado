@@ -22,6 +22,5 @@ public class OrderController {
     @GetMapping("/user/{id}")
     public ResponseEntity<PedidoUsuario> getOrderUser(@PathVariable("id") int id) {
         return ResponseEntity.ok(pedidoService.obtenerPedidoUsuarioPorId(id));
-
     }
 }

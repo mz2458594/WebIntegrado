@@ -50,4 +50,6 @@ public class Pedido {
 
     private double total;
 
+    private String comentario;
+
 }

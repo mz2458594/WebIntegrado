@@ -214,7 +214,7 @@
 }
 
 
-.ACTIVO, .COMPLETADO {
+.ACTIVO, .ENTREGADO {
     width: fit-content;
     display: inline-block;
     align-items: center;
@@ -242,7 +242,7 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.PROCESANDO {
+.PENDIENTE {
     width: fit-content;
     display: inline-block;
     align-items: center;
@@ -256,7 +256,7 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.EN_ESPERA {
+.EN_CAMINO {
     width: fit-content;
     display: inline-block;
     align-items: center;
