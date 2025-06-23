@@ -116,13 +116,13 @@ public class VentaService {
 
             BigDecimal precioDepartamento = tarifaEnvio.getPrecio_envio();
 
-            costoEnvio = pesoTotal.multiply(BigDecimal.valueOf(2.6)).multiply(precioDepartamento).setScale(2,
+            costoEnvio = pesoTotal.multiply(BigDecimal.valueOf(2.6)).add(precioDepartamento).setScale(2,
                     RoundingMode.UP);
             ecommerce.setEnvio(costoEnvio);
 
         }
 
-        BigDecimal totalFinal = total.add(costoEnvio);
+        BigDecimal totalFinal = total.add(costoEnvio).setScale(2,RoundingMode.UP);
 
         venta.setTotal(totalFinal);
 
