@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +45,7 @@ public class VentasInventarioController {
     @GetMapping("/ventas")
     public String nuevaVenta(Model model) {
 
-        model.addAttribute("ventas", ventasService.getVentas());
+        model.addAttribute("ventas", ventasService.getVentaInventario());
 
         return "venta/ventas";
     }
@@ -143,7 +142,7 @@ public class VentasInventarioController {
         }
 
         sale.setId_usuario(empleado.getUsuario().getIdUsuario());
-        Venta venta = ventasService.crearVenta(sale);
+        Venta venta = ventasService.crearVentaInventario(sale);
 
         model.addAttribute("efectivo", efectivo);
         model.addAttribute("vuelto", (efectivo - total));
@@ -165,7 +164,7 @@ public class VentasInventarioController {
         } else {
             if (empleado.getUsuario().getEmail().equals(email)
                     && passwordEncoder.matches(password, empleado.getUsuario().getPassword())) {
-                model.addAttribute("ventas", ventasService.getVentas());
+                model.addAttribute("ventas", ventasService.getVentaInventario());
                 return "venta/ventas";
             } else {
                 model.addAttribute("error", "Credenciales incorrectas");

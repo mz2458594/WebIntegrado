@@ -94,11 +94,6 @@ public class RequestDTO {
             this.total = total;
         }
         
-        
-
-
-
-
     }
 
 }

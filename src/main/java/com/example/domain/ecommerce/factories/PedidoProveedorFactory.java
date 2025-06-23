@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.factories;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -25,8 +26,8 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class PedidoProveedorFactory implements PedidoFactory{
-    
+public class PedidoProveedorFactory implements PedidoFactory {
+
     private final UsuarioService usuarioService;
 
     private final ProductoService productosService;
@@ -47,20 +48,24 @@ public class PedidoProveedorFactory implements PedidoFactory{
 
         List<DetallePedido> lista_pedidos = new ArrayList<>();
 
-        double total = 0.00;
+        BigDecimal total = BigDecimal.ZERO;
 
         for (RequestDTO.ItemsVentaDTO productos : data.getItem()) {
 
             Producto p = productosService.obtenerProductoPorId(productos.getProducto().getIdProducto());
 
+            BigDecimal cantidad = BigDecimal.valueOf(productos.getCantidad());
+            BigDecimal precio = new BigDecimal(p.getPrecioVenta());
+
             DetallePedido vp = new DetallePedido();
             vp.setCantidad(productos.getCantidad());
             vp.setProducto(p);
             vp.setPedido(pedido);
-            double subtotal = productos.getCantidad() * Double.parseDouble(p.getPrecioCompra());
+
+            BigDecimal subtotal = cantidad.multiply(precio);
             vp.setSubtotal(subtotal);
 
-            total += vp.getSubtotal();
+            total = total.add(subtotal);
 
             lista_pedidos.add(vp);
 
@@ -70,7 +75,7 @@ public class PedidoProveedorFactory implements PedidoFactory{
         pedido.setTotal(total);
         pedido.setDetallePedidos(lista_pedidos);
         PedidoProveedor pedidoSave = pedidoProveedorDAO.save(pedido);
-        
+
         Comprobante comprobante = comprobanteService.generarComprobantePedido(pedidoSave, data.getTipo(), data.getRuc(),
                 data.getRazon());
 

@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -16,6 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Venta implements Serializable {
 
     @Id
@@ -36,7 +40,7 @@ public class Venta implements Serializable {
     private Timestamp fechaVenta;
 
     @Column(name = "total_venta")
-    private double total;
+    private BigDecimal total;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
     private List<Detalle_venta> ventaProductos = new ArrayList<>();

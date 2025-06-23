@@ -1,5 +1,6 @@
 package com.example.domain.ecommerce.models.entities;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Pedido {
     @JoinColumn(name = "user_id")
     private Usuario user;
 
-    private double total;
+    private BigDecimal total;
 
     private String comentario;
 

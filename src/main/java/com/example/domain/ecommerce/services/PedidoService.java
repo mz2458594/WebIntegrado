@@ -96,7 +96,7 @@ public class PedidoService {
             dto.setIdPedido(pedidoUsuario.getIdPedido());
             dto.setFechaPedido(pedidoUsuario.getFechaPedido().toString());
             dto.setEstado(pedidoUsuario.getEstado().toString());
-            dto.setTotal(pedidoUsuario.getTotal());
+            dto.setTotal(pedidoUsuario.getTotal().doubleValue());
 
             List<PedidoDTO.DetalleDTO> detallePedidos = new ArrayList<>();
             for (DetallePedido detalle : pedidoUsuario.getDetallePedidos()) {
@@ -105,7 +105,7 @@ public class PedidoService {
                 detalleDTO.setCantidad(detalle.getCantidad());
                 detalleDTO.setImagen(detalle.getProducto().getImagen());
                 detalleDTO.setPrecioVenta(detalle.getProducto().getPrecioVenta());
-                detalleDTO.setSubtotal(detalle.getSubtotal());
+                detalleDTO.setSubtotal(detalle.getSubtotal().doubleValue());
 
                 detallePedidos.add(detalleDTO);
             }

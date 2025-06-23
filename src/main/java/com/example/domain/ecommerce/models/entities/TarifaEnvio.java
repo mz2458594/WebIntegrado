@@ -7,35 +7,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "detalles_ventas")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Detalle_venta implements Serializable{
-
+@Entity
+@Table(name = "tarifas_envios")
+public class TarifaEnvio implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-    @ManyToOne
-    @JoinColumn(name = "venta_id")
-    private Venta venta;
-
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
-    private Producto producto;
-
-    private int cantidad;
-
-    private BigDecimal subtotal;
-
+    private String departamento;
+    private BigDecimal precio_envio;
 }
