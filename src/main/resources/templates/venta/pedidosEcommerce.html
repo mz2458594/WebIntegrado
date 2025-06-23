@@ -62,13 +62,14 @@
                             </td>
                             <td>
                                 <div class="container_action">
-                                    <input id="open_action" type="checkbox" class="action_checkbox">
-                                    <label class="name_action" for="open_action">Accion <i
-                                            class="fa-solid fa-caret-down" id="vuelta"></i></label>
-                                    <div class="cont_opciones">
-                                        <button class="editproduc">Ver detalle <i
-                                                class="fa-solid fa-pen-to-square"></i></button>
-                                    </div>
+                                    <label type="checkbox" class="action_checkbox">
+                                        <label class="name_action" for="open_action">Accion <i
+                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                        <div class="cont_opciones">
+                                            <button class="editproduc">Ver Detalle <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+
+                                        </div>
                                 </div>
                             </td>
                         </tr>
@@ -93,7 +94,26 @@
         let modalContEdit = document.querySelector(".container-modal--edit");
         let VentEdit = document.querySelector(".ventana_modal--edit");
 
+        let abrirOpciones = document.querySelectorAll(".action_checkbox");
+        document.querySelectorAll(".container_action").forEach(actionContainer => {
+            const label = actionContainer.querySelector(".action_checkbox");
+            const optionsContainer = actionContainer.querySelector(".cont_opciones");
 
+            label.addEventListener("click", () => {
+                const isVisible = optionsContainer.style.display === "flex";
+               
+                document.querySelectorAll(".cont_opciones").forEach(container => {
+                    container.style.display = "none";
+                });
+                
+                optionsContainer.style.display = isVisible ? "none" : "flex";
+            });
+        });
+    </script>
+
+
+
+    <script>
         const boton2 = document.querySelectorAll('.editproduc')
         boton2.forEach(boton => {
             boton.addEventListener('click', async function () {
@@ -191,8 +211,8 @@
                     </div>
                 </div>
                     `
-                    detaEs = detalle.estado;
-                        if ( detaEs=== "PENDIENTE") {
+                        detaEs = detalle.estado;
+                        if (detaEs === "PENDIENTE") {
                             const moti = document.getElementById("estad-pedido-produc");
 
                             moti.disabled = true;
@@ -210,30 +230,11 @@
 
             });
         });
-        window.addEventListener("click", function (e) {
-            console.log(e.target);
-            if (e.target == modalContEdit) {
-                VentEdit.classList.toggle("ventana-close-edit");
-                setTimeout(function () {
-                    modalContEdit.style.opacity = "0";
-                    modalContEdit.style.visibility = "hidden";
-                }, 600);
-            }
-        });
+
 
     </script>
 
     <script>
-        window.addEventListener("click", function (e) {
-            console.log(e.target);
-            if (e.target == modalContEdit) {
-                VentEdit.classList.toggle("ventana-close-edit");
-                setTimeout(function () {
-                    modalContEdit.style.opacity = "0";
-                    modalContEdit.style.visibility = "hidden";
-                }, 600);
-            }
-        });
 
         function campoMotivo() {
             const estadoP = document.getElementById("estad-pedido-produc").value;
@@ -258,6 +259,10 @@
             mot.disabled = false;
         }
     </script>
+
+
+
 </body>
+
 
 </html>
