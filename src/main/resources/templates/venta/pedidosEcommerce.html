@@ -176,11 +176,11 @@
                 <div class="input__box">
                     <label for="">Estado</label><br>
                     <select name="estado" id="estad-pedido-produc" onchange="campoMotivo()" value="${detalle.estado}">
-                        <option value="PENDIENTE">Pendiente</option>
-                        <option value="CONFIRMADO">Confirmado</option>
-                        <option value="EN CAMINO">En camino</option>
-                        <option value="ENTREGADO">Entregado</option>
-                        <option value="CANCELADO">Cancelado</option>
+                        <option id="" value="PENDIENTE">PENDIENTE</option>
+                        <option value="CONFIRMADO">CONFIRMADO</option>
+                        <option value="EN CAMINO">EN CAMINO</option>
+                        <option value="ENTREGADO">ENTREGADO</option>
+                        <option value="CANCELADO">CANCELADO</option>
                     </select>
                 </div>
                 <div id="conte_motivo_cacel" style="display: none;"></div>
@@ -190,7 +190,13 @@
                         <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                     </div>
                 </div>
-                     `
+                    `
+                    detaEs = detalle.estado;
+                        if ( detaEs=== "PENDIENTE") {
+                            const moti = document.getElementById("estad-pedido-produc");
+
+                            moti.disabled = true;
+                        }
                         let cerrarEdit = document.querySelector(".btn-cancelar-edit");
                         cerrarEdit.addEventListener("click", function (e) {
                             VentEdit.classList.toggle("ventana-close-edit");
@@ -200,11 +206,10 @@
                             }, 600);
                         });
 
-                    })
-            })
-        })
+                    });
 
-
+            });
+        });
         window.addEventListener("click", function (e) {
             console.log(e.target);
             if (e.target == modalContEdit) {
@@ -219,7 +224,6 @@
     </script>
 
     <script>
-
         window.addEventListener("click", function (e) {
             console.log(e.target);
             if (e.target == modalContEdit) {
