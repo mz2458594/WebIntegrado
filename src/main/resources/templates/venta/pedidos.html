@@ -148,7 +148,7 @@
                     <p>Nuevo Pedido</p>
                 </button>
             </div>
-            
+
             <div class="Cont__buscar">
                 <div class="buscar_search">
                     <label for="">Buscar :</label>
@@ -204,17 +204,18 @@
                     <p><i class="fa-solid fa-plus"></i> Editar Usuario</p>
                 </div>
                 <form class="form_modal" id="formEditarPedido" method="post">
-                    
+
                     <div class="input__box">
                         <label for="">Estado</label><br>
                         <select name="estado" id="estado_act">
-                            <option value="EN_ESPERA">EN ESPERA</option>
-                            <option value="COMPLETADO">COMPLETADO</option>
-                            <option value="PROCESANDO">PROCESANDO</option>
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="CONFIRMADO">CONFIRMADO</option>
+                            <option value="EN_CAMINO">EN CAMINO</option>
+                            <option value="ENTREGADO">ENTREGADO</option>
                             <option value="CANCELADO">CANCELADO</option>
                         </select>
                     </div>
-                    
+
                     <div class="button__modal">
                         <div class="btn-modal">
                             <input type="submit" class="btn-guardar" value="Guardar">
@@ -240,7 +241,7 @@
                 boton.addEventListener('click', function () {
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
-                    document.getElementById("estado_act").value = celdas[4].querySelector('span').textContent;
+                    document.getElementById("estado_act").value = celdas[5].querySelector('span').textContent;
 
                     const form = document.getElementById("formEditarPedido");
                     const idPedido = celdas[0].textContent.trim();

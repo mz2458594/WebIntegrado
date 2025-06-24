@@ -47,7 +47,7 @@ public class VentasController {
         car.setId_usuario(user.getUsuario().getIdUsuario());
         car.setTipo("BOLETA");
 
-        ventasService.crearVenta(car);
+        ventasService.crearVentaEcommerce(car);
         session.removeAttribute("carrito");
         session.removeAttribute("seleccion");
 

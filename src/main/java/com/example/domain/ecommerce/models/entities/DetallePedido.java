@@ -1,5 +1,7 @@
 package com.example.domain.ecommerce.models.entities;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -36,6 +38,6 @@ public class DetallePedido {
     @JoinColumn(name = "product_id")
     private Producto producto;
 
-    private double subtotal;
+    private BigDecimal subtotal;
 
 }

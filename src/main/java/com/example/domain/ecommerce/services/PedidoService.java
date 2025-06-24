@@ -13,7 +13,6 @@ import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
-import com.example.domain.ecommerce.models.enums.EstadoPedido;
 import com.example.domain.ecommerce.repositories.PedidoDAO;
 import com.example.domain.ecommerce.repositories.PedidoProveedorDAO;
 import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
@@ -28,8 +27,6 @@ public class PedidoService {
     private final PedidoProveedorDAO pedidoProveedorDAO;
 
     private final PedidoUsuarioDAO pedidoUsuarioDAO;
-
-    private final ProductoService productosService;
 
     private final PedidoProveedorFactory pedidoProveedorFactory;
 
@@ -96,7 +93,7 @@ public class PedidoService {
             dto.setIdPedido(pedidoUsuario.getIdPedido());
             dto.setFechaPedido(pedidoUsuario.getFechaPedido().toString());
             dto.setEstado(pedidoUsuario.getEstado().toString());
-            dto.setTotal(pedidoUsuario.getTotal());
+            dto.setTotal(pedidoUsuario.getTotal().doubleValue());
 
             List<PedidoDTO.DetalleDTO> detallePedidos = new ArrayList<>();
             for (DetallePedido detalle : pedidoUsuario.getDetallePedidos()) {
@@ -105,7 +102,7 @@ public class PedidoService {
                 detalleDTO.setCantidad(detalle.getCantidad());
                 detalleDTO.setImagen(detalle.getProducto().getImagen());
                 detalleDTO.setPrecioVenta(detalle.getProducto().getPrecioVenta());
-                detalleDTO.setSubtotal(detalle.getSubtotal());
+                detalleDTO.setSubtotal(detalle.getSubtotal().doubleValue());
 
                 detallePedidos.add(detalleDTO);
             }
@@ -138,45 +135,12 @@ public class PedidoService {
 
     }
 
-    public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
-        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
+    public void actualizarEstadoProveedor(int id, EstadoRequestDTO estadoRequestDTO) {
+        pedidoProveedorFactory.actualizarEstado(id, estadoRequestDTO);
+    }
 
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-        }
-
-        PedidoProveedor pedido2 = pedido.get();
-
-        if (estadoRequestDTO.getEstado() != null) {
-
-            if (pedido2.getEstado().equals("ENTREGADO") || pedido2.getEstado().equals("CANCELADO")) {
-                return;
-            } else {
-                switch (estadoRequestDTO.getEstado()) {
-                    case "CANCELADO":
-                        pedido2.setEstado(EstadoPedido.CANCELADO);
-                        pedido2.setComentario(estadoRequestDTO.getComentario());
-                        break;
-                    case "CONFIRMADO":
-                        pedido2.setEstado(EstadoPedido.CONFIRMADO);
-                        for (DetallePedido pe : pedido2.getDetallePedidos()) {
-                            productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
-                        }
-                        break;
-                    case "EN CAMINO":
-                        pedido2.setEstado(EstadoPedido.EN_CAMINO);
-                        break;
-                    case "PENDIENTE":
-                        pedido2.setEstado(EstadoPedido.PENDIENTE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        pedidoProveedorDAO.save(pedido2);
-
+    public void actualizarEstadoUsuario(int id, EstadoRequestDTO estadoRequestDTO){
+        pedidoUsuarioFactory.actualizarEstado(id, estadoRequestDTO);
     }
 
 }

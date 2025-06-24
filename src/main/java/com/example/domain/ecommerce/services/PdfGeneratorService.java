@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -135,9 +137,9 @@ public class PdfGeneratorService {
         document.add(table);
 
         // 6. Totales
-        double subtotal = venta.getTotal();
-        double igv = subtotal * 0.18;
-        double total = subtotal;
+        BigDecimal subtotal = venta.getTotal();
+        BigDecimal igv = subtotal.multiply(subtotal);
+        BigDecimal total = subtotal;
 
         document.add(new Paragraph("\nSUBTOTAL: S/ " + String.format("%.2f", subtotal)));
 
@@ -243,9 +245,9 @@ public class PdfGeneratorService {
             // Totales generales en la última página
             Table totales = new Table(UnitValue.createPercentArray(new float[] { 80, 20 }));
             totales.setWidth(UnitValue.createPercentValue(100));
-            double opGravada = comprobante.getPedidoProveedor().getTotal() / 1.18;
-            double igv = comprobante.getPedidoProveedor().getTotal() - opGravada;
-            double total = comprobante.getPedidoProveedor().getTotal();
+            BigDecimal opGravada = comprobante.getPedidoProveedor().getTotal().divide(BigDecimal.valueOf(1.18),2,RoundingMode.HALF_UP);
+            BigDecimal igv = comprobante.getPedidoProveedor().getTotal().subtract(opGravada);
+            BigDecimal total = comprobante.getPedidoProveedor().getTotal();
 
             totales.addCell(getCell("OP. GRAVADA (S/.)", true));
             totales.addCell(getCell(String.format("%.2f", opGravada), false));

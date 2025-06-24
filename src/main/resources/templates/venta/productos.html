@@ -172,7 +172,7 @@
                                         <div class="cont_opciones">
                                             <button class="editproduc">Ver Detalle <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            
+
                                         </div>
                                 </div>
                             </th>
@@ -238,7 +238,7 @@
                     <div class="button__modal" style="display: flex; justify-content: space-between;">
                         <button id="editCaracte" type="button">Activar Características</button>
                         <style>
-                            #editCaracte{
+                            #editCaracte {
                                 border: none;
                                 cursor: pointer;
                                 background-color: #e7d009;
@@ -246,7 +246,8 @@
                                 font-weight: bold;
                                 border-radius: 5px;
                             }
-                            #editCaracte:hover{
+
+                            #editCaracte:hover {
                                 background-color: #bcb360;
                             }
                         </style>
@@ -623,82 +624,6 @@
 
         // Asociar la función al evento de entrada
         productInput.addEventListener("input", filterProducts);
-    </script>
-
-    <script>
-        document.querySelector('.btn-pdf').addEventListener('click', function () {
-            const filteredRows = Array.from(document.querySelectorAll("#productList"))
-                .filter(row => row.style.display !== "none") // Solo filas visibles
-                .map(row => {
-                    const cells = row.querySelectorAll("td");
-                    return [
-                        cells[0].textContent.trim(),  // ID Producto
-                        cells[1].textContent.trim(),  // Nombre
-                        cells[2].textContent.trim(),  // Categoria
-                        cells[3].textContent.trim(),  // Proveedor
-                        cells[4].textContent.trim(),  // Descripcion
-                        cells[5].textContent.trim(),  // Precio
-                        cells[6].textContent.trim()   // Stock
-                    ].join(",");
-                });
-
-            fetch('/reporte-pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(filteredRows),
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Reporte_Productos.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
-                .catch(error => console.error('Error al generar el PDF:', error));
-        });
-    </script>
-
-    <script>
-        document.querySelector('.btn-excel').addEventListener('click', function () {
-            const filteredRows = Array.from(document.querySelectorAll("#productList"))
-                .filter(row => row.style.display !== "none") // Solo filas visibles
-                .map(row => {
-                    const cells = row.querySelectorAll("td");
-                    return [
-                        cells[0].textContent.trim(),  // ID Producto
-                        cells[1].textContent.trim(),  // Nombre
-                        cells[2].textContent.trim(),  // Categoria
-                        cells[3].textContent.trim(),  // Proveedor
-                        cells[4].textContent.trim(),  // Descripcion
-                        cells[5].textContent.trim(),  // Precio
-                        cells[6].textContent.trim()   // Stock
-                    ].join(",");
-                });
-
-            fetch('/generarExcel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filteredRows)
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'reporte_productos.xlsx';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
-                .catch(error => console.error('Error al generar el Excel:', error));
-        });
     </script>
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
