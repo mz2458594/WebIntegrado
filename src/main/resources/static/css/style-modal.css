@@ -214,7 +214,7 @@
 }
 
 
-.ACTIVO, .ENTREGADO .CONFIRMADO {
+.ACTIVO, .ENTREGADO, .CONFIRMADO {
     width: fit-content;
     display: inline-block;
     align-items: center;
