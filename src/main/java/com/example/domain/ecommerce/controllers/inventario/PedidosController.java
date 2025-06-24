@@ -209,7 +209,7 @@ public class PedidosController {
 
         try {
             pedidoService.actualizarEstadoProveedor(id, estadoRequestDTO);
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | IllegalStateException e) {
             model.addAttribute("error", e.getMessage());
         }
 

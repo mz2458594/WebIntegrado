@@ -84,7 +84,7 @@
             <div class="form__name--add">
                 <p><i style="color: #000;" class="fa-solid fa-pen-to-square"></i> Detalle del pedido</p>
             </div>
-            <form class="form_modal" action="" id="formEditar">
+            <form class="form_modal" method="post" id="formEditar">
 
             </form>
         </div>
@@ -101,11 +101,11 @@
 
             label.addEventListener("click", () => {
                 const isVisible = optionsContainer.style.display === "flex";
-               
+
                 document.querySelectorAll(".cont_opciones").forEach(container => {
                     container.style.display = "none";
                 });
-                
+
                 optionsContainer.style.display = isVisible ? "none" : "flex";
             });
         });
@@ -212,11 +212,15 @@
                 </div>
                     `
                         detaEs = detalle.estado;
-                        if (detaEs === "CANCELADO") {
+                        if (detaEs === "CANCELADO" || detaEs === "ENTREGADO") {
                             const moti = document.getElementById("estad-pedido-produc");
 
                             moti.disabled = true;
                         }
+
+                        form.action = `/inventario/ecommerce/actualizar/${idPedido}`;
+
+
                         let cerrarEdit = document.querySelector(".btn-cancelar-edit");
                         cerrarEdit.addEventListener("click", function (e) {
                             VentEdit.classList.toggle("ventana-close-edit");
@@ -249,7 +253,7 @@
                     motivoP.innerHTML = `
                     <div class="input__box">
                         <label for="">Motivo de cancelacion</label><br>
-                        <input type="text" disabled id="motivo_cancel" name="motivoCanelado">
+                        <input type="text" disabled id="motivo_cancel" name="comentario">
                     </div>
                     `
                     break;
