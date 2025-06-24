@@ -120,8 +120,8 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
         if (estadoRequestDTO.getEstado() != null) {
 
-            if (pedido2.getEstado().equals("ENTREGADO") || pedido2.getEstado().equals("CANCELADO")) {
-                return;
+            if (pedido2.getEstado().equals(EstadoPedido.ENTREGADO) || pedido2.getEstado().equals(EstadoPedido.CANCELADO)) {
+                throw new IllegalStateException("No se puede modificar un pedido " + pedido2.getEstado());
             } else {
                 switch (estadoRequestDTO.getEstado()) {
                     case "CANCELADO":
@@ -139,6 +139,9 @@ public class PedidoUsuarioFactory implements PedidoFactory {
                         break;
                     case "PENDIENTE":
                         pedido2.setEstado(EstadoPedido.PENDIENTE);
+                        break;
+                    case "ENTREGADO":
+                        pedido2.setEstado(EstadoPedido.ENTREGADO);
                         break;
                     default:
                         break;
