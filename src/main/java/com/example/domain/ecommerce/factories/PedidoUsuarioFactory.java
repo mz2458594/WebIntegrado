@@ -7,12 +7,15 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.TarifaEnvio;
@@ -24,6 +27,7 @@ import com.example.domain.ecommerce.repositories.TarifaDAO;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Component
@@ -39,6 +43,7 @@ public class PedidoUsuarioFactory implements PedidoFactory {
     private final ClienteDAO clienteDAO;
 
     private final TarifaDAO tarifaDAO;
+
 
     @Override
     public Pedido crearPedido(RequestDTO data) {
@@ -101,5 +106,47 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         pedido.setDetallePedidos(lista_pedidos);
 
         return pedidoUsuarioDAO.save(pedido);
+    }
+
+    @Override
+    public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
+        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById(Long.valueOf(id));
+
+        if (pedido.isEmpty()) {
+            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
+        }
+
+        PedidoUsuario pedido2 = pedido.get();
+
+        if (estadoRequestDTO.getEstado() != null) {
+
+            if (pedido2.getEstado().equals("ENTREGADO") || pedido2.getEstado().equals("CANCELADO")) {
+                return;
+            } else {
+                switch (estadoRequestDTO.getEstado()) {
+                    case "CANCELADO":
+                        pedido2.setEstado(EstadoPedido.CANCELADO);
+                        pedido2.setComentario(estadoRequestDTO.getComentario());
+                        break;
+                    case "CONFIRMADO":
+                        pedido2.setEstado(EstadoPedido.CONFIRMADO);
+                        for (DetallePedido pe : pedido2.getDetallePedidos()) {
+                            productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
+                        }
+                        break;
+                    case "EN_CAMINO":
+                        pedido2.setEstado(EstadoPedido.EN_CAMINO);
+                        break;
+                    case "PENDIENTE":
+                        pedido2.setEstado(EstadoPedido.PENDIENTE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        pedidoUsuarioDAO.save(pedido2);
+
     }
 }

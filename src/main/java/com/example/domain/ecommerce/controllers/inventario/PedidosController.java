@@ -208,7 +208,7 @@ public class PedidosController {
     public String actualizarPedido(Model model, @PathVariable int id, EstadoRequestDTO estadoRequestDTO) {
 
         try {
-            pedidoService.actualizarEstado(id, estadoRequestDTO);
+            pedidoService.actualizarEstadoProveedor(id, estadoRequestDTO);
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
