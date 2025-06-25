@@ -80,7 +80,14 @@ cerrarEdit.addEventListener("click", function (e) {
     setTimeout(function () {
         modalContEdit.style.opacity = "0";
         modalContEdit.style.visibility = "hidden";
+
+
+        document.getElementById('formEditarPedido').reset();
+
+        document.getElementById("estado_act").disabled = false;
+        document.getElementById("guardar_estado_pp").style.display = "block"
     }, 600);
+
 });
 
 window.addEventListener("click", function (e) {
@@ -90,6 +97,12 @@ window.addEventListener("click", function (e) {
         setTimeout(function () {
             modalContEdit.style.opacity = "0";
             modalContEdit.style.visibility = "hidden";
+
+
+            document.getElementById('formEditarPedido').reset();
+
+            document.getElementById("estado_act").disabled = false;
+            document.getElementById("guardar_estado_pp").style.display = "block"
         }, 600);
     }
 });

@@ -242,30 +242,32 @@
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
                     document.getElementById("estado_act").value = celdas[5].querySelector('span').textContent;
-///////////////////////
+                    ///////////////////////
+
+
                     var estadoCancel = celdas[5].querySelector('span').textContent;
-                    if (estadoCancel === "CANCELADO") {
-                        const estadoP = document.getElementById("estado_act").value;
-                        const motivoP = document.getElementById("conte_motivo_cacel");
-
-                        motivoP.innerHTML = '';
-                        motivoP.style.display = 'none';
-
-                        switch (estadoP) {
-                            case "CANCELADO":
-                                motivoP.style.display = 'block';
-                                motivoP.innerHTML = `
-                                <div class="input__box">
-                                    <label for="">Motivo de cancelacion</label><br>
-                                        <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCanelado">
-                                </div>
-                                `
-                                break;
-                        }
-                        document.getElementById("estado_act").disabled = true;
-                        document.getElementById("guardar_estado_pp").style.display = "none"
+                    const motivoP = document.getElementById("conte_motivo_cacel");
+                    motivoP.innerHTML = '';
+                    motivoP.style.display = 'none';
+                    switch (estadoCancel) {
+                        case "CANCELADO":
+                            motivoP.style.display = 'block';
+                            motivoP.innerHTML = `
+                        <div class="input__box">
+                            <label for="">Motivo de cancelacion</label><br>
+                            <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCanelado">
+                        </div>
+                        `
+                            document.getElementById("estado_act").disabled = true;
+                            document.getElementById("guardar_estado_pp").style.display = "none"
+                        case "ENTREGADO":
+                            document.getElementById("estado_act").disabled = true;
+                            document.getElementById("guardar_estado_pp").style.display = "none"
+                            break;
                     }
-//////////////////////////////
+
+
+                    //////////////////////////////
                     const form = document.getElementById("formEditarPedido");
                     const idPedido = celdas[0].textContent.trim();
                     form.action = `/inventario/pedido/actualizar/${idPedido}`;
@@ -275,7 +277,6 @@
                     VentEdit.classList.remove("ventana-close-edit");
                 });
             });
-
         </script>
 
 
