@@ -16,7 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 @RequestMapping("/inventario/ecommerce")
 @Controller
 public class VentasEcommerceController {
-    
+
     @Autowired
     private PedidoService pedidoService;
 
@@ -28,7 +28,6 @@ public class VentasEcommerceController {
         return "venta/pedidosEcommerce";
     }
 
-
     @PostMapping("/actualizar/{id}")
     public String actualizarPedido(Model model, @PathVariable int id, EstadoRequestDTO estadoRequestDTO) {
         try {
@@ -38,6 +37,6 @@ public class VentasEcommerceController {
         }
 
         model.addAttribute("pedidos", pedidoService.getPedidosUsuario());
-        return "venta/pedidosEcommerce";
+        return "redirect:/inventario/ecommerce/pedidos";
     }
 }

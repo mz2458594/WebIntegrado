@@ -214,7 +214,7 @@ public class PedidosController {
         }
 
         model.addAttribute("pedidos", pedidoService.getPedidosProveedor());
-        return "venta/pedidos";
+        return "redirect:/inventario/pedido/pedidos";
     }
 
 }

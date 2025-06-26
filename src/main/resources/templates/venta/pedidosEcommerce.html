@@ -195,7 +195,7 @@
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="estado" id="estado_act" onchange="campoMotivo()" value="${detalle.estado}">
+                    <select name="estado" id="estado_act" onchange="campoMotivo()">
                         <option value="PENDIENTE">PENDIENTE</option>
                         <option value="CONFIRMADO">CONFIRMADO</option>
                         <option value="EN_CAMINO">EN CAMINO</option>
@@ -212,6 +212,7 @@
                 </div>
                     `
                         detaEs = detalle.estado;
+                        document.getElementById('estado_act').value = detaEs
                         const motivoP = document.getElementById("conte_motivo_cacel");
 
                         switch (detaEs) {
