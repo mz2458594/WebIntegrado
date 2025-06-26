@@ -105,7 +105,7 @@ public class PedidoProveedorFactory implements PedidoFactory {
                 switch (estadoRequestDTO.getEstado()) {
                     case "CANCELADO":
                         pedido2.setEstado(EstadoPedido.CANCELADO);
-                        pedido2.setComentario(estadoRequestDTO.getComentario());
+                        pedido2.setComentario(estadoRequestDTO.getMotivoCancelado());
                         break;
                     case "CONFIRMADO":
                         pedido2.setEstado(EstadoPedido.CONFIRMADO);

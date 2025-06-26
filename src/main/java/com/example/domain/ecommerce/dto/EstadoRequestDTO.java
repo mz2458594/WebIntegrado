@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class EstadoRequestDTO {
     private String estado;
-    private String comentario;
+    private String motivoCancelado;
     
 }

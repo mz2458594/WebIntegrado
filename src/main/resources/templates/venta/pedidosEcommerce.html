@@ -195,7 +195,7 @@
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="estado" id="estad-pedido-produc" onchange="campoMotivo()" value="${detalle.estado}">
+                    <select name="estado" id="estado_act" onchange="campoMotivo()" value="${detalle.estado}">
                         <option value="PENDIENTE">PENDIENTE</option>
                         <option value="CONFIRMADO">CONFIRMADO</option>
                         <option value="EN_CAMINO">EN CAMINO</option>
@@ -206,17 +206,32 @@
                 <div id="conte_motivo_cacel" style="display: none;"></div>
                 <div class="button__modal">
                     <div class="btn-modal">
-                        <input id="guardar-produc" type="submit" class="btn-guardar btn-edit" value="Guardar">
+                        <input id="guardar_estado_pp" type="submit" class="btn-guardar btn-edit" value="Guardar">
                         <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                     </div>
                 </div>
                     `
                         detaEs = detalle.estado;
-                        if (detaEs === "CANCELADO" || detaEs === "ENTREGADO") {
-                            const moti = document.getElementById("estad-pedido-produc");
+                        const motivoP = document.getElementById("conte_motivo_cacel");
 
-                            moti.disabled = true;
+                        switch (detaEs) {
+                            case "CANCELADO":
+                                motivoP.style.display = 'block';
+                                motivoP.innerHTML = `
+                        <div class="input__box">
+                            <label for="">Motivo de cancelacion</label><br>
+                            <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCancelado">
+                        </div>
+                        `
+                                document.getElementById("estado_act").disabled = true;
+                                document.getElementById("guardar_estado_pp").style.display = "none"
+                                break;
+                            case "ENTREGADO":
+                                document.getElementById("estado_act").disabled = true;
+                                document.getElementById("guardar_estado_pp").style.display = "none"
+                                break;
                         }
+
 
                         form.action = `/inventario/ecommerce/actualizar/${idPedido}`;
 
@@ -241,7 +256,7 @@
     <script>
 
         function campoMotivo() {
-            const estadoP = document.getElementById("estad-pedido-produc").value;
+            const estadoP = document.getElementById("estado_act").value;
             const motivoP = document.getElementById("conte_motivo_cacel");
 
             motivoP.innerHTML = '';
