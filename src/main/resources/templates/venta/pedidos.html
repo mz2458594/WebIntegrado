@@ -24,7 +24,7 @@
 
 <body>
 
-    <div class="modal__container--add">
+    <!-- <div class="modal__container--add">
         <div id="" class="ventana__modal ventana-close">
             <div class="form__name--add">
                 <p><i class="fa-solid fa-plus"></i> Agregar Nuevo Usuario</p>
@@ -114,7 +114,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <div class="container_modal--delete">
         <div class="ventana_modal--delete ventana-close-delete">
@@ -201,13 +201,13 @@
         <div class="container-modal--edit">
             <div class="ventana_modal--edit ventana-close-edit">
                 <div class="form__name--add">
-                    <p><i class="fa-solid fa-plus"></i> Editar Usuario</p>
+                    <p><i class="fa-solid fa-plus"></i> Editar estado del pedido</p>
                 </div>
                 <form class="form_modal" id="formEditarPedido" method="post">
 
                     <div class="input__box">
                         <label for="">Estado</label><br>
-                        <select name="estado" id="estado_act">
+                        <select name="estado" id="estado_act" onchange="campoMotivo()">
                             <option value="PENDIENTE">PENDIENTE</option>
                             <option value="CONFIRMADO">CONFIRMADO</option>
                             <option value="EN_CAMINO">EN CAMINO</option>
@@ -215,10 +215,10 @@
                             <option value="CANCELADO">CANCELADO</option>
                         </select>
                     </div>
-
+                    <div id="conte_motivo_cacel" style="display: none;"></div>
                     <div class="button__modal">
                         <div class="btn-modal">
-                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input type="submit" class="btn-guardar" value="Guardar" id="guardar_estado_pp">
                             <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                         </div>
                     </div>
@@ -242,7 +242,33 @@
                     const fila = this.closest('tr');
                     const celdas = fila.querySelectorAll('td');
                     document.getElementById("estado_act").value = celdas[5].querySelector('span').textContent;
+                    ///////////////////////
 
+
+                    var estadoCancel = celdas[5].querySelector('span').textContent;
+                    const motivoP = document.getElementById("conte_motivo_cacel");
+                    motivoP.innerHTML = '';
+                    motivoP.style.display = 'none';
+                    switch (estadoCancel) {
+                        case "CANCELADO":
+                            motivoP.style.display = 'block';
+                            motivoP.innerHTML = `
+                        <div class="input__box">
+                            <label for="">Motivo de cancelacion</label><br>
+                            <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCanelado">
+                        </div>
+                        `
+                            document.getElementById("estado_act").disabled = true;
+                            document.getElementById("guardar_estado_pp").style.display = "none"
+                            break;
+                        case "ENTREGADO":
+                            document.getElementById("estado_act").disabled = true;
+                            document.getElementById("guardar_estado_pp").style.display = "none"
+                            break;
+                    }
+
+
+                    //////////////////////////////
                     const form = document.getElementById("formEditarPedido");
                     const idPedido = celdas[0].textContent.trim();
                     form.action = `/inventario/pedido/actualizar/${idPedido}`;
@@ -252,7 +278,6 @@
                     VentEdit.classList.remove("ventana-close-edit");
                 });
             });
-
         </script>
 
 
@@ -283,6 +308,31 @@
 
         // Asociar la función al evento de entrada
         productInput.addEventListener("input", filterProducts);
+    </script>
+    <script>
+        function campoMotivo() {
+            const estadoP = document.getElementById("estado_act").value;
+            const motivoP = document.getElementById("conte_motivo_cacel");
+
+
+            motivoP.innerHTML = '';
+            motivoP.style.display = 'none';
+
+            switch (estadoP) {
+                case "CANCELADO":
+                    motivoP.style.display = 'block';
+                    motivoP.innerHTML = `
+                    <div class="input__box">
+                        <label for="">Motivo de cancelacion</label><br>
+                        <input type="text" disabled id="motivo_cancel" name="motivoCanelado">
+                    </div>
+                    `
+                    break;
+            }
+
+            const mot = document.getElementById("motivo_cancel");
+            mot.disabled = false;
+        }
     </script>
     <script th:src="@{/js/modalAdd.js}"></script>
     <script th:if="${error != '' && error != null}">
