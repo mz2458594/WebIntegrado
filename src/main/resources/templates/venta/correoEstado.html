@@ -41,19 +41,18 @@
                                                                 <tr>
                                                                     <td style="padding-bottom: 10px;">
                                                                         <strong>¡Hola <span
-                                                                                id="nombre_cliente">Kenneth</span>!</strong>
+                                                                                id="nombre_cliente" th:text="${cliente?.nombre != null ? cliente.nombre : 'NULL'}">Kenneth</span>!</strong>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="padding-bottom: 10px;">
-                                                                        ¡Estamos contentos de que nos hayas elegido para
-                                                                        mejorar tu casa!
+                                                                        ¡Gracias por tu reciente transacción en Targus!
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         Te confirmamos que tu pedido <strong>N° <span
-                                                                                id="num_pedido">134384603-51</span></strong>
+                                                                                id="num_pedido" th:text="${pedido?.idPedido != null ? pedido.idPedido ? 'NULL'}">134384603-51</span></strong>
                                                                         ha sido recibido y se encuentra en proceso de
                                                                         aprobación, el cual tomará máximo 48 horas
                                                                         calendario.
@@ -138,24 +137,24 @@
                                                     <td valign="middle"
                                                         style="text-align:left;border-left:2px solid black;padding:20px 25px 5px 25px;line-height:1.4;">
                                                         # Pedido: <br>
-                                                        <strong><span id="num_pedido">134384603-51</span></strong>
+                                                        <strong><span id="num_pedido" th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
                                                     </td>
                                                     <td valign="middle"
                                                         style="text-align:left;border-right:2px solid black;border-left:2px solid black;padding:20px 25px 5px 25px;line-height:1.4">
                                                         Fecha de pedido: <br>
-                                                        <strong><span id="fecha_pedido">22/06/2025</span></strong>
+                                                        <strong><span id="fecha_pedido" th:text="${pedido?.fechaPedido != null ? pedido.fechaPedido : 'NULL'}">22/06/2025</span></strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td valign="middle"
                                                         style="text-align:left;border-left:2px solid black;border-bottom:2px solid black;padding:5px 25px 20px 25px;line-height:1.4">
                                                         Titular: <br>
-                                                        <strong> <span id="nombre_cliente">Kenneth Garrido</span></strong>
+                                                        <strong> <span id="nombre_cliente" th:text="${cliente?.nombre != null ? cliente.nombre : 'NULL'}">Kenneth Garrido</span></strong>
                                                     </td>
                                                     <td valign="middle"
                                                         style="text-align:left;border-right:2px solid black;border-left:2px solid black;border-bottom:2px solid black;padding:5px 25px 20px 25px;line-height:1.4">
                                                         Documento de identidad: <br>
-                                                        <strong>DNI <span id="documentoIdentidad">87654321</span></strong>
+                                                        <strong>DNI <span id="documentoIdentidad" th:text="${cliente?.dni != null ? cliente.dni ? 'NULL'}">87654321</span></strong>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -204,24 +203,24 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
+                                                                    <tr th:each="detalle : ${pedido.detallePedidos}">
                                                                         <td valign="middle"
                                                                             style="padding:10px 10px;text-align:left;line-height:18px"
                                                                             colspan="2">
-                                                                            <span id="nom_producto">Laptop Lenovo ThinkPad
+                                                                            <span id="nom_producto" th:text="${detalle.producto.nombre}">Laptop Lenovo ThinkPad
                                                                                 X1</span>
                                                                         </td>
                                                                         <td valign="middle"
                                                                             style="width:130px;padding:10px 10px;text-align:center">
-                                                                            <span id="fecha_entrega">2025-06-29</span>
+                                                                            <span id="fecha_entrega" th:text="${pedido.fechaEntrega}">2025-06-29</span>
                                                                         </td>
                                                                         <td valign="middle"
                                                                             style="width:10px;padding:10px 10px;text-align:center">
-                                                                            <span id="cant_produc">1</span>
+                                                                            <span id="cant_produc" th:text="${detalle.cantidad}">1</span>
                                                                         </td>
                                                                         <td valign="middle"
                                                                             style="width:50px;padding:10px 10px;text-align:right;white-space:nowrap!important">
-                                                                            S/.<span id="precio_uni">4500</span>
+                                                                            S/.<span id="precio_uni" th:text="${detalle.producto.precioVenta}">4500</span>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -253,7 +252,14 @@
                                                                                         Dirección de entrega:<br>
                                                                                         <strong>
                                                                                             <span id="direccion">La Venta
-                                                                                                Baja Mz J 1 Ica - Ica</span>
+                                                                                                <span th:text="${cliente?.direccion?.calle != null ? cliente.direccion.calle : 'NULL'}">
+                                                                                                    Baja Mz J 1 
+                                                                                                </span>
+                                                                                                <span th:text="${cliente?.direccion?.departamento != null ? cliente.direccion.departamento : 'NULL'}">ICA</span>
+                                                                                                 - 
+                                                                                                 <span th:text="${cliente?.direccion?.distrito != null ? cliente.direccion.distrito : 'NULL'}">ICA</span>
+                                                                                            </span>
+                                                                                            
                                                                                         </strong>
                                                                                     </td>
                                                                                 </tr>
@@ -278,7 +284,7 @@
                                                                                     <td valign="middle"
                                                                                         style="width:50px;text-align:right;padding:7px 10px;white-space:nowrap!important">
                                                                                         <strong><span
-                                                                                                id="sub-total">4500</span></strong>
+                                                                                                id="sub-total" th:text="${(pedido.total ?: 0) - (costoEnvio ?: 0)}">4500</span></strong>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -293,21 +299,7 @@
                                                                                     <td valign="middle"
                                                                                         style="width:50px;text-align:right;padding:7px 10px;white-space:nowrap!important">
                                                                                         <strong><span
-                                                                                                id="costo-envio">10</span></strong>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td valign="middle"
-                                                                                        style="text-align:left;padding:5px 10px;white-space:nowrap!important">
-                                                                                        <strong>Descuentos:</strong>
-                                                                                    </td>
-                                                                                    <td valign="middle"
-                                                                                        style="width:10px;text-align:center;padding:7px 10px;white-space:nowrap!important">
-                                                                                        <strong>S/</strong>
-                                                                                    </td>
-                                                                                    <td valign="middle"
-                                                                                        style="width:50px;text-align:right;padding:7px 10px;white-space:nowrap!important">
-                                                                                        <strong>0.00</strong>
+                                                                                                id="costo-envio" th:text="${(costoEnvio ?: 0)}">10</span></strong>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr
@@ -323,7 +315,7 @@
                                                                                     <td valign="middle"
                                                                                         style="width:50px;text-align:right;padding:7px 10px;white-space:nowrap!important">
                                                                                         <strong><span
-                                                                                                id="total-pedido">4510</span></strong>
+                                                                                                id="total-pedido" th:text="${(pedido.total ?: 0)}">4510</span></strong>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>

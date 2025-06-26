@@ -31,11 +31,10 @@ public class VentasEcommerceController {
 
     @PostMapping("/actualizar/{id}")
     public String actualizarPedido(Model model, @PathVariable int id, EstadoRequestDTO estadoRequestDTO) {
-
         try {
             pedidoService.actualizarEstadoUsuario(id, estadoRequestDTO);
         } catch (EntityNotFoundException | IllegalStateException e) {
-            model.addAttribute("error", e.getMessage());
+            System.out.println("Error interno: " + e.getMessage());
         }
 
         model.addAttribute("pedidos", pedidoService.getPedidosUsuario());

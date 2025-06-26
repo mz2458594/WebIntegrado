@@ -13,17 +13,22 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
+import com.example.domain.ecommerce.models.entities.Email;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.TarifaEnvio;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.entities.VentaEcommerce;
 import com.example.domain.ecommerce.models.enums.EstadoPedido;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
 import com.example.domain.ecommerce.repositories.TarifaDAO;
+import com.example.domain.ecommerce.repositories.VentaEcommerceDAO;
+import com.example.domain.ecommerce.services.EmailService;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
@@ -44,6 +49,10 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
     private final TarifaDAO tarifaDAO;
 
+    private final EmailService emailService;
+
+    private final VentaEcommerceDAO ventaEcommerceDAO;
+    
 
     @Override
     public Pedido crearPedido(RequestDTO data) {
@@ -97,9 +106,9 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         BigDecimal precioDepartamento = tarifaEnvio.getPrecio_envio();
 
         costoEnvio = pesoTotal.multiply(BigDecimal.valueOf(2.6)).add(precioDepartamento).setScale(2,
-                    RoundingMode.UP);
+                RoundingMode.UP);
 
-        BigDecimal totalFinal = total.add(costoEnvio).setScale(2,RoundingMode.UP);
+        BigDecimal totalFinal = total.add(costoEnvio).setScale(2, RoundingMode.UP);
 
         pedido.setEstado(EstadoPedido.PENDIENTE);
         pedido.setTotal(totalFinal);
@@ -110,46 +119,60 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
     @Override
     public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
-        Optional<PedidoUsuario> pedido = pedidoUsuarioDAO.findById(Long.valueOf(id));
+        PedidoUsuario pedido = pedidoUsuarioDAO.findById(Long.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("Pedido con id " + id + " no encontrado"));
 
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-        }
+        // VentaEcommerce venta = ventaEcommerceDAO.findByUsuario(pedido.getUser())
+        //         .orElseThrow(() -> new EntityNotFoundException(
+        //                 "Venta del usuario " + pedido.getUser().getUsername() + " no encontrado"));
 
-        PedidoUsuario pedido2 = pedido.get();
+        Cliente cliente = clienteDAO.findByUsuario(pedido.getUser())
+                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 
-        if (estadoRequestDTO.getEstado() != null) {
+        if (estadoRequestDTO.getEstado() != null) return;
 
-            if (pedido2.getEstado().equals(EstadoPedido.ENTREGADO) || pedido2.getEstado().equals(EstadoPedido.CANCELADO)) {
-                throw new IllegalStateException("No se puede modificar un pedido " + pedido2.getEstado());
-            } else {
-                switch (estadoRequestDTO.getEstado()) {
-                    case "CANCELADO":
-                        pedido2.setEstado(EstadoPedido.CANCELADO);
-                        pedido2.setComentario(estadoRequestDTO.getComentario());
-                        break;
-                    case "CONFIRMADO":
-                        pedido2.setEstado(EstadoPedido.CONFIRMADO);
-                        for (DetallePedido pe : pedido2.getDetallePedidos()) {
-                            productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
-                        }
-                        break;
-                    case "EN_CAMINO":
-                        pedido2.setEstado(EstadoPedido.EN_CAMINO);
-                        break;
-                    case "PENDIENTE":
-                        pedido2.setEstado(EstadoPedido.PENDIENTE);
-                        break;
-                    case "ENTREGADO":
-                        pedido2.setEstado(EstadoPedido.ENTREGADO);
-                        break;
-                    default:
-                        break;
-                }
+            if (pedido.getEstado().equals(EstadoPedido.ENTREGADO)
+                    || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
+                throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
             }
-        }
 
-        pedidoUsuarioDAO.save(pedido2);
+            switch (estadoRequestDTO.getEstado()) {
+                case "CANCELADO":
+                    pedido.setEstado(EstadoPedido.CANCELADO);
+                    pedido.setComentario(estadoRequestDTO.getComentario());
+                    break;
+                case "CONFIRMADO":
+                    pedido.setEstado(EstadoPedido.CONFIRMADO);
+                    for (DetallePedido pe : pedido.getDetallePedidos()) {
+                        productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
+                    }
+                    break;
+                case "EN_CAMINO":
+                    pedido.setEstado(EstadoPedido.EN_CAMINO);
+                    break;
+                case "PENDIENTE":
+                    pedido.setEstado(EstadoPedido.PENDIENTE);
+                    break;
+                case "ENTREGADO":
+                    pedido.setEstado(EstadoPedido.ENTREGADO);
+                    break;
+                default:
+                    break;
+
+            }
+        
+
+        pedidoUsuarioDAO.save(pedido);
+
+        Email email = new Email();
+        email.setMailFrom("mz2458594@gmail.com");
+        email.setMailTo(pedido.getUser().getEmail());
+        email.setSubject("Seguimiento de pedido " + id);
+        email.setJwt(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+        emailService.sendEmailPedido(email, pedido, 
+        // venta,
+         cliente);
 
     }
 }

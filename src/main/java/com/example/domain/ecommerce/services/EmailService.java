@@ -1,9 +1,13 @@
 package com.example.domain.ecommerce.services;
 import java.util.*;
 
+import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
 import com.example.domain.ecommerce.models.entities.Email;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.entities.Producto;
+import com.example.domain.ecommerce.models.entities.VentaEcommerce;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -103,6 +107,34 @@ public class EmailService {
 
             javaMailSender.send(message);
         } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendEmailPedido(Email email, PedidoUsuario pedidoUsuario, 
+    // VentaEcommerce ventaEcommerce,
+     Cliente cliente){
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            Context context = new Context();
+            Map<String, Object> model = new HashMap<>();
+
+            model.put("pedido", pedidoUsuario);
+            model.put("costoEnvio", 20);
+            model.put("estado", pedidoUsuario.getEstado());
+            model.put("cliente", cliente);
+
+            context.setVariables(model);
+
+            String htmlText = templateEngine.process("venta/correoEstado", context);
+            helper.setFrom(email.getMailFrom());
+            helper.setTo(email.getMailTo());
+            helper.setSubject(email.getSubject());
+            helper.setText(htmlText, true);
+
+            javaMailSender.send(message);
+        }catch(MessagingException e){
             e.printStackTrace();
         }
     }
