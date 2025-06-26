@@ -22,8 +22,15 @@
                 <div class="vueltito" th:if="${vuelto != null}">
                     <p>VUELTO: S/. <span id="vuelto" th:text="${vuelto}">00.70</span></p>
                 </div>
-                <div class="cont-btn-volver"><button class="btn-volver"
-                        onclick="window.location.href='/inventario/ventas/agregarVenta'">Volver</button></div>
+                <div id="btn-back" class="cont-btn-volver"><button class="btn-volver">Nueva Venta</button></div>
+                <script>
+                    btnVolver = document.getElementById("btn-back")
+                    btnVolver.addEventListener('click', function (event) {
+                        event.preventDefault()
+                        localStorage.removeItem("productosAgregados")
+                        window.location.href = "/inventario/ventas/agregarVenta"
+                    })
+                </script>
             </div>
             <div class="cont-error-cuerpo">
                 <div class="cuerpo-vuelto">

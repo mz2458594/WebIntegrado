@@ -122,7 +122,7 @@
     </main>
     <section class="modal-container">
         <div class="contenedor-modal-anular ventana-close">
-            <form th:action="@{/inventario/ventas/anular}" method="post">
+            <form id="formAnular" th:action="@{/inventario/ventas/anular}" method="post">
                 <div class="modal-title-anular">
                     <p>Datos de anulacion</p>
                 </div>
@@ -135,6 +135,14 @@
                     <button class="cancelar-anul">Cancelar</button>
                 </div>
             </form>
+            <script>
+                formAnular = document.getElementById("formAnular")
+                formAnular.addEventListener('submit', function(event){
+                    event.preventDefault()
+                    localStorage.removeItem("productosAgregados")
+                    formAnular.submit()
+                })
+            </script>
         </div>
     </section>
     <!-- <script th:src="@{/js/general.js}"></script> -->
@@ -142,8 +150,33 @@
 
 
     <script>
-
+        const productInput = document.getElementById("productInput");
+        const productList = document.getElementById("productList");
+        const tabla = document.getElementById('tablaProductos');
+        let index = 0;
         let productosAgregados = {}
+
+        const guardados = localStorage.getItem("productosAgregados")
+        if (guardados) {
+            productosAgregados = JSON.parse(guardados)
+        }
+
+        Object.entries(productosAgregados).forEach(([id, data]) => {
+            const row = document.createElement('tr');
+            row.id = `prod-${id}`;
+            row.innerHTML = `
+                    <td><button type="button" onclick="eliminarProducto(${id})">X</button></td>
+                    <td>${data.nombre}</td>
+                    <td class="cantidad">${data.cantidad}</td>
+                    <td>${data.precio}</td>
+                    <td class="total">${(data.cantidad * data.precio).toFixed(2)}</td>
+                    <input type="hidden" name="productos[${data.index}].id" value="${id}">
+                    <input type="hidden" class="input-cantidad" name="productos[${data.index}].cantidad" value="${data.cantidad}">
+                    `;
+
+            tabla.appendChild(row);
+            index = Math.max(index, data.index + 1)
+        })
 
         const formularioVenta = document.getElementById("formVenta")
         formularioVenta.addEventListener('submit', async function (event) {
@@ -200,11 +233,6 @@
             formularioVenta.submit()
 
         })
-
-        const productInput = document.getElementById("productInput");
-        const productList = document.getElementById("productList");
-        const tabla = document.getElementById('tablaProductos');
-        let index = 0;
 
         // Función para mostrar y filtrar la lista
         function filterProducts() {
@@ -264,7 +292,7 @@
 
                 } else {
 
-                    productosAgregados[id] = { cantidad: cantidad, index: index }
+                    productosAgregados[id] = { cantidad: cantidad, index: index, nombre: nombre, precio: precio }
 
                     const row = document.createElement('tr');
                     row.id = `prod-${id}`;
@@ -286,6 +314,8 @@
                 productInput.value = ''
                 cantidadInput.value = 1
 
+                localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
+
             }
         });
 
@@ -294,6 +324,7 @@
             if (fila) {
                 fila.remove()
                 delete productosAgregados[id]
+                localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
             }
             actualizar()
             reindexarProductos()
@@ -326,15 +357,19 @@
             filas.forEach(fila => {
                 const id = fila.id.split("-")[1];
                 const cantidad = parseInt(fila.querySelector(".cantidad").textContent)
+                const nombre = fila.querySelector("td:nth-child(2)").textContent;
+                const precio = parseFloat(fila.querySelector("td:nth-child(4)").textContent);
 
                 fila.querySelector('[name$=".id"]').setAttribute("name", `productos[${nuevoIndex}].id`)
                 fila.querySelector('[name$=".cantidad"]').setAttribute("name", `productos[${nuevoIndex}].cantidad`)
 
-                productosAgregados[id] = {cantidad: cantidad, index: nuevoIndex}
-                nuevoIndex++ 
+                productosAgregados[id] = { cantidad: cantidad, index: nuevoIndex, nombre: nombre, precio: precio }
+                nuevoIndex++
             })
 
             index = nuevoIndex;
+
+            localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
         }
 
     </script>
