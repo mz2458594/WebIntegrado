@@ -52,7 +52,6 @@ public class PedidoUsuarioFactory implements PedidoFactory {
     private final EmailService emailService;
 
     private final VentaEcommerceDAO ventaEcommerceDAO;
-    
 
     @Override
     public Pedido crearPedido(RequestDTO data) {
@@ -111,6 +110,7 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         BigDecimal totalFinal = total.add(costoEnvio).setScale(2, RoundingMode.UP);
 
         pedido.setEstado(EstadoPedido.PENDIENTE);
+        pedido.setEnvio(costoEnvio);
         pedido.setTotal(totalFinal);
         pedido.setDetallePedidos(lista_pedidos);
 
@@ -122,57 +122,52 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         PedidoUsuario pedido = pedidoUsuarioDAO.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("Pedido con id " + id + " no encontrado"));
 
-        // VentaEcommerce venta = ventaEcommerceDAO.findByUsuario(pedido.getUser())
-        //         .orElseThrow(() -> new EntityNotFoundException(
-        //                 "Venta del usuario " + pedido.getUser().getUsername() + " no encontrado"));
-
         Cliente cliente = clienteDAO.findByUsuario(pedido.getUser())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 
-        if (estadoRequestDTO.getEstado() != null) return;
+        if (estadoRequestDTO.getEstado() == null)
+            return;
 
-            if (pedido.getEstado().equals(EstadoPedido.ENTREGADO)
-                    || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
-                throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
-            }
+        if (pedido.getEstado().equals(EstadoPedido.ENTREGADO)
+                || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
+            throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
+        }
 
-            switch (estadoRequestDTO.getEstado()) {
-                case "CANCELADO":
-                    pedido.setEstado(EstadoPedido.CANCELADO);
-                    pedido.setComentario(estadoRequestDTO.getMotivoCancelado());
-                    break;
-                case "CONFIRMADO":
-                    pedido.setEstado(EstadoPedido.CONFIRMADO);
-                    for (DetallePedido pe : pedido.getDetallePedidos()) {
-                        productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
-                    }
-                    break;
-                case "EN_CAMINO":
-                    pedido.setEstado(EstadoPedido.EN_CAMINO);
-                    break;
-                case "PENDIENTE":
-                    pedido.setEstado(EstadoPedido.PENDIENTE);
-                    break;
-                case "ENTREGADO":
-                    pedido.setEstado(EstadoPedido.ENTREGADO);
-                    break;
-                default:
-                    break;
+        switch (estadoRequestDTO.getEstado()) {
+            case "CANCELADO":
+                pedido.setEstado(EstadoPedido.CANCELADO);
+                pedido.setComentario(estadoRequestDTO.getMotivoCancelado());
+                break;
+            case "CONFIRMADO":
+                pedido.setEstado(EstadoPedido.CONFIRMADO);
+                for (DetallePedido pe : pedido.getDetallePedidos()) {
+                    productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
+                }
+                break;
+            case "EN_CAMINO":
+                pedido.setEstado(EstadoPedido.EN_CAMINO);
+                break;
+            case "PENDIENTE":
+                pedido.setEstado(EstadoPedido.PENDIENTE);
+                break;
+            case "ENTREGADO":
+                pedido.setEstado(EstadoPedido.ENTREGADO);
+                break;
+            default:
+                break;
 
-            }
-        
+        }
 
         pedidoUsuarioDAO.save(pedido);
 
-        Email email = new Email();
-        email.setMailFrom("mz2458594@gmail.com");
-        email.setMailTo(pedido.getUser().getEmail());
-        email.setSubject("Seguimiento de pedido " + id);
-        email.setJwt(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-        emailService.sendEmailPedido(email, pedido, 
-        // venta,
-         cliente);
+        // Email email = new Email();
+        // email.setMailFrom("mz2458594@gmail.com");
+        // email.setMailTo(pedido.getUser().getEmail());
+        // email.setSubject("Seguimiento de pedido " + id);
+        // email.setJwt(
+        //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+        // emailService.sendEmailPedido(email, pedido,
+        //         cliente);
 
     }
 }

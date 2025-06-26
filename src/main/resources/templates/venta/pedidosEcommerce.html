@@ -220,7 +220,7 @@
                                 motivoP.innerHTML = `
                         <div class="input__box">
                             <label for="">Motivo de cancelacion</label><br>
-                            <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCancelado">
+                            <input type="text" disabled id="motivo_cancel_mostrar" name="motivoCancelado" value="${detalle.comentario}">
                         </div>
                         `
                                 document.getElementById("estado_act").disabled = true;
@@ -268,7 +268,7 @@
                     motivoP.innerHTML = `
                     <div class="input__box">
                         <label for="">Motivo de cancelacion</label><br>
-                        <input type="text" disabled id="motivo_cancel" name="comentario">
+                        <input type="text" disabled id="motivo_cancel" name="motivoCancelado">
                     </div>
                     `
                     break;

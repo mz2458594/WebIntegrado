@@ -52,7 +52,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         Te confirmamos que tu pedido <strong>N° <span
-                                                                                id="num_pedido" th:text="${pedido?.idPedido != null ? pedido.idPedido ? 'NULL'}">134384603-51</span></strong>
+                                                                                id="num_pedido" th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
                                                                         ha sido recibido y se encuentra en proceso de
                                                                         aprobación, el cual tomará máximo 48 horas
                                                                         calendario.
@@ -154,7 +154,7 @@
                                                     <td valign="middle"
                                                         style="text-align:left;border-right:2px solid black;border-left:2px solid black;border-bottom:2px solid black;padding:5px 25px 20px 25px;line-height:1.4">
                                                         Documento de identidad: <br>
-                                                        <strong>DNI <span id="documentoIdentidad" th:text="${cliente?.dni != null ? cliente.dni ? 'NULL'}">87654321</span></strong>
+                                                        <strong>DNI <span id="documentoIdentidad" th:text="${cliente?.dni != null ? cliente.dni : 'NULL'}">87654321</span></strong>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -273,9 +273,7 @@
                                                                                 <tr>
                                                                                     <td valign="middle"
                                                                                         style="text-align:left;padding:7px 10px;white-space:nowrap!important">
-                                                                                        <strong>Sub-Total (<span
-                                                                                                id="items">1</span>
-                                                                                            producto):</strong>
+                                                                                        <strong>Sub-Total:</strong>
                                                                                     </td>
                                                                                     <td valign="middle"
                                                                                         style="width:10px;text-align:center;padding:7px 10px;white-space:nowrap!important">

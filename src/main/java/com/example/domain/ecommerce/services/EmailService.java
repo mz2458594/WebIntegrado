@@ -121,7 +121,7 @@ public class EmailService {
             Map<String, Object> model = new HashMap<>();
 
             model.put("pedido", pedidoUsuario);
-            model.put("costoEnvio", 20);
+            model.put("costoEnvio", pedidoUsuario.getEnvio());
             model.put("estado", pedidoUsuario.getEstado());
             model.put("cliente", cliente);
 
