@@ -19,6 +19,7 @@ import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.ProductoService;
+import com.example.domain.ecommerce.services.ProveedorService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,9 @@ public class PedidosController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private ProveedorService proveedorService;
 
     @GetMapping("/pedidos")
     public String pedidos(Model model) {
@@ -53,6 +57,7 @@ public class PedidosController {
         }
 
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         return "venta/agregarPedido";
     }
 
@@ -95,6 +100,7 @@ public class PedidosController {
         session.setAttribute("sale", sale);
 
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         model.addAttribute("pedidos", sale);
 
         return "venta/agregarPedido";
@@ -118,6 +124,7 @@ public class PedidosController {
         session.setAttribute("sale", sale);
 
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         model.addAttribute("pedidos", sale);
 
         return "venta/agregarPedido";
@@ -170,12 +177,10 @@ public class PedidosController {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(pedido.getCantidad());
             nuevo_item.setProducto(pedido.getProducto());
-            nuevo_item.setTotal(Float.parseFloat(nuevo_item.getProducto().getPrecioCompra())
-                    * nuevo_item.getCantidad());
+            nuevo_item.setTotal(Float.parseFloat(pedido.getProducto().getPrecioCompra())
+                    * pedido.getCantidad());
             sale.getItem().add(nuevo_item);
         }
-
-        session.setAttribute("sale", sale);
 
         model.addAttribute("pedidos", sale);
         model.addAttribute("productos", productosService.listarProducto());
@@ -191,6 +196,7 @@ public class PedidosController {
 
         model.addAttribute("pedidos", sale);
         model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 
         return "venta/editarPedido";
     }
