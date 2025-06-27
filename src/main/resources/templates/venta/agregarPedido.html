@@ -28,6 +28,7 @@
                         <p>Informacion del Pedido</p>
                         <div class="listar">
                             <div class="proveedores">
+                                <label for="">Seleccionar proveedor</label>
                                 <select id="Proveedores">
                                     <option value="" disabled selected>Seleccione un Proveedor</option>
                                     <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}"
