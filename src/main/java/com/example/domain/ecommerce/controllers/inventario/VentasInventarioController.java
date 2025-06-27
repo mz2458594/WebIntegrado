@@ -70,7 +70,6 @@ public class VentasInventarioController {
             @RequestParam("numero") String ruc,
             @RequestParam("tipo") String tipo,
             HttpSession session) {
-            System.out.println(ventaRequestDTOs);
         RequestDTO sale = new RequestDTO();
 
         float total = 0;

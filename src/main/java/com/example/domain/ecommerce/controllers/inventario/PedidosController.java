@@ -1,6 +1,7 @@
 package com.example.domain.ecommerce.controllers.inventario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
+import com.example.domain.ecommerce.dto.ProductRequestDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.dto.VentaRequestDTO;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
@@ -61,88 +64,43 @@ public class PedidosController {
         return "venta/agregarPedido";
     }
 
-    @PostMapping("/añadirPedido/{id}")
-    public String agregar(
-            @PathVariable int id,
-            @RequestParam("canti") int cantidad,
-            HttpSession session,
-            Model model) {
+    @PostMapping("/registroPedido")
+    public String registrarPedido(
+            VentaRequestDTO ventaRequestDTOs,
+            Model model, HttpSession session) {
 
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
+        Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        if (sale == null) {
-            sale = new RequestDTO();
-            sale.setItem(new ArrayList<>());
+        RequestDTO sale = new RequestDTO();
+
+        float total = 0;
+
+        sale.setItem(new ArrayList<>());
+
+        List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
+
+        if (productRequestDTOs == null) {
+            model.addAttribute("productos", productosService.listarProducto());
+
+            return "redirect:/inventario/pedido/agregarPedido";
         }
 
-        boolean encontrado = false;
-
-        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
-            if (item.getProducto().getIdProducto() == id) {
-                item.setCantidad(item.getCantidad() + cantidad);
-                item.setTotal(Float.parseFloat(item.getProducto().getPrecioCompra()) *
-                        item.getCantidad());
-                encontrado = true;
-                break;
-            }
-        }
-
-        if (!encontrado) {
+        for (ProductRequestDTO productRequestDTO : productRequestDTOs) {
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
-            nuevo_item.setCantidad(cantidad);
-            Producto p = productosService.obtenerProductoPorId(id);
+            nuevo_item.setCantidad(productRequestDTO.getCantidad());
+            Producto p = productosService.obtenerProductoPorId(productRequestDTO.getId());
             nuevo_item.setProducto(p);
-            nuevo_item.setTotal(cantidad *
-                    Float.parseFloat(nuevo_item.getProducto().getPrecioCompra()));
+            nuevo_item.setTotal(
+                    productRequestDTO.getCantidad() * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
+            total += nuevo_item.getTotal();
             sale.getItem().add(nuevo_item);
         }
 
-        session.setAttribute("sale", sale);
-
-        model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
-        model.addAttribute("pedidos", sale);
-
-        return "venta/agregarPedido";
-    }
-
-    @GetMapping("/eliminarPedido/{id}")
-    public String eliminarPedido(
-            @PathVariable Integer id,
-            HttpSession session,
-            Model model) {
-
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-
-        for (RequestDTO.ItemsVentaDTO item : sale.getItem()) {
-            if (item.getProducto().getIdProducto() == id) {
-                sale.getItem().remove(item);
-                break;
-            }
-        }
+        sale.setId_usuario(empleado.getId());
 
         session.setAttribute("sale", sale);
-
-        model.addAttribute("productos", productosService.listarProducto());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         model.addAttribute("pedidos", sale);
 
-        return "venta/agregarPedido";
-
-    }
-
-    @PostMapping("/registroPedido")
-    public String registrarVenta(
-            @RequestParam("total_reg") double total,
-            Model model, HttpSession session) {
-
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-        Empleado empleado = (Empleado) session.getAttribute("empleado");
-
-        sale.setId_usuario(empleado.getUsuario().getIdUsuario());
-        session.setAttribute("sale", sale);
-
-        model.addAttribute("pedidos", sale);
         return "venta/registroPedido";
     }
 
@@ -192,13 +150,10 @@ public class PedidosController {
     @GetMapping("/editarPedido")
     public String editarVenta(Model model, HttpSession session) {
 
-        RequestDTO sale = (RequestDTO) session.getAttribute("sale");
-
-        model.addAttribute("pedidos", sale);
         model.addAttribute("productos", productosService.listarProducto());
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
 
-        return "venta/editarPedido";
+        return "venta/agregarPedido";
     }
 
     @GetMapping("/cancelar")

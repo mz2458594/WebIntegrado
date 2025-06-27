@@ -65,14 +65,28 @@
                 <div class="container-impri-edi-vol">
                     <div class="im-id-vol">
 
-                        <form th:action="@{/inventario/pedido/savePedido}" method="post">
+                        <form th:action="@{/inventario/pedido/savePedido}" method="post" id="registrar">
                             <button type="button" th:if="${mostrar == true}" class="btn-imprimir"
                                 th:onclick="'window.location.href=\'/inventario/comprobante/pedido/' + ${id} + '\';'">Imprimir</button>
                             <button type="button" th:if="${mostrar == null}" class="btn-editar"
                                 onclick="window.location.href='/inventario/pedido/editarPedido'">Editar</button>
                             <button type="submit" th:if="${mostrar == null}" class="btn-save">Guardar</button>
-                            <button type="button" class="btn-volver"
-                                onclick="window.location.href='/inventario/pedido/cancelar'">Volver</button>
+                            <script>
+                                const registrar = document.getElementById('registrar')
+                                registrar.addEventListener('submit', (e) => {
+                                    e.preventDefault()
+                                    localStorage.removeItem("productosAgregados")
+                                    registrar.submit()
+                                })
+                            </script>
+                            <button type="button" class="btn-volver" id="cancelar">Cancelar</button>
+                            <script>
+                                const botonCancelar = document.getElementById('cancelar')
+                                botonCancelar.addEventListener('click', (e) => {
+                                    localStorage.removeItem("productosAgregados")
+                                    window.location.href = '/inventario/pedido/cancelar'
+                                }) 
+                            </script>
                         </form>
 
                     </div>
