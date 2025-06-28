@@ -37,24 +37,6 @@ public class VentasController {
     @Autowired
     private ProductoService productosService;
 
-    @GetMapping("/registrar_venta")
-    public String registrarVenta(
-            Model model, HttpSession session) {
-
-        RequestDTO car = (RequestDTO) session.getAttribute("lista");
-
-        Cliente user = (Cliente) session.getAttribute("user");
-        car.setId_usuario(user.getUsuario().getIdUsuario());
-        car.setTipo("BOLETA");
-
-        ventasService.crearVentaEcommerce(car);
-        session.removeAttribute("carrito");
-        session.removeAttribute("seleccion");
-
-        model.addAttribute("productos", productosService.listarProducto());
-        return "redirect:/targus/principal/";
-    }
-
     @PostMapping("/añadir/{id}")
     public String agregar(
             @PathVariable int id,
@@ -198,6 +180,24 @@ public class VentasController {
         session.setAttribute("lista", lista);
 
         return "redirect:/targus/usuario/form_pago";
+    }
+
+    @GetMapping("/registrar_venta")
+    public String registrarVenta(
+            Model model, HttpSession session, SessionStatus status) {
+
+        RequestDTO car = (RequestDTO) session.getAttribute("lista");
+
+        Cliente user = (Cliente) session.getAttribute("user");
+        car.setId_usuario(user.getUsuario().getIdUsuario());
+        car.setTipo("BOLETA");
+
+        ventasService.crearVentaEcommerce(car);
+
+        status.setComplete();
+        session.removeAttribute("carrito");
+        session.removeAttribute("lista");
+        return "redirect:/targus/principal/";
     }
 
 }

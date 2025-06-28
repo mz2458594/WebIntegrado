@@ -114,16 +114,17 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         pedido.setTotal(totalFinal);
         pedido.setDetallePedidos(lista_pedidos);
 
-        return pedidoUsuarioDAO.save(pedido);
+        pedidoUsuarioDAO.save(pedido);
+
+        // crearEmail(pedido);
+
+        return pedido;
     }
 
     @Override
     public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
         PedidoUsuario pedido = pedidoUsuarioDAO.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("Pedido con id " + id + " no encontrado"));
-
-        Cliente cliente = clienteDAO.findByUsuario(pedido.getUser())
-                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 
         if (estadoRequestDTO.getEstado() == null)
             return;
@@ -160,14 +161,21 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
         pedidoUsuarioDAO.save(pedido);
 
-        // Email email = new Email();
-        // email.setMailFrom("mz2458594@gmail.com");
-        // email.setMailTo(pedido.getUser().getEmail());
-        // email.setSubject("Seguimiento de pedido " + id);
-        // email.setJwt(
-        //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-        // emailService.sendEmailPedido(email, pedido,
-        //         cliente);
+        // crearEmail(pedido);
 
+    }
+
+    public void crearEmail(PedidoUsuario pedidoUsuario){
+        Cliente cliente = clienteDAO.findByUsuario(pedidoUsuario.getUser())
+                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
+
+        Email email = new Email();
+        email.setMailFrom("mz2458594@gmail.com");
+        email.setMailTo(pedidoUsuario.getUser().getEmail());
+        email.setSubject("Seguimiento de pedido | Targus");
+        email.setJwt(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+        emailService.sendEmailPedido(email, pedidoUsuario,
+                cliente);
     }
 }
