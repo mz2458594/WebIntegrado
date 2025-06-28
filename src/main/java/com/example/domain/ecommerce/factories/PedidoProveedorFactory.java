@@ -16,6 +16,7 @@ import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.enums.EstadoPedido;
@@ -89,46 +90,27 @@ public class PedidoProveedorFactory implements PedidoFactory {
 
     @Override
     public void actualizarEstado(int id, EstadoRequestDTO estadoRequestDTO) {
-        Optional<PedidoProveedor> pedido = pedidoProveedorDAO.findById(Long.valueOf(id));
+        PedidoProveedor pedido = pedidoProveedorDAO.findById(Long.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("Pedido con id " + id + " no encontrado"));
 
-        if (pedido.isEmpty()) {
-            throw new EntityNotFoundException("Venta con id " + id + " no encontrado");
-        }
+        EstadoPedido nuevoEstado = EstadoPedido.valueOf(estadoRequestDTO.getEstado());
 
-        PedidoProveedor pedido2 = pedido.get();
+        if (estadoRequestDTO.getEstado() == null)
+            return;
 
-        if (estadoRequestDTO.getEstado() != null) {
-
-           if (pedido2.getEstado().equals(EstadoPedido.ENTREGADO) || pedido2.getEstado().equals(EstadoPedido.CANCELADO)) {
-                throw new IllegalStateException("No se puede modificar un pedido " + pedido2.getEstado());
-            } else {
-                switch (estadoRequestDTO.getEstado()) {
-                    case "CANCELADO":
-                        pedido2.setEstado(EstadoPedido.CANCELADO);
-                        pedido2.setComentario(estadoRequestDTO.getMotivoCancelado());
-                        break;
-                    case "CONFIRMADO":
-                        pedido2.setEstado(EstadoPedido.CONFIRMADO);
-                        for (DetallePedido pe : pedido2.getDetallePedidos()) {
-                            productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
-                        }
-                        break;
-                    case "EN_CAMINO":
-                        pedido2.setEstado(EstadoPedido.EN_CAMINO);
-                        break;
-                    case "PENDIENTE":
-                        pedido2.setEstado(EstadoPedido.PENDIENTE);
-                        break;
-                    case "ENTREGADO":
-                        pedido2.setEstado(EstadoPedido.ENTREGADO);
-                        break;
-                    default:
-                        break;
+        if (pedido.getEstado().equals(EstadoPedido.ENTREGADO)
+                || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
+            throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
+        } else if (nuevoEstado.ordinal() > pedido.getEstado().ordinal()) {
+            if (nuevoEstado.equals(EstadoPedido.ENTREGADO)) {
+                for (DetallePedido pe : pedido.getDetallePedidos()) {
+                    productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
                 }
             }
+            pedido.setEstado(nuevoEstado);
         }
 
-        pedidoProveedorDAO.save(pedido2);
+        pedidoProveedorDAO.save(pedido);
 
     }
 }

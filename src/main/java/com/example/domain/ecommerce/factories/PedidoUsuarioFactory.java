@@ -126,37 +126,16 @@ public class PedidoUsuarioFactory implements PedidoFactory {
         PedidoUsuario pedido = pedidoUsuarioDAO.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("Pedido con id " + id + " no encontrado"));
 
+        EstadoPedido nuevoEstado = EstadoPedido.valueOf(estadoRequestDTO.getEstado());
+
         if (estadoRequestDTO.getEstado() == null)
             return;
 
         if (pedido.getEstado().equals(EstadoPedido.ENTREGADO)
                 || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
             throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
-        }
-
-        switch (estadoRequestDTO.getEstado()) {
-            case "CANCELADO":
-                pedido.setEstado(EstadoPedido.CANCELADO);
-                pedido.setComentario(estadoRequestDTO.getMotivoCancelado());
-                break;
-            case "CONFIRMADO":
-                pedido.setEstado(EstadoPedido.CONFIRMADO);
-                for (DetallePedido pe : pedido.getDetallePedidos()) {
-                    productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
-                }
-                break;
-            case "EN_CAMINO":
-                pedido.setEstado(EstadoPedido.EN_CAMINO);
-                break;
-            case "PENDIENTE":
-                pedido.setEstado(EstadoPedido.PENDIENTE);
-                break;
-            case "ENTREGADO":
-                pedido.setEstado(EstadoPedido.ENTREGADO);
-                break;
-            default:
-                break;
-
+        } else if (nuevoEstado.ordinal() > pedido.getEstado().ordinal()) {
+            pedido.setEstado(nuevoEstado);
         }
 
         pedidoUsuarioDAO.save(pedido);
@@ -165,7 +144,7 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
     }
 
-    public void crearEmail(PedidoUsuario pedidoUsuario){
+    public void crearEmail(PedidoUsuario pedidoUsuario) {
         Cliente cliente = clienteDAO.findByUsuario(pedidoUsuario.getUser())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
 
