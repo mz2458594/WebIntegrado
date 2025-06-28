@@ -91,9 +91,12 @@
                 </tr>
 
                 <tr>
-                    <td valign="top"
+                    <td th:switch="${estado}" valign="top"
                         style="text-align:center;padding:40px 0px 20px 0px;border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3">
-                        <img src="http://imgfz.com/i/bcx2fMz.png" alt="" style="width: 400px;">
+                        <img th:case="${estado.PENDIENTE}" src="http://imgfz.com/i/CXcWjPG.png" alt="" style="width: 400px;">
+                        <img th:case="${estado.CONFIRMADO}" src="http://imgfz.com/i/oOiuY6V.png" alt="" style="width: 400px;">
+                        <img th:case="${estado.EN_CAMINO}" src="http://imgfz.com/i/WgZm2Pz.png" alt="" style="width: 400px;">
+                        <img th:case="${estado.ENTREGADO}" src="http://imgfz.com/i/FrytGix.png" alt="" style="width: 400px;">
                     </td>
                 </tr>
 
