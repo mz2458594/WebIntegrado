@@ -2,79 +2,96 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reportes | Targus</title>
     <link rel="icon" th:href="@{/images/logo.png}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/styleventa.css}">
-
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" th:href="@{/css/styleventa.css}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
+
     <main class="contenedor_main">
         <div class="contenedor_modal">
-            
-            <body>
-                <div class="reporte__ventas">
-                    <div class="filtros__ventas">
-                        <div class="filtro-fila">
-                            <div class="filtro-campo">
-                                <label for="fecha-inicio">Desde:</label>
-                                <input type="date" id="fecha-inicio" />
-                            </div>
-                            <div class="filtro-campo">
-                                <label for="fecha-fin">Hasta:</label>
-                                <input type="date" id="fecha-fin" />
-                            </div>
+            <div class="reporte__ventas">
+                <div class="filtros__ventas">
+                    <div class="filtro-fila">
+                        <div class="filtro-campo">
+                            <label for="fecha-inicio">Desde:</label>
+                            <input type="date" id="fecha-inicio" />
                         </div>
-                        <div class="filtro-fila">
-                            <div class="filtro-campo">
-                                <label for="comprobante">Tipo de comprobante:</label>
-                                <select id="comprobante">
-                                    <option value="" disabled selected>Selecciona</option>
-                                    <option value="boleta">Boleta</option>
-                                    <option value="factura">Factura</option>
-                                </select>
-                            </div>
-                            <div class="filtro-campo">
-                                <label for="nro-inicial">Comprobante inicial:</label>
-                                <input type="number" id="nro-inicial" placeholder="Ej: 1001" />
-                            </div>
-                            <div class="filtro-campo">
-                                <label for="nro-final">Comprobante final:</label>
-                                <input type="number" id="nro-final" placeholder="Ej: 1050" />
-                            </div>
+                        <div class="filtro-campo">
+                            <label for="fecha-fin">Hasta:</label>
+                            <input type="date" id="fecha-fin" />
                         </div>
-                        <div class="filtro-fila">
-                            <div class="filtro-campo">
-                                <label for="total-transacciones">Total transacciones:</label>
-                                <input type="number" id="total-transacciones" readonly value="0" />
-                            </div>
-                            <div class="filtro-campo">
-                                <label for="total-ventas">Total ventas (S/):</label>
-                                <input type="number" id="total-ventas" readonly value="0.00" />
-                            </div>
-                            <div class="filtro-campo"></div>
+                    </div>
+
+                    <div class="filtro-fila">
+                        <div class="filtro-campo">
+                            <label for="comprobante">Tipo de comprobante:</label>
+                            <select id="comprobante">
+                                <option value="" disabled selected>Selecciona</option>
+                                <option value="boleta">Boleta</option>
+                                <option value="factura">Factura</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="nro-inicial">Comprobante inicial:</label>
+                            <input type="number" id="nro-inicial" placeholder="Ej: 1001" />
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="nro-final">Comprobante final:</label>
+                            <input type="number" id="nro-final" placeholder="Ej: 1050" />
+                        </div>
+                    </div>
+
+                    <div class="filtro-fila">
+                        <div class="filtro-campo">
+                            <label for="total-transacciones">Total transacciones:</label>
+                            <input type="number" id="total-transacciones" readonly value="0" />
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="total-ventas">Total ventas (S/):</label>
+                            <input type="number" id="total-ventas" readonly value="0.00" />
+                        </div>
+                        <div class="filtro-campo"></div>
+                    </div>
+
+                    <!-- NUEVO: Responsable y Botón de Buscar -->
+                    <div class="filtro-fila">
+                        <div class="filtro-campo">
+                            <label for="responsable">Responsable de la venta:</label>
+                            <select id="responsable">
+                                <option value="" disabled selected>Selecciona</option>
+                                <option value="juan">Juan Pérez</option>
+                                <option value="ana">Ana López</option>
+                                <option value="carlos">Carlos Gómez</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
+                            <label>&nbsp;</label>
+                            <button id="btn-buscar" class="btn-buscar" onclick="buscarVentas()">
+                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="cont-reportes">
-                    <p>Generar reporte:</p>
-                    <div class="reporte-btns">
-                        <button class="btn-pdf"><i class="fa-solid fa-file-pdf"></i></button>
-                        <button class="btn-excel"><i class="fa-solid fa-file-excel"></i></button>
-                    </div>
+            </div>
+
+            <div class="cont-reportes">
+                <p>Generar reporte:</p>
+                <div class="reporte-btns">
+                    <button class="btn-pdf"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn-excel"><i class="fa-solid fa-file-excel"></i></button>
                 </div>
+            </div>
         </div>
+
         <div class="cont_table">
             <div class="table__product">
                 <table class="table">
@@ -90,159 +107,122 @@
                         <th>Nombre Cliente</th>
                         <th>Contacto</th>
                     </tr>
+                    <!-- Ejemplo de ventas -->
                     <tr>
-                        <th>101</th>
-                        <th>16/06/2025</th>
-                        <th>Laptop Asus</th>
-                        <th>i5,500gb Ssd, 8gb, Modelo Zx-4500</th>
-                        <th>2</th>
-                        <th>1469</th>
-                        <th>5%</th>
-                        <th>Boleta</th>
-                        <th>Adrian Torres</th>
+                        <td>101</td>
+                        <td>16/06/2025</td>
+                        <td>Laptop Asus</td>
+                        <td>i5,500gb Ssd, 8gb, Modelo Zx-4500</td>
+                        <td>2</td>
+                        <td>1469</td>
+                        <td>5%</td>
+                        <td>Boleta</td>
+                        <td>Adrian Torres</td>
                         <td>example@gmail.com</td>
-                        </div>
-                        </td>
                     </tr>
                     <tr>
-                        <th>102</th>
-                        <th>16/06/2025</th>
-                        <th>Mouse Logitech</th>
-                        <th>G PRO Superlight</th>
-                        <th>1</th>
-                        <th>450</th>
-                        <th>--</th>
-                        <th>Boleta</th>
-                        <th>Carlos Gómez</th>
+                        <td>102</td>
+                        <td>16/06/2025</td>
+                        <td>Mouse Logitech</td>
+                        <td>G PRO Superlight</td>
+                        <td>1</td>
+                        <td>450</td>
+                        <td>--</td>
+                        <td>Boleta</td>
+                        <td>Carlos Gómez</td>
                         <td>example@gmail.com</td>
-                        </div>
-                        </td>
                     </tr>
-                    
                 </table>
-        </div>
-        </div>
-        </div>
-            <div class="container" id="dashboard">
-
-                <div class="chart-block">
-                    <h2>Métodos de Pago</h2>
-                    <canvas id="paymentChart"></canvas>
-                </div>
-
-                <div class="chart-block">
-                    <h2>Productos Más Vendidos</h2>
-                    <canvas id="barChart"></canvas>
-                </div>
             </div>
-            <input hidden type="number" id="product-1" value="12">
-            <input hidden type="number" id="product-2" value="30">
-            <input hidden type="number" id="product-3" value="34">
-            <input hidden type="number" id="product-4" value="35">
-            <input hidden type="number" id="product-5" value="50">
+        </div>
 
-            <input hidden type="number" id="pago-efectivo" value="150">
-            <input hidden type="number" id="pago-yape" value="80">
-            <input hidden type="number" id="pago-plin" value="50">
-            <input hidden type="number" id="pago-tarjeta" value="120">
+        <div class="container" id="dashboard">
+            <div class="chart-block">
+                <h2>Métodos de Pago</h2>
+                <canvas id="paymentChart"></canvas>
+            </div>
+            <div class="chart-block">
+                <h2>Productos Más Vendidos</h2>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
 
-            <script>
-                window.onload = function () {
-                    const productos = ["Logitech", "ROG Strix", "Teclado Genius", "Xiaomi", "Redmi Buds 5"];
-                    const ventas = [
-                        Number(document.getElementById('product-1').value),
-                        Number(document.getElementById('product-2').value),
-                        Number(document.getElementById('product-3').value),
-                        Number(document.getElementById('product-4').value),
-                        Number(document.getElementById('product-5').value)
-                    ];
+        <!-- Datos ocultos para graficos -->
+        <input hidden type="number" id="product-1" value="12">
+        <input hidden type="number" id="product-2" value="30">
+        <input hidden type="number" id="product-3" value="34">
+        <input hidden type="number" id="product-4" value="35">
+        <input hidden type="number" id="product-5" value="50">
 
-                    const ctxProductos = document.getElementById('barChart').getContext('2d');
-                    new Chart(ctxProductos, {
-                        type: 'pie',
-                        data: {
-                            labels: productos,
-                            datasets: [{
-                                label: 'Ventas',
-                                data: ventas,
-                                backgroundColor: [
-                                    'rgba(75, 192, 192, 0.6)',
-                                    'rgba(54, 162, 235, 0.6)',
-                                    'rgba(255, 206, 86, 0.6)',
-                                    'rgba(153, 102, 255, 0.6)',
-                                    'rgba(255, 99, 132, 0.6)'
-                                ],
-                                borderColor: [
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 99, 132, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: true
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Top 5 Productos más Vendidos'
-                                }
-                            }
-                        }
-                    });
-
-                    const metodosPago = ["Efectivo", "Yape", "Plin", "Tarjeta"];
-                    const pagos = [
-                        Number(document.getElementById('pago-efectivo').value),
-                        Number(document.getElementById('pago-yape').value),
-                        Number(document.getElementById('pago-plin').value),
-                        Number(document.getElementById('pago-tarjeta').value)
-                    ];
-
-                    const ctxPagos = document.getElementById('paymentChart').getContext('2d');
-                    new Chart(ctxPagos, {
-                        type: 'pie',
-                        data: {
-                            labels: metodosPago,
-                            datasets: [{
-                                label: 'Método de Pago',
-                                data: pagos,
-                                backgroundColor: [
-                                    'rgba(255, 159, 64, 0.6)',
-                                    'rgba(153, 102, 255, 0.6)',
-                                    'rgba(54, 162, 235, 0.6)',
-                                    'rgba(255, 99, 132, 0.6)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 159, 64, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 99, 132, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: true
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Métodos de Pago Usados'
-                                }
-                            }
-                        }
-                    });
-                };
-            </script>
-        </body>
-        </html>
+        <input hidden type="number" id="pago-efectivo" value="150">
+        <input hidden type="number" id="pago-yape" value="80">
+        <input hidden type="number" id="pago-plin" value="50">
+        <input hidden type="number" id="pago-tarjeta" value="120">
     </main>
+
+    <!-- Script para capturar filtros -->
+    <script>
+        function buscarVentas() {
+            const fechaInicio = document.getElementById("fecha-inicio").value;
+            const fechaFin = document.getElementById("fecha-fin").value;
+            const comprobante = document.getElementById("comprobante").value;
+            const nroInicial = document.getElementById("nro-inicial").value;
+            const nroFinal = document.getElementById("nro-final").value;
+            const responsable = document.getElementById("responsable").value;
+
+            console.log("Buscando ventas con:");
+            console.log("Desde:", fechaInicio, "Hasta:", fechaFin);
+            console.log("Comprobante:", comprobante, "N° Inicial:", nroInicial, "N° Final:", nroFinal);
+            console.log("Responsable:", responsable);
+
+            // Aquí puedes agregar llamada AJAX o submit a un formulario si lo necesitas
+        }
+
+        window.onload = function () {
+            // Charts
+            const productos = ["Logitech", "ROG Strix", "Teclado Genius", "Xiaomi", "Redmi Buds 5"];
+            const ventas = [
+                Number(document.getElementById('product-1').value),
+                Number(document.getElementById('product-2').value),
+                Number(document.getElementById('product-3').value),
+                Number(document.getElementById('product-4').value),
+                Number(document.getElementById('product-5').value)
+            ];
+            const ctxProductos = document.getElementById('barChart').getContext('2d');
+            new Chart(ctxProductos, {
+                type: 'pie',
+                data: {
+                    labels: productos,
+                    datasets: [{
+                        data: ventas,
+                        backgroundColor: ['#4bc0c0', '#36a2eb', '#ffce56', '#9966ff', '#ff6384'],
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+            const metodosPago = ["Efectivo", "Yape", "Plin", "Tarjeta"];
+            const pagos = [
+                Number(document.getElementById('pago-efectivo').value),
+                Number(document.getElementById('pago-yape').value),
+                Number(document.getElementById('pago-plin').value),
+                Number(document.getElementById('pago-tarjeta').value)
+            ];
+            const ctxPagos = document.getElementById('paymentChart').getContext('2d');
+            new Chart(ctxPagos, {
+                type: 'pie',
+                data: {
+                    labels: metodosPago,
+                    datasets: [{
+                        data: pagos,
+                        backgroundColor: ['#ff9f40', '#9966ff', '#36a2eb', '#ff6384'],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        };
+    </script>
+
     <script th:src="@{/js/modalAdd.js}"></script>
     <script th:src="@{/js/general.js}"></script>
 </body>
