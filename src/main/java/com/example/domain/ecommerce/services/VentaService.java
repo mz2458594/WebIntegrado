@@ -13,13 +13,16 @@ import com.example.domain.ecommerce.dto.VentaDTO;
 import com.example.domain.ecommerce.dto.VentaRequestDTO;
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.TarifaEnvio;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.entities.VentaEcommerce;
 import com.example.domain.ecommerce.models.entities.VentaInventario;
+import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
+import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.TarifaDAO;
 import com.example.domain.ecommerce.repositories.VentaEcommerceDAO;
 import com.example.domain.ecommerce.repositories.VentasDAO;
@@ -51,6 +54,8 @@ public class VentaService {
     private final ClienteDAO clienteDAO;
 
     private final TarifaDAO tarifaDAO;
+
+    private final EmpleadoDAO empleadoDAO;
 
     @Transactional
     public Venta crearVentaEcommerce(RequestDTO data) {
@@ -154,12 +159,17 @@ public class VentaService {
         return (List<Venta>) ventasDAO.findAll();
     }
 
-    public List<Venta> obtenerVentaPorRangoDeFechas(VentaDTO ventaDTO) {
+    public List<Venta> obtenerVentasConFiltro(VentaDTO ventaDTO) {
 
         Timestamp fechaInicio = new Timestamp(ventaDTO.getFechaInicio().getTime());
         Timestamp fechaFinal = new Timestamp(ventaDTO.getFechaFinal().getTime());
+        TipoComprobante tipoComprobante = TipoComprobante.valueOf(ventaDTO.getComprobante());
+        Empleado empleado = empleadoDAO.findById(Long.valueOf(ventaDTO.getIdResponsable()))
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
 
-        return (List<Venta>) ventasDAO.obtenerVentasPorRangoFecha(fechaInicio, fechaFinal);
+        return (List<Venta>) ventasDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal,
+                empleado.getUsuario().getUsername(),
+                tipoComprobante);
     }
 
 }

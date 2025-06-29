@@ -23,6 +23,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "ventas")
 @Data
@@ -43,6 +45,7 @@ public class Venta implements Serializable {
     private BigDecimal total;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
     @ManyToOne

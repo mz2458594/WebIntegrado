@@ -23,21 +23,21 @@
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="fecha-inicio">Desde:</label>
-                            <input type="date" id="fecha-inicio" />
+                            <input type="date" id="fecha-inicio" name="fechaInicio" />
                         </div>
                         <div class="filtro-campo">
                             <label for="fecha-fin">Hasta:</label>
-                            <input type="date" id="fecha-fin" />
+                            <input type="date" id="fecha-fin" name="fechaFinal" />
                         </div>
                     </div>
 
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="comprobante">Tipo de comprobante:</label>
-                            <select id="comprobante">
+                            <select id="comprobante" name="tipo">
                                 <option value="" disabled selected>Selecciona</option>
-                                <option value="boleta">Boleta</option>
-                                <option value="factura">Factura</option>
+                                <option value="BOLETA">Boleta</option>
+                                <option value="FACTURA">Factura</option>
                             </select>
                         </div>
                         <div class="filtro-campo">
@@ -66,11 +66,10 @@
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="responsable">Responsable de la venta:</label>
-                            <select id="responsable">
+                            <select id="responsable" name="idResponsable">
                                 <option value="" disabled selected>Selecciona</option>
-                                <option value="juan">Juan Pérez</option>
-                                <option value="ana">Ana López</option>
-                                <option value="carlos">Carlos Gómez</option>
+                                <option th:each="empleado : ${empleados}" th:value="${empleado.id}"
+                                    th:text="${empleado.nombre}">Juan Pérez</option>
                             </select>
                         </div>
                         <div class="filtro-campo">
@@ -95,43 +94,33 @@
         <div class="cont_table">
             <div class="table__product">
                 <table class="table">
-                    <tr class="thead">
-                        <th>N Comprobante</th>
-                        <th>Fecha Venta</th>
-                        <th>Producto</th>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Descuento Aplicado</th>
-                        <th>Boleta/Factura</th>
-                        <th>Nombre Cliente</th>
-                        <th>Contacto</th>
-                    </tr>
+                    <thead>
+                        <tr class="thead">
+                            <th>N Comprobante</th>
+                            <th>Fecha Venta</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Boleta/Factura</th>
+                            <th>Nombre Cliente</th>
+                            <th>Contacto</th>
+                        </tr>
+                    </thead>
                     <!-- Ejemplo de ventas -->
-                    <tr>
-                        <td>101</td>
-                        <td>16/06/2025</td>
-                        <td>Laptop Asus</td>
-                        <td>i5,500gb Ssd, 8gb, Modelo Zx-4500</td>
-                        <td>2</td>
-                        <td>1469</td>
-                        <td>5%</td>
-                        <td>Boleta</td>
-                        <td>Adrian Torres</td>
-                        <td>example@gmail.com</td>
-                    </tr>
-                    <tr>
-                        <td>102</td>
-                        <td>16/06/2025</td>
-                        <td>Mouse Logitech</td>
-                        <td>G PRO Superlight</td>
-                        <td>1</td>
-                        <td>450</td>
-                        <td>--</td>
-                        <td>Boleta</td>
-                        <td>Carlos Gómez</td>
-                        <td>example@gmail.com</td>
-                    </tr>
+                    <tbody id="tablaProductos">
+                        <tr>
+                            <td>101</td>
+                            <td>16/06/2025</td>
+                            <td>Laptop Asus</td>
+                            <td>i5,500gb Ssd, 8gb, Modelo Zx-4500</td>
+                            <td>2</td>
+                            <td>1469</td>
+                            <td>5%</td>
+                            <td>Boleta</td>
+                            <td>Adrian Torres</td>
+                            <td>example@gmail.com</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -162,20 +151,61 @@
 
     <!-- Script para capturar filtros -->
     <script>
+
+        const tabla = document.getElementById('tablaProductos')
+
         function buscarVentas() {
             const fechaInicio = document.getElementById("fecha-inicio").value;
-            const fechaFin = document.getElementById("fecha-fin").value;
+            const fechaFinal = document.getElementById("fecha-fin").value;
             const comprobante = document.getElementById("comprobante").value;
             const nroInicial = document.getElementById("nro-inicial").value;
             const nroFinal = document.getElementById("nro-final").value;
-            const responsable = document.getElementById("responsable").value;
+            const idResponsable = document.getElementById("responsable").value;
 
             console.log("Buscando ventas con:");
-            console.log("Desde:", fechaInicio, "Hasta:", fechaFin);
+            console.log("Desde:", fechaInicio, "Hasta:", fechaFinal);
             console.log("Comprobante:", comprobante, "N° Inicial:", nroInicial, "N° Final:", nroFinal);
-            console.log("Responsable:", responsable);
+            console.log("Responsable:", idResponsable);
 
-            // Aquí puedes agregar llamada AJAX o submit a un formulario si lo necesitas
+            const datos = { fechaInicio: fechaInicio, fechaFinal: fechaFinal, comprobante: comprobante, idResponsable, idResponsable }
+
+            fetch(`http://localhost:8080/api/sale/filtro`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error el obtener el detalle del producto")
+                    }
+                    return response.json();
+                })
+                .then(detalle => {
+                    let html = ''
+                    detalle.forEach(element => {
+                        html += `
+                        <tr>
+                            <td>101</td>
+                            <td>${element.fechaVenta}</td>
+                            <td>${element.ventaProductos.producto.nombre}</td>
+                            <td>${element.ventaProductos.cantidad}</td>
+                            <td>${element.ventaProductos.producto.precioVenta}</td>
+                            <td>${element.comprobante.tipo}</td>
+                            <td>${element.usuario.username}</td>
+                            <td>${element.usuario.email}</td>
+                        </tr>
+                    `
+                    });
+
+                    tabla.innerHTML = html
+                })
+                .catch(error => {
+                    console.error("Error ", error)
+                })
+
+
         }
 
         window.onload = function () {

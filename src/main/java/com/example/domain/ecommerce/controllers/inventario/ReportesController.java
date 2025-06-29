@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.ecommerce.services.UsuarioService;
 import com.example.domain.ecommerce.services.VentaService;
 
 @Controller
@@ -15,10 +16,14 @@ public class ReportesController {
     @Autowired
     private VentaService ventaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     @GetMapping("/")
     public String verReportes(Model model){
         model.addAttribute("ventas", ventaService.getVentas());
+        model.addAttribute("empleados", usuarioService.getEmpleados());
         return "venta/reportes";
     }
 

@@ -42,6 +42,10 @@ public class UsuarioService {
         return (List<Rol>) rolDAO.findAll();
     }
 
+    public List<Empleado> getEmpleados(){
+        return (List<Empleado>) empleadoDAO.findAll();
+    }
+
     public List<UsuarioPersonaDTO> listarClientesYEmpleados() {
         List<UsuarioPersonaDTO> resultado = new ArrayList<>();
 
