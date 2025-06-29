@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.domain.ecommerce.dto.RequestDTO;
+import com.example.domain.ecommerce.dto.VentaDTO;
 import com.example.domain.ecommerce.dto.VentaRequestDTO;
 import com.example.domain.ecommerce.models.entities.Comprobante;
 import com.example.domain.ecommerce.models.entities.Detalle_venta;
@@ -24,6 +25,7 @@ import com.example.domain.ecommerce.repositories.VentaEcommerceDAO;
 import com.example.domain.ecommerce.repositories.VentasDAO;
 import com.example.domain.ecommerce.repositories.VentasInventarioDAO;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,12 +109,13 @@ public class VentaService {
         BigDecimal costoEnvio = BigDecimal.ZERO;
         if (venta instanceof VentaEcommerce ecommerce) {
             String departamento = clienteDAO.findByUsuario(usuario)
-            .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el usuario"))
-            .getDireccion()
-            .getDepartamento();
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el usuario"))
+                    .getDireccion()
+                    .getDepartamento();
 
             TarifaEnvio tarifaEnvio = tarifaDAO.findByDepartamento(departamento)
-            .orElseThrow(() -> new RuntimeException("No se encontro ninguna tarifa para el departamento " + departamento));
+                    .orElseThrow(() -> new RuntimeException(
+                            "No se encontro ninguna tarifa para el departamento " + departamento));
 
             BigDecimal precioDepartamento = tarifaEnvio.getPrecio_envio();
 
@@ -122,7 +125,7 @@ public class VentaService {
 
         }
 
-        BigDecimal totalFinal = total.add(costoEnvio).setScale(2,RoundingMode.UP);
+        BigDecimal totalFinal = total.add(costoEnvio).setScale(2, RoundingMode.UP);
 
         venta.setTotal(totalFinal);
 
@@ -145,6 +148,18 @@ public class VentaService {
 
     public List<VentaEcommerce> getVentaEcommerce() {
         return (List<VentaEcommerce>) ventaEcommerceDAO.findAll();
+    }
+
+    public List<Venta> getVentas() {
+        return (List<Venta>) ventasDAO.findAll();
+    }
+
+    public List<Venta> obtenerVentaPorRangoDeFechas(VentaDTO ventaDTO) {
+
+        Timestamp fechaInicio = new Timestamp(ventaDTO.getFechaInicio().getTime());
+        Timestamp fechaFinal = new Timestamp(ventaDTO.getFechaFinal().getTime());
+
+        return (List<Venta>) ventasDAO.obtenerVentasPorRangoFecha(fechaInicio, fechaFinal);
     }
 
 }
