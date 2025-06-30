@@ -31,11 +31,11 @@ public class PersonaService {
 
         LocalDate fechaNacimineto = user.getFecha_nac().toLocalDate();
 
-        if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
+        if (calcularEdad(fechaNacimineto) < 18) {
+            throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
+        }
 
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("No se puede registrar a un empleado menor de 18 años");
-            }
+        if (user.getRol().equals("Empleado") || user.getRol().equals("Administrador")) {
 
             Empleado empleado = new Empleado();
             empleado.setCargo(user.getCargo());
@@ -43,10 +43,6 @@ public class PersonaService {
             persona = empleado;
 
         } else {
-
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("No se puede registrar a un cliente menor de 13 años");
-            }
 
             Cliente cliente = new Cliente();
             cliente.setUsuario(usuario);
@@ -74,14 +70,9 @@ public class PersonaService {
     public Persona actualizarPersona(UserDTO userDTO, Usuario usuario) {
 
         LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
-        if (usuario.getRol().getNombre().equals("Empleado")) {
-            if (calcularEdad(fechaNacimineto) < 18) {
-                throw new RuntimeException("*No se puede registrar a un empleado menor de 18 años");
-            }
-        } else if (usuario.getRol().getNombre().equals("Cliente")) {
-            if (calcularEdad(fechaNacimineto) < 13) {
-                throw new RuntimeException("*No se puede registrar a un cliente menor de 13 años");
-            }
+
+        if (calcularEdad(fechaNacimineto) < 18) {
+            throw new RuntimeException("*No se puede registrar a un empleado menor de 18 años");
         }
 
         Persona persona;
@@ -96,7 +87,7 @@ public class PersonaService {
             Empleado empleado2 = empleado.get();
             empleado2.setCargo(userDTO.getCargo());
             persona = empleado2;
-            
+
         } else {
             throw new RuntimeException("*El usuario no tiene ningun rol en el sistema");
         }
