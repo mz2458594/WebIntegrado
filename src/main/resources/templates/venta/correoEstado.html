@@ -61,7 +61,7 @@
                                                                 <td th:if="${estado == estado.CANCELADO}">
                                                                     Te comunicamos que tu pedido <strong>N° <span
                                                                             th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
-                                                                    ha sido cancelado por <span id="motivoCan">Ya no
+                                                                    ha sido cancelado por <span id="motivoCan" th:text="${pedido.comentario}">Ya no
                                                                         querer el producto</span> te agradecemos la
                                                                     confianza y se pasara a hacer el rembolso en 48
                                                                     horas.
