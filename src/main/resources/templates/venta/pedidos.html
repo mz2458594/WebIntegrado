@@ -208,11 +208,11 @@
                     <div class="input__box">
                         <label for="">Estado</label><br>
                         <select name="estado" id="estado_act" onchange="campoMotivo()">
-                            <option value="PENDIENTE">PENDIENTE</option>
-                            <option value="CONFIRMADO">CONFIRMADO</option>
-                            <option value="EN_CAMINO">EN CAMINO</option>
-                            <option value="ENTREGADO">ENTREGADO</option>
-                            <option value="CANCELADO">CANCELADO</option>
+                            <option id="pendienteEst" value="PENDIENTE">PENDIENTE</option>
+                            <option id="confirmadoEst" value="CONFIRMADO">CONFIRMADO</option>
+                            <option id="enCaminoEst" value="EN_CAMINO">EN CAMINO</option>
+                            <option id="entregadoEst" value="ENTREGADO">ENTREGADO</option>
+                            <option id="canceladoEst" value="CANCELADO">CANCELADO</option>
                         </select>
                     </div>
                     <div id="conte_motivo_cacel" style="display: none;"></div>
@@ -264,6 +264,13 @@
                         case "ENTREGADO":
                             document.getElementById("estado_act").disabled = true;
                             document.getElementById("guardar_estado_pp").style.display = "none"
+                            break;
+                        case "CONFIRMADO":
+                            document.getElementById("pendienteEst").disabled = true;
+                            break;
+                        case "EN_CAMINO":
+                            document.getElementById("pendienteEst").disabled = true;
+                            document.getElementById("confirmadoEst").disabled = true;
                             break;
                     }
 
