@@ -1,5 +1,7 @@
 package com.example.domain.ecommerce.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,16 @@ public class ProveedorService {
 
     public Iterable<Proveedor> obtenerProveedores() {
         return proveedorDAO.findAll();
+    }
+
+    public List<Proveedor> obtenerProveedoresActivos(){
+        List<Proveedor> activos = new ArrayList<>();
+        for (Proveedor proveedor : proveedorDAO.findAll()) {
+            if (proveedor.getEstado().equals(Estado.ACTIVO)) {
+                activos.add(proveedor);
+            }
+        }
+        return activos;
     }
 
     public void createProv(ProveedorDTO proveedorDTO) {

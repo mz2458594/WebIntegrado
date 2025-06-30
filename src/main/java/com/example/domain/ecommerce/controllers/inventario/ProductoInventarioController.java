@@ -30,7 +30,7 @@ public class ProductoInventarioController {
     public String productos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
         return "venta/productos";
     }
 
@@ -48,7 +48,7 @@ public class ProductoInventarioController {
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
 
         return "venta/productos";
     }
@@ -67,7 +67,7 @@ public class ProductoInventarioController {
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
 
         return "venta/productos";
     }
@@ -81,7 +81,7 @@ public class ProductoInventarioController {
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
 
         return "redirect:/inventario/productos/";
 
