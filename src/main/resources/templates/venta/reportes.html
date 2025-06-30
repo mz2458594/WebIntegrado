@@ -108,18 +108,6 @@
                     </thead>
                     <!-- Ejemplo de ventas -->
                     <tbody id="tablaProductos">
-                        <tr>
-                            <td>101</td>
-                            <td>16/06/2025</td>
-                            <td>Laptop Asus</td>
-                            <td>i5,500gb Ssd, 8gb, Modelo Zx-4500</td>
-                            <td>2</td>
-                            <td>1469</td>
-                            <td>5%</td>
-                            <td>Boleta</td>
-                            <td>Adrian Torres</td>
-                            <td>example@gmail.com</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -127,32 +115,18 @@
 
         <div class="container" id="dashboard">
             <div class="chart-block">
-                <h2>Métodos de Pago</h2>
-                <canvas id="paymentChart"></canvas>
-            </div>
-            <div class="chart-block">
-                <h2>Productos Más Vendidos</h2>
+                <h2 style="display: none;">Productos Más Vendidos</h2>
                 <canvas id="barChart"></canvas>
             </div>
         </div>
 
-        <!-- Datos ocultos para graficos -->
-        <input hidden type="number" id="product-1" value="12">
-        <input hidden type="number" id="product-2" value="30">
-        <input hidden type="number" id="product-3" value="34">
-        <input hidden type="number" id="product-4" value="35">
-        <input hidden type="number" id="product-5" value="50">
-
-        <input hidden type="number" id="pago-efectivo" value="150">
-        <input hidden type="number" id="pago-yape" value="80">
-        <input hidden type="number" id="pago-plin" value="50">
-        <input hidden type="number" id="pago-tarjeta" value="120">
     </main>
 
     <!-- Script para capturar filtros -->
     <script>
 
         const tabla = document.getElementById('tablaProductos')
+        let chartProductos = null
 
         function buscarVentas() {
             const fechaInicio = document.getElementById("fecha-inicio").value;
@@ -184,22 +158,67 @@
                 })
                 .then(detalle => {
                     let html = ''
-                    detalle.forEach(element => {
-                        html += `
+                    if (detalle.length > 0) {
+                        detalle.forEach(element => {
+                            element.ventaProductos.forEach(detalle => {
+                                html += `
                         <tr>
-                            <td>101</td>
+                            <td>${element.comprobante.numero}</td>
                             <td>${element.fechaVenta}</td>
-                            <td>${element.ventaProductos.producto.nombre}</td>
-                            <td>${element.ventaProductos.cantidad}</td>
-                            <td>${element.ventaProductos.producto.precioVenta}</td>
+                            <td class="productName">${detalle.producto.nombre}</td>
+                            <td class="productQuantity">${detalle.cantidad}</td>
+                            <td>${detalle.producto.precioVenta}</td>
                             <td>${element.comprobante.tipo}</td>
                             <td>${element.usuario.username}</td>
                             <td>${element.usuario.email}</td>
                         </tr>
                     `
-                    });
+                            })
+                        });
 
-                    tabla.innerHTML = html
+                        tabla.innerHTML = html
+
+                        const conteoProductos = {}
+                        const nombres = document.querySelectorAll('.productName')
+                        const cantidades = document.querySelectorAll('.productQuantity')
+
+                        nombres.forEach((element, index) => {
+                            const nombre = element.textContent.trim()
+                            const cantidad = parseInt(cantidades[index].textContent.trim())
+                            conteoProductos[nombre] = (conteoProductos[nombre] || 0) + cantidad
+                        })
+                        const labels = Object.keys(conteoProductos)
+                        const data = Object.values(conteoProductos)
+                        const ctxProductos = document.getElementById('barChart').getContext('2d');
+
+                        document.querySelector('#dashboard .chart-block').style.display = "block";
+                        document.querySelector('#dashboard h2').style.display = "block"
+
+                        if (chartProductos) {
+                            chartProductos.destroy()
+                        }
+
+                        chartProductos = new Chart(ctxProductos, {
+                            type: 'pie',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    data: data,
+                                    backgroundColor: ['#4bc0c0', '#36a2eb', '#ffce56', '#9966ff', '#ff6384'],
+                                    borderWidth: 1
+                                }]
+                            }
+                        });
+
+
+
+                    } else {
+                        html = `<tr><td colspan="8" style="text-align:center;">No hay resultados</td></tr>`
+                        document.querySelector('#dashboard .chart-block').style.display = "none"
+                        tabla.innerHTML = html
+                    }
+
+
                 })
                 .catch(error => {
                     console.error("Error ", error)
@@ -208,53 +227,12 @@
 
         }
 
-        window.onload = function () {
-            // Charts
-            const productos = ["Logitech", "ROG Strix", "Teclado Genius", "Xiaomi", "Redmi Buds 5"];
-            const ventas = [
-                Number(document.getElementById('product-1').value),
-                Number(document.getElementById('product-2').value),
-                Number(document.getElementById('product-3').value),
-                Number(document.getElementById('product-4').value),
-                Number(document.getElementById('product-5').value)
-            ];
-            const ctxProductos = document.getElementById('barChart').getContext('2d');
-            new Chart(ctxProductos, {
-                type: 'pie',
-                data: {
-                    labels: productos,
-                    datasets: [{
-                        data: ventas,
-                        backgroundColor: ['#4bc0c0', '#36a2eb', '#ffce56', '#9966ff', '#ff6384'],
-                        borderWidth: 1
-                    }]
-                }
-            });
-
-            const metodosPago = ["Efectivo", "Yape", "Plin", "Tarjeta"];
-            const pagos = [
-                Number(document.getElementById('pago-efectivo').value),
-                Number(document.getElementById('pago-yape').value),
-                Number(document.getElementById('pago-plin').value),
-                Number(document.getElementById('pago-tarjeta').value)
-            ];
-            const ctxPagos = document.getElementById('paymentChart').getContext('2d');
-            new Chart(ctxPagos, {
-                type: 'pie',
-                data: {
-                    labels: metodosPago,
-                    datasets: [{
-                        data: pagos,
-                        backgroundColor: ['#ff9f40', '#9966ff', '#36a2eb', '#ff6384'],
-                        borderWidth: 1
-                    }]
-                }
-            });
-        };
     </script>
 
-    <script th:src="@{/js/modalAdd.js}"></script>
-    <script th:src="@{/js/general.js}"></script>
 </body>
+
+<script>
+    window.addEventListener("load", buscarVentas);
+</script>
 
 </html>

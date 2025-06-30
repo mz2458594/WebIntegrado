@@ -2,6 +2,7 @@ package com.example.domain.ecommerce.models.entities;
 
 import java.time.LocalDateTime;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,7 @@ public class Comprobante {
 
     @OneToOne
     @JoinColumn(name = "venta_id", nullable = true)
+    @JsonIgnoreProperties({"comprobante", "ventaProductos", "usuario"})
     private Venta venta;
 
     @OneToOne

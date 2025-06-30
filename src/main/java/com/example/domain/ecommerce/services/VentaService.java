@@ -161,14 +161,25 @@ public class VentaService {
 
     public List<Venta> obtenerVentasConFiltro(VentaDTO ventaDTO) {
 
-        Timestamp fechaInicio = new Timestamp(ventaDTO.getFechaInicio().getTime());
-        Timestamp fechaFinal = new Timestamp(ventaDTO.getFechaFinal().getTime());
-        TipoComprobante tipoComprobante = TipoComprobante.valueOf(ventaDTO.getComprobante());
-        Empleado empleado = empleadoDAO.findById(Long.valueOf(ventaDTO.getIdResponsable()))
-                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+        Timestamp fechaInicio = ventaDTO.getFechaInicio() != null ? new Timestamp(ventaDTO.getFechaInicio().getTime()) : null;
+        Timestamp fechaFinal = ventaDTO.getFechaFinal() != null ? new Timestamp(ventaDTO.getFechaFinal().getTime()) : null;
+        TipoComprobante tipoComprobante = null;
+        if (ventaDTO.getComprobante() != null && !ventaDTO.getComprobante().isEmpty()) {
+            tipoComprobante = TipoComprobante.valueOf(ventaDTO.getComprobante());
+        }
 
+        String username = null;
+
+        if (ventaDTO.getIdResponsable() != null) {
+             Empleado empleado = empleadoDAO.findById(Long.valueOf(ventaDTO.getIdResponsable()))
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+            username = empleado.getUsuario().getUsername();
+
+        }
+
+       
         return (List<Venta>) ventasDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal,
-                empleado.getUsuario().getUsername(),
+                username,
                 tipoComprobante);
     }
 

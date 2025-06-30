@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Detalle_venta implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "venta_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("ventaProductos")
     private Venta venta;
 
     @ManyToOne
