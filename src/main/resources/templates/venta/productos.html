@@ -32,7 +32,7 @@
                 method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre">
+                    <input type="text" name="nombre" required>
                 </div>
                 <div class="input__box">
                     <label for="">Descripcion</label><br>
@@ -55,28 +55,32 @@
                 </div>
                 <div class="input__box">
                     <label for="">Stock</label><br>
-                    <input type="number" name="stock">
+                    <input type="number" name="stock" required>
                 </div>
                 <div class="input__box">
                     <label for="">Precio Venta</label><br>
-                    <input type="text" name="precio">
+                    <input type="text" name="precio" required>
                 </div>
                 <div class="input__box">
                     <label for="">Precio Compra</label><br>
-                    <input type="text" name="precioCompra">
+                    <input type="text" name="precioCompra" required>
                 </div>
                 <div class="input__box">
                     <label for="">Marca</label><br>
-                    <input type="text" name="marca">
+                    <input type="text" name="marca" required>
                 </div>
                 <div class="input__box">
                     <label for="">Imagen</label><br>
-                    <input type="text" name="imagen1">
+                    <input type="text" name="imagen1" required>
                 </div>
                 <div class="input__box">
                     <label for="">Codigo de barras</label><br>
                     <input type="text" name="codigoBarras" id="codigo" maxlength="13" pattern="\d{13}"
                         title="El codigo debe tener exactamente 13 digitos numericos" required>
+                </div>
+                <div class="input__box">
+                    <label for="">Peso</label>
+                    <input type="text" name="peso" required>
                 </div>
 
                 <!-- Campos dinámicos -->
@@ -164,6 +168,7 @@
                             <td th:text="${producto.marca}">200</td>
                             <td th:text="${producto.imagen}"></td>
                             <td th:text="${producto.codigoBarras}"></td>
+                            <td th:text="${producto.peso}"></td>
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -233,6 +238,10 @@
                         <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}"
                             title="El codigo debe tener exactamente 13 digitos numericos" required>
                     </div>
+                    <div class="input__box">
+                        <label for="">Peso</label><br>
+                        <input type="text" name="peso" id="peso_act" required>
+                    </div>
                     <!-- Campos dinamicos -->
                     <div id="camposCategorias" class="category-fields"></div>
                     <div class="button__modal" style="display: flex; justify-content: space-between;">
@@ -285,7 +294,7 @@
                     document.getElementById("marca_act").value = celdas[8].textContent;
                     document.getElementById("imagen_act").value = celdas[9].textContent;
                     document.getElementById("codigo_act").value = celdas[10].textContent;
-
+                    document.getElementById("peso_act").value = celdas[11].textContent;
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();
 
