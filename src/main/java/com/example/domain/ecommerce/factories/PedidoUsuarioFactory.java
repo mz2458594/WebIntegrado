@@ -135,12 +135,15 @@ public class PedidoUsuarioFactory implements PedidoFactory {
                 || pedido.getEstado().equals(EstadoPedido.CANCELADO)) {
             throw new IllegalStateException("No se puede modificar un pedido " + pedido.getEstado());
         } else if (nuevoEstado.ordinal() > pedido.getEstado().ordinal()) {
+            if (nuevoEstado.equals(EstadoPedido.CANCELADO)) {
+                pedido.setComentario(estadoRequestDTO.getMotivoCancelado());
+            }
             pedido.setEstado(nuevoEstado);
         }
 
         pedidoUsuarioDAO.save(pedido);
 
-        // crearEmail(pedido);
+        crearEmail(pedido);
 
     }
 

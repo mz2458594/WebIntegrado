@@ -106,6 +106,8 @@ public class PedidoProveedorFactory implements PedidoFactory {
                 for (DetallePedido pe : pedido.getDetallePedidos()) {
                     productosService.aumentarStock(pe.getProducto(), pe.getCantidad());
                 }
+            } else if (nuevoEstado.equals(EstadoPedido.CANCELADO)){
+                pedido.setComentario(estadoRequestDTO.getMotivoCancelado());
             }
             pedido.setEstado(nuevoEstado);
         }
