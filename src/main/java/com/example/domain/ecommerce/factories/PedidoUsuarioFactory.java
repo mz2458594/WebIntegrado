@@ -143,7 +143,7 @@ public class PedidoUsuarioFactory implements PedidoFactory {
 
         pedidoUsuarioDAO.save(pedido);
 
-        crearEmail(pedido);
+        // crearEmail(pedido);
 
     }
 
