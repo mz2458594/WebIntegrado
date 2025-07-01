@@ -186,6 +186,34 @@ input:focus, select:focus {
     box-shadow: 0 0 0 2px rgba(19, 111, 231, 0.1);
 }
 
+#mensaje-error {
+  color: red;
+  font-size: 0.9em;
+  display: none;
+  margin-top: 4px;
+}
+
+#contraseña{
+    margin-bottom: 0;
+}
+ul{
+    display: none;
+    margin: 0;
+    li{
+    font-weight: bolder;   
+    font-size: 14px;
+    }
+}
+.invalido{
+    color: #c72828;
+    list-style:circle;     
+}
+
+.valido{
+    color: #28c73d;
+    list-style:outside;     
+}
+
 #boton_crear {
     width: 100%;
     padding: 15px;
