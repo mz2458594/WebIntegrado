@@ -1,22 +1,26 @@
 package com.example.domain.ecommerce.controllers.web;
 
+import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.ProductoSeleccionadoDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Producto;
+import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.ProductoService;
 import com.example.domain.ecommerce.services.VentaService;
 
 import org.springframework.ui.Model;
+
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +40,9 @@ public class VentasController {
 
     @Autowired
     private ProductoService productosService;
+
+    @Autowired
+    private DireccionService direccionService;
 
     @PostMapping("/añadir/{id}")
     public String agregar(
@@ -198,6 +205,22 @@ public class VentasController {
         session.removeAttribute("carrito");
         session.removeAttribute("lista");
         return "redirect:/targus/principal/";
+    }
+
+    @PostMapping("/updateDirection/{id}")
+    public String actualizarDireccionEnvio(@ModelAttribute DireccionDTO direccionDTO,
+            @PathVariable int id,
+            Model model,
+            HttpSession session) {
+        try {
+            Cliente cliente = direccionService.updateDirection(direccionDTO, id);
+            session.setAttribute("user", cliente);
+
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/targus/usuario/form_pago";
     }
 
 }

@@ -26,19 +26,19 @@
 
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" required>
+                    <input type="text" name="nombre" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Apellido</label><br>
-                    <input type="text" name="apellido" required>
+                    <input type="text" name="apellido" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Numero de documento</label><br>
-                    <input type="text" name="num_documento" maxlength="8" required>
+                    <input type="text" name="num_documento" class="soloNum" maxlength="8" required>
                 </div>
                 <div class="input__box">
                     <label for="">Celular</label><br>
-                    <input type="text" name="celular" maxlength="9" required>
+                    <input type="text" name="celular" class="soloNum" maxlength="9" required>
                 </div>
                 <div class="input__box">
                     <label for="">Calle</label><br>
@@ -46,15 +46,15 @@
                 </div>
                 <div class="input__box">
                     <label for="">Departamento</label><br>
-                    <input type="text" name="departamento" required>
+                    <input type="text" name="departamento" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Distrito</label><br>
-                    <input type="text" name="distrito" required>
+                    <input type="text" name="distrito" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Provincia</label><br>
-                    <input type="text" name="provincia" required>
+                    <input type="text" name="provincia" class="soloText" required>
                 </div>
 
                 <div class="input__box">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="estado">
+                    <select name="estado" required>
                         <option value="ACTIVO">ACTIVO</option>
                         <option value="INACTIVO">INACTIVO</option>
                     </select>
@@ -218,11 +218,11 @@
                 <form class="form_modal" id="formEditarUser" method="post">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input type="text" id="nombre_act" name="nombre" required>
+                        <input type="text" id="nombre_act" name="nombre" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Apellido</label><br>
-                        <input type="text" id="apellido_act" name="apellido" required>
+                        <input type="text" id="apellido_act" name="apellido" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Fecha de nacimiento</label><br>
@@ -248,35 +248,35 @@
                     </div>
                     <div class="input__box">
                         <label for="">Departamento</label><br>
-                        <input type="text" id="departamento_act" name="departamento" required>
+                        <input type="text" id="departamento_act" class="soloText" name="departamento" required>
                     </div>
                     <div class="input__box">
                         <label for="">Distrito</label><br>
-                        <input type="text" id="distrito_act" name="distrito" required>
+                        <input type="text" id="distrito_act" class="soloText" name="distrito" required>
                     </div>
                     <div class="input__box">
                         <label for="">Provincia</label><br>
-                        <input type="text" id="provincia_act" name="provincia" required>
+                        <input type="text" id="provincia_act" class="soloText" name="provincia" required>
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
-                        <input type="email" id="email_act" name="correo" required>
+                        <input type="email" id="email_act" class="soloText" name="correo" required>
                     </div>
 
                     <div class="input__box">
                         <label for="">Username</label><br>
-                        <input type="text" id="username_act" name="username" required>
+                        <input type="text" id="username_act" name="username" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Estado</label><br>
-                        <select name="estado" id="estado_act">
+                        <select name="estado" id="estado_act" required>
                             <option value="ACTIVO">ACTIVO</option>
                             <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
                     <div class="input__box">
                         <label for="">Comentario</label><br>
-                        <input type="comentario" name="comentario" id="comentario_act">
+                        <input type="comentario" name="comentario" id="comentario_act" class="soloText">
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">
@@ -374,6 +374,9 @@
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
+
+    <script th:src="@{/js/validacionesInput.js}"></script>
+
 </body>
 
 </html>

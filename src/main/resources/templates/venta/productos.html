@@ -32,15 +32,15 @@
                 method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" required>
+                    <input type="text" name="nombre" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Descripcion</label><br>
-                    <textarea name="descripcion"></textarea>
+                    <textarea name="descripcion" required></textarea>
                 </div>
                 <div class="input__box">
                     <label for="">Categoria</label><br>
-                    <select name="nombre_categoria" id="categoria" onchange="mostrarCamposCategoria()">
+                    <select name="nombre_categoria" id="categoria" onchange="mostrarCamposCategoria()" required>
                         <option value="" disabled selected>Seleccione la categoria</option>
                         <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
                             th:text="${categoria.nombre}"></option>
@@ -48,14 +48,14 @@
                 </div>
                 <div class="input__box">
                     <label for="">Proovedor</label><br>
-                    <select id="proveedor" name="proveedor">
+                    <select id="proveedor" name="proveedor" required>
                         <option th:each="proveedor: ${proveedores}" th:value="${proveedor.nombre}"
                             th:text="${proveedor.nombre}"></option>
                     </select>
                 </div>
                 <div class="input__box">
                     <label for="">Stock</label><br>
-                    <input type="number" name="stock" required>
+                    <input type="number" name="stock" required class="soloNum">
                 </div>
                 <div class="input__box">
                     <label for="">Precio Venta</label><br>
@@ -67,16 +67,16 @@
                 </div>
                 <div class="input__box">
                     <label for="">Marca</label><br>
-                    <input type="text" name="marca" required>
+                    <input type="text" name="marca" required class="soloText">
                 </div>
                 <div class="input__box">
                     <label for="">Imagen</label><br>
-                    <input type="text" name="imagen1" required>
+                    <input type="text" name="imagen1" required >
                 </div>
                 <div class="input__box">
                     <label for="">Codigo de barras</label><br>
                     <input type="text" name="codigoBarras" id="codigo" maxlength="13" pattern="\d{13}"
-                        title="El codigo debe tener exactamente 13 digitos numericos" required>
+                        title="El codigo debe tener exactamente 13 digitos numericos" required >
                 </div>
                 <div class="input__box">
                     <label for="">Peso</label>
@@ -199,21 +199,21 @@
                 <form class="form_modal" method="post" id="formEditar">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input id="nombre_act" type="text" name="nombre" required>
+                        <input id="nombre_act" type="text" name="nombre" required class="soloText">
                     </div>
                     <div class="input__box">
                         <label for="">Descripcion</label><br>
-                        <textarea id="descripcion_act" name="descripcion"></textarea>
+                        <textarea id="descripcion_act" name="descripcion" required></textarea>
                     </div>
                     <div class="input__box">
                         <label for="">Categoria</label><br>
-                        <select id="categoria_act" name="nombre_categoria">
+                        <select id="categoria_act" name="nombre_categoria" required>
                             <option th:each="categoria: ${categorias}" th:text="${categoria.nombre}"></option>
                         </select>
                     </div>
                     <div class="input__box">
                         <label for="">Proovedor</label><br>
-                        <select id="proveedor_act" name="proveedor">
+                        <select id="proveedor_act" name="proveedor" required>
                             <option th:each="proveedor: ${proveedores}" th:text="${proveedor.nombre}"></option>
                         </select>
                     </div>
@@ -227,7 +227,7 @@
                     </div>
                     <div class="input__box">
                         <label for="">Marca</label><br>
-                        <input type="text" name="marca" id="marca_act" required>
+                        <input type="text" name="marca" id="marca_act" required class="soloText">
                     </div>
                     <div class="input__box">
                         <label for="">Imagen</label><br>
@@ -236,7 +236,7 @@
                     <div class="input__box">
                         <label for="">Codigo de barras</label><br>
                         <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}"
-                            title="El codigo debe tener exactamente 13 digitos numericos" required>
+                            title="El codigo debe tener exactamente 13 digitos numericos" required >
                     </div>
                     <div class="input__box">
                         <label for="">Peso</label><br>
@@ -328,27 +328,27 @@
                             <h3>Características de Laptop</h3>
                             <div class="input__box">
                                 <label for="procesador">Procesador</label>
-                                <input disabled  type="text" id="procesador" name="procesador" value="${detalle.procesador}" required>
+                                <input disabled class="soloText"  type="text" id="procesador" name="procesador" value="${detalle.procesador}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tarjetaGrafica">Tarjeta grafica</label>
-                                <input disabled type="text" id="tarjetaGrafica" name="tarjetaGrafica" value="${detalle.tarjetaGrafica}" required>
+                                <input disabled class="soloText" type="text" id="tarjetaGrafica" name="tarjetaGrafica" value="${detalle.tarjetaGrafica}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema Operativo</label>
-                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input disabled class="soloText" type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled class="soloText" type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria RAM</label>
-                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input disabled class="soloText" type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamiento">Almacenamiento</label>
-                                <input disabled type="text" id="almacenamiento" name="almacenamiento" value="${detalle.almacenamiento}" required>
+                                <input disabled class="soloText" type="text" id="almacenamiento" name="almacenamiento" value="${detalle.almacenamiento}" required>
                             </div>
 
                             `;
@@ -359,27 +359,27 @@
                             <h3>Características de Smartphones</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input disabled class="soloText" type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria RAM</label>
-                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input disabled class="soloText" type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamientoInterno">Almacenamiento interno</label>
-                                <input disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
+                                <input disabled class="soloText" type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucionCamara">Resolucion de camara</label>
-                                <input disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
+                                <input disabled class="soloText" type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
                                 <label for="capacidadBateria">Capacidad de bateria</label>
-                                <input disabled type="text" id="capacidadBateria" name="capacidadBateria" value="${detalle.capacidadBateria}" required>
+                                <input disabled class="soloText" type="text" id="capacidadBateria" name="capacidadBateria" value="${detalle.capacidadBateria}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema operativo</label>
-                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input disabled class="soloText" type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             `;
                                     break;
@@ -389,19 +389,19 @@
                             <h3>Características de Auriculares</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="duracion">Duracion</label>
-                                <input disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
+                                <input class="soloText" disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="cancelacionRuido">Cancelacion de ruido</label>
-                                <input disabled type="text" id="cancelacionRuido" name="cancelacionRuido" value="${detalle.cancelacionRuido}" required>
+                                <input class="soloText" disabled type="text" id="cancelacionRuido" name="cancelacionRuido" value="${detalle.cancelacionRuido}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conector">Conector</label>
-                                <input disabled type="text" id="conector" name="conector" value="${detalle.conector}" required>
+                                <input class="soloText" disabled type="text" id="conector" name="conector" value="${detalle.conector}" required>
                             </div>
                             `;
                                     break;
@@ -411,23 +411,23 @@
                             <h3>Características de Monitores</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input class="soloText" disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucion">Resolucion</label>
-                                <input disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
+                                <input class="soloText" disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="tipoPanel">Tipo de panel</label>
-                                <input disabled type="text" id="tipoPanel" name="tipoPanel" value="${detalle.tipoPanel}" required>
+                                <input class="soloText" disabled type="text" id="tipoPanel" name="tipoPanel" value="${detalle.tipoPanel}" required>
                             </div>
                             <div class="input__box">
                                 <label for="frecuenciaActualizacion">Frecuencia de actualizacion</label>
-                                <input disabled type="text" id="frecuenciaActualizacion" name="frecuenciaActualizacion" value="${detalle.frecuenciaActualizacion}" required>
+                                <input class="soloText" disabled type="text" id="frecuenciaActualizacion" name="frecuenciaActualizacion" value="${detalle.frecuenciaActualizacion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="puertosEntrada">Puertos de entrada</label>
-                                <input disabled type="text" id="puertosEntrada" name="puertosEntrada" value="${detalle.puertosEntrada}" required>
+                                <input class="soloText" disabled type="text" id="puertosEntrada" name="puertosEntrada" value="${detalle.puertosEntrada}" required>
                             </div>
                             `;
                                     break;
@@ -437,19 +437,19 @@
                             <h3>Características de Teclados</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input class="soloText" disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="distribucion">Distribucion</label>
-                                <input disabled type="text" id="distribucion" name="distribucion" value="${detalle.distribución}" required>
+                                <input class="soloText" disabled type="text" id="distribucion" name="distribucion" value="${detalle.distribución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="retroiluminacion">Retroiluminacion</label>
-                                <input disabled type="text" id="retroiluminacion" name="retroiluminacion" value="${detalle.retroiluminación}" required>
+                                <input class="soloText" disabled type="text" id="retroiluminacion" name="retroiluminacion" value="${detalle.retroiluminación}" required>
                             </div>
                             `;
                                     break;
@@ -459,19 +459,19 @@
                             <h3>Características de Mouses</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input class="soloText" disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="dpi">DPI</label>
-                                <input disabled type="text" id="dpi" name="dpi" value="${detalle.dpi}" required>
+                                <input class="soloText" disabled type="text" id="dpi" name="dpi" value="${detalle.dpi}" required>
                             </div>
                             <div class="input__box">
                                 <label for="cantidadBotones">Cantidad de botones</label>
-                                <input disabled type="text" id="cantidadBotones" name="cantidadBotones" value="${detalle.cantidadBotones}" required>
+                                <input class="soloText" disabled type="text" id="cantidadBotones" name="cantidadBotones" value="${detalle.cantidadBotones}" required>
                             </div>
                             `;
                                     break;
@@ -481,19 +481,19 @@
                             <h3>Características de SmartWatches</h3>
                             <div class="input__box">
                                 <label for="compatibilidad">Compatibilidad</label>
-                                <input disabled type="text" id="compatibilidad" name="compatibilidad" value="${detalle.compatibilidad}" required>
+                                <input class="soloText" disabled type="text" id="compatibilidad" name="compatibilidad" value="${detalle.compatibilidad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="monitoreoSalud">Monitoreo de salud</label>
-                                <input disabled type="text" id="monitoreoSalud" name="monitoreoSalud" value="${detalle.monitoreoSalud}" required>
+                                <input class="soloText" disabled type="text" id="monitoreoSalud" name="monitoreoSalud" value="${detalle.monitoreoSalud}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resistenciaAgua">Resistencia al agua</label>
-                                <input disabled type="text" id="resistenciaAgua" name="resistenciaAgua" value="${detalle.resistenciaAgua}" required>
+                                <input class="soloText" disabled type="text" id="resistenciaAgua" name="resistenciaAgua" value="${detalle.resistenciaAgua}" required>
                             </div>
                             <div class="input__box">
                                 <label for="duracion">Duracion</label>
-                                <input disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
+                                <input class="soloText" disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             `;
                                     break;
@@ -503,23 +503,23 @@
                             <h3>Características de Tablets</h3>
                             <div class="input__box">
                                 <label for="tamañoPantalla">Tamaño de pantalla</label>
-                                <input disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
+                                <input class="soloText" disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
                                 <label for="memoriaRam">Memoria Ram</label>
-                                <input disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
+                                <input class="soloText" disabled type="text" id="memoriaRam" name="memoriaRam" value="${detalle.memoriaRam}" required>
                             </div>
                             <div class="input__box">
                                 <label for="almacenamientoInterno">Almacenamiento interno</label>
-                                <input disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
+                                <input class="soloText" disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucionCamara">Resolucion de la camara</label>
-                                <input disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
+                                <input class="soloText" disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
                                 <label for="sistemaOperativo">Sistema operativo</label>
-                                <input disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
+                                <input class="soloText" disabled type="text" id="sistemaOperativo" name="sistemaOperativo" value="${detalle.sistemaOperativo}" required>
                             </div>
                             `;
                                     break;
@@ -529,19 +529,19 @@
                             <h3>Características de Camara</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="resolucion">Resolución</label>
-                                <input disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
+                                <input class="soloText" disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
                                 <label for="zoomOptico">Zoom Optico</label>
-                                <input disabled type="text" id="zoomOptico" name="zoomOptico" value="${detalle.zoomOptico}" required>
+                                <input class="soloText" disabled type="text" id="zoomOptico" name="zoomOptico" value="${detalle.zoomOptico}" required>
                             </div>
                             <div class="input__box">
                                 <label for="estabilizacionImagen">Estabilización de imagen</label>
-                                <input disabled type="text" id="estabilizacionImagen" name="estabilizacionImagen" value="${detalle.estabilizacionImagen}"  required>
+                                <input class="soloText" disabled type="text" id="estabilizacionImagen" name="estabilizacionImagen" value="${detalle.estabilizacionImagen}"  required>
                             </div>
                             `;
                                     break;
@@ -551,23 +551,23 @@
                             <h3>Características de Impresoras</h3>
                             <div class="input__box">
                                 <label for="tipo">Tipo</label>
-                                <input disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
+                                <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
                                 <label for="funciones">Funciones</label>
-                                <input disabled type="text" id="funciones" name="funciones" value="${detalle.funciones}" required>
+                                <input class="soloText" disabled type="text" id="funciones" name="funciones" value="${detalle.funciones}" required>
                             </div>
                             <div class="input__box">
                                 <label for="conectividad">Conectividad</label>
-                                <input disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
+                                <input class="soloText" disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
                                 <label for="velocidadImpresion">Velocidad de Impresion</label>
-                                <input disabled type="text" id="velocidadImpresion" name="velocidadImpresion" value="${detalle.velocidadImpresion}" required>
+                                <input class="soloText" disabled type="text" id="velocidadImpresion" name="velocidadImpresion" value="${detalle.velocidadImpresion}" required>
                             </div>
                             <div class="input__box">
                                 <label for="dobleCaraAutomatica">Doble cara automatica</label>
-                                <input disabled type="text" id="dobleCaraAutomatica" name="dobleCaraAutomatica" value="${detalle.dobleCaraAutomatica}" required>
+                                <input class="soloText" disabled type="text" id="dobleCaraAutomatica" name="dobleCaraAutomatica" value="${detalle.dobleCaraAutomatica}" required>
                             </div>
                             `;
                                     break;
@@ -637,6 +637,8 @@
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
+    <script th:src="@{/js/validacionesInput.js}"></script>
+
 </body>
 
 </html>

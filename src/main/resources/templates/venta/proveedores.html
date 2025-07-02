@@ -24,25 +24,24 @@
             <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" id="formCrear" method="post">
                 <div class="input__box">
                     <label for="">RUC</label><br>
-                    <input type="text" name="ruc">
+                    <input type="text" name="ruc" required class="soloNum" maxlength="11">
                     <br><br>
-                    <span id="mensajeRUC">MENSAJE DE ERROR</span>
                 </div>
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre">
+                    <input type="text" name="nombre" class="soloText" required> 
                 </div>
                 <div class="input__box">
                     <label for="">Telefono</label><br>
-                    <input type="text" name="telefono">
+                    <input type="text" name="telefono" class="soloNum" maxlength="9" required>
                 </div>
                 <div class="input__box">
                     <label for="">Email</label><br>
-                    <input type="email" name="email">
+                    <input type="email" name="email" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
-                    <select name="estado">
+                    <select name="estado" required>
                         <option value="ACTIVO">ACTIVO</option>
                         <option value="INACTIVO">INACTIVO</option>
                     </select>
@@ -50,7 +49,7 @@
 
                 <div class="input__box">
                     <label for="">Comentario</label><br>
-                    <input type="comentario" name="comentario">
+                    <input type="comentario" name="comentario" class="soloText">
                 </div>
                 <div class="button__modal">
                     <div class="btn-modal">
@@ -157,30 +156,30 @@
                     <input type="text" name="id_act" id="id_act" style="display: none;">
                     <div class="input__box">
                         <label for="">RUC</label><br>
-                        <input type="text" name="ruc" id="ruc_act">
+                        <input type="text" name="ruc" id="ruc_act" class="soloNum" maxlength="11" required>
                     </div>
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input type="text" name="nombre" id="nombre_act">
+                        <input type="text" name="nombre" id="nombre_act" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Telefono</label><br>
-                        <input type="text" name="telefono" id="telefono_act">
+                        <input type="text" name="telefono" id="telefono_act" class="soloNum" maxlength="9" required>
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
-                        <input type="email" name="email" id="email_act">
+                        <input type="email" name="email" id="email_act" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Estado</label><br>
-                        <select name="estado" id="estado_act">
+                        <select name="estado" id="estado_act" required>
                             <option value="ACTIVO">ACTIVO</option>
                             <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
                     <div class="input__box">
                         <label for="">Comentario</label><br>
-                        <input type="text" name="comentario" id="comentario_act">
+                        <input type="text" name="comentario" id="comentario_act" class="soloText" >
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">
@@ -199,7 +198,7 @@
 
             formCrear.addEventListener('submit', async function () {
                 const ruc = document.getElementById('ruc_act').value
-                
+
                 try {
                     const response = await fetch("https://apiperu.dev/api/ruc", {
                         method: "POST",
@@ -311,6 +310,8 @@
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
+
+    <script th:src="@{/js/validacionesInput.js}"></script>
 
 </body>
 

@@ -17,25 +17,30 @@
 
     <div id="edi-direccion" class="form-oculto">
         <div class="form-container">
-            <h3>DIRECCION DE ENVIO</h3>
-            <label for="">DIRECCION</label>
-            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" required />
-            <label for="departamento">DEPARTAMENTO:</label>
-            <select id="departamento">
-                <option value="">-- Selecciona --</option>
-            </select>
+            <form th:action="@{/targus/venta/updateDirection/{id} (id = ${user.usuario.idUsuario})}" method="post">
+                <h3>DIRECCION DE ENVIO</h3>
+                <label for="">DIRECCION</label>
+                <input type="text" name="calle" id="direccion" placeholder="Ingrese su dirección" required />
 
-            <label for="provincia">PROVINCIA:</label>
-            <select id="provincia">
-                <option value="">-- Selecciona --</option>
-            </select>
+                <label for="departamento">DEPARTAMENTO:</label>
+                <select id="departamento">
+                    <option value="">-- Selecciona --</option>
+                </select>
+                <input type="hidden" id="departamentoNombre" name="departamento" />
 
-            <label for="distrito">DISTRITO:</label>
-            <select id="distrito">
-                <option value="">-- Selecciona --</option>
-            </select>
-            <button>ENVIAR</button>
-            <button id="cancelar-form">CANCELAR</button>
+                <label for="provincia">PROVINCIA:</label>
+                <select id="provincia" >
+                    <option value="">-- Selecciona --</option>
+                </select>
+                <input type="hidden" id="provinciaNombre" name="provincia" />
+
+                <label for="distrito">DISTRITO:</label>
+                <select id="distrito" >
+                    <option value="">-- Selecciona --</option>
+                </select>
+                <input type="hidden" id="distritoNombre" name="distrito" />
+                <button type="submit">ENVIAR</button>
+                <button type="button" id="cancelar-form">CANCELAR</button>
             </form>
 
         </div>
@@ -51,7 +56,7 @@
             </div>
 
 
-            <input type="text" name="direccion" id="direccion" placeholder="Ingrese su dirección" readonly
+            <input type="text" id="direccion" placeholder="Ingrese su dirección" readonly
                 th:value="${user.direccion.calle}" /><br />
 
             <div class="Sele">
@@ -59,11 +64,11 @@
                 <h2>Provincia</h2>
                 <h2>Distrito</h2>
 
-                <input type="text" name="departamento" id="departamento" placeholder="Ingrese su departamento" readonly
-                    th:value="${user.direccion.departamento}" />
-                <input type="text" name="provincia" id="provincia" placeholder="Ingrese su provincia" readonly
+                <input type="text" name="departamentoNombre" placeholder="Ingrese su departamento"
+                    readonly th:value="${user.direccion.departamento}" />
+                <input type="text"  placeholder="Ingrese su provincia" readonly
                     th:value="${user.direccion.provincia}" />
-                <input type="text" name="distrito" id="distrito" placeholder="Ingrese su distrito" readonly
+                <input type="text"  placeholder="Ingrese su distrito" readonly
                     th:value="${user.direccion.distrito}" /><br />
             </div>
             <div class="btn-box">
@@ -198,6 +203,9 @@
             });
 
         departamentoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = departamentoSelect.options[departamentoSelect.selectedIndex].text
+            document.getElementById("departamentoNombre").value = nombreSeleccionado
+
             provinciaSelect.innerHTML = '<option value="">-- Selecciona --</option>';
             distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
             provinciaSelect.disabled = true;
@@ -218,6 +226,8 @@
         });
 
         provinciaSelect.addEventListener("change", () => {
+            const nombreSeleccionado = provinciaSelect.options[provinciaSelect.selectedIndex].text
+            document.getElementById("provinciaNombre").value = nombreSeleccionado
             distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
             distritoSelect.disabled = true;
 
@@ -234,6 +244,12 @@
 
             distritoSelect.disabled = false;
         });
+
+        distritoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = distritoSelect.options[distritoSelect.selectedIndex].text
+            document.getElementById("distritoNombre").value = nombreSeleccionado
+        })
+
     </script>
 
     <script>
@@ -244,7 +260,7 @@
             let pesoTotal = 0;
 
             // Intentamos obtener el valor del departamento dinámicamente
-            const departamento = document.querySelector("input[name='departamento']")?.value?.trim();
+            const departamento = document.querySelector("input[name='departamentoNombre']")?.value?.trim();
             const envio = getPrecioEnvio(departamento);
 
             // Calculamos subtotales

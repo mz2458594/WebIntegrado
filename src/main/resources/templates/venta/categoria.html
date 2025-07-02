@@ -25,16 +25,16 @@
             <form class="form_modal" th:action="@{/inventario/categoria/agregar_cat}" method="post">
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" id="nombre_cat">
+                    <input type="text" name="nombre" id="nombre_cat" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Descripcion</label><br>
-                    <input type="text" name="descripcion" id="descripcion_cat">
+                    <input type="text" name="descripcion" id="descripcion_cat" class="soloText" required>
                 </div>
 
                 <div class="input__box">
                     <label for="">Link Imagen</label><br>
-                    <input type="text" name="imagen" id="imagen_cat">
+                    <input type="text" name="imagen" id="imagen_cat" class="soloText" required>
                 </div>
 
                 <div class="button__modal">
@@ -135,16 +135,16 @@
                 <form class="form_modal" id="formEditar" method="post">
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input type="text" name="nombre" id="nombre_act">
+                        <input type="text" name="nombre" id="nombre_act" class="soloText" required>
                     </div>
                     <div class="input__box">
                         <label for="">Descripcion</label><br>
-                        <input type="text" name="descripcion" id="descripcion_act">
+                        <input type="text" name="descripcion" id="descripcion_act" class="soloText" required>
                     </div>
 
                     <div class="input__box">
                         <label for="">Link Imagen</label><br>
-                        <input type="text" name="imagen" id="imagen_act">
+                        <input type="text" name="imagen" id="imagen_act" class="soloText" required>
                     </div>
 
                     <div class="button__modal">
@@ -299,6 +299,9 @@
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
+
+    <script th:src="@{/js/validacionesInput.js}"></script>
+
 
 </body>
 
