@@ -217,12 +217,38 @@
 
     <script>
         document.querySelector("form").addEventListener("submit", function (e) {
+            let mensajeError = "";
             const password = document.getElementById("contraseña").value;
             const repassword = document.getElementById("confirmar_contrasena").value;
 
+            const longitud = password.length >= 8;
+            const mayuscula = /[A-Z]/.test(password);
+            const minuscula = /[a-z]/.test(password);
+            const numero = /[0-9]/.test(password);
+
+            if (!longitud) {
+                mensajeError += "La contraseña debe tener al menos 8 caracteres\n"
+            }
+
+            if (!mayuscula) {
+                mensajeError += "La constraseña debe tener al menos una mayuscula\n"
+            }
+
+            if (!minuscula) {
+                mensajeError += "La constraseña debe tener al menos una minuscula\n"
+            }
+
+            if (!numero) {
+                mensajeError += "La contraseña debe tener al menos un numero\n"
+            }
+
             if (password !== repassword) {
+                mensajeError += "Las contraseñas no coinciden\n";
+            }
+
+            if (mensajeError) {
                 e.preventDefault();
-                alert("Las contraseñas no coinciden.");
+                alert(mensajeError)
             }
         });
     </script>

@@ -113,10 +113,6 @@
                                     <span class="resumen-valor" id="subtotal">S/. 0.00</span>
                                 </div>
                                 <div class="resumen">
-                                    <span class="resumen-text">Envío</span>
-                                    <span class="resumen-valor" id="envio">S/. 0.00</span>
-                                </div>
-                                <div class="resumen">
                                     <span class="resumen-text">Total</span>
                                     <span class="resumen-valor" id="total">S/. 0.00</span>
                                 </div>
@@ -168,9 +164,7 @@
     <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const envioFijo = 10.00;
             const subtotalSpan = document.getElementById('subtotal');
-            const envioSpan = document.getElementById('envio');
             const totalSpan = document.getElementById('total');
             const checkboxes = document.querySelectorAll('.selec-product__checkbox');
 
@@ -187,11 +181,9 @@
                     }
                 });
 
-                const envio = haySeleccionados ? envioFijo : 0;
-                const total = subtotal + envio;
+                const total = subtotal ;
 
                 subtotalSpan.textContent = `S/. ${subtotal.toFixed(2)}`;
-                envioSpan.textContent = `S/. ${envio.toFixed(2)}`;
                 totalSpan.textContent = `S/. ${total.toFixed(2)}`;
             }
 
