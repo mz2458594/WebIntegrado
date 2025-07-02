@@ -10,12 +10,12 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/styleventa.css}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
-
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <div class="reporte__ventas">
@@ -30,7 +30,6 @@
                             <input type="date" id="fecha-fin" name="fechaFinal" />
                         </div>
                     </div>
-
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="comprobante">Tipo de comprobante:</label>
@@ -49,7 +48,6 @@
                             <input type="number" id="nro-final" placeholder="Ej: 1050" />
                         </div>
                     </div>
-
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="total-transacciones">Total transacciones:</label>
@@ -61,15 +59,13 @@
                         </div>
                         <div class="filtro-campo"></div>
                     </div>
-
-                    <!-- NUEVO: Responsable y Botón de Buscar -->
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="responsable">Responsable de la venta:</label>
                             <select id="responsable" name="idResponsable">
                                 <option value="" disabled selected>Selecciona</option>
                                 <option th:each="empleado : ${empleados}" th:value="${empleado.id}"
-                                    th:text="${empleado.nombre}">Juan Pérez</option>
+                                    th:text="${empleado.nombre}">Carlos</option>
                             </select>
                         </div>
                         <div class="filtro-campo">
@@ -81,7 +77,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="cont-reportes">
                 <p>Generar reporte:</p>
                 <div class="reporte-btns">
@@ -90,10 +85,9 @@
                 </div>
             </div>
         </div>
-
         <div class="cont_table">
             <div class="table__product">
-                <table class="table">
+                <table class="table" id="tablaCompleta">
                     <thead>
                         <tr class="thead">
                             <th>N Comprobante</th>
@@ -102,7 +96,7 @@
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>Boleta/Factura</th>
-                            <th>Nombre Cliente</th>
+                            <th>Responsable</th>
                             <th>Contacto</th>
                         </tr>
                     </thead>
@@ -119,15 +113,11 @@
                 <canvas id="barChart"></canvas>
             </div>
         </div>
-
     </main>
 
-    <!-- Script para capturar filtros -->
     <script>
-
         const tabla = document.getElementById('tablaProductos')
         let chartProductos = null
-
         function buscarVentas() {
             const fechaInicio = document.getElementById("fecha-inicio").value;
             const fechaFinal = document.getElementById("fecha-fin").value;
@@ -135,14 +125,11 @@
             const nroInicial = document.getElementById("nro-inicial").value;
             const nroFinal = document.getElementById("nro-final").value;
             const idResponsable = document.getElementById("responsable").value;
-
             console.log("Buscando ventas con:");
             console.log("Desde:", fechaInicio, "Hasta:", fechaFinal);
             console.log("Comprobante:", comprobante, "N° Inicial:", nroInicial, "N° Final:", nroFinal);
             console.log("Responsable:", idResponsable);
-
             const datos = { fechaInicio: fechaInicio, fechaFinal: fechaFinal, comprobante: comprobante, idResponsable, idResponsable }
-
             fetch(`http://localhost:8080/api/sale/filtro`, {
                 method: 'POST',
                 headers: {
@@ -175,9 +162,7 @@
                     `
                             })
                         });
-
                         tabla.innerHTML = html
-
                         const conteoProductos = {}
                         const nombres = document.querySelectorAll('.productName')
                         const cantidades = document.querySelectorAll('.productQuantity')
@@ -190,14 +175,11 @@
                         const labels = Object.keys(conteoProductos)
                         const data = Object.values(conteoProductos)
                         const ctxProductos = document.getElementById('barChart').getContext('2d');
-
                         document.querySelector('#dashboard .chart-block').style.display = "block";
                         document.querySelector('#dashboard h2').style.display = "block"
-
                         if (chartProductos) {
                             chartProductos.destroy()
                         }
-
                         chartProductos = new Chart(ctxProductos, {
                             type: 'pie',
                             data: {
@@ -209,23 +191,149 @@
                                 }]
                             }
                         });
-
-
-
                     } else {
                         html = `<tr><td colspan="8" style="text-align:center;">No hay resultados</td></tr>`
                         document.querySelector('#dashboard .chart-block').style.display = "none"
                         tabla.innerHTML = html
                     }
-
-
                 })
                 .catch(error => {
                     console.error("Error ", error)
                 })
-
-
         }
+
+    </script>
+    <script>function obtenerNombreResponsable() {
+            const select = document.getElementById('responsable');
+            const selected = select.options[select.selectedIndex];
+            return selected ? selected.text : 'No especificado';
+        }
+
+        document.querySelector(".btn-pdf").addEventListener("click", () => {
+            const now = new Date().toLocaleString();
+            const responsable = obtenerNombreResponsable();
+
+            const tablaCompleta = document.getElementById("tablaCompleta").outerHTML;
+
+            const filas = document.querySelectorAll('#tablaProductos tr');
+            const totalVentasCount = filas.length;
+
+            let totalIngresos = 0;
+            filas.forEach(fila => {
+                const cantidad = parseFloat(fila.cells[3]?.textContent) || 0;
+                const precio = parseFloat(fila.cells[4]?.textContent) || 0;
+                totalIngresos += cantidad * precio;
+            });
+
+            const nroPrimeraVenta = filas.length > 0 ? filas[0].cells[0].textContent : 'N/A';
+            const nroUltimaVenta = filas.length > 0 ? filas[filas.length - 1].cells[0].textContent : 'N/A';
+
+            const totalVentas = document.getElementById("total-ventas").value;
+            const totalTransacciones = document.getElementById("total-transacciones").value;
+
+            const contenido = `
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 11px;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+            th, td {
+                border: 1px solid #000;
+                padding: 4px;
+                max-width: 100px;
+                text-align: left;
+            }
+            thead {
+                background-color: #ddd;
+                display: table-header-group;
+            }
+            tr {
+                page-break-inside: avoid;
+            }
+            .header-container {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .header-container img {
+                max-height: 60px;
+                margin-bottom: 10px;
+            }
+            .info-table {
+                margin: 10px 0;
+                width: 100%;
+                font-size: 11px;
+                border-collapse: collapse;
+            }
+            .info-table th, .info-table td {
+                border: 1px solid #000;
+                padding: 4px 8px;
+                background-color: #f0f0f0;
+            }
+            .totales-table {
+                width: 40%;
+                margin-top: 10px;
+                font-size: 11px;
+                border-collapse: collapse;
+            }
+            .totales-table th, .totales-table td {
+                border: 1px solid #000;
+                padding: 6px;
+                text-align: left;
+            }
+        </style>
+        <div class="header-container">
+            <img src="/images/logo.png" alt="Logo Empresa" />
+            <h2>REPORTE DE VENTAS</h2>
+            <p>Fecha de creación: ${now}</p>
+            <p>Responsable: ${responsable}</p>
+        </div>
+        <table class="info-table">
+            <tr>
+                <td><strong>Primera Venta:</strong> ${nroPrimeraVenta}</td>
+                <td><strong>Última Venta:</strong> ${nroUltimaVenta}</td>
+            </tr>
+            <tr>
+                <td><strong>N° Ventas:</strong> ${totalVentasCount}</td>
+                <td><strong>Total Ingresos (S/):</strong> ${totalIngresos.toFixed(2)}</td>
+            </tr>
+        </table>
+
+        ${tablaCompleta}
+
+        <table class="totales-table">
+            <tr>
+                <th>Total Transacciones</th>
+                <td>${totalTransacciones}</td>
+            </tr>
+            <tr>
+                <th>Total Ventas (S/)</th>
+                <td>${parseFloat(totalVentas).toFixed(2)}</td>
+            </tr>
+        </table>
+    `;
+
+            const div = document.createElement("div");
+            div.innerHTML = contenido;
+            div.style.display = "block";
+            document.body.appendChild(div);
+
+            const opt = {
+                margin: 0.5,
+                filename: 'reporte_ventas.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { letterRendering: true, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            setTimeout(() => {
+                html2pdf().set(opt).from(div).save().then(() => {
+                    document.body.removeChild(div);
+                });
+            }, 200);
+        });
 
     </script>
 
