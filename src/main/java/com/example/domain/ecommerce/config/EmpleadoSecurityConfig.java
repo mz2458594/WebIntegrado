@@ -30,6 +30,8 @@ public class EmpleadoSecurityConfig {
                         // .requestMatchers("/inventario/productos/**").hasRole("Administrador")
                         // .requestMatchers("/inventario/ventas/**").hasAnyRole("Empleado", "Administrador")
                         // .requestMatchers("/inventario/comprobante/**").hasAnyRole("Empleado", "Administrador")
+                        // .requestMatchers("/inventario/reportes/**").hasAnyRole("Empleado", "Administrador")
+
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/inventario/principal/login")
