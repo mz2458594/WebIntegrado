@@ -107,20 +107,29 @@
                                 <input class="text" type="text" id="calle" name="calle">
                             </div>
                             <div class="form-group">
-
                                 <label for="departamento">Departamento:</label>
-                                <input type="text" id="departamento" name="departamento">
+                                <select id="departamento">
+                                    <option value="">-- Selecciona --</option>
+                                </select>
+                                <input type="hidden" id="departamentoNombre" name="departamento" />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="distrito">Distrito:</label>
-                                <input class="soloText" type="text" id="distrito" name="distrito">
+                                <label for="provincia">Provincia:</label>
+                                <select id="provincia">
+                                    <option value="">-- Selecciona --</option>
+                                </select>
+                                <input type="hidden" id="provinciaNombre" name="provincia" />
+
                             </div>
                             <div class="form-group">
-                                <label for="provincia">Provincia:</label>
-                                <input class="soloText" type="text" id="provincia" name="provincia">
+                                <label for="distrito">Distrito:</label>
+                                <select id="distrito">
+                                    <option value="">-- Selecciona --</option>
+                                </select>
+                                <input type="hidden" id="distritoNombre" name="distrito" />
                             </div>
                         </div>
                         <div class="form-row">
@@ -216,6 +225,94 @@
                 alert("Las contraseñas no coinciden.");
             }
         });
+    </script>
+
+
+    <script>
+        const urlDepartamentos = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/1_ubigeo_departamentos.json"
+        const urlProvincias = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/2_ubigeo_provincias.json"
+        const urlDistritos = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/3_ubigeo_distritos.json"
+
+        const departamentoSelect = document.getElementById("departamento");
+        const provinciaSelect = document.getElementById("provincia");
+        const distritoSelect = document.getElementById("distrito");
+
+        let departamentos = [];
+        let provincias = [];
+        let distritos = [];
+
+        Promise.all([
+            fetch(urlDepartamentos).then(res => res.json()),
+            fetch(urlProvincias).then(res => res.json()),
+            fetch(urlDistritos).then(res => res.json())
+        ])
+            .then(([depData, provData, distData]) => {
+                departamentos = depData.ubigeo_departamentos || depData;
+                provincias = provData.ubigeo_provincias || provData;
+                distritos = distData.ubigeo_distritos || distData;
+
+                // Llenar departamentos
+                departamentos.forEach(dep => {
+                    const option = document.createElement("option");
+                    option.value = dep.id; // usamos ID numérico
+                    option.textContent = dep.departamento;
+                    departamentoSelect.appendChild(option);
+                });
+
+                departamentoSelect.disabled = false;
+            })
+            .catch(err => {
+                console.error("❌ Error cargando los archivos JSON:", err);
+            });
+
+        departamentoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = departamentoSelect.options[departamentoSelect.selectedIndex].text
+            document.getElementById("departamentoNombre").value = nombreSeleccionado
+
+            provinciaSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            provinciaSelect.disabled = true;
+            distritoSelect.disabled = true;
+
+            const depId = Number(departamentoSelect.value);
+            if (!depId) return;
+
+            const provinciasFiltradas = provincias.filter(p => p.departamento_id === depId);
+            provinciasFiltradas.forEach(prov => {
+                const option = document.createElement("option");
+                option.value = prov.id; // usamos ID de provincia
+                option.textContent = prov.provincia;
+                provinciaSelect.appendChild(option);
+            });
+
+            provinciaSelect.disabled = false;
+        });
+
+        provinciaSelect.addEventListener("change", () => {
+            const nombreSeleccionado = provinciaSelect.options[provinciaSelect.selectedIndex].text
+            document.getElementById("provinciaNombre").value = nombreSeleccionado
+            distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            distritoSelect.disabled = true;
+
+            const provId = Number(provinciaSelect.value);
+            if (!provId) return;
+
+            const distritosFiltrados = distritos.filter(d => d.provincia_id === provId);
+            distritosFiltrados.forEach(dist => {
+                const option = document.createElement("option");
+                option.value = dist.id; // usamos ID de distrito
+                option.textContent = dist.distrito;
+                distritoSelect.appendChild(option);
+            });
+
+            distritoSelect.disabled = false;
+        });
+
+        distritoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = distritoSelect.options[distritoSelect.selectedIndex].text
+            document.getElementById("distritoNombre").value = nombreSeleccionado
+        })
+
     </script>
 
     <script th:src="@{/js/validacionesInput.js}"></script>
