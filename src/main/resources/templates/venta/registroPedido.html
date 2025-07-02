@@ -16,7 +16,6 @@
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
-    <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <div class="title__add--modal">
@@ -24,10 +23,6 @@
             </div>
             <div class="contenedor-registro-venta">
                 <div class="cont-codigo-usuario">
-                    <div class="info-cod-venta">
-                        <p>Codigo</p>
-                        <span class="cod-vent-regis">0001</span>
-                    </div>
                     <div class="info-user-venta">
                         <p>Usuario</p>
                         <span class="cod-user-regis" th:text="${pedidos.id_usuario}">7777777</span>
