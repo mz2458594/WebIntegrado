@@ -17,7 +17,7 @@
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
-    <main class="contenedor_main">
+    <main class="contenedor_main" style="left: 0; margin: auto;">
         <form class="ventana-venta" id="formVenta" method="post">
             <div class="head-venta">
                 <div class="head-doctran">
@@ -51,6 +51,7 @@
                     <div id="input-doc-container">
                         <input type="text" id="numeroDoc" name="numero" placeholder="Ingrese Documento"
                             oninput="validarNumero(this)" autocomplete="off">
+                            <button><i class="fa-solid fa-eye"></i></button>
                     </div>
                     <button class="btn-anular" type="button">Anular transaccion</button>
                 </div>
