@@ -9,4 +9,5 @@ public class VentaDTO {
     private Date fechaFinal;
     private String comprobante;
     private Integer idResponsable;
+    private String tipoVenta;
 }
