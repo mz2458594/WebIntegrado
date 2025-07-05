@@ -33,6 +33,7 @@
                             fetch(`http://localhost:8080/api/control/transaccion?tipo=${documentoTipo.value}`)
                                 .then(response => {
                                     if (!response.ok) {
+                                        document.getElementById("mensaje").textContent = "Error el obtener la transaccion"
                                         throw new Error("Error el obtener la transaccion")
                                     }
                                     return response.text();
@@ -43,6 +44,7 @@
                                 })
                                 .catch(error => {
                                     console.error("Error ", error)
+                                    document.getElementById("mensaje").textContent = "Error el obtener la transaccion"
                                     document.getElementById("transac").textContent = ""
                                 })
 
@@ -52,7 +54,54 @@
                         <input type="text" id="numeroDoc" name="numero" placeholder="Ingrese Documento"
                             oninput="validarNumero(this)" autocomplete="off">
                         <button type="button" id="btn-verRuc" style="background-color: #2f3fa8;"><i
-                                class="fa-solid fa-eye" ></i></button>
+                                class="fa-solid fa-eye" onclick="buscarRazon()"></i></button>
+                        <script>
+                            async function buscarRazon() {
+                                document.getElementById("mensaje").textContent = ""
+                                const documento = document.getElementById("documentoTipo")
+                                const razon = document.getElementById('razonSocialRuc')
+
+                                if (documento.value === "FACTURA") {
+                                    const ruc = document.getElementById("numeroDoc").value
+                                    if (ruc == "") {
+                                        document.getElementById("mensaje").textContent = "Ingrese el RUC";
+                                        razon.style.display = 'none'
+                                        return;
+                                    }
+
+
+                                    try {
+                                        const response = await fetch("https://apiperu.dev/api/ruc", {
+                                            method: "POST",
+                                            headers: {
+                                                "Accept": "application/json",
+                                                "Content-Type": "application/json",
+                                                "Authorization": `Bearer cefa320c438dd612f47210d678d31fe7f612c9475522675dd56be4fa43a02484`
+                                            },
+                                            body: JSON.stringify({ ruc: ruc })
+                                        });
+
+                                        const data = await response.json();
+                                        razon.style.display = 'block'
+                                        razon.innerText = data.data.nombre_o_razon_social
+
+                                        if (!response.ok || !data.success) {
+                                            document.getElementById("mensaje").textContent = "El RUC no es válido";
+                                            razon.style.display = 'none'
+                                            return;
+                                        }
+
+                                    } catch (error) {
+                                        document.getElementById("mensaje").textContent = "Error al validar el RUC";
+                                        razon.style.display = 'none'
+                                        console.error("Error", error)
+                                        return;
+                                    }
+
+
+                                }
+                            }
+                        </script>
                     </div>
                     <button class="btn-anular" type="button">Anular transaccion</button>
                 </div>
@@ -69,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    <div><span id="razonSocialRuc">Makro</span></div>
+                    <div><span id="razonSocialRuc" style="display: none;">Makro</span></div>
                     <input class="body-cantidad" type="number" min="1" value="1" name="canti" id="canti">
                 </div>
 
@@ -182,6 +231,8 @@
         const formularioVenta = document.getElementById("formVenta")
         formularioVenta.addEventListener('submit', async function (event) {
             event.preventDefault()
+            document.getElementById("mensaje").textContent = ""
+
 
             const documento = document.getElementById("documentoTipo")
             if (documento.value === "") {
