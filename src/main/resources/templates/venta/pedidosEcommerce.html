@@ -33,9 +33,36 @@
                 <p>Pedidos del Ecommerce</p>
             </div>
             <div class="Cont__buscar">
-                <div class="buscar_search">
+                <!-- <div class="buscar_search">
                     <label for="">Buscar :</label>
-                    <input type="text">
+                    <input type="text" id="productInput">
+                </div> -->
+                <div>
+                    <label for="">Filtrar por estado:</label>
+                    <select name="" id="estadoFiltro" style="font-weight: bold;">
+                        <option class="opti" disabled selected style="background-color: #ffffff;">SELECCIONE</option>
+                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">PENDIENTE</option>
+                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">CONFIRMADO
+                        </option>
+                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN CAMINO</option>
+                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">ENTREGADO</option>
+                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">CANCELADO</option>
+                    </select>
+                    <style>
+                        .opti{
+                            font-weight: bold;
+                        }
+                        #estadoFiltro {
+                            padding: 7px;
+                            border-radius: 5px;
+                            border: 1px solid rgba(165, 165, 165, 0.467);
+
+                        }
+
+                        #estadoFiltro:focus-visible {
+                            outline: 2px solid #3391fc;
+                        }
+                    </style>
                 </div>
             </div>
             <div class="cont_table">
@@ -50,7 +77,7 @@
                             <th>Estado</th>
                             <th>Accion</th>
                         </tr>
-                        <tr th:each="pedido : ${pedidos}">
+                        <tr th:each="pedido : ${pedidos}" id="productList">
                             <td th:text="${pedido.idPedido}">1</td>
                             <td th:text="${pedido.fechaPedido}">20/10/2024</td>
                             <td th:text="${pedido.fechaEntrega}">14/06/2025</td>
@@ -89,7 +116,8 @@
             </form>
         </div>
     </div>
-
+    <script>
+    </script>
     <script>
         let modalContEdit = document.querySelector(".container-modal--edit");
         let VentEdit = document.querySelector(".ventana_modal--edit");
@@ -286,9 +314,7 @@
             mot.disabled = false;
         }
     </script>
-
-
-
+    <script th:src="@{/js/filtrosPedidos.js}"></script>
 </body>
 
 

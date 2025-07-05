@@ -150,9 +150,36 @@
             </div>
 
             <div class="Cont__buscar">
-                <div class="buscar_search">
+                <!-- <div class="buscar_search">
                     <label for="">Buscar :</label>
                     <input type="text" id="productInput">
+                </div> -->
+                <div>
+                    <label for="">Filtrar por estado:</label>
+                    <select name="" id="estadoFiltro" style="font-weight: bold;">
+                        <option class="opti" disabled selected style="background-color: #ffffff;">SELECCIONE</option>
+                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">PENDIENTE</option>
+                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">CONFIRMADO
+                        </option>
+                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN CAMINO</option>
+                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">ENTREGADO</option>
+                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">CANCELADO</option>
+                    </select>
+                    <style>
+                        .opti{
+                            font-weight: bold;
+                        }
+                        #estadoFiltro {
+                            padding: 7px;
+                            border-radius: 5px;
+                            border: 1px solid rgba(165, 165, 165, 0.467);
+
+                        }
+
+                        #estadoFiltro:focus-visible {
+                            outline: 2px solid #3391fc;
+                        }
+                    </style>
                 </div>
             </div>
             <div class="cont_table">
@@ -290,30 +317,7 @@
     </main>
 
     <script>
-        const productInput = document.getElementById("productInput");
-        const tableRows = document.querySelectorAll("#productList");
-
-        function filterProducts() {
-            const query = productInput.value.toLowerCase();
-
-            tableRows.forEach(row => {
-                // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
-                const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
-                const productFecha = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-                const productUsuario = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
-                const productMont = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
-
-                if (productId.includes(query) || productFecha.includes(query) || productUsuario.includes(query) || productMont.includes(query)) {
-                    row.style.display = ""; // Mostrar fila
-                } else {
-                    row.style.display = "none"; // Ocultar fila
-                }
-
-            });
-        }
-
-        // Asociar la función al evento de entrada
-        productInput.addEventListener("input", filterProducts);
+        
     </script>
     <script>
         function campoMotivo() {
@@ -340,7 +344,7 @@
             mot.disabled = false;
         }
     </script>
-    <script th:src="@{/js/modalAdd.js}"></script>
+    <script th:src="@{/js/filtrosPedidos.js}"></script>
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
