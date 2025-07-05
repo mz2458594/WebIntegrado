@@ -51,7 +51,8 @@
                     <div id="input-doc-container">
                         <input type="text" id="numeroDoc" name="numero" placeholder="Ingrese Documento"
                             oninput="validarNumero(this)" autocomplete="off">
-                            <button><i class="fa-solid fa-eye"></i></button>
+                        <button type="button" id="btn-verRuc" style="background-color: #2f3fa8;"><i
+                                class="fa-solid fa-eye" ></i></button>
                     </div>
                     <button class="btn-anular" type="button">Anular transaccion</button>
                 </div>
@@ -68,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <div><span id="razonSocialRuc">Makro</span></div>
                     <input class="body-cantidad" type="number" min="1" value="1" name="canti" id="canti">
                 </div>
 
@@ -137,7 +138,7 @@
             </form>
             <script>
                 formAnular = document.getElementById("formAnular")
-                formAnular.addEventListener('submit', function(event){
+                formAnular.addEventListener('submit', function (event) {
                     event.preventDefault()
                     localStorage.removeItem("productosAgregados")
                     formAnular.submit()
@@ -214,6 +215,7 @@
                         document.getElementById("mensaje").textContent = "El RUC no es válido";
                         return;
                     }
+
                 } catch (error) {
                     document.getElementById("mensaje").textContent = "Error al validar el RUC";
                     console.error("Error", error)
