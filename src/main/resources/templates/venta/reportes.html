@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
-<body>
+<body onload="disabledResponsableInput()">
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
@@ -105,7 +105,7 @@
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>Boleta/Factura</th>
-                            <th>Responsable</th>
+                            <th>Responsable / Usuario</th>
                             <th>Contacto</th>
                         </tr>
                     </thead>
@@ -127,10 +127,11 @@
 
         function disabledResponsableInput() {
             const tipoVenta = document.getElementById("tipoVenta").value
-            const responsableInput= document.getElementById("responsable");
+            const responsableInput = document.getElementById("responsable");
 
             if (tipoVenta === '' || tipoVenta === 'Ecommerce') {
                 responsableInput.disabled = true
+                responsableInput.value = ""
             } else {
                 responsableInput.disabled = false
             }
