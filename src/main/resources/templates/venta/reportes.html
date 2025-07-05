@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
-<body>
+<body onload="disabledResponsableInput()">
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
     <main class="contenedor_main">
@@ -33,10 +33,18 @@
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="comprobante">Tipo de comprobante:</label>
-                            <select id="comprobante" name="tipo">
-                                <option value="" disabled selected>Selecciona</option>
+                            <select id="comprobante" name="comprobante">
+                                <option value="" selected>Selecciona</option>
                                 <option value="BOLETA">Boleta</option>
                                 <option value="FACTURA">Factura</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="tipoVenta">Tipo de Venta:</label>
+                            <select id="tipoVenta" name="tipoVenta" onchange="disabledResponsableInput()">
+                                <option value="" selected>Selecciona</option>
+                                <option value="Ecommerce">Ecommerce</option>
+                                <option value="Inventario">Inventario</option>
                             </select>
                         </div>
                         <div class="filtro-campo">
@@ -97,7 +105,7 @@
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>Boleta/Factura</th>
-                            <th>Responsable</th>
+                            <th>Responsable / Usuario</th>
                             <th>Contacto</th>
                         </tr>
                     </thead>
@@ -116,7 +124,23 @@
         const tabla = document.getElementById('tablaProductos');
         let chartProductos = null;
 
+
+        function disabledResponsableInput() {
+            const tipoVenta = document.getElementById("tipoVenta").value
+            const responsableInput = document.getElementById("responsable");
+
+            if (tipoVenta === '' || tipoVenta === 'Ecommerce') {
+                responsableInput.disabled = true
+                responsableInput.value = ""
+            } else {
+                responsableInput.disabled = false
+            }
+
+        }
+
         function buscarVentas() {
+
+            const tipoVenta = document.getElementById("tipoVenta").value
             const fechaInicio = document.getElementById("fecha-inicio").value;
             const fechaFinal = document.getElementById("fecha-fin").value;
             const comprobante = document.getElementById("comprobante").value;
@@ -124,9 +148,13 @@
             const nroFinal = document.getElementById("nro-final").value;
             const idResponsable = document.getElementById("responsable").value;
 
-            const datos = { fechaInicio, fechaFinal, comprobante, idResponsable };
+            const datos = {
+                fechaInicio, fechaFinal, comprobante, idResponsable,
+                tipoVenta
+            };
 
-            fetch(`http://localhost:8080/api/sale/filtro`, {
+
+            fetch("http://localhost:8080/api/sale/filtro", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datos)
@@ -350,4 +378,5 @@
         window.addEventListener("load", buscarVentas);
     </script>
 </body>
+
 </html>

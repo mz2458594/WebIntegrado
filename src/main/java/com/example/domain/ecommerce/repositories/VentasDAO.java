@@ -13,8 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VentasDAO extends JpaRepository<Venta, Long> {
     Venta findByTotal(double total);
-
-    @Query("SELECT v from VentaInventario v WHERE (:username IS NULL OR v.usuario.username = :username) AND (:tipo IS NULL OR v.comprobante.tipo = :tipo) AND (:fechaInicio IS NULL OR v.fechaVenta >= :fechaInicio) AND (:fechaFinal IS NULL OR v.fechaVenta <= :fechaFinal)")
+    @Query("SELECT v from Venta v WHERE (:username IS NULL OR v.usuario.username = :username) AND (:tipo IS NULL OR v.comprobante.tipo = :tipo) AND (:fechaInicio IS NULL OR v.fechaVenta >= :fechaInicio) AND (:fechaFinal IS NULL OR v.fechaVenta <= :fechaFinal)")
     List<Venta> findByUsuarioAndTipoComprobanteAndFechaVentaBetween(
             @Param("fechaInicio") Timestamp fechaInicio,
             @Param("fechaFinal") Timestamp fechaFinal,

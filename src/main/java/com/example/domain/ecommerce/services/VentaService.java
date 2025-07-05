@@ -21,6 +21,7 @@ import com.example.domain.ecommerce.models.entities.Venta;
 import com.example.domain.ecommerce.models.entities.VentaEcommerce;
 import com.example.domain.ecommerce.models.entities.VentaInventario;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
+import com.example.domain.ecommerce.models.enums.TipoVenta;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.TarifaDAO;
@@ -161,8 +162,10 @@ public class VentaService {
 
     public List<Venta> obtenerVentasConFiltro(VentaDTO ventaDTO) {
 
-        Timestamp fechaInicio = ventaDTO.getFechaInicio() != null ? new Timestamp(ventaDTO.getFechaInicio().getTime()) : null;
-        Timestamp fechaFinal = ventaDTO.getFechaFinal() != null ? new Timestamp(ventaDTO.getFechaFinal().getTime()) : null;
+        Timestamp fechaInicio = ventaDTO.getFechaInicio() != null ? new Timestamp(ventaDTO.getFechaInicio().getTime())
+                : null;
+        Timestamp fechaFinal = ventaDTO.getFechaFinal() != null ? new Timestamp(ventaDTO.getFechaFinal().getTime())
+                : null;
         TipoComprobante tipoComprobante = null;
         if (ventaDTO.getComprobante() != null && !ventaDTO.getComprobante().isEmpty()) {
             tipoComprobante = TipoComprobante.valueOf(ventaDTO.getComprobante());
@@ -171,16 +174,33 @@ public class VentaService {
         String username = null;
 
         if (ventaDTO.getIdResponsable() != null) {
-             Empleado empleado = empleadoDAO.findById(Long.valueOf(ventaDTO.getIdResponsable()))
-                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+            Empleado empleado = empleadoDAO.findById(Long.valueOf(ventaDTO.getIdResponsable()))
+                    .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
             username = empleado.getUsuario().getUsername();
 
         }
 
-       
-        return (List<Venta>) ventasDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal,
-                username,
-                tipoComprobante);
+        TipoVenta tipo;
+        try {
+            tipo = ventaDTO.getTipoVenta() != null
+                    ? TipoVenta.valueOf(ventaDTO.getTipoVenta())
+                    : TipoVenta.Normal;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            tipo = TipoVenta.Normal;
+        }
+
+        switch (tipo) {
+            case Ecommerce:
+                return ventaEcommerceDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal,
+                        username, tipoComprobante);
+            case Inventario:
+                return ventasInventarioDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal,
+                        username, tipoComprobante);
+            case Normal:
+            default:
+                return ventasDAO.findByUsuarioAndTipoComprobanteAndFechaVentaBetween(fechaInicio, fechaFinal, username,
+                        tipoComprobante);
+        }
     }
 
 }
