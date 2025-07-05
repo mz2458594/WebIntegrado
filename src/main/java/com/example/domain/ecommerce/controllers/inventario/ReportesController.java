@@ -26,12 +26,12 @@ public class ReportesController {
     @GetMapping("/")
     public String verReportes(Model model,  HttpSession session){
 
-         Empleado empleado = (Empleado) session.getAttribute("empleado");
+        //  Empleado empleado = (Empleado) session.getAttribute("empleado");
 
-        if (empleado == null) {
-            model.addAttribute("error", "No hay usuario logeado en el sistema");
-            return "redirect:/inventario/principal/index";
-        }
+        // if (empleado == null) {
+        //     model.addAttribute("error", "No hay usuario logeado en el sistema");
+        //     return "redirect:/inventario/principal/index";
+        // }
         model.addAttribute("ventas", ventaService.getVentas());
         model.addAttribute("empleados", usuarioService.getEmpleados());
         return "venta/reportes";

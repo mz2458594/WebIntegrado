@@ -84,13 +84,6 @@
                     <label for="">Buscar :</label>
                     <input id="productInput" type="text">
                 </div>
-                <div class="cont-reportes">
-                    <p>Descargar Listado:</p>
-                    <div class="reporte-btns">
-                        <button class="btn-pdf"><i class="fa-solid fa-file-pdf"></i></button>
-                        <button class="btn-excel"><i class="fa-solid fa-file-excel"></i></button>
-                    </div>
-                </div>
             </div>
             <div class="cont_table">
                 <div class="table__product">
@@ -229,73 +222,6 @@
         productInput.addEventListener("input", filterProducts);
     </script>
 
-    <script>
-        document.querySelector('.btn-pdf').addEventListener('click', function () {
-            const filteredRows = Array.from(document.querySelectorAll("#productList"))
-                .filter(row => row.style.display !== "none") // Solo filas visibles
-                .map(row => {
-                    const cells = row.querySelectorAll("td");
-                    return {
-                        idCategoria: cells[0].textContent.trim(),
-                        nombre: cells[1].textContent.trim(),
-                        descripcion: cells[2].textContent.trim(),
-                    };
-                });
-
-            fetch('/reporteCategorias-pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(filteredRows),
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Reporte_Categorias.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
-                .catch(error => console.error('Error al generar el PDF:', error));
-        });
-    </script>
-
-    <script>
-        document.querySelector('.btn-excel').addEventListener('click', function () {
-            const filteredRows = Array.from(document.querySelectorAll("#productList"))
-                .filter(row => row.style.display !== "none") // Solo filas visibles
-                .map(row => {
-                    const cells = row.querySelectorAll("td");
-                    return {
-                        idCategoria: cells[0].textContent.trim(),
-                        nombre: cells[1].textContent.trim(),
-                        descripcion: cells[2].textContent.trim(),
-                    };
-                });
-
-            fetch('/excelCat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filteredRows)
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'reporte_categorias.xlsx';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
-                .catch(error => console.error('Error al generar el Excel:', error));
-        });
-    </script>
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
