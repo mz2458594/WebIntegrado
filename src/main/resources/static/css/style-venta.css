@@ -76,6 +76,7 @@ input{
 .body-cca{
     background-color: #ffffff;
     padding: 20px;
+    align-items: center;
 }
 
 .body-cca input{
