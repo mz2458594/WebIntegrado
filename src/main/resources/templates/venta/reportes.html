@@ -70,7 +70,7 @@
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="responsable">Responsable de la venta:</label>
-                            <input hidden id="username" type="text" th:value="${empleado.nombre}">
+                            <!-- <input hidden id="username" type="text" th:value="${empleado.nombre}"> -->
                             <select id="responsable" name="idResponsable">
                                 <option value="" disabled selected>Selecciona</option>
                                 <option th:each="empleado : ${empleados}" th:value="${empleado.id}"
@@ -236,7 +236,7 @@
         }
         document.querySelector(".btn-pdf").addEventListener("click", async () => {
             const now = new Date().toLocaleString();
-            const responsable = document.getElementById('username').value;
+            const responsable = document.getElementById('username').value || "";
             const tablaCompleta = document.getElementById("tablaCompleta").outerHTML;
             const filas = document.querySelectorAll('#tablaProductos tr');
             const totalVentasCount = filas.length;

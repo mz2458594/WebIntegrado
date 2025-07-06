@@ -37,5 +37,11 @@ public class ReportesController {
         return "venta/reportes";
     }
 
+    @GetMapping("/inventario")
+    public String verReportesInventario(Model model,  HttpSession session){
+
+        return "venta/reportesInventario";
+    }
+
 
 }

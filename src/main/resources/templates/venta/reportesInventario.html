@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reportes Inventario | Targus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="icon" th:href="@{/images/logo.png}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/styleventa.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        .table__scroll {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            overflow-x: hidden;
+        }
+
+        .agotado {
+            background-color: #f8d7da;
+        }
+
+        .stock-bajo {
+            background-color: #fff3cd;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header" th:insert="venta/header.html"></header>
+    <nav class="navbar" th:insert="venta/navbar.html"></nav>
+    <main class="contenedor_main">
+        <div class="contenedor_modal">
+            <h2>Reporte de Inventario</h2>
+            <div class="reporte__ventas">
+                <div class="filtros__ventas">
+                    <div class="filtro-fila">
+                        <div class="filtro-campo">
+                            <label for="filtro-inventario">Estado:</label>
+                            <select id="filtro-inventario">
+                                <option value="todos">Todos</option>
+                                <option value="agotado">Agotados</option>
+                                <option value="stock_bajo">Stock Bajo</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="filtro-categoria">Categoría:</label>
+                            <select id="filtro-categoria">
+                                <option value="todas">Todas</option>
+                                <option value="Laptops">Laptops</option>
+                                <option value="Smartphones">Smartphones</option>
+                                <option value="Monitores">Monitores</option>
+                                <option value="Teclados">Teclados</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
+                            <label for="buscar-producto">Buscar:</label>
+                            <input type="text" id="buscar-producto" placeholder="Nombre del producto..." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cont-reportes">
+                <p>Generar reporte:</p>
+                <div class="reporte-btns">
+                    <button class="btn-pdf" id="btn-exportar-pdf"><i class="fa-solid fa-file-pdf"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cont_table">
+            <div class="table__product table__scroll">
+                <table class="table" id="tabla-reporte">
+                    <thead>
+                        <tr class="thead">
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Stock Mínimo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-inventario">
+                        <!-- Rellenado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="container" id="dashboard">
+            <div class="chart-block">
+                <h2>Estado del Inventario</h2>
+                <canvas id="inventarioChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+
+<script>
+
+    document.getElementById("btn-exportar-pdf").addEventListener("click", () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Reporte de Inventario", 14, 15);
+
+        const productosFiltrados = obtenerProductosFiltrados();
+        const filas = productosFiltrados.map(p => {
+            let estado = "Suficiente";
+            if (p.stock === 0) estado = "Agotado";
+            else if (p.stock <= p.minimo) estado = "Stock Bajo";
+
+            return [p.id, p.nombre, p.categoria, p.stock, p.minimo, estado];
+        });
+
+        doc.autoTable({
+            head: ["ID", "Producto", "Categoría", "Stock", "Stock Mínimo", "Estado"],
+            body: filas,
+            startY: 20,
+            styles: { halign: 'center' },
+            headStyles: { fillColor: [0, 123, 255] }
+        });
+
+        doc.save("reporte_inventario.pdf");
+    });
+
+    const productos = [
+        { id: 1, nombre: "Dell XPS 13", categoria: "Laptops", stock: 0, minimo: 5 },
+        { id: 2, nombre: "MacBook Pro", categoria: "Laptops", stock: 3, minimo: 5 },
+        { id: 3, nombre: "iPhone 14", categoria: "Smartphones", stock: 12, minimo: 5 },
+        { id: 4, nombre: "Samsung Galaxy S23", categoria: "Smartphones", stock: 2, minimo: 5 },
+        { id: 5, nombre: "Monitor LG 24\"", categoria: "Monitores", stock: 10, minimo: 4 },
+        { id: 6, nombre: "Monitor Samsung 27\"", categoria: "Monitores", stock: 4, minimo: 6 },
+        { id: 7, nombre: "Teclado Mecánico Redragon", categoria: "Teclados", stock: 0, minimo: 3 },
+        { id: 8, nombre: "Teclado Logitech K120", categoria: "Teclados", stock: 6, minimo: 4 }
+    ];
+
+    const tabla = document.getElementById("tabla-inventario");
+    const filtroEstado = document.getElementById("filtro-inventario");
+    const filtroCategoria = document.getElementById("filtro-categoria");
+    const buscar = document.getElementById("buscar-producto");
+
+    function obtenerProductosFiltrados() {
+        const estado = filtroEstado.value;
+        const categoria = filtroCategoria.value;
+        const texto = buscar.value.toLowerCase();
+
+        return productos.filter(p => {
+            const coincideEstado =
+                estado === "todos" ||
+                (estado === "agotado" && p.stock === 0) ||
+                (estado === "stock_bajo" && p.stock > 0 && p.stock <= p.minimo);
+
+            const coincideCategoria = categoria === "todas" || p.categoria === categoria;
+            const coincideBusqueda = p.nombre.toLowerCase().includes(texto);
+
+            return coincideEstado && coincideCategoria && coincideBusqueda;
+        });
+    }
+
+    function renderTabla() {
+        const lista = obtenerProductosFiltrados();
+        tabla.innerHTML = "";
+
+        lista.forEach(p => {
+            const fila = document.createElement("tr");
+
+            let estilo = "";
+            if (p.stock === 0) estilo = "style='background-color:#f8d7da; color:#721c24; font-weight:bold;'";
+            else if (p.stock <= p.minimo) estilo = "style='background-color:#fff3cd; color:#856404; font-weight:bold;'";
+
+            fila.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.nombre}</td>
+            <td>${p.categoria}</td>
+            <td ${estilo}>${p.stock}</td>
+            <td>${p.minimo}</td>
+          `;
+            tabla.appendChild(fila);
+        });
+    }
+
+    filtroEstado.addEventListener("change", renderTabla);
+    filtroCategoria.addEventListener("change", renderTabla);
+    buscar.addEventListener("input", renderTabla);
+    renderTabla();
+
+    // Gráfico
+    window.onload = function () {
+        const ctx = document.getElementById("inventarioChart").getContext("2d");
+        const agotados = productos.filter(p => p.stock === 0).length;
+        const bajo = productos.filter(p => p.stock > 0 && p.stock <= p.minimo).length;
+        const suficiente = productos.filter(p => p.stock > p.minimo).length;
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["Agotados", "Stock Bajo", "Suficiente"],
+                datasets: [{
+                    data: [agotados, bajo, suficiente],
+                    backgroundColor: ["#dc3545", "#ffc107", "#28a745"]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Distribución de Stock' }
+                }
+            }
+        });
+    };
+
+</script>
+
+<script th:src="@{/js/modalAdd.js}"></script>
+
+
+</html>
