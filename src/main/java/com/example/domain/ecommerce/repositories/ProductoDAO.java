@@ -16,4 +16,12 @@ public interface ProductoDAO extends JpaRepository<Producto, Long>{
     Optional<Producto> findByCodigoBarras(String codigo);
     @Query("SELECT p from Producto p WHERE p.stock < '5'")
     List<Producto> obtenerProductosStockBajo();
+
+    @Query("""
+            SELECT p
+            FROM Producto p
+            WHERE (:categoria IS NULL OR p.categoria.nombre = :categoria)
+            AND (:proveedor IS NULL OR p.proveedor.nombre = :proveedor)
+            """)
+    List<Producto> findByFiltro();
 }
