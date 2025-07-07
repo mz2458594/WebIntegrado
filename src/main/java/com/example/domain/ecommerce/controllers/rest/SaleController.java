@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.ecommerce.dto.VentaDTO;
 import com.example.domain.ecommerce.models.entities.Venta;
-import com.example.domain.ecommerce.models.enums.TipoVenta;
 import com.example.domain.ecommerce.services.VentaService;
 
 import lombok.extern.slf4j.Slf4j;

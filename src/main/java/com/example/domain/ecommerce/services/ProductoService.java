@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import com.example.domain.ecommerce.dto.ProductDTO;
+import com.example.domain.ecommerce.dto.ProductFilterDTO;
 import com.example.domain.ecommerce.factories.ProductoFactory;
 import com.example.domain.ecommerce.models.entities.Auricular;
 import com.example.domain.ecommerce.models.entities.Camara;
@@ -222,6 +223,28 @@ public class ProductoService {
 
     public List<Producto> obtenerStockBajo(){
         return productoDAO.obtenerProductosStockBajo();
+    }
+
+    public List<Producto> obtenerProductosConFiltro(ProductFilterDTO productFilterDTO){
+
+        String proveedor = null;
+        String categoria = null;
+
+        if (productFilterDTO.getProveedor() != null) {
+            Proveedor prov = proveedorDAO.findByNombre(productFilterDTO.getProveedor());
+            if (prov != null) {
+                proveedor = prov.getNombre();
+            }
+        }
+
+        if (productFilterDTO.getCategoria() != null) {
+            Categoria cat = categoriaDAO.findByNombre(productFilterDTO.getCategoria());
+            if (cat != null) {
+                categoria = cat.getNombre();
+            }
+        }
+
+        return productoDAO.findByFiltro(categoria, proveedor);
     }
 
 }

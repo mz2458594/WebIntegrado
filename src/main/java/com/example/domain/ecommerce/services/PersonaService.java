@@ -2,17 +2,23 @@ package com.example.domain.ecommerce.services;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.example.domain.ecommerce.dto.PersonaFilterDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
 import com.example.domain.ecommerce.models.entities.Cliente;
 import com.example.domain.ecommerce.models.entities.Direccion;
 import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.models.enums.Estado;
+import com.example.domain.ecommerce.models.enums.TipoPersona;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
+import com.example.domain.ecommerce.repositories.PersonaDAO;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +29,8 @@ public class PersonaService {
     private final EmpleadoDAO empleadoDAO;
 
     private final ClienteDAO clienteDAO;
+
+    private final PersonaDAO personaDAO;
 
     private final DireccionService direccionService;
 
@@ -118,6 +126,36 @@ public class PersonaService {
 
     private int calcularEdad(LocalDate fecha) {
         return Period.between(fecha, LocalDate.now()).getYears();
+    }
+
+    public List<Persona> obtenerPersonasConFiltros(PersonaFilterDTO personaFilterDTO) {
+
+        Estado estado = null;
+
+        try {
+            estado = personaFilterDTO.getEstado() != null ? Estado.valueOf(personaFilterDTO.getEstado()) : null;
+        } catch (IllegalArgumentException | NullPointerException e) {
+
+        }
+
+        TipoPersona tipo;
+        try {
+            tipo = personaFilterDTO.getTipo() != null ? TipoPersona.valueOf(personaFilterDTO.getTipo())
+                    : TipoPersona.Normal;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            tipo = TipoPersona.Normal;
+        }
+
+        switch (tipo) {
+            case Empleado:
+                return empleadoDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+            case Cliente:
+                return clienteDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+            case Normal:
+            default:
+                return personaDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.domain.ecommerce.controllers.rest;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
+import com.example.domain.ecommerce.dto.ProductFilterDTO;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.ProductoService;
 
@@ -49,5 +50,10 @@ public class ProductController {
         productosService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<Producto>> getProductFilter(@RequestBody ProductFilterDTO productFilterDTO){
+        return ResponseEntity.ok(productosService.obtenerProductosConFiltro(productFilterDTO));
+    } 
 
 }
