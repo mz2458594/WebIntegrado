@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Reportes Inventario | Targus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="icon" th:href="@{/images/logo.png}" />
@@ -60,8 +60,20 @@
                             </select>
                         </div>
                         <div class="filtro-campo">
+                            <label for="filtro-proveedor">Proveedor:</label>
+                            <select id="filtro-proveedor">
+                                <option value="todos">Todos</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="LG">LG</option>
+                                <option value="Redragon">Redragon</option>
+                                <option value="Logitech">Logitech</option>
+                            </select>
+                        </div>
+                        <div class="filtro-campo">
                             <label for="buscar-producto">Buscar:</label>
-                            <input type="text" id="buscar-producto" placeholder="Nombre del producto..." />
+                            <input type="text" id="buscar-producto" placeholder="Nombre del producto..." style="width: 150px;" />
                         </div>
                     </div>
                 </div>
@@ -85,6 +97,7 @@
                             <th>Categoría</th>
                             <th>Stock</th>
                             <th>Stock Mínimo</th>
+                            <th>Proveedor</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-inventario">
@@ -104,9 +117,7 @@
     </main>
 </body>
 
-
-<script>
-
+<script th:inline="none">
     document.getElementById("btn-exportar-pdf").addEventListener("click", () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
@@ -118,11 +129,11 @@
             if (p.stock === 0) estado = "Agotado";
             else if (p.stock <= p.minimo) estado = "Stock Bajo";
 
-            return [p.id, p.nombre, p.categoria, p.stock, p.minimo, estado];
+            return [p.id, p.nombre, p.categoria, p.stock, p.minimo, p.proveedor, estado];
         });
 
         doc.autoTable({
-            head: ["ID", "Producto", "Categoría", "Stock", "Stock Mínimo", "Estado"],
+            head: [['ID', 'Producto', 'Categoría', 'Stock', 'Stock Mínimo', 'Proveedor', 'Estado']],
             body: filas,
             startY: 20,
             styles: { halign: 'center' },
@@ -133,24 +144,26 @@
     });
 
     const productos = [
-        { id: 1, nombre: "Dell XPS 13", categoria: "Laptops", stock: 0, minimo: 5 },
-        { id: 2, nombre: "MacBook Pro", categoria: "Laptops", stock: 3, minimo: 5 },
-        { id: 3, nombre: "iPhone 14", categoria: "Smartphones", stock: 12, minimo: 5 },
-        { id: 4, nombre: "Samsung Galaxy S23", categoria: "Smartphones", stock: 2, minimo: 5 },
-        { id: 5, nombre: "Monitor LG 24\"", categoria: "Monitores", stock: 10, minimo: 4 },
-        { id: 6, nombre: "Monitor Samsung 27\"", categoria: "Monitores", stock: 4, minimo: 6 },
-        { id: 7, nombre: "Teclado Mecánico Redragon", categoria: "Teclados", stock: 0, minimo: 3 },
-        { id: 8, nombre: "Teclado Logitech K120", categoria: "Teclados", stock: 6, minimo: 4 }
+        { id: 1, nombre: "Dell XPS 13", categoria: "Laptops", stock: 0, minimo: 5, proveedor: "Dell" },
+        { id: 2, nombre: "MacBook Pro", categoria: "Laptops", stock: 3, minimo: 5, proveedor: "Apple" },
+        { id: 3, nombre: "iPhone 14", categoria: "Smartphones", stock: 12, minimo: 5, proveedor: "Apple" },
+        { id: 4, nombre: "Samsung Galaxy S23", categoria: "Smartphones", stock: 2, minimo: 5, proveedor: "Samsung" },
+        { id: 5, nombre: "Monitor LG 24\"", categoria: "Monitores", stock: 10, minimo: 4, proveedor: "LG" },
+        { id: 6, nombre: "Monitor Samsung 27\"", categoria: "Monitores", stock: 4, minimo: 6, proveedor: "Samsung" },
+        { id: 7, nombre: "Teclado Mecánico Redragon", categoria: "Teclados", stock: 0, minimo: 3, proveedor: "Redragon" },
+        { id: 8, nombre: "Teclado Logitech K120", categoria: "Teclados", stock: 6, minimo: 4, proveedor: "Logitech" }
     ];
 
     const tabla = document.getElementById("tabla-inventario");
     const filtroEstado = document.getElementById("filtro-inventario");
     const filtroCategoria = document.getElementById("filtro-categoria");
+    const filtroProveedor = document.getElementById("filtro-proveedor");
     const buscar = document.getElementById("buscar-producto");
 
     function obtenerProductosFiltrados() {
         const estado = filtroEstado.value;
         const categoria = filtroCategoria.value;
+        const proveedor = filtroProveedor.value;
         const texto = buscar.value.toLowerCase();
 
         return productos.filter(p => {
@@ -160,9 +173,10 @@
                 (estado === "stock_bajo" && p.stock > 0 && p.stock <= p.minimo);
 
             const coincideCategoria = categoria === "todas" || p.categoria === categoria;
+            const coincideProveedor = proveedor === "todos" || p.proveedor === proveedor;
             const coincideBusqueda = p.nombre.toLowerCase().includes(texto);
 
-            return coincideEstado && coincideCategoria && coincideBusqueda;
+            return coincideEstado && coincideCategoria && coincideProveedor && coincideBusqueda;
         });
     }
 
@@ -183,6 +197,7 @@
             <td>${p.categoria}</td>
             <td ${estilo}>${p.stock}</td>
             <td>${p.minimo}</td>
+            <td>${p.proveedor}</td>
           `;
             tabla.appendChild(fila);
         });
@@ -190,6 +205,7 @@
 
     filtroEstado.addEventListener("change", renderTabla);
     filtroCategoria.addEventListener("change", renderTabla);
+    filtroProveedor.addEventListener("change", renderTabla);
     buscar.addEventListener("input", renderTabla);
     renderTabla();
 
@@ -217,10 +233,8 @@
             }
         });
     };
-
 </script>
 
 <script th:src="@{/js/modalAdd.js}"></script>
-
 
 </html>
