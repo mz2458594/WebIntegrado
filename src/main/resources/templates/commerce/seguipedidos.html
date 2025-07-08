@@ -1,107 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Targus - Gestión de Pedidos</title>
-        <link rel="stylesheet" th:href="@{/css/seguipedidos.css}">
-        <link rel="icon" th:href="@{/images/logo.png}">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Targus - Gestión de Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/seguipedidos.css}">
+    <link rel="icon" th:href="@{/images/logo.png}">
+</head>
 
-    <body>
-        <div th:insert="commerce/header.html"></div>
-        <div class="container">
+<body>
+    <div th:insert="commerce/header.html"></div>
+    <div class="container">
 
-            <div style="margin-bottom: 1rem;">
-                <button class="btn-back" onclick="window.history.back()">←
-                    Volver</button>
-            </div>
+        <div style="margin-bottom: 1rem;">
+            <button class="btn-back" onclick="window.history.back()">←
+                Volver</button>
+        </div>
 
-            <div class="filters-container">
-                <div class="filters-row">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por pedido" onkeyup="filterTable()">
-                    </div>
-                    <select id="statusFilter" class="filter-select"
-                        onchange="filterTable()">
-                        <option value>Todos los estados</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="confirmado">Confirmado</option>
-                        <option value="en-camino">En Camino</option>
-                        <option value="entregado">Entregado</option>
-                        <option value="cancelado">Cancelado</option>
-                    </select>
+        <div class="filters-container">
+            <div class="filters-row">
+                <div class="search-box">
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por pedido"
+                        onkeyup="filterTable()">
                 </div>
-            </div>
-
-            <div class="table-container">
-                <h2>📦 Lista de Pedidos</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Pedido</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                            <th>Dirección</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:if="${pedidos != null}"
-                            th:each="pedido : ${pedidos}">
-                            <td th:text="${pedido.idPedido}">#PED-001</td>
-                            <td th:text="${pedido.fechaPedido}">15/12/2024</td>
-                            <td><span th:text="${pedido.estado}"
-                                    th:classappend="${pedido.estado} == 'COMPLETADO' ? ' status entregado' 
-                            : (${pedido.estado} == 'PROCESANDO' ? 'status enviado' 
-                            : ' status pendiente')">Entregado</span></td>
-                            <td>Av. Principal 123, Ciudad</td>
-                            <td class="total"
-                                th:text="${pedido.total}">$125.50</td>
-                            <td>
-                                <button
-                                    class="btn"
-                                    th:attr="onclick=|openModal(${pedido.idPedido})|">Ver
-                                    Detalle
-                                </button>
-                            </td>
-                        </tr>
-                        <tr th:if="${pedidos == null}">
-                            <td>No ha realizado ningun pedido</td>
-                        </tr>
-                    </tbody>
-                    <tbody id="ordersTableBody">
-                </table>
+                <select id="statusFilter" class="filter-select" onchange="filterTable()">
+                    <option value>Todos los estados</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="CONFIRMADO">Confirmado</option>
+                    <option value="EN_CAMINO">En Camino</option>
+                    <option value="ENTREGADO">Entregado</option>
+                    <option value="CANCELADO">Cancelado</option>
+                </select>
             </div>
         </div>
 
-        <div id="orderModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modalTitle">🛒 Detalle del Pedido</h3>
-                    <span class="close" onclick="closeModal()">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <div class="products-section">
-                        <h4>Productos Comprados</h4>
-                        <div id="productsList">
+        <div class="table-container">
+            <h2>📦 Lista de Pedidos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Dirección</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr th:if="${pedidos != null}" th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.idPedido}">#PED-001</td>
+                        <td th:text="${pedido.fechaPedido}">15/12/2024</td>
+                        <td><span th:text="${pedido.estado}" th:classappend="${pedido.estado}">Entregado</span></td>
+                        <td>Av. Principal 123, Ciudad</td>
+                        <td class="total" th:text="${pedido.total}">$125.50</td>
+                        <td>
+                            <button class="btn" th:attr="onclick=|openModal(${pedido.idPedido})|">Ver
+                                Detalle
+                            </button>
+                        </td>
+                    </tr>
+                    <tr th:if="${pedidos == null}">
+                        <td>No ha realizado ningun pedido</td>
+                    </tr>
+                </tbody>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="total-section"
-                        style="width: 100%; text-align: center;">
-                        <div class="total-label">Total del Pedido</div>
-                        <div class="total-amount" id="orderTotal">$125.50</div>
+            </table>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">🛒 Detalle del Pedido</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="products-section">
+                    <h4>Productos Comprados</h4>
+                    <div id="productsList">
+
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <div class="total-section" style="width: 100%; text-align: center;">
+                    <div class="total-label">Total del Pedido</div>
+                    <div class="total-amount" id="orderTotal">$125.50</div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <script>
+    <script>
 
         function filterTable() {
             const searchInput = document.getElementById('searchInput').value.toLowerCase();
@@ -115,12 +107,11 @@
                 const row = rows[i];
                 const orderNumber = row.cells[0].textContent.toLowerCase();
                 const address = row.cells[3].textContent.toLowerCase();
-                const statusElement = row.cells[2].querySelector('.status');
-                const status = statusElement.className.split(' ')[1]; // Obtener la clase del estado
+                const status = row.cells[2].textContent;
 
                 // Filtro de búsqueda
                 const matchesSearch = orderNumber.includes(searchInput) || address.includes(searchInput);
-                
+
                 // Filtro de estado
                 const matchesStatus = statusFilter === '' || status === statusFilter;
 
@@ -138,7 +129,7 @@
             } else {
                 noResults.style.display = 'none';
             }
-        }    
+        }
 
         function handleButtonClick(buttonElement) {
             const pedidoData = buttonElement.getAttribute('data-pedido')
@@ -194,11 +185,12 @@
         }
 
     </script>
-        <div th:insert="commerce/footer.html"></div>
-    </body>
-    <script th:inline="javascript">
-        /*<!CDATA[*/
-        const ordersData = [[${pedidos}]];
-        /*]]>*/
-    </script>
+    <div th:insert="commerce/footer.html"></div>
+</body>
+<script th:inline="javascript">
+    /*<!CDATA[*/
+    const ordersData = [[${ pedidos }]];
+    /*]]>*/
+</script>
+
 </html>

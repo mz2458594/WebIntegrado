@@ -19,7 +19,7 @@
             margin-top: 100px;
         }
 
-                .filters-container {
+        .filters-container {
             background: linear-gradient(135deg, #0e1419 0%, #1b2838 100%);
             border-radius: 8px;
             padding: 1.5rem;
@@ -171,7 +171,8 @@
             color: #c7d5e0;
         }
 
-        .status {
+
+        .PENDIENTE {
             padding: 0.4rem 1rem;
             border-radius: 4px;
             font-size: 0.75rem;
@@ -179,37 +180,62 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border: 1px solid;
-        }
-
-        .status.pendiente {
             background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
             color: #fff;
             border-color: #d68910;
             box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
         }
 
-        .status.confirmado {
+        .CONFIRMADO {
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
             background: linear-gradient(90deg, #2a33d6 0%, #2a33d6 100%);
             color: #fff;
             border-color: #2d37fd;
             box-shadow: 0 0 10px rgba(155, 89, 182, 0.3);
         }
 
-        .status.enviado {
+        .ENVIADO {
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
             background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
             color: #fff;
             border-color: #2471a3;
             box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
         }
 
-        .status.entregado {
+        .ENTREGADO {
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
             background: linear-gradient(90deg, #27ae60 0%, #229954 100%);
             color: #fff;
             border-color: #1e8449;
             box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
         }
 
-        .status.cancelado {
+        .CANCELADO {
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
             background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
             color: #fff;
             border-color: #a93226;
