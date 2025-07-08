@@ -1,18 +1,24 @@
 package com.example.domain.ecommerce.services;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.PedidoDTO;
+import com.example.domain.ecommerce.dto.PedidoFilterDTO;
 import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.factories.PedidoProveedorFactory;
 import com.example.domain.ecommerce.factories.PedidoUsuarioFactory;
 import com.example.domain.ecommerce.models.entities.DetallePedido;
+import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
+import com.example.domain.ecommerce.models.enums.EstadoPedido;
+import com.example.domain.ecommerce.models.enums.TipoPedido;
+import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.PedidoDAO;
 import com.example.domain.ecommerce.repositories.PedidoProveedorDAO;
 import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
@@ -33,6 +39,8 @@ public class PedidoService {
     private final PedidoUsuarioFactory pedidoUsuarioFactory;
 
     private final PedidoDAO pedidoDAO;
+
+    private final EmpleadoDAO empleadoDAO;
 
     public List<Pedido> getPedidos() {
         return (List<Pedido>) pedidoDAO.findAll();
@@ -139,8 +147,57 @@ public class PedidoService {
         pedidoProveedorFactory.actualizarEstado(id, estadoRequestDTO);
     }
 
-    public void actualizarEstadoUsuario(int id, EstadoRequestDTO estadoRequestDTO){
+    public void actualizarEstadoUsuario(int id, EstadoRequestDTO estadoRequestDTO) {
         pedidoUsuarioFactory.actualizarEstado(id, estadoRequestDTO);
+    }
+
+    public List<Pedido> obtenerPedidosConFiltro(PedidoFilterDTO pedidoFilterDTO) {
+
+        Timestamp fechaInicio = pedidoFilterDTO.getFechaInicio() != null
+                ? new Timestamp(pedidoFilterDTO.getFechaInicio().getTime())
+                : null;
+
+        Timestamp fechaFinal = pedidoFilterDTO.getFechaInicio() != null
+                ? new Timestamp(pedidoFilterDTO.getFechaInicio().getTime())
+                : null;
+
+        EstadoPedido estadoPedido = null;
+
+        if (pedidoFilterDTO.getEstado() != null) {
+            try {
+                estadoPedido = EstadoPedido.valueOf(pedidoFilterDTO.getEstado());
+            } catch (IllegalArgumentException | NullPointerException e) {
+
+            }
+        }
+
+        String username = null;
+
+        if (pedidoFilterDTO.getIdResponsable() != null) {
+            Empleado empleado = empleadoDAO.findById(Long.valueOf(pedidoFilterDTO.getIdResponsable()))
+                    .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+            username = empleado.getUsuario().getUsername();
+        }
+
+        TipoPedido tipo;
+
+        try {
+            tipo = pedidoFilterDTO.getTipoPedido() != null ? TipoPedido.valueOf(pedidoFilterDTO.getTipoPedido())
+                    : TipoPedido.Normal;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            tipo = TipoPedido.Normal;
+        }
+
+        switch (tipo) {
+            case Ecommerce:
+                return pedidoUsuarioDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
+            case Inventario:
+                return pedidoProveedorDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
+            case Normal:
+            default:
+                return pedidoDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
+        }
+
     }
 
 }

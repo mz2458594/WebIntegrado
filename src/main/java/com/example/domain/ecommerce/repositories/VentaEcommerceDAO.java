@@ -15,9 +15,17 @@ import com.example.domain.ecommerce.models.entities.VentaEcommerce;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 
 @Repository
-public interface VentaEcommerceDAO extends JpaRepository<VentaEcommerce, Long>{
+public interface VentaEcommerceDAO extends JpaRepository<VentaEcommerce, Long> {
     Optional<VentaEcommerce> findByUsuario(Usuario usuario);
-    @Query("SELECT v from VentaEcommerce v WHERE (:username IS NULL OR v.usuario.username = :username) AND (:tipo IS NULL OR v.comprobante.tipo = :tipo) AND (:fechaInicio IS NULL OR v.fechaVenta >= :fechaInicio) AND (:fechaFinal IS NULL OR v.fechaVenta <= :fechaFinal)")
+
+    @Query("""
+            SELECT v
+            from VentaEcommerce v
+            WHERE (:username IS NULL OR v.usuario.username = :username)
+            AND (:tipo IS NULL OR v.comprobante.tipo = :tipo)
+            AND (:fechaInicio IS NULL OR v.fechaVenta >= :fechaInicio)
+            AND (:fechaFinal IS NULL OR v.fechaVenta <= :fechaFinal)
+            """)
     List<Venta> findByUsuarioAndTipoComprobanteAndFechaVentaBetween(
             @Param("fechaInicio") Timestamp fechaInicio,
             @Param("fechaFinal") Timestamp fechaFinal,
