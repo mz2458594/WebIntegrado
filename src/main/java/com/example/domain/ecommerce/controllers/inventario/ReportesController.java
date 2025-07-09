@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.ecommerce.models.entities.Empleado;
+import com.example.domain.ecommerce.services.CategoriaService;
+import com.example.domain.ecommerce.services.ProveedorService;
 import com.example.domain.ecommerce.services.UsuarioService;
 import com.example.domain.ecommerce.services.VentaService;
 
@@ -21,6 +23,12 @@ public class ReportesController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private ProveedorService proveedorService;
 
 
     @GetMapping("/")
@@ -39,7 +47,8 @@ public class ReportesController {
 
     @GetMapping("/inventario")
     public String verReportesInventario(Model model,  HttpSession session){
-
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("categorias", categoriaService.obtenerCategorias());
         return "venta/reportesInventario";
     }
 

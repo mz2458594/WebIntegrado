@@ -44,7 +44,7 @@
                         <div class="filtro-campo">
                             <label for="filtro-inventario">Estado:</label>
                             <select id="filtro-inventario">
-                                <option value="todos">Todos</option>
+                                <option value="">Todos</option>
                                 <option value="agotado">Agotados</option>
                                 <option value="stock_bajo">Stock Bajo</option>
                             </select>
@@ -52,28 +52,25 @@
                         <div class="filtro-campo">
                             <label for="filtro-categoria">Categoría:</label>
                             <select id="filtro-categoria">
-                                <option value="todas">Todas</option>
-                                <option value="Laptops">Laptops</option>
-                                <option value="Smartphones">Smartphones</option>
-                                <option value="Monitores">Monitores</option>
-                                <option value="Teclados">Teclados</option>
+                                <option value="">Todas</option>
+                                <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}"
+                                    th:value="${categoria.nombre}"></option>
+
                             </select>
                         </div>
                         <div class="filtro-campo">
                             <label for="filtro-proveedor">Proveedor:</label>
                             <select id="filtro-proveedor">
-                                <option value="todos">Todos</option>
-                                <option value="Dell">Dell</option>
-                                <option value="Apple">Apple</option>
-                                <option value="Samsung">Samsung</option>
-                                <option value="LG">LG</option>
-                                <option value="Redragon">Redragon</option>
-                                <option value="Logitech">Logitech</option>
+                                <option value="">Todos</option>
+                                <option th:each="proveedor : ${proveedores}" th:text="${proveedor.nombre}"
+                                    th:value="${proveedor.nombre}">Dell</option>
+
                             </select>
                         </div>
                         <div class="filtro-campo">
                             <label for="buscar-producto">Buscar:</label>
-                            <input type="text" id="buscar-producto" placeholder="Nombre del producto..." style="width: 150px;" />
+                            <input type="text" id="buscar-producto" placeholder="Nombre del producto..."
+                                style="width: 150px;" />
                         </div>
                     </div>
                 </div>
@@ -96,7 +93,6 @@
                             <th>Producto</th>
                             <th>Categoría</th>
                             <th>Stock</th>
-                            <th>Stock Mínimo</th>
                             <th>Proveedor</th>
                         </tr>
                     </thead>
@@ -118,22 +114,24 @@
 </body>
 
 <script th:inline="none">
-    document.getElementById("btn-exportar-pdf").addEventListener("click", () => {
+    let chartProducts = null
+
+    document.getElementById("btn-exportar-pdf").addEventListener("click", async () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         doc.text("Reporte de Inventario", 14, 15);
 
-        const productosFiltrados = obtenerProductosFiltrados();
+        const productosFiltrados = await obtenerProductosFiltrados();
         const filas = productosFiltrados.map(p => {
             let estado = "Suficiente";
             if (p.stock === 0) estado = "Agotado";
             else if (p.stock <= p.minimo) estado = "Stock Bajo";
 
-            return [p.id, p.nombre, p.categoria, p.stock, p.minimo, p.proveedor, estado];
+            return [p.idProducto, p.nombre, p.categoria.nombre, p.stock, p.proveedor.nombre, estado];
         });
 
         doc.autoTable({
-            head: [['ID', 'Producto', 'Categoría', 'Stock', 'Stock Mínimo', 'Proveedor', 'Estado']],
+            head: [['ID', 'Producto', 'Categoría', 'Stock', 'Proveedor', 'Estado']],
             body: filas,
             startY: 20,
             styles: { halign: 'center' },
@@ -143,45 +141,58 @@
         doc.save("reporte_inventario.pdf");
     });
 
-    const productos = [
-        { id: 1, nombre: "Dell XPS 13", categoria: "Laptops", stock: 0, minimo: 5, proveedor: "Dell" },
-        { id: 2, nombre: "MacBook Pro", categoria: "Laptops", stock: 3, minimo: 5, proveedor: "Apple" },
-        { id: 3, nombre: "iPhone 14", categoria: "Smartphones", stock: 12, minimo: 5, proveedor: "Apple" },
-        { id: 4, nombre: "Samsung Galaxy S23", categoria: "Smartphones", stock: 2, minimo: 5, proveedor: "Samsung" },
-        { id: 5, nombre: "Monitor LG 24\"", categoria: "Monitores", stock: 10, minimo: 4, proveedor: "LG" },
-        { id: 6, nombre: "Monitor Samsung 27\"", categoria: "Monitores", stock: 4, minimo: 6, proveedor: "Samsung" },
-        { id: 7, nombre: "Teclado Mecánico Redragon", categoria: "Teclados", stock: 0, minimo: 3, proveedor: "Redragon" },
-        { id: 8, nombre: "Teclado Logitech K120", categoria: "Teclados", stock: 6, minimo: 4, proveedor: "Logitech" }
-    ];
-
     const tabla = document.getElementById("tabla-inventario");
     const filtroEstado = document.getElementById("filtro-inventario");
     const filtroCategoria = document.getElementById("filtro-categoria");
     const filtroProveedor = document.getElementById("filtro-proveedor");
     const buscar = document.getElementById("buscar-producto");
 
-    function obtenerProductosFiltrados() {
+    async function obtenerProductosFiltrados() {
+
         const estado = filtroEstado.value;
         const categoria = filtroCategoria.value;
         const proveedor = filtroProveedor.value;
         const texto = buscar.value.toLowerCase();
 
-        return productos.filter(p => {
-            const coincideEstado =
-                estado === "todos" ||
-                (estado === "agotado" && p.stock === 0) ||
-                (estado === "stock_bajo" && p.stock > 0 && p.stock <= p.minimo);
+        const datos = {
+            categoria, proveedor
+        }
 
-            const coincideCategoria = categoria === "todas" || p.categoria === categoria;
-            const coincideProveedor = proveedor === "todos" || p.proveedor === proveedor;
-            const coincideBusqueda = p.nombre.toLowerCase().includes(texto);
+        try {
+            const response = await fetch("http://localhost:8080/api/products/filter", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            })
 
-            return coincideEstado && coincideCategoria && coincideProveedor && coincideBusqueda;
-        });
+            if (!response.ok) {
+                throw new Error("Error al obtener los productos")
+            }
+
+            const productos = await response.json()
+
+            return productos.filter(p => {
+                const stock = Number(p.stock)
+                const coincideEstado =
+                    estado === "" ||
+                    (estado === "agotado" && stock === 0) ||
+                    (estado === "stock_bajo" && stock > 0 && stock <= 10);
+                const coincideBusqueda = p.nombre.toLowerCase().includes(texto);
+
+                return coincideEstado && coincideBusqueda;
+            });
+
+
+        } catch (error) {
+            console.error("Error: ", error)
+            return []
+        }
+
+
     }
 
-    function renderTabla() {
-        const lista = obtenerProductosFiltrados();
+    async function renderTabla() {
+        const lista = await obtenerProductosFiltrados();
         tabla.innerHTML = "";
 
         lista.forEach(p => {
@@ -192,15 +203,15 @@
             else if (p.stock <= p.minimo) estilo = "style='background-color:#fff3cd; color:#856404; font-weight:bold;'";
 
             fila.innerHTML = `
-            <td>${p.id}</td>
+            <td>${p.idProducto}</td>
             <td>${p.nombre}</td>
-            <td>${p.categoria}</td>
+            <td>${p.categoria.nombre}</td>
             <td ${estilo}>${p.stock}</td>
-            <td>${p.minimo}</td>
-            <td>${p.proveedor}</td>
+            <td>${p.proveedor.nombre}</td>
           `;
             tabla.appendChild(fila);
         });
+        actualizarGrafico()
     }
 
     filtroEstado.addEventListener("change", renderTabla);
@@ -210,13 +221,16 @@
     renderTabla();
 
     // Gráfico
-    window.onload = function () {
+    window.onload = actualizarGrafico()
+
+    async function actualizarGrafico() {
+        const productos = await obtenerProductosFiltrados()
         const ctx = document.getElementById("inventarioChart").getContext("2d");
         const agotados = productos.filter(p => p.stock === 0).length;
-        const bajo = productos.filter(p => p.stock > 0 && p.stock <= p.minimo).length;
-        const suficiente = productos.filter(p => p.stock > p.minimo).length;
-
-        new Chart(ctx, {
+        const bajo = productos.filter(p => p.stock > 0 && p.stock <= 10).length;
+        const suficiente = productos.filter(p => p.stock > 10).length;
+        if (chartProducts) chartProducts.destroy();
+        chartProducts = new Chart(ctx, {
             type: "doughnut",
             data: {
                 labels: ["Agotados", "Stock Bajo", "Suficiente"],
@@ -235,6 +249,5 @@
     };
 </script>
 
-<script th:src="@{/js/modalAdd.js}"></script>
 
 </html>
