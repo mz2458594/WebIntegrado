@@ -30,28 +30,28 @@
                         <span style="font-weight: bold;" th:text="${error}">Error al ingresar el usuario</span>
                     </div>
                     <div>
-                        <label>Nombre:</label> <br>
+                        <label>Nombre:</label>
                         <input th:value="${user.nombre}" type="text" id="nombre" name="nombre">
                     </div>
                     <div>
                         <label>Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" th:value="${user.apellido}"><br>
+                        <input type="text" id="apellido" name="apellido" th:value="${user.apellido}">
                     </div>
                     <div>
-                        <label>Celular:</label> <br>
+                        <label>Celular:</label>
                         <input th:value="${user.telefono}" type="text" maxlength="9" id="celular" name="celular">
                     </div>
                     <div>
-                        <label>Documento:</label> <br>
+                        <label>Documento:</label>
                         <input th:value="${user.dni}" type="text" maxlength="11" id="num_documento"
                             name="num_documento">
                     </div>
                     <div>
-                        <label>Correo:</label> <br>
+                        <label>Correo:</label>
                         <input th:value="${user.usuario.email}" type="email" id="correo" name="correo">
                     </div>
                     <div>
-                        <label>Username:</label> <br>
+                        <label>Username:</label>
                         <input th:value="${user.usuario.username}" type="text" id="username" name="username">
                     </div>
 
