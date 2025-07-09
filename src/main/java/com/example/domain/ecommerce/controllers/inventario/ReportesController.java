@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.services.CategoriaService;
 import com.example.domain.ecommerce.services.ProveedorService;
 import com.example.domain.ecommerce.services.UsuarioService;
@@ -31,7 +29,7 @@ public class ReportesController {
     private ProveedorService proveedorService;
 
 
-    @GetMapping("/")
+    @GetMapping("/ventas")
     public String verReportes(Model model,  HttpSession session){
 
         //  Empleado empleado = (Empleado) session.getAttribute("empleado");
@@ -45,11 +43,11 @@ public class ReportesController {
         return "venta/reportes";
     }
 
-    @GetMapping("/inventario")
+    @GetMapping("/productos")
     public String verReportesInventario(Model model,  HttpSession session){
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "venta/reportesInventario";
+        return "venta/reportesProductos";
     }
 
 
