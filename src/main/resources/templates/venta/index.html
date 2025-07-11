@@ -22,7 +22,7 @@
                 <h1>Sistemas web de Inventario</h1>
             </div>
             <div class="contenido">
-                <!-- <div class="item">
+                <div class="item">
                     <i class="fa-solid fa-cart-shopping"></i><a th:href="@{/inventario/ventas/ventas}">Venta nueva</a>
                     </li>
                 </div>
@@ -45,158 +45,9 @@
                 <div class="item item-admin"
                     th:if="${empleado != null && empleado.usuario.rol.nombre == 'Administrador'}">
                     <i class="fa-solid fa-users"></i><a th:href="@{/inventario/usuarios/}">Usuario</a>
-                </div> -->
+                </div>
             </div>
         </div>
-        <!-- <div class="container" id="dashboard">
-            <div class="head">
-                <h2>Productos Más Vendidos</h2>
-            </div>
-            <form th:action="@{/fecha}" method="post" id="form_fecha" class="date-container">
-                <label for="date" class="date-label">Selecciona una fecha:</label>
-                <input type="date" class="date-input" name="fecha">
-                <input type="submit" style="display: none;">
-            </form>
-            <section class="chart-container">
-                <canvas id="barChart"></canvas>
-            </section>
-        </div>
-        <!--CONSULTAS PARA OBTENCION DE DATOS-->
-        <!-- <input hidden type="number" id="product-1" th:value="${producto1}"><br>
-        <input hidden type="number" id="product-2" th:value="${producto2}"><br>
-        <input hidden type="number" id="product-3" th:value="${producto3}"><br>
-        <input hidden type="number" id="product-4" th:value="${producto4}"><br>
-        <input hidden type="number" id="product-5" th:value="${producto5}"><br>
-
-        <style>
-            date-container {
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-                gap: 8px;
-            }
-
-            .date-label {
-                font-size: 16px;
-                color: #333;
-            }
-
-            .date-input {
-                width: 250px;
-                padding: 10px;
-                font-size: 16px;
-                border: 2px solid #007BFF;
-                border-radius: 5px;
-                background-color: #fff;
-                color: #333;
-                transition: border-color 0.3s, box-shadow 0.3s;
-            }
-
-            .date-input:focus {
-                border-color: #0056b3;
-                box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
-                outline: none;
-            }
-
-            .date-input::-webkit-calendar-picker-indicator {
-                cursor: pointer;
-                filter: invert(0.5);
-            }
-
-            .date-input:hover {
-                border-color: #0056b3;
-            }
-        </style>
-
-        <script>
-            let date = document.querySelector(".date-input");
-            date.addEventListener("change", function () {
-                if (date.value) {
-                    document.getElementById("form_fecha").submit();
-                }
-            });
-
-
-            // Datos de ejemplo para los productos más vendidos
-            const productos = ["[[${nombre1}]]", "[[${nombre2}]]", "[[${nombre3}]]", "[[${nombre4}]]", "[[${nombre5}]]"];
-            const p1 = Number(document.getElementById('product-1').value);
-            const p2 = Number(document.getElementById('product-2').value);
-            const p3 = Number(document.getElementById('product-3').value);
-            const p4 = Number(document.getElementById('product-4').value);
-            const p5 = Number(document.getElementById('product-5').value);
-
-            const ventas = [p1, p2, p3, p4, p5];
-
-            // Configuración del gráfico de barras
-            const ctx = document.getElementById('barChart').getContext('2d');
-            const barChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: productos,
-                    datasets: [{
-                        label: 'Ventas',
-                        data: ventas,
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 99, 132, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 99, 132, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Productos Más Vendidos en el Minimarket'
-                        }
-                    }
-                }
-            });
-        </script>
-        <style>
-            .container {
-                width: 70%;
-                margin: 0 auto;
-                padding: 10px;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
-                text-align: center;
-                margin-top: 50px;
-            }
-
-            .head {
-                margin-bottom: 20px;
-            }
-
-            h2 {
-                color: #333;
-            }
-
-            .chart-container {
-                width: 100%;
-                margin-top: 30px;
-            }
-        </style> -->
     </main>
 </body>
 

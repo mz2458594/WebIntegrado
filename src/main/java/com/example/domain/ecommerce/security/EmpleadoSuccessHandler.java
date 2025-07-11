@@ -44,7 +44,7 @@ public class EmpleadoSuccessHandler implements AuthenticationSuccessHandler {
 
             if (empleado.getUsuario().getEstado() == Estado.ACTIVO) {
                 session.setAttribute("empleado", empleado);
-                response.sendRedirect("/inventario/principal/index");
+                response.sendRedirect("/inventario/ventas/ventas");
             } else if (empleado.getUsuario().getEstado() == Estado.INACTIVO) {
                 response.sendRedirect("/inventario/principal/login?error=true");
 
