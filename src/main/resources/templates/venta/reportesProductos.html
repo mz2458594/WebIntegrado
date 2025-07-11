@@ -23,11 +23,21 @@
         }
 
         .agotado {
-            background-color: #f8d7da;
+            background-color: rgb(234, 72, 72);
+            color: black;
+            font-weight: bold;
         }
 
         .stock-bajo {
-            background-color: #fff3cd;
+            background-color: rgb(231, 231, 85);
+            color: black;
+            font-weight: bold;
+        }
+
+        .suficiente {
+            background-color: #56a869;
+            color: black;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -35,12 +45,15 @@
 <body>
     <header class="header" th:insert="venta/header.html"></header>
     <nav class="navbar" th:insert="venta/navbar.html"></nav>
+
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <h2>Reporte de Inventario</h2>
+
             <div class="reporte__ventas">
                 <div class="filtros__ventas">
                     <div class="filtro-fila">
+
                         <div class="filtro-campo">
                             <label for="filtro-inventario">Estado:</label>
                             <select id="filtro-inventario">
@@ -49,29 +62,31 @@
                                 <option value="stock_bajo">Stock Bajo</option>
                             </select>
                         </div>
+
                         <div class="filtro-campo">
                             <label for="filtro-categoria">Categoría:</label>
                             <select id="filtro-categoria">
                                 <option value="">Todas</option>
                                 <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}"
                                     th:value="${categoria.nombre}"></option>
-
                             </select>
                         </div>
+
                         <div class="filtro-campo">
                             <label for="filtro-proveedor">Proveedor:</label>
                             <select id="filtro-proveedor">
                                 <option value="">Todos</option>
                                 <option th:each="proveedor : ${proveedores}" th:text="${proveedor.nombre}"
                                     th:value="${proveedor.nombre}">Dell</option>
-
                             </select>
                         </div>
+
                         <div class="filtro-campo">
                             <label for="buscar-producto">Buscar:</label>
                             <input type="text" id="buscar-producto" placeholder="Nombre del producto..."
                                 style="width: 150px;" />
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -96,9 +111,7 @@
                             <th>Proveedor</th>
                         </tr>
                     </thead>
-                    <tbody id="tabla-inventario">
-                        <!-- Rellenado por JS -->
-                    </tbody>
+                    <tbody id="tabla-inventario"></tbody>
                 </table>
             </div>
         </div>
@@ -109,86 +122,109 @@
                 <canvas id="inventarioChart"></canvas>
             </div>
         </div>
-
     </main>
 </body>
 
 <script th:inline="none">
-    let chartProducts = null
-
-    document.getElementById("btn-exportar-pdf").addEventListener("click", async () => {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("Reporte de Inventario", 14, 15);
-
-        const productosFiltrados = await obtenerProductosFiltrados();
-        const filas = productosFiltrados.map(p => {
-            let estado = "Suficiente";
-            if (p.stock === 0) estado = "Agotado";
-            else if (p.stock <= p.minimo) estado = "Stock Bajo";
-
-            return [p.idProducto, p.nombre, p.categoria.nombre, p.stock, p.proveedor.nombre, estado];
-        });
-
-        doc.autoTable({
-            head: [['ID', 'Producto', 'Categoría', 'Stock', 'Proveedor', 'Estado']],
-            body: filas,
-            startY: 20,
-            styles: { halign: 'center' },
-            headStyles: { fillColor: [0, 123, 255] }
-        });
-
-        doc.save("reporte_inventario.pdf");
-    });
-
+    let chartProducts = null;
     const tabla = document.getElementById("tabla-inventario");
     const filtroEstado = document.getElementById("filtro-inventario");
     const filtroCategoria = document.getElementById("filtro-categoria");
     const filtroProveedor = document.getElementById("filtro-proveedor");
     const buscar = document.getElementById("buscar-producto");
 
-    async function obtenerProductosFiltrados() {
+    document.getElementById("btn-exportar-pdf").addEventListener("click", async () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("p", "mm", "a4");
 
+        const now = new Date().toLocaleString();
+        const productos = await obtenerProductosFiltrados();
+
+        const agotados = productos.filter(p => Number(p.stock) === 0).length;
+        const bajo = productos.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 10).length;
+        const suficiente = productos.filter(p => Number(p.stock) > 10).length;
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 15;
+        const centerX = pageWidth / 2;
+
+        const logo = new Image();
+        logo.src = "/images/logo.png";
+        await logo.decode();
+        doc.addImage(logo, "PNG", margin, 10, 25, 15);
+
+        doc.setFontSize(14);
+        doc.text("REPORTE DE INVENTARIO", centerX, 18, { align: "center" });
+        doc.setFontSize(10);
+        doc.text(`Fecha de creación: ${now}`, centerX, 24, { align: "center" });
+
+        const canvas = document.getElementById("inventarioChart");
+        const imgData = canvas.toDataURL("image/png");
+        doc.addImage(imgData, "PNG", margin, 30, 60, 60);
+
+        const resumenTop = 30;
+        const resumenLeft = margin + 70;
+        doc.setFontSize(11);
+        doc.text("Distribución del Inventario", resumenLeft, resumenTop + 4);
+        doc.setFontSize(9);
+        doc.text(`Agotados: ${agotados}`, resumenLeft, resumenTop + 12);
+        doc.text(`Stock Bajo: ${bajo}`, resumenLeft, resumenTop + 18);
+        doc.text(`Stock Suficiente: ${suficiente}`, resumenLeft, resumenTop + 24);
+        doc.text(`Total Productos: ${productos.length}`, resumenLeft, resumenTop + 30);
+
+        const rows = productos.map(p => {
+            const stock = Number(p.stock);
+            const estado = stock === 0 ? "Agotado" : stock <= 10 ? "Stock Bajo" : "Suficiente";
+            return [
+                p.idProducto,
+                p.nombre,
+                p.categoria.nombre,
+                stock,
+                p.proveedor.nombre,
+                estado
+            ];
+        });
+
+        doc.autoTable({
+            head: [["ID", "Producto", "Categoría", "Stock", "Proveedor", "Estado"]],
+            body: rows,
+            startY: 95,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [50, 50, 50] }
+        });
+
+        doc.save("reporte_inventario.pdf");
+    });
+
+    async function obtenerProductosFiltrados() {
         const estado = filtroEstado.value;
         const categoria = filtroCategoria.value;
         const proveedor = filtroProveedor.value;
         const texto = buscar.value.toLowerCase();
 
-        const datos = {
-            categoria, proveedor
-        }
+        const datos = { categoria, proveedor };
 
         try {
             const response = await fetch("http://localhost:8080/api/products/filter", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos)
-            })
-
-            if (!response.ok) {
-                throw new Error("Error al obtener los productos")
-            }
-
-            const productos = await response.json()
+            });
+            const productos = await response.json();
 
             return productos.filter(p => {
-                const stock = Number(p.stock)
+                const stock = Number(p.stock);
                 const coincideEstado =
                     estado === "" ||
                     (estado === "agotado" && stock === 0) ||
                     (estado === "stock_bajo" && stock > 0 && stock <= 10);
                 const coincideBusqueda = p.nombre.toLowerCase().includes(texto);
-
                 return coincideEstado && coincideBusqueda;
             });
-
-
-        } catch (error) {
-            console.error("Error: ", error)
-            return []
+        } catch (err) {
+            console.error("Error al filtrar:", err);
+            return [];
         }
-
-
     }
 
     async function renderTabla() {
@@ -197,38 +233,38 @@
 
         lista.forEach(p => {
             const fila = document.createElement("tr");
+            const stockNum = Number(p.stock);
 
-            let estilo = "";
-            if (p.stock === 0) estilo = "style='background-color:#f8d7da; color:#721c24; font-weight:bold;'";
-            else if (p.stock <= p.minimo) estilo = "style='background-color:#fff3cd; color:#856404; font-weight:bold;'";
+            let claseStock = "";
+            if (stockNum === 0) claseStock = "agotado";
+            else if (stockNum <= 10) claseStock = "stock-bajo";
+            else claseStock = "suficiente";
 
             fila.innerHTML = `
-            <td>${p.idProducto}</td>
-            <td>${p.nombre}</td>
-            <td>${p.categoria.nombre}</td>
-            <td ${estilo}>${p.stock}</td>
-            <td>${p.proveedor.nombre}</td>
-          `;
+        <td>${p.idProducto}</td>
+        <td>${p.nombre}</td>
+        <td>${p.categoria.nombre}</td>
+        <td class="${claseStock}">${stockNum}</td>
+        <td>${p.proveedor.nombre}</td>`;
             tabla.appendChild(fila);
         });
-        actualizarGrafico()
+
+        actualizarGrafico();
     }
 
     filtroEstado.addEventListener("change", renderTabla);
     filtroCategoria.addEventListener("change", renderTabla);
     filtroProveedor.addEventListener("change", renderTabla);
     buscar.addEventListener("input", renderTabla);
-    renderTabla();
-
-    // Gráfico
-    window.onload = actualizarGrafico()
 
     async function actualizarGrafico() {
-        const productos = await obtenerProductosFiltrados()
+        const productos = await obtenerProductosFiltrados();
         const ctx = document.getElementById("inventarioChart").getContext("2d");
-        const agotados = productos.filter(p => p.stock === 0).length;
-        const bajo = productos.filter(p => p.stock > 0 && p.stock <= 10).length;
-        const suficiente = productos.filter(p => p.stock > 10).length;
+
+        const agotados = productos.filter(p => Number(p.stock) === 0).length;
+        const bajo = productos.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 10).length;
+        const suficiente = productos.filter(p => Number(p.stock) > 10).length;
+
         if (chartProducts) chartProducts.destroy();
         chartProducts = new Chart(ctx, {
             type: "doughnut",
@@ -241,13 +277,17 @@
             },
             options: {
                 plugins: {
-                    legend: { position: 'bottom' },
-                    title: { display: true, text: 'Distribución de Stock' }
+                    legend: { position: "bottom" },
+                    title: { display: true, text: "Disponibilidad de Stock" }
                 }
             }
         });
-    };
-</script>
+    }
 
+    window.addEventListener("load", () => {
+        renderTabla();
+        actualizarGrafico();
+    });
+</script>
 
 </html>
