@@ -27,7 +27,6 @@ public class UserController {
     @Autowired
     EmailService emailService;
 
-
     @PutMapping("/updateDirection/{id}")
     public ResponseEntity<?> updateDirection(
             @PathVariable("id") int id_usuario,
@@ -55,6 +54,24 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         usuarioService.eliminarUsuario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/username")
+    public ResponseEntity<Boolean> usernameExists(@RequestParam String username) {
+
+        boolean exist = usuarioService.usernameExists(username);
+
+        return ResponseEntity.ok(exist);
+
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<Boolean> emailExists(@RequestParam String email) {
+
+        boolean exist = usuarioService.emailExists(email);
+
+        return ResponseEntity.ok(exist);
+
     }
 
     // METODOS QUE FALTAN

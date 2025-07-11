@@ -158,4 +158,13 @@ public class PersonaService {
 
     }
 
+
+    public boolean dniExists(String dni){
+        return personaDAO.findByDni(dni).isPresent();
+    }
+
+    public boolean telefonoExists(String telefono){
+        return personaDAO.findByTelefono(telefono).isPresent();
+    }
+
 }

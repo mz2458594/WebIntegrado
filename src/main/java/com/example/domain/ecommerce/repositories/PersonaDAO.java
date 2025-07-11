@@ -4,6 +4,7 @@ import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.enums.Estado;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,8 @@ public interface PersonaDAO extends JpaRepository<Persona, Long> {
             AND (:departamento IS NULL OR d.departamento = :departamento)
                 """)
     List<Persona> findByFiltro(@Param("estado") Estado estado, @Param("departamento") String departamento);
-    // Filtros: obtener cuantas personas son de tal departamento, si estan en estado activo o inactivo, y si son Clientes o empleado
+    Optional<Persona> findByTelefono(String telefono);
+    Optional<Persona> findByDni(String dni);
+
+
 }

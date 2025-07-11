@@ -34,11 +34,11 @@
                 </div>
                 <div class="input__box">
                     <label for="">Numero de documento</label><br>
-                    <input type="text" name="num_documento" class="soloNum" maxlength="8" required>
+                    <input type="text" name="num_documento" id="num_documento" class="soloNum" maxlength="8" required>
                 </div>
                 <div class="input__box">
                     <label for="">Celular</label><br>
-                    <input type="text" name="celular" class="soloNum" maxlength="9" required>
+                    <input type="text" name="celular" id="celular" class="soloNum" maxlength="9" required>
                 </div>
                 <div class="input__box">
                     <label for="">Calle</label><br>
@@ -46,15 +46,24 @@
                 </div>
                 <div class="input__box">
                     <label for="">Departamento</label><br>
-                    <input type="text" name="departamento" class="soloText" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Distrito</label><br>
-                    <input type="text" name="distrito" class="soloText" required>
+                    <select id="departamento">
+                        <option value="">-- Selecciona --</option>
+                    </select>
+                    <input type="hidden" id="departamentoNombre" name="departamento" />
                 </div>
                 <div class="input__box">
                     <label for="">Provincia</label><br>
-                    <input type="text" name="provincia" class="soloText" required>
+                    <select id="provincia">
+                        <option value="">-- Selecciona --</option>
+                    </select>
+                    <input type="hidden" id="provinciaNombre" name="provincia" />
+                </div>
+                <div class="input__box">
+                    <label for="">Distrito</label><br>
+                    <select id="distrito">
+                        <option value="">-- Selecciona --</option>
+                    </select>
+                    <input type="hidden" id="distritoNombre" name="distrito" />
                 </div>
 
                 <div class="input__box">
@@ -70,12 +79,12 @@
 
                 <div class="input__box">
                     <label for="">Email</label><br>
-                    <input type="email" name="correo" required>
+                    <input type="email" name="correo" id="correo" required>
                 </div>
 
                 <div class="input__box">
                     <label for="">Username</label><br>
-                    <input type="text" name="username" required>
+                    <input type="text" name="username" id="username" required>
                 </div>
                 <div class="input__box">
                     <label for="">Contraseña</label><br>
@@ -241,15 +250,24 @@
                     </div>
                     <div class="input__box">
                         <label for="">Departamento</label><br>
-                        <input type="text" id="departamento_act" class="soloText" name="departamento" required>
-                    </div>
-                    <div class="input__box">
-                        <label for="">Distrito</label><br>
-                        <input type="text" id="distrito_act" class="soloText" name="distrito" required>
+                        <select id="departamento_act">
+                            <option value="">-- Selecciona --</option>
+                        </select>
+                        <input type="hidden" id="departamentoNombreAct" name="departamento" />
                     </div>
                     <div class="input__box">
                         <label for="">Provincia</label><br>
-                        <input type="text" id="provincia_act" class="soloText" name="provincia" required>
+                        <select id="provincia_act">
+                            <option value="">-- Selecciona --</option>
+                        </select>
+                        <input type="hidden" id="provinciaNombreAct" name="provincia" />
+                    </div>
+                    <div class="input__box">
+                        <label for="">Distrito</label><br>
+                        <select id="distrito_act">
+                            <option value="">-- Selecciona --</option>
+                        </select>
+                        <input type="hidden" id="distritoNombreAct" name="distrito" />
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
@@ -280,6 +298,97 @@
                 </form>
             </div>
         </div>
+
+
+        <script>
+            const username = document.getElementById("username")
+            const correo = document.getElementById("correo")
+            const num_documento = document.getElementById("num_documento")
+            const celular = document.getElementById("celular")
+
+            const username_act = document.getElementById("username_act")
+            const correo_act = document.getElementById("email_act")
+            const num_documento_act = document.getElementById("num_act")
+            const celular_act = document.getElementById("cel_act")
+
+
+            async function verificarCorreo(e) {
+                const email = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/users/email?email=${encodeURIComponent(email)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        alert("El correo ya existe")
+                    }
+                } else {
+                    console.error("Error al consultar los correos")
+                }
+            }
+
+
+            async function verificarUsername(e) {
+                const user = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/users/username?username=${encodeURIComponent(user)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        alert("El username ya existe")
+                    }
+                } else {
+                    console.error("Error al consultar los usernames")
+                }
+            }
+
+            async function verificarDni(e) {
+                const dni = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/person/dni?dni=${encodeURIComponent(dni)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        alert("El dni ya existe")
+                    }
+                } else {
+                    console.error("Error al consultar los dni")
+                }
+            }
+
+            async function verificarTelefono(e) {
+                const telefono = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/person/telefono?telefono=${encodeURIComponent(telefono)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        alert("El telefono ya existe")
+                    }
+                } else {
+                    console.error("Error al consultar los telefonos")
+                }
+            }
+
+            correo.addEventListener('input', verificarCorreo)
+            num_documento.addEventListener('input', verificarDni)
+            celular.addEventListener('input',verificarTelefono)
+            username.addEventListener('input', verificarUsername)
+
+            correo_act.addEventListener('input', verificarCorreo)
+            num_documento_act.addEventListener('input', verificarDni)
+            celular_act.addEventListener('input',verificarTelefono)
+            username_act.addEventListener('input', verificarUsername)
+
+
+        </script>
 
         <script>
             const boton2 = document.querySelectorAll(".editproduc");
@@ -363,6 +472,153 @@
         // Asociar la función al evento de entrada
         productInput.addEventListener("input", filterProducts);
     </script>
+
+    <script>
+        const urlDepartamentos = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/1_ubigeo_departamentos.json"
+        const urlProvincias = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/2_ubigeo_provincias.json"
+        const urlDistritos = "https://raw.githubusercontent.com/RitchieRD/ubigeos-peru-data/refs/heads/main/json/3_ubigeo_distritos.json"
+
+        const departamentoSelect = document.getElementById("departamento");
+        const provinciaSelect = document.getElementById("provincia");
+        const distritoSelect = document.getElementById("distrito");
+
+        const departamento_act = document.getElementById("departamento_act")
+        const provincia_act = document.getElementById("provincia_act")
+        const distrito_act = document.getElementById("distrito_act")
+
+        let departamentos = [];
+        let provincias = [];
+        let distritos = [];
+
+        Promise.all([
+            fetch(urlDepartamentos).then(res => res.json()),
+            fetch(urlProvincias).then(res => res.json()),
+            fetch(urlDistritos).then(res => res.json())
+        ])
+            .then(([depData, provData, distData]) => {
+                departamentos = depData.ubigeo_departamentos || depData;
+                provincias = provData.ubigeo_provincias || provData;
+                distritos = distData.ubigeo_distritos || distData;
+
+                // Llenar departamentos
+                departamentos.forEach(dep => {
+                    const option1 = document.createElement("option");
+                    option1.value = dep.id; // usamos ID numérico
+                    option1.textContent = dep.departamento;
+                    departamentoSelect.appendChild(option1);
+
+                    const option2 = document.createElement("option");
+                    option2.value = dep.id; // usamos ID numérico
+                    option2.textContent = dep.departamento;
+                    departamentoSelect.appendChild(option2);
+                    departamento_act.appendChild(option2)
+                });
+
+                departamentoSelect.disabled = false;
+            })
+            .catch(err => {
+                console.error("❌ Error cargando los archivos JSON:", err);
+            });
+
+        departamentoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = departamentoSelect.options[departamentoSelect.selectedIndex].text
+            document.getElementById("departamentoNombre").value = nombreSeleccionado
+
+            provinciaSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            provinciaSelect.disabled = true;
+            distritoSelect.disabled = true;
+
+            const depId = Number(departamentoSelect.value);
+            if (!depId) return;
+
+            const provinciasFiltradas = provincias.filter(p => p.departamento_id === depId);
+            provinciasFiltradas.forEach(prov => {
+                const option = document.createElement("option");
+                option.value = prov.id; // usamos ID de provincia
+                option.textContent = prov.provincia;
+                provinciaSelect.appendChild(option);
+            });
+
+            provinciaSelect.disabled = false;
+        });
+
+        provinciaSelect.addEventListener("change", () => {
+            const nombreSeleccionado = provinciaSelect.options[provinciaSelect.selectedIndex].text
+            document.getElementById("provinciaNombre").value = nombreSeleccionado
+            distritoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            distritoSelect.disabled = true;
+
+            const provId = Number(provinciaSelect.value);
+            if (!provId) return;
+
+            const distritosFiltrados = distritos.filter(d => d.provincia_id === provId);
+            distritosFiltrados.forEach(dist => {
+                const option = document.createElement("option");
+                option.value = dist.id; // usamos ID de distrito
+                option.textContent = dist.distrito;
+                distritoSelect.appendChild(option);
+            });
+
+            distritoSelect.disabled = false;
+        });
+
+        distritoSelect.addEventListener("change", () => {
+            const nombreSeleccionado = distritoSelect.options[distritoSelect.selectedIndex].text
+            document.getElementById("distritoNombre").value = nombreSeleccionado
+        })
+
+
+        departamento_act.addEventListener("change", () => {
+            const nombreSeleccionado = departamento_act.options[departamento_act.selectedIndex].text
+            document.getElementById("departamentoNombreAct").value = nombreSeleccionado
+
+            provincia_act.innerHTML = '<option value="">-- Selecciona --</option>';
+            distrito_act.innerHTML = '<option value="">-- Selecciona --</option>';
+            provincia_act.disabled = true;
+            distrito_act.disabled = true;
+
+            const depId = Number(departamento_act.value);
+            if (!depId) return;
+
+            const provinciasFiltradas = provincias.filter(p => p.departamento_id === depId);
+            provinciasFiltradas.forEach(prov => {
+                const option = document.createElement("option");
+                option.value = prov.id; // usamos ID de provincia
+                option.textContent = prov.provincia;
+                provincia_act.appendChild(option);
+            });
+
+            provincia_act.disabled = false;
+        });
+
+        provincia_act.addEventListener("change", () => {
+            const nombreSeleccionado = provincia_act.options[provincia_act.selectedIndex].text
+            document.getElementById("provinciaNombreAct").value = nombreSeleccionado
+            distrito_act.innerHTML = '<option value="">-- Selecciona --</option>';
+            distrito_act.disabled = true;
+
+            const provId = Number(provincia_act.value);
+            if (!provId) return;
+
+            const distritosFiltrados = distritos.filter(d => d.provincia_id === provId);
+            distritosFiltrados.forEach(dist => {
+                const option = document.createElement("option");
+                option.value = dist.id; // usamos ID de distrito
+                option.textContent = dist.distrito;
+                distrito_act.appendChild(option);
+            });
+
+            distrito_act.disabled = false;
+        });
+
+        distrito_act.addEventListener("change", () => {
+            const nombreSeleccionado = distrito_act.options[distrito_act.selectedIndex].text
+            document.getElementById("distritoNombreAct").value = nombreSeleccionado
+        })
+
+    </script>
+
 
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");

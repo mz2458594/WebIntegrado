@@ -265,4 +265,12 @@ public class UsuarioService {
 
     }
 
+    public boolean emailExists(String email){
+        return usuarioDAO.findByEmail(email).isPresent();
+    }
+
+    public boolean usernameExists(String username){
+        return usuarioDAO.findByUsername(username).isPresent();
+    }
+
 }
