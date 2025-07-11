@@ -35,10 +35,14 @@
                 <div class="input__box">
                     <label for="">Numero de documento</label><br>
                     <input type="text" name="num_documento" id="num_documento" class="soloNum" maxlength="8" required>
+                    <span class="error-msg" id="error-num_documento"></span>
+
                 </div>
                 <div class="input__box">
                     <label for="">Celular</label><br>
                     <input type="text" name="celular" id="celular" class="soloNum" maxlength="9" required>
+                    <span class="error-msg" id="error-celular"></span>
+
                 </div>
                 <div class="input__box">
                     <label for="">Calle</label><br>
@@ -80,11 +84,15 @@
                 <div class="input__box">
                     <label for="">Email</label><br>
                     <input type="email" name="correo" id="correo" required>
+                    <span class="error-msg" id="error-correo"></span>
+
                 </div>
 
                 <div class="input__box">
                     <label for="">Username</label><br>
                     <input type="text" name="username" id="username" required>
+                    <span class="error-msg" id="error-username"></span>
+
                 </div>
                 <div class="input__box">
                     <label for="">Contraseña</label><br>
@@ -239,10 +247,14 @@
                     <div class="input__box">
                         <label for="">Numero de documento</label><br>
                         <input type="text" id="num_act" name="num_documento" maxlength="8" required>
+                        <span class="error-msg" id="error-num_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Celular</label><br>
                         <input type="text" id="cel_act" name="celular" maxlength="9" required>
+                        <span class="error-msg" id="error-cel_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Calle</label><br>
@@ -271,12 +283,16 @@
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
-                        <input type="email" id="email_act" class="soloText" name="correo" required>
+                        <input type="email" id="email_act" name="correo" required>
+                        <span class="error-msg" id="error-email_act"></span>
+
                     </div>
 
                     <div class="input__box">
                         <label for="">Username</label><br>
                         <input type="text" id="username_act" name="username" class="soloText" required>
+                        <span class="error-msg" id="error-username_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Estado</label><br>
@@ -291,7 +307,7 @@
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">
-                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input type="submit" class="btn-guardar" id="actualizar" value="Guardar">
                             <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                         </div>
                     </div>
@@ -301,6 +317,7 @@
 
 
         <script>
+
             const username = document.getElementById("username")
             const correo = document.getElementById("correo")
             const num_documento = document.getElementById("num_documento")
@@ -311,8 +328,30 @@
             const num_documento_act = document.getElementById("num_act")
             const celular_act = document.getElementById("cel_act")
 
+            const boton_crear = document.getElementById('btn-user')
+            const boton_actualizar = document.getElementById('actualizar')
+
+            const errores = {
+                correo: false,
+                email_act: false,
+                username: false,
+                username_act: false,
+                num_documento: false,
+                num_act: false,
+                celular: false,
+                cel_act: false
+            }
+
+            function actualizarBotones() {
+                const hayErrores = Object.values(errores).some(e => e)
+                boton_crear.disabled = hayErrores
+                boton_actualizar.disabled = hayErrores
+            }
+
 
             async function verificarCorreo(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
                 const email = e.target.value
 
                 const response = await fetch(`http://localhost:8080/api/users/email?email=${encodeURIComponent(email)}`)
@@ -321,15 +360,24 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        alert("El correo ya existe")
+                        spanError.textContent = 'El correo ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
                     }
                 } else {
-                    console.error("Error al consultar los correos")
+                    spanError.textContent = 'Error al validar los correos'
+                    errores[id] = true
                 }
+
+                actualizarBotones()
             }
 
 
             async function verificarUsername(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
                 const user = e.target.value
 
                 const response = await fetch(`http://localhost:8080/api/users/username?username=${encodeURIComponent(user)}`)
@@ -338,14 +386,23 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        alert("El username ya existe")
+                        spanError.textContent = 'El username ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
                     }
                 } else {
-                    console.error("Error al consultar los usernames")
+                    spanError.textContent = 'Error al validar el username'
+                    errores[id] = true
                 }
+
+                actualizarBotones()
             }
 
             async function verificarDni(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
                 const dni = e.target.value
 
                 const response = await fetch(`http://localhost:8080/api/person/dni?dni=${encodeURIComponent(dni)}`)
@@ -354,14 +411,23 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        alert("El dni ya existe")
+                        spanError.textContent = 'El dni ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
                     }
                 } else {
-                    console.error("Error al consultar los dni")
+                    spanError.textContent = 'Error al validar los dni'
+                    errores[id] = true
                 }
+
+                actualizarBotones()
             }
 
             async function verificarTelefono(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
                 const telefono = e.target.value
 
                 const response = await fetch(`http://localhost:8080/api/person/telefono?telefono=${encodeURIComponent(telefono)}`)
@@ -370,22 +436,30 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        alert("El telefono ya existe")
+                        spanError.textContent = 'El telefono ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
                     }
                 } else {
-                    console.error("Error al consultar los telefonos")
+                    spanError.textContent = 'Error al validar los telefonos'
+                    errores[id] = true
                 }
+
+                actualizarBotones()
             }
 
             correo.addEventListener('input', verificarCorreo)
             num_documento.addEventListener('input', verificarDni)
-            celular.addEventListener('input',verificarTelefono)
+            celular.addEventListener('input', verificarTelefono)
             username.addEventListener('input', verificarUsername)
 
             correo_act.addEventListener('input', verificarCorreo)
             num_documento_act.addEventListener('input', verificarDni)
-            celular_act.addEventListener('input',verificarTelefono)
+            celular_act.addEventListener('input', verificarTelefono)
             username_act.addEventListener('input', verificarUsername)
+
 
 
         </script>

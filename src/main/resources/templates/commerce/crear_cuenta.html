@@ -94,10 +94,14 @@
                                 <input type="text" class="soloNum" id="num_documento" name="num_documento"
                                     title="El DNI debe tener 8 dígitos" placeholder="Número de Documento" maxlength="8"
                                     required>
+                                <span class="error-msg" id="error-num_documento"></span>
+
                             </div>
                             <div class="form-group">
                                 <label for="celular">Celular:</label>
                                 <input type="tel" class="soloNum" id="celular" name="celular" required maxlength="9">
+                                <span class="error-msg" id="error-celular"></span>
+
                             </div>
                         </div>
 
@@ -136,11 +140,15 @@
                             <div class="form-group">
                                 <label for="username">Nombre de Usuario:</label>
                                 <input class="soloText" type="text" id="username" name="username" required>
+                                <span class="error-msg" id="error-username"></span>
+
                                 <small id="mensaje-error"></small>
                             </div>
                             <div class="form-group">
                                 <label for="correo">Correo Electrónico:</label>
                                 <input type="email" id="correo" name="correo" required>
+                                <span class="error-msg" id="error-correo"></span>
+
                                 <small id="mensaje-error"></small>
                             </div>
                         </div>
@@ -164,12 +172,144 @@
 
 
                         <br>
-                        <input id="boton_crear" type="submit">
+                        <input id="boton_crear" class="boton_crear" type="submit">
                     </fieldset>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+
+        const username = document.getElementById("username")
+        const correo = document.getElementById("correo")
+        const num_documento = document.getElementById("num_documento")
+        const celular = document.getElementById("celular")
+
+        const boton_crear = document.getElementById('boton_crear')
+
+
+        const errores = {
+            correo: false,
+            username: false,
+            num_documento: false,
+            celular: false
+        }
+
+        function actualizarBotones() {
+            const hayErrores = Object.values(errores).some(e => e)
+            boton_crear.disabled = hayErrores
+            boton_actualizar.disabled = hayErrores
+        }
+
+
+        async function verificarCorreo(e) {
+            const id = e.target.id
+            const spanError = document.getElementById(`error-${id}`)
+            const email = e.target.value
+
+            const response = await fetch(`http://localhost:8080/api/users/email?email=${encodeURIComponent(email)}`)
+
+            if (response.ok) {
+                const existe = await response.json()
+
+                if (existe) {
+                    spanError.textContent = 'El correo ya existe'
+                    errores[id] = true
+                } else {
+                    spanError.textContent = ''
+                    errores[id] = false
+                }
+            } else {
+                spanError.textContent = 'Error al validar los correos'
+                errores[id] = true
+            }
+
+            actualizarBotones()
+        }
+
+
+        async function verificarUsername(e) {
+            const id = e.target.id
+            const spanError = document.getElementById(`error-${id}`)
+            const user = e.target.value
+
+            const response = await fetch(`http://localhost:8080/api/users/username?username=${encodeURIComponent(user)}`)
+
+            if (response.ok) {
+                const existe = await response.json()
+
+                if (existe) {
+                    spanError.textContent = 'El username ya existe'
+                    errores[id] = true
+                } else {
+                    spanError.textContent = ''
+                    errores[id] = false
+                }
+            } else {
+                spanError.textContent = 'Error al validar el username'
+                errores[id] = true
+            }
+
+            actualizarBotones()
+        }
+
+        async function verificarDni(e) {
+            const id = e.target.id
+            const spanError = document.getElementById(`error-${id}`)
+            const dni = e.target.value
+
+            const response = await fetch(`http://localhost:8080/api/person/dni?dni=${encodeURIComponent(dni)}`)
+
+            if (response.ok) {
+                const existe = await response.json()
+
+                if (existe) {
+                    spanError.textContent = 'El dni ya existe'
+                    errores[id] = true
+                } else {
+                    spanError.textContent = ''
+                    errores[id] = false
+                }
+            } else {
+                spanError.textContent = 'Error al validar los dni'
+                errores[id] = true
+            }
+
+            actualizarBotones()
+        }
+
+        async function verificarTelefono(e) {
+            const id = e.target.id
+            const spanError = document.getElementById(`error-${id}`)
+            const telefono = e.target.value
+
+            const response = await fetch(`http://localhost:8080/api/person/telefono?telefono=${encodeURIComponent(telefono)}`)
+
+            if (response.ok) {
+                const existe = await response.json()
+
+                if (existe) {
+                    spanError.textContent = 'El telefono ya existe'
+                    errores[id] = true
+                } else {
+                    spanError.textContent = ''
+                    errores[id] = false
+                }
+            } else {
+                spanError.textContent = 'Error al validar los telefonos'
+                errores[id] = true
+            }
+
+            actualizarBotones()
+        }
+
+        correo.addEventListener('input', verificarCorreo)
+        num_documento.addEventListener('input', verificarDni)
+        celular.addEventListener('input', verificarTelefono)
+        username.addEventListener('input', verificarUsername)
+
+    </script>
 
 
     <!-----------------------INICIO NOTIFICACIONES DE ERRORES--------------------------------->

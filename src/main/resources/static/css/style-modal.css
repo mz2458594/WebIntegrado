@@ -269,3 +269,29 @@
     color: #2980b9;
     transition: background-color 0.2s ease-in-out;
 }
+
+.error-msg {
+  color: #e53935;  
+  font-size: 0.85rem;   
+  margin-top: 2px;
+  display: block;
+  font-style: italic;
+}
+
+.btn-guardar:disabled{
+  background-color: #d3d3d3;
+  color: #888;
+  border: 1px solid #bbb;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transition: 0.3s ease;
+}
+
+.btn-user:disabled{
+  background-color: #d3d3d3;
+  color: #888;
+  border: 1px solid #bbb;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transition: 0.3s ease;
+}
