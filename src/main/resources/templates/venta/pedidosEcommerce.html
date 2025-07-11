@@ -41,17 +41,23 @@
                     <label for="">Filtrar por estado:</label>
                     <select name="" id="estadoFiltro" style="font-weight: bold;">
                         <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
-                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">PENDIENTE</option>
-                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">CONFIRMADO
+                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">
+                            PENDIENTE</option>
+                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">
+                            CONFIRMADO
                         </option>
-                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN CAMINO</option>
-                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">ENTREGADO</option>
-                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">CANCELADO</option>
+                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN
+                            CAMINO</option>
+                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">
+                            ENTREGADO</option>
+                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">
+                            CANCELADO</option>
                     </select>
                     <style>
-                        .opti{
+                        .opti {
                             font-weight: bold;
                         }
+
                         #estadoFiltro {
                             padding: 7px;
                             border-radius: 5px;
@@ -315,6 +321,8 @@
         }
     </script>
     <script th:src="@{/js/filtrosPedidos.js}"></script>
+    <script th:src="@{/js/modalAdd.js}"></script>
+
 </body>
 
 

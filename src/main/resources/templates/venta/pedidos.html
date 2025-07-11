@@ -23,99 +23,6 @@
 </style>
 
 <body>
-
-    <!-- <div class="modal__container--add">
-        <div id="" class="ventana__modal ventana-close">
-            <div class="form__name--add">
-                <p><i class="fa-solid fa-plus"></i> Agregar Nuevo Usuario</p>
-            </div>
-            <form id="formulario" class="form_modal" th:action="@{/inventario/usuarios/agregar_usu}" method="post">
-
-                <div class="input__box">
-                    <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Apellido</label><br>
-                    <input type="text" name="apellido" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Numero de documento</label><br>
-                    <input type="text" name="num_documento" maxlength="8" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Celular</label><br>
-                    <input type="text" name="celular" maxlength="9" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Calle</label><br>
-                    <input type="text" name="calle" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Ciudad</label><br>
-                    <input type="text" name="ciudad" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Distrito</label><br>
-                    <input type="text" name="distrito" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Provincia</label><br>
-                    <input type="text" name="provincia" required>
-                </div>
-
-                <div class="input__box">
-                    <label for="">Fecha de nacimiento</label><br>
-                    <input type="date" name="fecha_nac" id="fecha_nac" required>
-                </div>
-
-                <script>
-                    const inputFecha = document.getElementById("fecha_nac")
-                    const now = new Date().toISOString().split("T")[0]
-                    inputFecha.max = now;
-                </script>
-
-                <div class="input__box">
-                    <label for="">Email</label><br>
-                    <input type="email" name="correo" required>
-                </div>
-
-                <div class="input__box">
-                    <label for="">Username</label><br>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Contraseña</label><br>
-                    <input type="password" name="contraseña" required>
-                </div>
-                <div class="input__box">
-                    <label for="">Rol</label><br>
-                    <select name="rol">
-                        <option th:each="rol: ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}"></option>
-                    </select>
-                </div>
-                <div class="input__box">
-                    <label for="">Estado</label><br>
-                    <select name="estado">
-                        <option value="ACTIVO">ACTIVO</option>
-                        <option value="INACTIVO">INACTIVO</option>
-                    </select>
-                </div>
-                <div class="input__box">
-                    <label for="">Comentario</label><br>
-                    <input type="text" name="comentario">
-                </div>
-
-                <div class="button__modal">
-                    <div class="btn-modal">
-                        <input id="btn-user" type="submit" class="btn-guardar" value="Guardar">
-                        <input class="btn-cancelar" type="reset" value="Cancelar">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div> -->
-
     <div class="container_modal--delete">
         <div class="ventana_modal--delete ventana-close-delete">
             <form method="post" id="formEliminar">
@@ -158,17 +65,23 @@
                     <label for="">Filtrar por estado:</label>
                     <select name="" id="estadoFiltro" style="font-weight: bold;">
                         <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
-                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">PENDIENTE</option>
-                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">CONFIRMADO
+                        <option class="opti" value="PENDIENTE" style="background-color: #FFF59D; color: #795548;">
+                            PENDIENTE</option>
+                        <option class="opti" value="CONFIRMADO" style="background-color: #d1fae5; color: #065f46;">
+                            CONFIRMADO
                         </option>
-                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN CAMINO</option>
-                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">ENTREGADO</option>
-                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">CANCELADO</option>
+                        <option class="opti" value="EN_CAMINO" style="background-color: #8ac0e6; color: #2980b9;">EN
+                            CAMINO</option>
+                        <option class="opti" value="ENTREGADO" style="background-color: #d1fae5; color: #065f46;">
+                            ENTREGADO</option>
+                        <option class="opti" value="CANCELADO" style="background-color: #fef2f2; color: #991b1b;">
+                            CANCELADO</option>
                     </select>
                     <style>
-                        .opti{
+                        .opti {
                             font-weight: bold;
                         }
+
                         #estadoFiltro {
                             padding: 7px;
                             border-radius: 5px;
@@ -317,7 +230,7 @@
     </main>
 
     <script>
-        
+
     </script>
     <script>
         function campoMotivo() {
@@ -348,6 +261,8 @@
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
+    <script th:src="@{/js/modalAdd.js}"></script>
+
 </body>
 
 </html>
