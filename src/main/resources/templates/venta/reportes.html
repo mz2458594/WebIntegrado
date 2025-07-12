@@ -70,7 +70,9 @@
                     <div class="filtro-fila">
                         <div class="filtro-campo">
                             <label for="responsable">Responsable de la venta:</label>
-                            <!-- <input hidden id="username" type="text" th:value="${empleado.nombre}"> -->
+                            <!-- AGREGAR AL INPUT  th:value="${empleado.nombre}" -->
+                            <input hidden id="username" type="text">
+
                             <select id="responsable" name="idResponsable">
                                 <option value="" disabled selected>Selecciona</option>
                                 <option th:each="empleado : ${empleados}" th:value="${empleado.id}"
