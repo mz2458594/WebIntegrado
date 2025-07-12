@@ -1,14 +1,8 @@
 package com.example.domain.ecommerce.controllers.web;
-
-import com.example.domain.ecommerce.dto.ProductDTO;
-import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.services.ProductoService;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;

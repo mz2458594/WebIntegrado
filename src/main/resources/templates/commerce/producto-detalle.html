@@ -140,6 +140,11 @@
             });
         });
     </script>
+
+    <script th:if="${error != '' && error != null}">
+        alert("[[${error}]]");
+    </script>
+
 </body>
 
 </html>

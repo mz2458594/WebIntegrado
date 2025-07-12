@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping("/targus/venta")
 @SessionAttributes({ "carrito" })
@@ -49,6 +50,7 @@ public class VentasController {
             @PathVariable int id,
             @RequestParam("canti") int cantidad,
             HttpSession session,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
         RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
@@ -62,6 +64,14 @@ public class VentasController {
 
         for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
+
+                int nuevaCantidad = item.getCantidad() + cantidad;
+
+                if (nuevaCantidad > Integer.parseInt(item.getProducto().getStock())) {
+                    redirectAttributes.addFlashAttribute("error", "Ha sobrepasado el stock del producto");
+                    return "redirect:/targus/producto/detalle/" + id;
+                }
+
                 item.setCantidad(item.getCantidad() + cantidad);
                 item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
                 encontrado = true;
@@ -70,9 +80,21 @@ public class VentasController {
         }
 
         if (!encontrado) {
+            Producto p = productosService.obtenerProductoPorId(id);
+            int stockDisponible = Integer.parseInt(p.getStock());
+
+            if (stockDisponible == 0) {
+                redirectAttributes.addFlashAttribute("error", "No hay stock de este producto actualmente");
+                return "redirect:/targus/producto/detalle/" + id;
+            }
+
+            if (cantidad > stockDisponible) {
+                redirectAttributes.addFlashAttribute("error", "La cantidad ingresada sobrepasa el stock del producto");
+                return "redirect:/targus/producto/detalle/" + id;
+            }
+
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(cantidad);
-            Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
             nuevo_item.setTotal(cantidad * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
             carrito.getItem().add(nuevo_item);
@@ -81,7 +103,7 @@ public class VentasController {
         session.setAttribute("carrito", carrito);
         model.addAttribute("productos", productosService.listarProducto());
 
-        return "redirect:/targus/producto/";
+        return "redirect:/targus/producto/detalle/" + id;
     }
 
     @GetMapping("/eliminar_prod/{id}")
@@ -109,6 +131,7 @@ public class VentasController {
     public String añadir(
             @PathVariable int id,
             HttpSession session,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
         RequestDTO carrito = (RequestDTO) session.getAttribute("carrito");
@@ -122,6 +145,14 @@ public class VentasController {
 
         for (RequestDTO.ItemsVentaDTO item : carrito.getItem()) {
             if (item.getProducto().getIdProducto() == id) {
+
+                int nuevaCantidad = item.getCantidad() + 1;
+
+                if (nuevaCantidad > Integer.parseInt(item.getProducto().getStock())) {
+                    redirectAttributes.addFlashAttribute("error", "Ha sobrepasado el stock del producto");
+                    return "redirect:/targus/principal/carro";
+                }
+
                 item.setCantidad(item.getCantidad() + 1);
                 item.setTotal(Float.parseFloat(item.getProducto().getPrecioVenta()) * item.getCantidad());
                 encontrado = true;
@@ -130,9 +161,15 @@ public class VentasController {
         }
 
         if (!encontrado) {
+            Producto p = productosService.obtenerProductoPorId(id);
+            int stockDisponible = Integer.parseInt(p.getStock());
+
+            if (stockDisponible == 0) {
+                redirectAttributes.addFlashAttribute("error", "No hay stock de este producto actualmente");
+                return "redirect:/targus/principal/carro";
+            }
             RequestDTO.ItemsVentaDTO nuevo_item = new RequestDTO.ItemsVentaDTO();
             nuevo_item.setCantidad(1);
-            Producto p = productosService.obtenerProductoPorId(id);
             nuevo_item.setProducto(p);
             nuevo_item.setTotal(1 * Float.parseFloat(nuevo_item.getProducto().getPrecioVenta()));
             carrito.getItem().add(nuevo_item);
