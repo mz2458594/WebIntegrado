@@ -140,7 +140,7 @@
                 </div>
                 <div class="body-irpago">
                     <div class="body-errores">
-                        <p id="mensaje">No hay error</p>
+                        <p id="mensaje"></p>
                         <button type="button" class="btn-limpiar" id="clear">Limpiar</button>
                     </div>
                     <div class="menu-pagar">
@@ -323,7 +323,7 @@
 
         const cantidadInput = document.getElementById('canti');
 
-        productList.addEventListener('click', function (event) {
+        productList.addEventListener('click', async function (event) {
 
             if (event.target.classList.contains('pro')) {
                 const id = event.target.getAttribute('data-id');
@@ -332,25 +332,37 @@
                 const cantidad = parseInt(cantidadInput.value);
 
 
-                if (productosAgregados[id]) {
-                    const fila = document.getElementById(`prod-${id}`)
-                    const nuevaCantidad = productosAgregados[id].cantidad + cantidad
-                    const nuevoTotal = (nuevaCantidad * precio).toFixed(2)
+                //probando fetch para ver si hay stock de ese producto
+                const response = await fetch(`http://localhost:8080/api/products/${id}`)
 
-                    fila.querySelector('.cantidad').textContent = nuevaCantidad
-                    fila.querySelector('.total').textContent = nuevoTotal
-                    fila.querySelector('.input-cantidad').value = nuevaCantidad
+                if (response.ok) {
+                    const producto = await response.json()
+                    const stock = Number(producto.stock)
+                    if (cantidad <= stock) {
+                        if (productosAgregados[id]) {
+                            const fila = document.getElementById(`prod-${id}`)
+                            const nuevaCantidad = productosAgregados[id].cantidad + cantidad
+                            const nuevoTotal = (nuevaCantidad * precio).toFixed(2)
 
-                    productosAgregados[id].cantidad = nuevaCantidad
-                    actualizar()
+                            if (nuevaCantidad > stock) {
+                                document.getElementById("mensaje").textContent ="La cantidad excede al stock del producto seleccionado"
+                                return;
+                            }
 
-                } else {
+                            fila.querySelector('.cantidad').textContent = nuevaCantidad
+                            fila.querySelector('.total').textContent = nuevoTotal
+                            fila.querySelector('.input-cantidad').value = nuevaCantidad
 
-                    productosAgregados[id] = { cantidad: cantidad, index: index, nombre: nombre, precio: precio }
+                            productosAgregados[id].cantidad = nuevaCantidad
+                            actualizar()
 
-                    const row = document.createElement('tr');
-                    row.id = `prod-${id}`;
-                    row.innerHTML = `
+                        } else {
+
+                            productosAgregados[id] = { cantidad: cantidad, index: index, nombre: nombre, precio: precio }
+
+                            const row = document.createElement('tr');
+                            row.id = `prod-${id}`;
+                            row.innerHTML = `
                     <td><button type="button" onclick="eliminarProducto(${id})">X</button></td>
                     <td>${nombre}</td>
                     <td class="cantidad">${cantidad}</td>
@@ -359,16 +371,28 @@
                     <input type="hidden" name="productos[${index}].id" value="${id}">
                     <input type="hidden" class="input-cantidad" name="productos[${index}].cantidad" value="${cantidad}">
                     `;
-                    index++;
-                    tabla.appendChild(row);
-                    actualizar()
-                    reindexarProductos()
+                            index++;
+                            tabla.appendChild(row);
+                            actualizar()
+                            reindexarProductos()
+                        }
+
+                        productInput.value = ''
+                        cantidadInput.value = 1
+
+                        localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
+                    } else if (cantidad > stock) {
+                        document.getElementById("mensaje").textContent = "La cantidad excede al stock del producto seleccionado"
+                        return;
+                    } else if (stock === 0) {
+                        document.getElementById("mensaje").textContent = "No hay stock de este producto"
+                        return;
+                    }
+                } else {
+                    document.getElementById("mensaje").textContent = "Error al encontrar el stock del producto";
+                    return;
+
                 }
-
-                productInput.value = ''
-                cantidadInput.value = 1
-
-                localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
 
             }
         });
