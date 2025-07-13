@@ -16,6 +16,7 @@ public class ProductDTO {
     private String precioCompra;
     private String codigoBarras;
     private String peso;
+    private String estado;
 
     // ATRIBUTOS GENERALES DE CADA TIPO
     private String sistemaOperativo;

@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -83,6 +84,8 @@ public class Producto implements Serializable {
 
         return digitoControlCalculado == digitoControlReal;
     }
+
+    // private Estado estado;
 
 
 

@@ -82,6 +82,13 @@
                     <label for="">Peso</label>
                     <input type="text" name="peso" required>
                 </div>
+                <div class="input__box">
+                    <label for="">Estado</label><br>
+                    <select name="estado" required>
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select>
+                </div>
 
                 <!-- Campos dinámicos -->
                 <div id="camposCategoria" class="category-fields"></div>
@@ -235,6 +242,13 @@
                     <div class="input__box">
                         <label for="">Peso</label><br>
                         <input type="text" name="peso" id="peso_act" required>
+                    </div>
+                    <div class="input__box">
+                        <label for="">Estado</label><br>
+                        <select name="estado" id="estado_act" required>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
+                        </select>
                     </div>
                     <!-- Campos dinamicos -->
                     <div id="camposCategorias" class="category-fields"></div>
