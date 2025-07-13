@@ -69,6 +69,12 @@ public class VentaService {
     @Transactional
     public Venta crearVentaInventario(RequestDTO data) {
         VentaInventario ventaInventario = new VentaInventario();
+
+        // BigDecimal efectivo = BigDecimal.valueOf(data.getEfectivo());
+        // BigDecimal vuelto = BigDecimal.valueOf(data.getVuelto());
+
+        // ventaInventario.setEfectivo(efectivo);
+        // ventaInventario.setVuelto(vuelto);
         return crearVenta(data, ventaInventario);
     }
 

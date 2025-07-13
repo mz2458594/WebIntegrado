@@ -20,6 +20,29 @@ public class RequestDTO {
 
     private String tipo;
 
+    private float vuelto;
+    private float efectivo;
+
+
+    public float getVuelto() {
+        return vuelto;
+    }
+
+
+    public void setVuelto(float vuelto) {
+        this.vuelto = vuelto;
+    }
+
+
+    public float getEfectivo() {
+        return efectivo;
+    }
+
+
+    public void setEfectivo(float efectivo) {
+        this.efectivo = efectivo;
+    }
+
 
     public String getRuc() {
         return ruc;
