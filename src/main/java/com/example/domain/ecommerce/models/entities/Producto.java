@@ -85,6 +85,7 @@ public class Producto implements Serializable {
         return digitoControlCalculado == digitoControlReal;
     }
 
+    // @Enumerated(EnumType.STRING)
     // private Estado estado;
 
 
