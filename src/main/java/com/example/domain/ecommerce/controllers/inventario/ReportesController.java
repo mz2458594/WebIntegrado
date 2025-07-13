@@ -58,5 +58,11 @@ public class ReportesController {
         return "venta/reportesPedidos";
     }
 
+    @GetMapping("/usuarios")
+    public String verReportesUsuarios(Model model,  HttpSession session){
+
+        return "venta/reportesUsuarios";
+    }
+
 
 }

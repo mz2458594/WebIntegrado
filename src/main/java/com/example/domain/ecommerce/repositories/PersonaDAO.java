@@ -14,17 +14,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonaDAO extends JpaRepository<Persona, Long> {
     @Query("""
-            SELECT p
-            FROM Persona p 
-            LEFT JOIN p.direccion d
-            LEFT JOIN Cliente c ON TREAT (p AS Cliente) = c
-            LEFT JOIN Empleado e on TREAT (p AS Empleado) = e
-            WHERE (:estado IS NULL OR c.usuario.estado = :estado OR e.usuario.estado = :estado)
-            AND (:departamento IS NULL OR d.departamento = :departamento)
-                """)
+                SELECT p
+                FROM Persona p
+                LEFT JOIN p.direccion d
+                LEFT JOIN Cliente c ON TREAT(p AS Cliente) = c
+                LEFT JOIN Empleado e ON TREAT(p AS Empleado) = e
+                WHERE (:departamento IS NULL OR d.departamento = :departamento)
+            """)
     List<Persona> findByFiltro(@Param("estado") Estado estado, @Param("departamento") String departamento);
-    Optional<Persona> findByTelefono(String telefono);
-    Optional<Persona> findByDni(String dni);
 
+    Optional<Persona> findByTelefono(String telefono);
+
+    Optional<Persona> findByDni(String dni);
 
 }

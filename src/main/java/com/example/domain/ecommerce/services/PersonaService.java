@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -135,7 +136,7 @@ public class PersonaService {
         try {
             estado = personaFilterDTO.getEstado() != null ? Estado.valueOf(personaFilterDTO.getEstado()) : null;
         } catch (IllegalArgumentException | NullPointerException e) {
-
+            estado = null;
         }
 
         TipoPersona tipo;
@@ -146,24 +147,42 @@ public class PersonaService {
             tipo = TipoPersona.Normal;
         }
 
+        String departamento = personaFilterDTO.getDepartamento().equals("") ? null : personaFilterDTO.getDepartamento();
+
         switch (tipo) {
             case Empleado:
-                return empleadoDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+                return empleadoDAO.findByFiltro(estado, departamento);
             case Cliente:
-                return clienteDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+                return clienteDAO.findByFiltro(estado, departamento);
             case Normal:
             default:
-                return personaDAO.findByFiltro(estado, personaFilterDTO.getDepartamento());
+                final Estado estadoFinal = estado;
+                List<Persona> personas = personaDAO.findByFiltro(estado, departamento);
+                List<Persona> filtradas = personas.stream()
+                        .filter(p -> {
+
+                            if (estadoFinal == null) {
+                                return true;
+                            }
+
+                            if (p instanceof Cliente c && c.getUsuario() != null) {
+                                return c.getUsuario().getEstado() == estadoFinal;
+                            } else if (p instanceof Empleado e && e.getUsuario() != null) {
+                                return e.getUsuario().getEstado() == estadoFinal;
+                            } else {
+                                return false;
+                            }
+                        }).collect(Collectors.toList());
+                return filtradas;
         }
 
     }
 
-
-    public boolean dniExists(String dni){
+    public boolean dniExists(String dni) {
         return personaDAO.findByDni(dni).isPresent();
     }
 
-    public boolean telefonoExists(String telefono){
+    public boolean telefonoExists(String telefono) {
         return personaDAO.findByTelefono(telefono).isPresent();
     }
 

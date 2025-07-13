@@ -45,7 +45,6 @@ public class Persona implements Serializable {
     private String telefono;
 
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Direccion direccion;
 
     @Temporal(TemporalType.DATE)

@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "direcciones")
 @Data
@@ -39,6 +41,7 @@ public class Direccion implements Serializable {
     private String departamento;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "persona_id", unique = true)
     Persona persona;
 
