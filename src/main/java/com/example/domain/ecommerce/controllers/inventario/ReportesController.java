@@ -40,7 +40,7 @@ public class ReportesController {
         // }
         model.addAttribute("ventas", ventaService.getVentas());
         model.addAttribute("empleados", usuarioService.getEmpleados());
-        return "venta/reportes";
+        return "venta/reportesVentas";
     }
 
     @GetMapping("/productos")
@@ -48,6 +48,14 @@ public class ReportesController {
         model.addAttribute("proveedores", proveedorService.obtenerProveedores());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
         return "venta/reportesProductos";
+    }
+
+
+    @GetMapping("/pedidos")
+    public String verReportesPedidos(Model model,  HttpSession session){
+        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("empleados", usuarioService.getEmpleados());
+        return "venta/reportesPedidos";
     }
 
 

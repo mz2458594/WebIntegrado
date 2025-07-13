@@ -11,4 +11,5 @@ public class PedidoFilterDTO {
     private Integer idResponsable;
     private String tipoPedido;
     private String estado;
+    private String idProveedor;
 }

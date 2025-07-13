@@ -47,6 +47,7 @@ public class Comprobante {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "pedido_id", nullable = true)
+    @JsonIgnoreProperties({"comprobante", "detallePedidos", "user"})
     private PedidoProveedor pedidoProveedor;
 
     @Column(nullable = true)

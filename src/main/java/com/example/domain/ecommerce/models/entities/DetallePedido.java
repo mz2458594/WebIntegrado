@@ -3,6 +3,7 @@ package com.example.domain.ecommerce.models.entities;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class DetallePedido {
     private int cantidad;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties("detallePedidos")
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 

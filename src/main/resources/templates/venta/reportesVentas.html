@@ -14,8 +14,7 @@
 </head>
 
 <body onload="disabledResponsableInput()">
-    <header class="header" th:insert="venta/header.html"></header>
-    <nav class="navbar" th:insert="venta/navbar.html"></nav>
+    <div th:insert="venta/reportesHeader.html"></div>
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <div class="reporte__ventas">
@@ -154,7 +153,6 @@
                 fechaInicio, fechaFinal, comprobante, idResponsable,
                 tipoVenta
             };
-
 
             fetch("http://localhost:8080/api/sale/filtro", {
                 method: 'POST',

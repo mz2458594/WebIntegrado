@@ -16,12 +16,14 @@ import com.example.domain.ecommerce.models.entities.Empleado;
 import com.example.domain.ecommerce.models.entities.Pedido;
 import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.PedidoUsuario;
+import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.enums.EstadoPedido;
 import com.example.domain.ecommerce.models.enums.TipoPedido;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
 import com.example.domain.ecommerce.repositories.PedidoDAO;
 import com.example.domain.ecommerce.repositories.PedidoProveedorDAO;
 import com.example.domain.ecommerce.repositories.PedidoUsuarioDAO;
+import com.example.domain.ecommerce.repositories.ProveedorDAO;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -41,6 +43,8 @@ public class PedidoService {
     private final PedidoDAO pedidoDAO;
 
     private final EmpleadoDAO empleadoDAO;
+
+    private final ProveedorDAO proveedorDAO;
 
     public List<Pedido> getPedidos() {
         return (List<Pedido>) pedidoDAO.findAll();
@@ -157,8 +161,8 @@ public class PedidoService {
                 ? new Timestamp(pedidoFilterDTO.getFechaInicio().getTime())
                 : null;
 
-        Timestamp fechaFinal = pedidoFilterDTO.getFechaInicio() != null
-                ? new Timestamp(pedidoFilterDTO.getFechaInicio().getTime())
+        Timestamp fechaFinal = pedidoFilterDTO.getFechaFinal() != null
+                ? new Timestamp(pedidoFilterDTO.getFechaFinal().getTime())
                 : null;
 
         EstadoPedido estadoPedido = null;
@@ -192,7 +196,15 @@ public class PedidoService {
             case Ecommerce:
                 return pedidoUsuarioDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
             case Inventario:
-                return pedidoProveedorDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
+                String nombreProveedor = null;
+
+                if (pedidoFilterDTO.getIdProveedor() != null) {
+                    Proveedor proveedor = proveedorDAO.findById(Long.valueOf(pedidoFilterDTO.getIdProveedor()))
+                            .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+                    nombreProveedor = proveedor.getNombre();
+                }
+                return pedidoProveedorDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username,
+                        nombreProveedor);
             case Normal:
             default:
                 return pedidoDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
