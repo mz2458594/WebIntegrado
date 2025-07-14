@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import com.example.domain.ecommerce.dto.EstadoRequestDTO;
 import com.example.domain.ecommerce.dto.PedidoDTO;
@@ -198,13 +200,29 @@ public class PedidoService {
             case Inventario:
                 String nombreProveedor = null;
 
-                if (pedidoFilterDTO.getIdProveedor() != null) {
+                if (pedidoFilterDTO.getIdProveedor() != null && !pedidoFilterDTO.getIdProveedor().isEmpty()) {
                     Proveedor proveedor = proveedorDAO.findById(Long.valueOf(pedidoFilterDTO.getIdProveedor()))
                             .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
                     nombreProveedor = proveedor.getNombre();
                 }
-                return pedidoProveedorDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username,
-                        nombreProveedor);
+
+                final String nombre = nombreProveedor;
+
+                List<Pedido> pedidosProveedor = pedidoProveedorDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido,
+                        username);
+
+                List<Pedido> filtradas = pedidosProveedor.stream().filter(p -> {
+
+                    if (nombre == null) {
+                        return true;
+                    }
+
+                    return p.getDetallePedidos().stream()
+                            .anyMatch(detalle -> detalle.getProducto().getProveedor().getNombre().equals(nombre));
+
+                }).collect(Collectors.toList());
+
+                return filtradas;
             case Normal:
             default:
                 return pedidoDAO.findbyFiltro(fechaInicio, fechaFinal, estadoPedido, username);
