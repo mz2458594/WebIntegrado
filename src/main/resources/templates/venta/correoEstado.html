@@ -51,17 +51,39 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td th:if="${estado != estado.CANCELADO}">
+                                                                <td th:if="${estado == estado.PENDIENTE}">
                                                                     Te confirmamos que tu pedido <strong>N° <span
                                                                             th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
                                                                     ha sido recibido y se encuentra en proceso de
                                                                     aprobación, el cual tomará máximo 48 horas
                                                                     calendario.
                                                                 </td>
+                                                                <td th:if="${estado == estado.CONFIRMADO}">
+                                                                    Te confirmamos que tu pedido <strong>N° <span
+                                                                            th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
+                                                                    ha sido **confirmado** y está siendo procesado. En
+                                                                    un plazo máximo de 48 horas calendario, te
+                                                                    notificaremos cuando esté listo para ser despachado.
+                                                                </td>
+
+                                                                <td th:if="${estado == estado.EN_CAMINO}">
+                                                                    ¡Buenas noticias! Tu pedido <strong>N° <span
+                                                                            th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
+                                                                    ha sido **enviado** y se encuentra **en camino**
+                                                                    hacia tu dirección. Pronto estará en tus manos.
+                                                                </td>
+
+                                                                <td th:if="${estado == estado.ENTREGADO}">
+                                                                    Tu pedido <strong>N° <span
+                                                                            th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
+                                                                    ha sido **entregado con éxito**. ¡Gracias por
+                                                                    confiar en nosotros!
+                                                                </td>
                                                                 <td th:if="${estado == estado.CANCELADO}">
                                                                     Te comunicamos que tu pedido <strong>N° <span
                                                                             th:text="${pedido?.idPedido != null ? pedido.idPedido : 'NULL'}">134384603-51</span></strong>
-                                                                    ha sido cancelado por <span id="motivoCan" th:text="${pedido.comentario}">Ya no
+                                                                    ha sido cancelado por <span id="motivoCan"
+                                                                        th:text="${pedido.comentario}">Ya no
                                                                         querer el producto</span> te agradecemos la
                                                                     confianza y se pasara a hacer el rembolso en 48
                                                                     horas.
@@ -122,7 +144,8 @@
                         <tbody>
                             <tr>
                                 <td valign="bottom" style="text-align:left;color:#376182;font-size:23px">
-                                    <strong th:if="${estado != estado.CANCELADO}">¿Cuál es el resumen de mi compra?</strong>
+                                    <strong th:if="${estado != estado.CANCELADO}">¿Cuál es el resumen de mi
+                                        compra?</strong>
                                     <strong th:if="${estado == estado.CANCELADO}">Resumen del pedido cancelado</strong>
                                 </td>
                                 <td valign="bottom" style="width:31px;">
@@ -319,8 +342,7 @@
                                                                                     style="width:50px;text-align:right;padding:7px 10px;white-space:nowrap!important">
                                                                                     <strong><span id="sub-total"
                                                                                             th:text="${(pedido.total ?: 0) - (costoEnvio ?: 0)}"
-                                                                                            th:style="${estado == estado.CANCELADO} ? 'text-decoration:line-through;' : ''"
-                                                                                            >4500</span></strong>
+                                                                                            th:style="${estado == estado.CANCELADO} ? 'text-decoration:line-through;' : ''">4500</span></strong>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>

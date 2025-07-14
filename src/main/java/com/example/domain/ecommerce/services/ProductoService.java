@@ -21,6 +21,7 @@ import com.example.domain.ecommerce.models.entities.Smartphone;
 import com.example.domain.ecommerce.models.entities.Smartwatch;
 import com.example.domain.ecommerce.models.entities.Tablet;
 import com.example.domain.ecommerce.models.entities.Teclado;
+import com.example.domain.ecommerce.models.enums.Estado;
 import com.example.domain.ecommerce.repositories.CategoriaDAO;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
 import com.example.domain.ecommerce.repositories.ProveedorDAO;
@@ -166,6 +167,8 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
+        // producto.setEstado(Estado.valueOf(productDTO.getEstado()));
+
         if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         } else {
@@ -195,6 +198,8 @@ public class ProductoService {
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
 
+        // producto.setEstado(Estado.valueOf(productDTO.getEstado()));
+
         if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
         } else {
@@ -204,6 +209,17 @@ public class ProductoService {
         return productoDAO.save(producto);
 
     }
+
+
+    // public List<Producto> obtenerProductosActivos(){
+    //     List<Producto> activos = new ArrayList<>();
+    //     for (Producto producto : productoDAO.findAll()) {
+    //         if (producto.getEstado().equals(Estado.ACTIVO)) {
+    //             activos.add(producto);
+    //         }
+    //     }
+    //     return activos;
+    // }
 
     public void eliminarProducto(int id) {
         productoDAO.deleteById(Long.valueOf(id));

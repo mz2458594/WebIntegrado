@@ -21,6 +21,7 @@ import com.example.domain.ecommerce.models.entities.PedidoProveedor;
 import com.example.domain.ecommerce.models.entities.Proveedor;
 import com.example.domain.ecommerce.models.entities.Usuario;
 import com.example.domain.ecommerce.models.entities.Venta;
+import com.example.domain.ecommerce.models.entities.VentaInventario;
 import com.example.domain.ecommerce.models.enums.TipoComprobante;
 import com.example.domain.ecommerce.repositories.ClienteDAO;
 import com.example.domain.ecommerce.repositories.EmpleadoDAO;
@@ -150,8 +151,10 @@ public class PdfGeneratorService {
 
         // 7. Método de pago y otros
         document.add(new Paragraph("\nMETODO DE PAGO: EFECTIVO"));
-        document.add(new Paragraph("VUELTO: 0.00"));
-        document.add(new Paragraph("Observaciones:"));
+        // if (venta instanceof VentaInventario ventaInventario) {
+        //     document.add(new Paragraph("EFECTIVO: " + ventaInventario.getEfectivo()));
+        //     document.add(new Paragraph("VUELTO: " + ventaInventario.getVuelto()));
+        // }
 
         // 8. Pie de página
         document.add(new Paragraph("\nRepresentación impresa de documento electrónico.")

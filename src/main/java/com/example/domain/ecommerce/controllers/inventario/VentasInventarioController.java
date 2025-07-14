@@ -141,6 +141,10 @@ public class VentasInventarioController {
         }
 
         sale.setId_usuario(empleado.getUsuario().getIdUsuario());
+        sale.setEfectivo(efectivo);
+        sale.setVuelto((float) (efectivo-total));
+
+
         Venta venta = ventasService.crearVentaInventario(sale);
 
         model.addAttribute("efectivo", efectivo);

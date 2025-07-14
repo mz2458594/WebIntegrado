@@ -29,7 +29,7 @@
                 </div>
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" class="soloText" required> 
+                    <input type="text" name="nombre" class="soloText" required>
                 </div>
                 <div class="input__box">
                     <label for="">Telefono</label><br>
@@ -94,6 +94,33 @@
                 </button>
             </div>
             <div class="Cont__buscar">
+                <div>
+                    <label for="">Filtrar por estado:</label>
+                    <select name="" id="estadoFiltro" style="font-weight: bold;">
+                        <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
+                        <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
+                            ACTIVO</option>
+                        <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
+                            INACTIVO
+                        </option>
+                    </select>
+                    <style>
+                        .opti {
+                            font-weight: bold;
+                        }
+
+                        #estadoFiltro {
+                            padding: 7px;
+                            border-radius: 5px;
+                            border: 1px solid rgba(165, 165, 165, 0.467);
+
+                        }
+
+                        #estadoFiltro:focus-visible {
+                            outline: 2px solid #3391fc;
+                        }
+                    </style>
+                </div>
                 <div class="buscar_search">
                     <label for="">Buscar :</label>
                     <input type="text" id="productInput">
@@ -172,7 +199,7 @@
                     </div>
                     <div class="input__box">
                         <label for="">Comentario</label><br>
-                        <input type="text" name="comentario" id="comentario_act" class="soloText" >
+                        <input type="text" name="comentario" id="comentario_act" class="soloText">
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">
@@ -274,10 +301,12 @@
 
     <script>
         const productInput = document.getElementById("productInput");
-        const tableRows = document.querySelectorAll("#productList");
+        const estaFil = document.getElementById("estadoFiltro");
 
         function filterProducts() {
             const query = productInput.value.toLowerCase();
+            const tableRows = document.querySelectorAll("#productList");
+            const estadoSeleccionado = estaFil.value
 
             tableRows.forEach(row => {
                 // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
@@ -286,8 +315,12 @@
                 const productDir = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
                 const productTel = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
                 const productEmail = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
+                const estado = row.querySelector("td:nth-child(7)").textContent.trim();
 
-                if (productId.includes(query) || productName.includes(query) || productDir.includes(query) || productTel.includes(query) || productEmail.includes(query)) {
+                const coincideEstado = estadoSeleccionado === "" || estado === estadoSeleccionado
+                const coincideTexto = productId.includes(query) || productName.includes(query) || productDir.includes(query) || productTel.includes(query) || productEmail.includes(query)
+
+                if (coincideEstado && coincideTexto) {
                     row.style.display = ""; // Mostrar fila
                 } else {
                     row.style.display = "none"; // Ocultar fila
@@ -296,8 +329,15 @@
             });
         }
 
-        // Asociar la función al evento de entrada
+        estaFil.addEventListener("input", filterProducts);
         productInput.addEventListener("input", filterProducts);
+
+        estaFil.addEventListener('change', function () {
+            const selectedOption = estaFil.options[estaFil.selectedIndex];
+            const backgroundColor = selectedOption.style.backgroundColor;
+            estaFil.style.backgroundColor = backgroundColor;
+        });
+        
     </script>
 
     <script th:if="${error != '' && error != null}">

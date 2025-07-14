@@ -108,8 +108,8 @@
                                         <div class="cont_opciones">
                                             <button class="editproduc">Editar <i
                                                     class="fa-solid fa-pen-to-square"></i></button>
-                                            <button class="deleteProduc">Eliminar <i
-                                                    class="fa-solid fa-trash-can"></i></button>
+                                            <!-- <button class="deleteProduc">Eliminar <i
+                                                    class="fa-solid fa-trash-can"></i></button> -->
                                         </div>
                                 </div>
                             </th>
@@ -172,24 +172,24 @@
             });
 
 
-            const boton3 = document.querySelectorAll(".deleteProduc");
-            boton3.forEach(boton => {
-                boton.addEventListener('click', function () {
-                    // Encontramos la fila asociada al botón
-                    const fila = this.closest('tr');
+            // const boton3 = document.querySelectorAll(".deleteProduc");
+            // boton3.forEach(boton => {
+            //     boton.addEventListener('click', function () {
+            //         // Encontramos la fila asociada al botón
+            //         const fila = this.closest('tr');
 
-                    // Recogemos los valores de las celdas de la fila
-                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
+            //         // Recogemos los valores de las celdas de la fila
+            //         const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
 
-                    modalContDele.style.opacity = "1";
-                    modalContDele.style.visibility = "visible";
-                    VentDelete.classList.toggle("ventana-close-delete");
+            //         modalContDele.style.opacity = "1";
+            //         modalContDele.style.visibility = "visible";
+            //         VentDelete.classList.toggle("ventana-close-delete");
 
-                    const form = document.getElementById("formEliminar");
-                    const idCategoria = valores[0].trim();
-                    form.action = `/inventario/categoria/eliminar_cat/${idCategoria}`;
-                });
-            });
+            //         const form = document.getElementById("formEliminar");
+            //         const idCategoria = valores[0].trim();
+            //         form.action = `/inventario/categoria/eliminar_cat/${idCategoria}`;
+            //     });
+            // });
         </script>
 
 
