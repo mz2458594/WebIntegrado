@@ -24,20 +24,28 @@
             <form class="form_modal" th:action="@{/inventario/proveedores/agregar_prov}" id="formCrear" method="post">
                 <div class="input__box">
                     <label for="">RUC</label><br>
-                    <input type="text" name="ruc" required class="soloNum" maxlength="11">
+                    <input type="text" id="ruc" name="ruc" required class="soloNum" maxlength="11">
+                    <span id="mensajeRUC"></span>
+                    <span class="error-msg" id="error-ruc"></span>
+
                     <br><br>
                 </div>
                 <div class="input__box">
                     <label for="">Nombre</label><br>
-                    <input type="text" name="nombre" class="soloText" required>
+                    <input type="text" name="nombre" id="nombre" required>
+                    <span class="error-msg" id="error-nombre"></span>
                 </div>
                 <div class="input__box">
                     <label for="">Telefono</label><br>
-                    <input type="text" name="telefono" class="soloNum" maxlength="9" required>
+                    <input type="text" name="telefono" id="telefono" class="soloNum" maxlength="9" required>
+                    <span class="error-msg" id="error-telefono"></span>
+
                 </div>
                 <div class="input__box">
                     <label for="">Email</label><br>
-                    <input type="email" name="email" class="soloText" required>
+                    <input type="email" name="email" id="email" required>
+                    <span class="error-msg" id="error-email"></span>
+
                 </div>
                 <div class="input__box">
                     <label for="">Estado</label><br>
@@ -53,7 +61,7 @@
                 </div>
                 <div class="button__modal">
                     <div class="btn-modal">
-                        <input type="submit" class="btn-guardar" value="Guardar">
+                        <input type="submit" class="btn-guardar" id="btn-user" value="Guardar">
                         <input class="btn-cancelar" type="reset" value="Cancelar">
                     </div>
                 </div>
@@ -177,18 +185,27 @@
                     <div class="input__box">
                         <label for="">RUC</label><br>
                         <input type="text" name="ruc" id="ruc_act" class="soloNum" maxlength="11" required>
+                        <span id="mensajeRUCact"></span>
+                        <span class="error-msg" id="error-ruc_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Nombre</label><br>
-                        <input type="text" name="nombre" id="nombre_act" class="soloText" required>
+                        <input type="text" name="nombre" id="nombre_act" required>
+                        <span class="error-msg" id="error-nombre_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Telefono</label><br>
                         <input type="text" name="telefono" id="telefono_act" class="soloNum" maxlength="9" required>
+                        <span class="error-msg" id="error-telefono_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Email</label><br>
-                        <input type="email" name="email" id="email_act" class="soloText" required>
+                        <input type="email" name="email" id="email_act" required>
+                        <span class="error-msg" id="error-email_act"></span>
+
                     </div>
                     <div class="input__box">
                         <label for="">Estado</label><br>
@@ -203,7 +220,7 @@
                     </div>
                     <div class="button__modal">
                         <div class="btn-modal">
-                            <input type="submit" class="btn-guardar" value="Guardar">
+                            <input type="submit" class="btn-guardar" id="actualizar" value="Guardar">
                             <input class="btn-cancelar btn-cancelar-edit" type="reset" value="Cancelar">
                         </div>
                     </div>
@@ -211,13 +228,170 @@
             </div>
         </div>
 
+
+        <script>
+            const ruc = document.getElementById("ruc")
+            const nombre = document.getElementById("nombre")
+            const telefono = document.getElementById("telefono")
+            const email = document.getElementById("email")
+
+            const ruc_act = document.getElementById("ruc_act")
+            const nombre_act = document.getElementById("nombre_act")
+            const telefono_act = document.getElementById("telefono_act")
+            const email_act = document.getElementById("email_act")
+
+            const boton_crear = document.getElementById('btn-user')
+            const boton_actualizar = document.getElementById('actualizar')
+
+
+            const errores = {
+                ruc: false,
+                nombre: false,
+                telefono: false,
+                email: false,
+                ruc_act: false,
+                nombre_act: false,
+                telefono_act: false,
+                email_act: false
+            }
+
+            function actualizarBotones() {
+                const hayErrores = Object.values(errores).some(e => e)
+                boton_crear.disabled = hayErrores
+                boton_actualizar.disabled = hayErrores
+            }
+
+            async function verificarRuc(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
+                const ruc = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/prov/ruc?ruc=${encodeURIComponent(ruc)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        spanError.textContent = 'El ruc ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
+                    }
+                } else {
+                    spanError.textContent = 'Error al validar el ruc'
+                    errores[id] = true
+                }
+
+                actualizarBotones()
+            }
+
+            async function verificarNombre(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
+                const nombre = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/prov/nombre?nombre=${encodeURIComponent(nombre)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        spanError.textContent = 'El nombre ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
+                    }
+                } else {
+                    spanError.textContent = 'Error al validar el nombre'
+                    errores[id] = true
+                }
+
+                actualizarBotones()
+            }
+
+            async function verificarTelefono(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
+                const telefono = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/prov/telefono?telefono=${encodeURIComponent(telefono)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        spanError.textContent = 'El telefono ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
+                    }
+                } else {
+                    spanError.textContent = 'Error al validar el telefono'
+                    errores[id] = true
+                }
+
+                actualizarBotones()
+            }
+
+            async function verificarEmail(e) {
+                const id = e.target.id
+                const spanError = document.getElementById(`error-${id}`)
+                const email = e.target.value
+
+                const response = await fetch(`http://localhost:8080/api/prov/email?email=${encodeURIComponent(email)}`)
+
+                if (response.ok) {
+                    const existe = await response.json()
+
+                    if (existe) {
+                        spanError.textContent = 'El email ya existe'
+                        errores[id] = true
+                    } else {
+                        spanError.textContent = ''
+                        errores[id] = false
+                    }
+                } else {
+                    spanError.textContent = 'Error al validar el email'
+                    errores[id] = true
+                }
+
+                actualizarBotones()
+            }
+
+            ruc.addEventListener('input', verificarRuc)
+            nombre.addEventListener('input', verificarNombre)
+            telefono.addEventListener('input', verificarTelefono)
+            email.addEventListener('input', verificarEmail)
+
+            ruc_act.addEventListener('input', verificarRuc)
+            nombre_act.addEventListener('input', verificarNombre)
+            telefono_act.addEventListener('input', verificarTelefono)
+            email_act.addEventListener('input', verificarEmail)
+
+
+
+
+
+
+        </script>
+
+
+
+
         <script>
 
 
             const formCrear = document.getElementById("formCrear");
 
-            formCrear.addEventListener('submit', async function () {
-                const ruc = document.getElementById('ruc_act').value
+            formCrear.addEventListener('submit', async function (event) {
+                event.preventDefault()
+                const ruc = document.getElementById('ruc').value
+                const mensaje = document.getElementById("mensajeRUC")
+
+                mensaje.textContent = ""
 
                 try {
                     const response = await fetch("https://apiperu.dev/api/ruc", {
@@ -233,17 +407,56 @@
                     const data = await response.json();
 
                     if (!response.ok || !data.success) {
-                        document.getElementById("mensajeRUC").textContent = "El RUC no es válido";
+                        mensaje.textContent = "El RUC no es válido";
                         return;
                     }
+
+                    formCrear.submit()
+
                 } catch (error) {
-                    document.getElementById("mensajeRUC").textContent = "Error al validar el RUC";
+                    mensaje.textContent = "Error al validar el RUC";
                     console.error("Error", error)
                     return;
                 }
 
+            })
 
-                formCrear.submit()
+
+            const formEditar = document.getElementById("formEditar");
+
+            formEditar.addEventListener('submit', async function (event) {
+                event.preventDefault()
+                const ruc = document.getElementById('ruc_act').value
+                const mensaje = document.getElementById("mensajeRUCact")
+
+                mensaje.textContent = ""
+
+                try {
+                    const response = await fetch("https://apiperu.dev/api/ruc", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer cefa320c438dd612f47210d678d31fe7f612c9475522675dd56be4fa43a02484`
+                        },
+                        body: JSON.stringify({ ruc: ruc })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        mensaje.textContent = "El RUC no es válido";
+                        return;
+                    }
+
+                    formEditar.submit()
+
+                } catch (error) {
+                    mensaje.textContent = "Error al validar el RUC";
+                    console.error("Error", error)
+                    return;
+                }
+
             })
 
 
@@ -272,23 +485,6 @@
                 });
             });
 
-
-            const boton3 = document.querySelectorAll(".deleteProduc");
-            boton3.forEach(boton => {
-                boton.addEventListener('click', function () {
-                    const fila = this.closest('tr');
-
-                    const valores = Array.from(fila.querySelectorAll('td')).map(td => td.textContent);
-
-                    modalContDele.style.opacity = "1";
-                    modalContDele.style.visibility = "visible";
-                    VentDelete.classList.toggle("ventana-close-delete");
-
-                    const form = document.getElementById("formEliminar");
-                    const idProveedor = valores[0].trim();
-                    form.action = `/inventario/proveedores/eliminar_prov/${idProveedor}`;
-                });
-            });
         </script>
 
 
@@ -337,7 +533,7 @@
             const backgroundColor = selectedOption.style.backgroundColor;
             estaFil.style.backgroundColor = backgroundColor;
         });
-        
+
     </script>
 
     <script th:if="${error != '' && error != null}">

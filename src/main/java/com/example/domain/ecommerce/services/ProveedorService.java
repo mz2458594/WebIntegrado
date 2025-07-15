@@ -79,4 +79,20 @@ public class ProveedorService {
         proveedorDAO.deleteById(Long.valueOf(id));
     }
 
+    public boolean nombreExists(String nombre){
+        return proveedorDAO.findByNombre(nombre).isPresent();
+    }
+
+    public boolean emailExists(String email){
+        return proveedorDAO.findByEmail(email).isPresent();
+    }
+
+    public boolean rucExists(String ruc){
+        return proveedorDAO.findByRuc(Long.valueOf(ruc)).isPresent();
+    }
+
+    public boolean telefonoExists(String telefono){
+        return proveedorDAO.findByTelefono(Integer.parseInt(telefono)).isPresent();
+    }
+
 }

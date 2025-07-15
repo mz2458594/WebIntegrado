@@ -155,7 +155,7 @@ public class ProductoService {
                 .crearProducto(productDTO);
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
-        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));;
 
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
@@ -188,7 +188,7 @@ public class ProductoService {
                 .actualizar(productDTO, id);
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
-        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor());
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));
 
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
@@ -247,7 +247,7 @@ public class ProductoService {
         String categoria = null;
 
         if (productFilterDTO.getProveedor() != null) {
-            Proveedor prov = proveedorDAO.findByNombre(productFilterDTO.getProveedor());
+            Proveedor prov = proveedorDAO.findByNombre(productFilterDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));;
             if (prov != null) {
                 proveedor = prov.getNombre();
             }

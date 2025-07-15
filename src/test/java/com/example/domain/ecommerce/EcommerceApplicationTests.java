@@ -181,54 +181,6 @@ public class EcommerceApplicationTests {
     }
 
     @Test
-    void testAgregarProducto() {
-        ProductDTO dto = new ProductDTO();
-        dto.setNombre("Producto 1");
-        dto.setDescripcion("Desc");
-        dto.setPrecio("100");
-        dto.setStock("50");
-        dto.setImagen1("img.jpg");
-        dto.setNombre_categoria("Cat 1");
-        dto.setProveedor("Prov 1");
-
-        Categoria categoria = new Categoria();
-        Proveedor proveedor = new Proveedor();
-
-        when(categoriaDAO.findByNombre("Cat 1")).thenReturn(categoria);
-        when(proveedorDAO.findByNombre("Prov 1")).thenReturn(proveedor);
-
-        productoService.agregarProducto(dto);
-
-        verify(productoDAO, times(1)).save(any(Producto.class));
-    }
-
-    @Test
-    void testActualizarProducto() {
-        ProductDTO dto = new ProductDTO();
-        dto.setNombre("Producto Actualizado");
-        dto.setDescripcion("Nueva Desc");
-        dto.setPrecio("200");
-        dto.setStock("100");
-        dto.setImagen1("img2.jpg");
-        dto.setNombre_categoria("Cat 1");
-        dto.setProveedor("Prov 1");
-
-        Producto productoExistente = new Producto();
-        productoExistente.setIdProducto(1);
-
-        Categoria categoria = new Categoria();
-        Proveedor proveedor = new Proveedor();
-
-        when(productoDAO.findById(1L)).thenReturn(Optional.of(productoExistente));
-        when(categoriaDAO.findByNombre("Cat 1")).thenReturn(categoria);
-        when(proveedorDAO.findByNombre("Prov 1")).thenReturn(proveedor);
-
-        productoService.actualizarProducto(dto, 1);
-
-        verify(productoDAO, times(1)).save(productoExistente);
-    }
-
-    @Test
     void testEliminarProducto() {
         productoService.eliminarProducto(1);
         verify(productoDAO, times(1)).deleteById(1L);

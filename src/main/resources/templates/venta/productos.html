@@ -71,12 +71,12 @@
                 </div>
                 <div class="input__box">
                     <label for="">Imagen</label><br>
-                    <input type="text" name="imagen1" required >
+                    <input type="text" name="imagen1" required>
                 </div>
                 <div class="input__box">
                     <label for="">Codigo de barras</label><br>
                     <input type="text" name="codigoBarras" id="codigo" maxlength="13" pattern="\d{13}"
-                        title="El codigo debe tener exactamente 13 digitos numericos" required >
+                        title="El codigo debe tener exactamente 13 digitos numericos" required>
                 </div>
                 <div class="input__box">
                     <label for="">Peso</label>
@@ -134,61 +134,91 @@
                 </button>
             </div>
             <div class="Cont__buscar">
-                <div class="buscar_search">
-                    <label for="">Buscar :</label>
-                    <input type="text" id="productInput">
-                </div>
+                div>
+                <label for="">Filtrar por estado:</label>
+                <select name="" id="estadoFiltro" style="font-weight: bold;">
+                    <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
+                    <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
+                        ACTIVO</option>
+                    <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
+                        INACTIVO
+                    </option>
+                </select>
+                <style>
+                    .opti {
+                        font-weight: bold;
+                    }
+
+                    #estadoFiltro {
+                        padding: 7px;
+                        border-radius: 5px;
+                        border: 1px solid rgba(165, 165, 165, 0.467);
+
+                    }
+
+                    #estadoFiltro:focus-visible {
+                        outline: 2px solid #3391fc;
+                    }
+                </style>
             </div>
-            <div class="cont_table">
-                <div class="table__modal">
-                    <table class="table">
-                        <tr class="thead">
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripcion</th>
-                            <th>Categoria</th>
-                            <th>Proveedor</th>
-                            <th>Precio Venta</th>
-                            <th>Precio Compra</th>
-                            <th>Stock</th>
-                            <th>Marca</th>
-                            <th>Link Imagen</th>
-                            <th>Codigo de barras</th>
-                            <th>Peso</th>
-                            <th>Accion</th>
-                        </tr>
-                        <tr id="productList" th:each="producto: ${productos}">
-                            <td th:text="${producto.idProducto}">1</td>
-                            <td th:text="${producto.nombre}">Papas Lays</td>
-                            <td th:text="${producto.descripcion}">Rico y nutritivos</td>
-                            <td th:text="${producto.categoria.nombre}">Snacks</td>
-                            <td th:text="${producto.proveedor.nombre}">Paperos</td>
-                            <td th:text="${producto.precioVenta}">2</td>
-                            <td th:text="${producto.precioCompra}">200</td>
-                            <td th:text="${producto.stock}">200</td>
-                            <td th:text="${producto.marca}">200</td>
-                            <td th:text="${producto.imagen}"></td>
-                            <td th:text="${producto.codigoBarras}"></td>
-                            <td th:text="${producto.peso}"></td>
-                            <th>
-                                <div class="container_action">
-                                    <label type="checkbox" class="action_checkbox">
-                                        <label class="name_action" for="open_action">Accion <i
-                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
-                                        <div class="cont_opciones">
-                                            <button class="editproduc">Ver Detalle <i
-                                                    class="fa-solid fa-pen-to-square"></i></button>
-
-                                        </div>
-                                </div>
-                            </th>
-
-
-                        </tr>
-
-                    </table>
-                </div>
+            <div class="buscar_search">
+                <label for="">Buscar :</label>
+                <input type="text" id="productInput">
             </div>
+        </div>
+        <div class="cont_table">
+            <div class="table__modal">
+                <table class="table">
+                    <tr class="thead">
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Categoria</th>
+                        <th>Proveedor</th>
+                        <th>Precio Venta</th>
+                        <th>Precio Compra</th>
+                        <th>Stock</th>
+                        <th>Marca</th>
+                        <th>Link Imagen</th>
+                        <th>Codigo de barras</th>
+                        <th>Peso</th>
+                        <th>Accion</th>
+                    </tr>
+                    <tr id="productList" th:each="producto: ${productos}">
+                        <td th:text="${producto.idProducto}">1</td>
+                        <td th:text="${producto.nombre}">Papas Lays</td>
+                        <td th:text="${producto.descripcion}">Rico y nutritivos</td>
+                        <td th:text="${producto.categoria.nombre}">Snacks</td>
+                        <td th:text="${producto.proveedor.nombre}">Paperos</td>
+                        <td th:text="${producto.precioVenta}">2</td>
+                        <td th:text="${producto.precioCompra}">200</td>
+                        <td th:text="${producto.stock}">200</td>
+                        <td th:text="${producto.marca}">200</td>
+                        <td th:text="${producto.imagen}"></td>
+                        <td th:text="${producto.codigoBarras}"></td>
+                        <td th:text="${producto.peso}"></td>
+                        <!-- <td>
+                                <span th:text="${producto.estado}" th:classappend="${producto.estado}"></span>
+                            </td> -->
+                        <th>
+                            <div class="container_action">
+                                <label type="checkbox" class="action_checkbox">
+                                    <label class="name_action" for="open_action">Accion <i
+                                            class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                    <div class="cont_opciones">
+                                        <button class="editproduc">Ver Detalle <i
+                                                class="fa-solid fa-pen-to-square"></i></button>
+
+                                    </div>
+                            </div>
+                        </th>
+
+
+                    </tr>
+
+                </table>
+            </div>
+        </div>
         </div>
 
 
@@ -237,7 +267,7 @@
                     <div class="input__box">
                         <label for="">Codigo de barras</label><br>
                         <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}"
-                            title="El codigo debe tener exactamente 13 digitos numericos" required >
+                            title="El codigo debe tener exactamente 13 digitos numericos" required>
                     </div>
                     <div class="input__box">
                         <label for="">Peso</label><br>
@@ -616,21 +646,28 @@
     <script th:src="@{/js/caracteristicasCateg.js}"></script>
     <script th:src="@{/js/modalAdd.js}"></script>
 
-    <script>
+
+    <!-- <script>
         const productInput = document.getElementById("productInput");
-        const tableRows = document.querySelectorAll("#productList");
+        const estaFil = document.getElementById("estadoFiltro");
 
         function filterProducts() {
             const query = productInput.value.toLowerCase();
+            const tableRows = document.querySelectorAll("#productList");
+            const estadoSeleccionado = estaFil.value
 
             tableRows.forEach(row => {
                 // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
-                const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                 const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
                 const productName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
                 const productCat = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
                 const productProv = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                const estado = row.querySelector("td:nth-child(13)").textContent.trim();
 
-                if (productId.includes(query) || productName.includes(query) || productCat.includes(query) || productProv.includes(query)) {
+                const coincideEstado = estadoSeleccionado === "" || estado === estadoSeleccionado
+                const coincideTexto = productId.includes(query) || productName.includes(query) || productDir.includes(query) || productTel.includes(query) || productEmail.includes(query)
+
+                if (coincideEstado && coincideTexto) {
                     row.style.display = ""; // Mostrar fila
                 } else {
                     row.style.display = "none"; // Ocultar fila
@@ -639,9 +676,18 @@
             });
         }
 
-        // Asociar la función al evento de entrada
+        estaFil.addEventListener("input", filterProducts);
         productInput.addEventListener("input", filterProducts);
-    </script>
+
+        estaFil.addEventListener('change', function () {
+            const selectedOption = estaFil.options[estaFil.selectedIndex];
+            const backgroundColor = selectedOption.style.backgroundColor;
+            estaFil.style.backgroundColor = backgroundColor;
+        });
+        
+    </script> -->
+
+
     <script th:if="${error != '' && error != null}">
         alert("[[${error}]]");
     </script>
