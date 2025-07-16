@@ -55,8 +55,8 @@ public class UsuarioController {
 
         userDTO.setRol("Cliente");
         try {
-            authService.register(userDTO);
-            // usuarioService.enviarEmail(usuario);
+            Usuario usuario = authService.register(userDTO);
+            usuarioService.enviarEmail(usuario);
 
             return "commerce/iniciosesion";
         } catch (RuntimeException e) {

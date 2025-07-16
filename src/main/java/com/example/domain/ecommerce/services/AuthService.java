@@ -16,11 +16,13 @@ public class AuthService {
 
     private final UsuarioService usuarioService;
 
-    public void register(UserDTO user) {
+    public Usuario register(UserDTO user) {
 
         Usuario usuario = usuarioService.createUser(user);
 
         personaService.createPersona(user, usuario);
+
+        return usuario;
 
     }
 

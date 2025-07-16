@@ -24,12 +24,12 @@ public class ClienteSecurityConfig {
         http.csrf(csrf -> csrf.disable())
         .securityMatcher("/targus/**")
                 .authorizeHttpRequests(auth -> auth
-                        // .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        // .requestMatchers("/targus/usuario/form_crear").permitAll()
-                        // .requestMatchers("/targus/principal/**").permitAll()
-                        // .requestMatchers("/targus/usuario/**").hasRole("Cliente")
-                        // .requestMatchers("/targus/venta/**").permitAll()
-                        // .requestMatchers("/targus/producto/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/targus/usuario/form_crear").permitAll()
+                        .requestMatchers("/targus/principal/**").permitAll()
+                        .requestMatchers("/targus/usuario/**").hasRole("Cliente")
+                        .requestMatchers("/targus/venta/**").permitAll()
+                        .requestMatchers("/targus/producto/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/targus/principal/iniciar_crear")

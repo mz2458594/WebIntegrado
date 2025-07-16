@@ -72,29 +72,25 @@
                     </div>
                     <div>
                         <label for="">Direccion</label>
-                        <input type="text" placeholder="Dirección" required th:value="${user.direccion.calle}"
+                        <input type="text" disabled placeholder="Dirección" required th:value="${user.direccion.calle}"
                             name="calle" id="calle">
 
                     </div>
                     <div>
                         <label for="">Departamento</label>
-                        <input type="text" placeholder="Ciudad" required th:value="${user.direccion.departamento}"
+                        <input type="text" disabled placeholder="Ciudad" required th:value="${user.direccion.departamento}"
                             name="departamento" id="departamento">
                     </div>
                     <div>
                         <label for="">Provincia</label>
-                        <input type="text" placeholder="Provincia" required th:value="${user.direccion.provincia}"
+                        <input type="text" disabled placeholder="Provincia" required th:value="${user.direccion.provincia}"
                             id="provincia" name="provincia">
                     </div>
 
                     <div>
                         <label for="">Distrito</label>
-                        <input type="text" placeholder="Distrito" required th:value="${user.direccion.distrito}"
+                        <input type="text" disabled placeholder="Distrito" required th:value="${user.direccion.distrito}"
                             id="distrito" name="distrito">
-                    </div>
-                    <div class="botons">
-                        <button type="submit" class="bott">Actualizar</button>
-                        <button type="reset" class="bott">Revertir</button>
                     </div>
                 </form>
             </section>
