@@ -29,7 +29,7 @@ async function generarPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    const usuario = "Kenneth Garrido";
+    const usuario = document.getElementById('username').value || "";
     const fechaImpresion = new Date().toLocaleString();
     const titulo = "REPORTE DE PEDIDOS";
 
@@ -52,7 +52,7 @@ async function generarPDF() {
     doc.setFontSize(10);
     doc.setFont(undefined, "normal");
     doc.text(`Fecha de impresión: ${fechaImpresion}`, 60, 18);
-    doc.text(`Usuario: ${usuario}`, 60, 24);
+    doc.text(`Responsable: ${usuario}`, 60, 24);
     doc.setFontSize(14);
     doc.setFont(undefined, "bold");
     doc.text(titulo, 105, 35, null, null, 'center');

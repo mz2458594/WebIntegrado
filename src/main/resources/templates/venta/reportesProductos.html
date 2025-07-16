@@ -50,6 +50,8 @@
 
         <div class="contenedor_modal">
             <h2 style="text-align: center;">Reporte de productos</h2>
+            <input hidden th:value="${empleado?.nombre ?: ''}" id="username" type="text">
+
 
             <div class="reporte__ventas">
                 <div class="filtros__ventas">
@@ -137,6 +139,8 @@
     document.getElementById("btn-exportar-pdf").addEventListener("click", async () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF("p", "mm", "a4");
+        const responsable = document.getElementById('username').value || "";
+
 
         const now = new Date().toLocaleString();
         const productos = await obtenerProductosFiltrados();
@@ -158,6 +162,9 @@
         doc.text("REPORTE DE INVENTARIO", centerX, 18, { align: "center" });
         doc.setFontSize(10);
         doc.text(`Fecha de creación: ${now}`, centerX, 24, { align: "center" });
+        doc.text(`Responsable: ${responsable}`, centerX, 30, { align: "center" });
+
+
 
         const canvas = document.getElementById("inventarioChart");
         const imgData = canvas.toDataURL("image/png");
@@ -194,7 +201,7 @@
             headStyles: { fillColor: [50, 50, 50] }
         });
 
-        doc.save("reporte_inventario.pdf");
+        doc.save("reporte_producto.pdf");
     });
 
     async function obtenerProductosFiltrados() {

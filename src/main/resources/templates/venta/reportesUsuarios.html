@@ -22,6 +22,7 @@
             <div class="cuerpo-reporte">
                 <div class="content-title">
                     <h3>REPORTE DE USUARIO</h3>
+                    <input hidden th:value="${empleado?.nombre ?: ''}" id="username" type="text">
                 </div>
                 <div class="cont-filt">
                     <div class="cont-restoFiltros" id="cont-restoFiltros" style="display: grid;">

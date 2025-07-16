@@ -84,7 +84,7 @@ async function generarPDF() {
     const pdf = new jsPDF();
 
     // Datos de encabezado
-    const usuario = "Kenneth Garrido";
+    const usuario = document.getElementById('username').value || "";
     const fechaImpresion = new Date().toLocaleString();
     const titulo = "REPORTE DE USUARIOS";
 
@@ -108,7 +108,7 @@ async function generarPDF() {
     pdf.setFontSize(10);
     pdf.setFont(undefined, "normal");
     pdf.text(`Fecha de impresión: ${fechaImpresion}`, 60, 18);
-    pdf.text(`Usuario: ${usuario}`, 60, 24);
+    pdf.text(`Responsable: ${usuario}`, 60, 24);
 
     pdf.setFontSize(14);
     pdf.setFont(undefined, "bold");
