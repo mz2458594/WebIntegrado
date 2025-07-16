@@ -3,30 +3,47 @@ package com.example.domain.ecommerce.models.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.ecommerce.models.enums.Estado;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@Data
 @Table(name = "productos")
-public class Producto implements Serializable{
+@NoArgsConstructor
+@AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_producto")
+    @Column(name = "id_producto")
     private int idProducto;
 
     private String nombre;
 
     private String descripcion;
-    private String precio;
+    private String precioVenta;
     private String stock;
     private String imagen;
 
@@ -35,97 +52,46 @@ public class Producto implements Serializable{
     private Categoria categoria;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<Venta_producto> ventaProductos = new ArrayList<>();
+    @JsonIgnore
+    private List<Detalle_venta> ventaProductos = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("productos")
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
-    public Producto() {
+    private String marca;
 
+    private String precioCompra;
+
+    @Pattern(regexp = "\\d{13}", message = "El codigo de barras debe tener exactamente 13 dígitos numéricos")
+    private String codigoBarras;
+
+    private float peso;
+
+    public boolean validarCodigo(String codigo) {
+        if (codigo == null || !codigo.matches("\\d{13}")) {
+            return false;
+        }
+
+        int suma = 0;
+
+        for (int i = 0; i < 12; i++) {
+            int digito = Character.getNumericValue(codigo.charAt(i));
+            suma += (i % 2 == 0) ? digito : digito * 3;
+        }
+
+        int digitoControlCalculado = (10 - (suma % 10)) % 10;
+        int digitoControlReal = Character.getNumericValue(codigo.charAt(12));
+
+        return digitoControlCalculado == digitoControlReal;
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, String precio, String stock, String imagen, Categoria categoria, List<Venta_producto> ventaProductos, Proveedor proveedor) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.imagen = imagen;
-        this.categoria = categoria;
-        this.ventaProductos = ventaProductos;
-        this.proveedor = proveedor;
-    }
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
 
-    public int getIdProducto() {
-        return idProducto;
-    }
+    private String comentario;
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
 
-    public String getNombre() {
-        return nombre;
-    }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(String precio) {
-        this.precio = precio;
-    }
-
-    public String getStock() {
-        return stock;
-    }
-
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public List<Venta_producto> getVentaProductos() {
-        return ventaProductos;
-    }
-
-    public void setVentaProductos(List<Venta_producto> ventaProductos) {
-        this.ventaProductos = ventaProductos;
-    }
-
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
 }

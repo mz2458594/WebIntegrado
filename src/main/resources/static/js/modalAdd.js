@@ -3,6 +3,7 @@ let abrir = document.querySelectorAll(".addition")[0];
 let VentModal = document.querySelectorAll(".ventana__modal")[0];
 let modalCont = document.querySelectorAll(".modal__container--add")[0];
 
+var camposCategoria = document.getElementById("camposCategoria");
 abrir.addEventListener("click", function (e) {
     e.preventDefault();
     modalCont.style.opacity = "1";
@@ -16,6 +17,9 @@ cerrar.addEventListener("click", function (e) {
         modalCont.style.opacity = "0";
         modalCont.style.visibility = "hidden";
     }, 600);
+
+    camposCategoria.innerHTML = '';
+    camposCategoria.style.display = 'none';
 });
 
 window.addEventListener("click", function (e) {
@@ -25,8 +29,10 @@ window.addEventListener("click", function (e) {
         setTimeout(function () {
             modalCont.style.opacity = "0";
             modalCont.style.visibility = "hidden";
+            camposCategoria.innerHTML = '';
+            camposCategoria.style.display = 'none';
+            document.getElementById('formulario_produc').reset();
         }, 600);
-        document.getElementById('formulario').reset();
     }
 });
 
@@ -74,7 +80,14 @@ cerrarEdit.addEventListener("click", function (e) {
     setTimeout(function () {
         modalContEdit.style.opacity = "0";
         modalContEdit.style.visibility = "hidden";
+
+
+        document.getElementById('formEditarPedido').reset();
+
+        document.getElementById("estado_act").disabled = false;
+        document.getElementById("guardar_estado_pp").style.display = "block"
     }, 600);
+
 });
 
 window.addEventListener("click", function (e) {
@@ -84,6 +97,12 @@ window.addEventListener("click", function (e) {
         setTimeout(function () {
             modalContEdit.style.opacity = "0";
             modalContEdit.style.visibility = "hidden";
+
+
+            document.getElementById('formEditarPedido').reset();
+
+            document.getElementById("estado_act").disabled = false;
+            document.getElementById("guardar_estado_pp").style.display = "block"
         }, 600);
     }
 });

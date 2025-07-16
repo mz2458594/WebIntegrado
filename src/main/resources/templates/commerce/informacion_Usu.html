@@ -8,49 +8,54 @@
     <link rel="stylesheet" th:href="@{/css/informacion_Usu.css}">
     <link rel="stylesheet" th:href="@{/css/barra_Opc_Usu.css}">
     <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/logo.png}">
+
 
 </head>
 
 <body>
     <div th:insert="commerce/header.html"></div>
 
-
-    <br /><br />
-
+    <div>
+        <a class="volverr" th:href="@{/targus/principal/opcion}">Volver</a>
+    </div>
 
     <div class="content">
-        <div class="Opciones">
-        </div>
+
         <div class="Contenido">
             <section id="informacion_Usu">
                 <h2>Información Personal</h2>
-                <form  th:action="@{/actualizarUsu/{id} (id = ${user.idUsuario}) }" method="post">
+                <form th:action="@{/targus/usuario/actualizarUsu/{id} (id = ${user.usuario.idUsuario}) }" method="post">
+                    <div th:if="${error != null}">
+                        <span style="font-weight: bold;" th:text="${error}">Error al ingresar el usuario</span>
+                    </div>
                     <div>
-                        <label>Nombre:</label> <br>
-                        <input th:value="${session.user.persona.nombre}" type="text" id="nombre" name="nombre">
+                        <label>Nombre:</label>
+                        <input th:value="${user.nombre}" type="text" id="nombre" name="nombre">
                     </div>
                     <div>
                         <label>Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" th:value="${user.persona.apellido}"><br><br>
+                        <input type="text" id="apellido" name="apellido" th:value="${user.apellido}">
                     </div>
                     <div>
-                        <label>Celular:</label> <br>
-                        <input th:value="${session.user.persona.telefono}" type="text" maxlength="9" id="celular" name="celular">
+                        <label>Celular:</label>
+                        <input th:value="${user.telefono}" type="text" maxlength="9" id="celular" name="celular">
                     </div>
                     <div>
-                        <label>Documento:</label> <br>
-                        <input th:value="${session.user.persona.dni}" type="text" maxlength="11" id="num_documento" name="num_documento">
+                        <label>Documento:</label>
+                        <input th:value="${user.dni}" type="text" maxlength="11" id="num_documento"
+                            name="num_documento">
                     </div>
                     <div>
-                        <label>Correo:</label> <br>
-                        <input th:value="${session.user.email}" type="email" id="correo" name="correo">
+                        <label>Correo:</label>
+                        <input th:value="${user.usuario.email}" type="email" id="correo" name="correo">
                     </div>
                     <div>
-                        <label>Username:</label> <br>
-                        <input th:value="${session.user.username}" type="text" id="username" name="username">
+                        <label>Username:</label>
+                        <input th:value="${user.usuario.username}" type="text" id="username" name="username">
                     </div>
 
-                    <div><br>
+                    <div class="botons">
                         <button type="submit" class="bott">Actualizar</button>
                         <button type="reset" class="bott">Revertir</button>
                     </div>
@@ -60,53 +65,38 @@
             <section id="direccion">
                 <h2>Dirección de Envio</h2>
 
-                <form th:action="@{/actualizar_direccion/{id} (id = ${user.idUsuario})}" method="post">
+                <form th:action="@{/targus/usuario/actualizar_direccion/{id} (id = ${user.usuario.idUsuario})}"
+                    method="post">
+                    <div th:if="${error != null}">
+                        <span style="font-weight: bold;" th:text="${error}">Error al ingresar el usuario</span>
+                    </div>
                     <div>
-                        <label for="">Direccion</label> <br>
-                        <input type="text" placeholder="Dirección" required 
-                        th:value = "${user.persona.direccion.calle}"
-                        name="calle"
-                        id="calle">
+                        <label for="">Direccion</label>
+                        <input type="text" disabled placeholder="Dirección" required th:value="${user.direccion.calle}"
+                            name="calle" id="calle">
 
                     </div>
                     <div>
-                        <label for="">Ciudad</label>
-                        <input type="text" placeholder="Ciudad" required
-                        th:value = "${user.persona.direccion.ciudad}"
-                        name="ciudad"
-                        id="ciudad"
-                        ><br>
-
+                        <label for="">Departamento</label>
+                        <input type="text" disabled placeholder="Ciudad" required th:value="${user.direccion.departamento}"
+                            name="departamento" id="departamento">
                     </div>
                     <div>
-                        <label for="">Provincia</label><br>
-                        <input type="text" placeholder="Provincia" required
-                        th:value = "${user.persona.direccion.provincia}"
-                        id="provincia"
-                        name="provincia"><br> 
+                        <label for="">Provincia</label>
+                        <input type="text" disabled placeholder="Provincia" required th:value="${user.direccion.provincia}"
+                            id="provincia" name="provincia">
                     </div>
 
                     <div>
                         <label for="">Distrito</label>
-                        <input type="text" placeholder="Distrito" required
-                        th:value = "${user.persona.direccion.distrito}"
-                        id="distrito"
-                        name="distrito"><br>
+                        <input type="text" disabled placeholder="Distrito" required th:value="${user.direccion.distrito}"
+                            id="distrito" name="distrito">
                     </div>
-
-                    <br>
-                    <div>
-                        <button   type="submit" class="bott">Actualizar</button>
-                        <button type="reset" class="bott">Revertir</button>
-                    </div>
-
                 </form>
             </section>
 
         </div>
     </div>
-    <div th:insert="commerce/footer.html"></div>
-
 
 </body>
 <script th:src="@{/js/reemplazos.js}"></script>

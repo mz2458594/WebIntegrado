@@ -7,9 +7,10 @@
     font-family: "Nunito", sans-serif;
     width: 350px;
     height: 100%;
-    border: 1px solid #FEDA00;
+    border: 1px solid #266bc0;
     border-radius: 10px;
     font-size: 18px;
+    font-weight: bold;
     h2{
         text-align: center;
         color: #1D2937;
@@ -28,7 +29,7 @@
             
         }
         li:hover{
-            background-color: #dad5d5;
+            background-color: #c8c8c8;
         }
     }
 }
@@ -36,7 +37,7 @@
 .Contenido{
     width: 100%;
     padding: 10px 40px;
-    border: 2px solid #FEDA00;
+    border: 3px solid #266bc0;
     border-radius: 10px;
 }
 

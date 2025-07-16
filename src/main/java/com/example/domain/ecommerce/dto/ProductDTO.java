@@ -1,60 +1,74 @@
 package com.example.domain.ecommerce.dto;
 
+import lombok.Data;
+
+@Data
 public class ProductDTO {
 
+    private String nombre;
+    private String descripcion;
+    private String nombre_categoria;
+    private String precio;
+    private String stock;
+    private String imagen1;
+    private String proveedor;
+    private String marca;
+    private String precioCompra;
+    private String codigoBarras;
+    private String peso;
+    private String estado;
 
-    String nombre;
-    String descripcion;
-    String nombre_categoria;
-    String precio;
-    String stock;
-    String imagen1;
+    // ATRIBUTOS GENERALES DE CADA TIPO
+    private String sistemaOperativo;
+    private String tamañoPantalla;
+    private String memoriaRam;
+    private String tipo;
+    private String conectividad;
+    private String duracion;
+    private String almacenamientoInterno;
+    private String resolución;
+    private String resolucionCamara;
 
-    public String getNombre() {
-        return nombre;
-    }
+    // LAPTOP
+    private String procesador;
+    private String tarjetaGrafica;
+    private String color;
+    private String almacenamiento;
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    // SMARTPHONE
+    private String capacidadBateria;
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    // AURICULAR
+    private String cancelacionRuido;
+    private String conector;
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    // MONITOR
+    private String tipoPanel;
+    private String frecuenciaActualizacion;
+    private String puertosEntrada;
 
-    public String getPrecio() {
-        return precio;
-    }
+    // TECLADOS
+    private String distribución;
+    private String retroiluminación;
 
-    public void setPrecio(String precio) {
-        this.precio = precio;
-    }
+    // MOUSES
+    private String dpi;
+    private String cantidadBotones;
 
-    public String getNombre_categoria() {
-        return nombre_categoria;
-    }
+    // SMARTWATCH
+    private String compatibilidad;
+    private String monitoreoSalud;
+    private String resistenciaAgua;
 
-    public void setNombre_categoria(String nombre_categoria) {
-        this.nombre_categoria = nombre_categoria;
-    }
+    // TABLET
 
-    public String getStock() {
-        return stock;
-    }
+    // CAMARA
+    private String zoomOptico;
+    private String estabilizacionImagen;
 
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
+    // IMPRESORA
+    private String funciones;
+    private String velocidadImpresion;
+    private String dobleCaraAutomatica;
 
-    public String getImagen1() {
-        return imagen1;
-    }
-
-    public void setImagen1(String imagen1) {
-        this.imagen1 = imagen1;
-    }
 }

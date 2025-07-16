@@ -12,7 +12,7 @@
         <center>
         <main class = "form-login m-auto pt-4">
             <h3>Recuperar contraseña</h3>
-            <form th:action="@{/recuperar}" method="post" class="row g-3" autocomplete="off">
+            <form th:action="@{/targus/usuario/recuperar}" method="post" class="row g-3" autocomplete="off">
                 <div class="form-floating">
                     <input class="form-control" type="email" name="email" id="email" placeholder="Correo electrónico" required>
                     <label for="email">Correo electrónico</label>
@@ -21,7 +21,7 @@
                     <button type="submit" class="btn btn-primary">Continuar</button>
                 </div>
                 <div class="col-12">
-                    ¿No tiene cuenta? <a th:href="@{/form_crear}">Registrate aquí</a>
+                    ¿No tiene cuenta? <a th:href="@{/targus/usuario/form_crear}">Registrate aquí</a>
                 </div>
             </form>            
         </main>

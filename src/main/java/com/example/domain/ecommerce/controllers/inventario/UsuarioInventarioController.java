@@ -7,21 +7,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.ecommerce.dto.UserDTO;
+import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Controller
 @Slf4j
+@RequestMapping("/inventario/usuarios")
 public class UsuarioInventarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/usuarios")
+    @Autowired
+    private AuthService authService;
+
+    @GetMapping("/")
     public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
         return "venta/usuarios";
     }
 
@@ -30,11 +36,16 @@ public class UsuarioInventarioController {
             @ModelAttribute UserDTO userDTO,
             Model model) {
 
-        usuarioService.createUser(userDTO);
+        try {
+            authService.register(userDTO);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/usuarios";
+        return "venta/usuarios";
     }
 
     @PostMapping("/actualizar_usu/{id}")
@@ -43,11 +54,16 @@ public class UsuarioInventarioController {
             @PathVariable int id,
             Model model) {
 
-        usuarioService.actualizarUsuarios(userDTO, id);
+        try {
+            authService.update(userDTO, id);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/usuarios";
+        return "venta/usuarios";
     }
 
     @PostMapping("/eliminarUsuario/{id}")
@@ -55,11 +71,15 @@ public class UsuarioInventarioController {
             @PathVariable int id,
             Model model) {
 
-        usuarioService.eliminarUsuario(id);
+        try {
+            usuarioService.eliminarUsuario(id);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
+        model.addAttribute("usuarios", usuarioService.listarClientesYEmpleados());
+        model.addAttribute("roles", usuarioService.listarRoles());
 
-        return "redirect:/usuarios";
-
+        return "venta/usuarios";
     }
 }

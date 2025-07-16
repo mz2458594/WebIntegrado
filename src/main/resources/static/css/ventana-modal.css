@@ -15,6 +15,12 @@
 
 
 
+#formulario, #formEditarUser, #formulario_produc, #formEditar{
+    max-height: 500px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
 .ventana__modal, .ventana_modal--edit{
     background-color: #fff;
     width: 40%;

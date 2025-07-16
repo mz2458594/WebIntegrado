@@ -190,3 +190,10 @@ tfoot tr td:first-child{
     background-color: #ca0505;
 }
 
+#mensaje{
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #ffe6e6;
+    border-radius: 4px;
+}

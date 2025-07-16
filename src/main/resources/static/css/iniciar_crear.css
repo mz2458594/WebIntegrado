@@ -43,7 +43,7 @@ body{
 
 .imagen{
     width: 50%;
-    background-image: url(https://jpsystems.pe/wp-content/uploads/2021/07/Requisitos-para-iniciar-un-negocio-de-Minimarket-en-Peru.jpg);
+    background-image: url(https://static.grupojoly.com/clip/06db8897-19f6-4b74-a6ce-7811568269ec_source-aspect-ratio_1600w_0.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: contain;
@@ -76,7 +76,6 @@ input{
 }
 
 .mensaje_error{
-    display: none;
     font-weight: 600;
     color: rgb(206, 59, 62);
 }

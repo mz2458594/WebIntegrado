@@ -2,39 +2,51 @@ package com.example.domain.ecommerce.controllers.web;
 
 import com.example.domain.ecommerce.dto.DireccionDTO;
 import com.example.domain.ecommerce.dto.LoginDTO;
+import com.example.domain.ecommerce.dto.PedidoDTO;
+import com.example.domain.ecommerce.dto.RequestDTO;
 import com.example.domain.ecommerce.dto.UserDTO;
+import com.example.domain.ecommerce.models.entities.Cliente;
+import com.example.domain.ecommerce.models.entities.Pedido;
+import com.example.domain.ecommerce.models.entities.PedidoUsuario;
+import com.example.domain.ecommerce.models.entities.Persona;
 import com.example.domain.ecommerce.models.entities.Usuario;
+import com.example.domain.ecommerce.services.AuthService;
 import com.example.domain.ecommerce.services.DireccionService;
 import com.example.domain.ecommerce.services.EmailService;
+import com.example.domain.ecommerce.services.PedidoService;
 import com.example.domain.ecommerce.services.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/targus/usuario")
 @SessionAttributes({ "carrito" })
 @Controller
 @Slf4j
+@AllArgsConstructor
 public class UsuarioController {
-    @Autowired
-    UsuarioService usuarioService;
-    @Autowired
-    DireccionService direccionService;
-    @Autowired
-    EmailService emailService;
 
-    int contador = 0;
+    private final UsuarioService usuarioService;
 
-    @GetMapping("/adminUsuarios")
-    public String usuarios(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
-        return "/adminUsuarios";
-    }
+    private final DireccionService direccionService;
+
+    private final EmailService emailService;
+
+    private final AuthService authService;
+
+    private final PedidoService pedidoService;
+
+    private final int contador = 0;
 
     @PostMapping("/form_crear")
     public String crearCuenta(
@@ -42,68 +54,49 @@ public class UsuarioController {
             Model model) {
 
         userDTO.setRol("Cliente");
-        usuarioService.createUser(userDTO);
-
-        return "commerce/iniciosesion";
-
-    }
-
-    @PostMapping("/iniciar_crear")
-    public String iniciar(LoginDTO loginDTO, Model model, HttpServletRequest request) {
-
         try {
-            Usuario user = usuarioService.login(loginDTO);
+            Usuario usuario = authService.register(userDTO);
+            usuarioService.enviarEmail(usuario);
 
-            HttpSession session = request.getSession();
-
-            session.setAttribute("user", user);
-
-            System.out.println(session.getAttribute("user"));
-            contador = 0;
-
-            return "redirect:/";
-
-        } catch (EntityNotFoundException e) {
-
-            contador++;
-            System.out.println("CONTADOR" + contador);
-            if (contador >= 3) {
-                model.addAttribute("bloquear", contador>=3);
-            }
-
-            model.addAttribute("error", true);
             return "commerce/iniciosesion";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "commerce/crear_cuenta";
         }
 
     }
 
-
-    @PostMapping("/eliminar_usu/{id}")
-    public String eliminarUsuario(
-            @PathVariable int id,
-            Model model) {
-
-        usuarioService.eliminarUsuario(id);
-        model.addAttribute("mensaje", "Datos eliminados con éxito");
-
-        model.addAttribute("usuarios", usuarioService.listarUsuario());
-        return "redirect:/adminUsuarios";
-    }
-
-    @GetMapping("/pagar")
+    @GetMapping("/form_pago")
     public String abrirForm_pago(Model model, HttpSession session) {
-        Usuario user = (Usuario) session.getAttribute("user");
+        RequestDTO lista = (RequestDTO) session.getAttribute("lista");
 
-        model.addAttribute("usuario", user);
+        if (lista != null) {
+            model.addAttribute("lista", lista);
+        }
         return "commerce/form_pago";
     }
 
-    @RequestMapping("/info")
+    @GetMapping("/info")
     public String abrirInfo(Model model, HttpSession session) {
 
-        Usuario user = (Usuario) session.getAttribute("user");
+        Cliente user = (Cliente) session.getAttribute("user");
         model.addAttribute("user", user);
         return "commerce/informacion_Usu";
+    }
+
+    @GetMapping("/pedidos")
+    public String mostrarPedidos(Model model, HttpSession session) throws JsonProcessingException {
+        Cliente user = (Cliente) session.getAttribute("user");
+        try {
+            List<PedidoUsuario> pedidos = pedidoService.getPedidosUsuarioPorIdUsuario(user.getUsuario().getIdUsuario());
+
+            List<PedidoDTO> dtoList = pedidoService.convertirPedidoDTO(pedidos);
+
+            model.addAttribute("pedidos", dtoList);
+        } catch (RuntimeException e) {
+            return "commerce/seguipedidos";
+        }
+        return "commerce/seguipedidos";
     }
 
     @PostMapping("/actualizarUsu/{id}")
@@ -113,11 +106,14 @@ public class UsuarioController {
             HttpSession session,
             Model model) {
 
-        Usuario user = usuarioService.actualizarUsuarios(userDTO, id);
+        try {
+            Cliente cliente = (Cliente)authService.update(userDTO, id);
+            session.setAttribute("user", cliente);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        session.setAttribute("user", user);
-
-        return "redirect:/info";
+        return "redirect:/targus/usuario/info";
 
     }
 
@@ -127,19 +123,37 @@ public class UsuarioController {
             @PathVariable int id,
             Model model, HttpSession session) {
 
-    
-        direccionService.updateDirection(direccionDTO, id);
+        try {
+            Cliente cliente = direccionService.updateDirection(direccionDTO, id);
+            session.setAttribute("user", cliente);
 
-        Usuario u = usuarioService.obtenerUsuarioPorId(id);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        session.setAttribute("user", u);
+        return "redirect:/targus/usuario/info";
+    }
 
-        return "redirect:/info";
+    @GetMapping("/registrar/{id}")
+    public String activar(@PathVariable Integer id) {
+        usuarioService.activar(id);
+        return "redirect:/targus/principal/iniciar_crear";
     }
 
     @GetMapping("/recuperar")
     public String enviar_email(Model model) {
-        return "recuperar_contraseña";
+        return "commerce/recuperar_contraseña";
+    }
+
+    @PostMapping("/recuperar")
+    public String enviar_correo(
+            @RequestParam("email") String email,
+            Model model) {
+
+        usuarioService.emailContraseña(email);
+
+        return "redirect:/targus/principal/iniciar_crear";
+
     }
 
     @GetMapping("/actualizar_contrasena/{id}")
@@ -147,6 +161,19 @@ public class UsuarioController {
             @PathVariable Integer id) {
 
         model.addAttribute("id", id);
-        return "form_contraseña";
+
+        return "commerce/form_contraseña";
     }
+
+    @PostMapping("/actualizar_contrasena/{id}")
+    public String actualizar_con(
+            @PathVariable Integer id,
+            @RequestParam("repassword") String password,
+            Model model, HttpSession session) {
+
+        usuarioService.actualizarContraseña(password, id);
+
+        return "redirect:/targus/principal/iniciar_crear";
+    }
+
 }

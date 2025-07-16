@@ -7,7 +7,7 @@
               rel="stylesheet">
         <script src="https://kit.fontawesome.com/a81368914c.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+        <link rel="icon" th:href="@{/images/logo.png}">
     </head>
     <body>
         <div th:insert="commerce/header.html"></div>
@@ -15,7 +15,7 @@
         <div id="iniciar">
             <div class="container">
                 <div class="contenido-login">
-                    <form th:action="@{/iniciar_crear}" method="POST">
+                    <form th:action="@{/targus/principal/iniciar_crear}" method="POST">
                         <img th:src="@{/images/usuario.png}">
                         <h2 class="titulo">Bienvenido</h2>
                         <div class="input-div uno">
@@ -27,9 +27,9 @@
                                 <input type="text" class="input" name="email" id="email" required>
                             </div>
                         </div>
-                        <!-- <div th:if="${param.error}">
+                        <div th:if="${param.error}">
                             <p id="mensaje1">*Correo incorrecto </p>
-                        </div> -->
+                        </div>
 
                         <div class="input-div dos">
                             <div class="i">
@@ -40,15 +40,15 @@
                                 <input type="password" class="input" name="password" id="password" required>
                             </div>
                         </div>
-                        <div th:if="${error}">
+                        <div th:if="${param.error} or ${param.bloquear}">
                             <p id="mensaje2">*Correo y contraseña incorrectos </p><br/> 
                         </div>
 
 
-                        <a th:href="@{/recuperar}">¿Olvidastes tu contraseña?</a>
+                        <a th:href="@{/targus/usuario/recuperar}">¿Olvidastes tu contraseña?</a>
                         <input type="submit" class="btn" id="enviar">
                         
-                        <script th:if="${bloquear == true}">
+                        <script th:if="${param.bloquear}">
                             var tiempoRestante = 5;
                             var intervalo = setInterval(function () {
                                 document.getElementById('mensaje2').innerHTML = "Demasiados intentos. Espera " + tiempoRestante + " segundos.";
@@ -73,14 +73,12 @@
                         <li>Pedidos sin gasto de envío</li>
                         <li>Notificación de nuevos productos</li>
                     </ul>
-                    <a th:href="@{/form_crear}" class="btn-registro">Crear cuenta</a>
+                    <a th:href="@{/targus/principal/form_crear}" class="btn-registro">Crear cuenta</a>
                 </div>
             </div>
             <script type="text/javascript" th:src="@{/js/iniciosesion.js}"></script>
 
         </div>
-
-
     </body>
 
 </html>

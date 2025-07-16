@@ -4,286 +4,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Pedido | Multiservicios Leo</title>
+    <title>Agregar Venta | Multiservicios Leo</title>
     <link rel="icon" th:src="@{/images/logo.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/style-modal.css}">
-    <link rel="stylesheet" th:href="@{/css/style-agregarPedido.css}">
+    <link rel="stylesheet" th:href="@{/css/style-agregarVenta.css}">
 </head>
 
 <body>
     <header class="header" th:insert="venta/header.html"></header>
-    <nav class="navbar" th:insert="venta/navbar.html"></nav>
-    <main class="contenedor_main">
-        <div class="contenedor_modal">
-            <div class="title__add--modal">
-                <p>Crear Nuevo Pedido</p>
-            </div>
-            <div class="contenedor_form-pedido">
-                <form th:action="@{/añadirPedido}" method="post">
-                    <div class="cont-cod-provee">
-                        <div class="conte-cod">
-                            <label for="">Codigo de Pedido</label><br>
-                            <input type="text" disabled>
-                        </div>
-                        <div class="conte-proveedor">
-                            <label for="">Proveedor</label><br>
-                            <input type="text" id="proveedorInput" name="proveedorInput" class="dropdown-inputs"
-                                th:value="${prov}" required>
-                            <div class="dropdown-lista" id="proveedorList">
-                                <div class="prov" th:each="proveedor: ${proveedores}" th:text="${proveedor.nombre}">
+    <main class="contenedor_main" style="left: 0; margin: auto;">
+        <form id="formPedido" method="post">
+
+            <div class="contenedor_modal">
+                <div class="title__add--modal">
+                    <p>Realizar Nuevo Pedido</p>
+                </div>
+                <div class="contenedor__form--venta">
+                    <div class="info-produc-venta">
+                        <p>Informacion del Pedido</p>
+                        <div class="listar">
+                            <div class="proveedores">
+                                <select id="Proveedores">
+                                    <option value="" disabled selected>Seleccione un Proveedor</option>
+                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}"
+                                        th:text="${proveedor.nombre}"></option>
+                                </select>
+                            </div>
+
+                            <div class="list-produc">
+                                <label for="">Producto</label><br>
+                                <div class="dropdown-container">
+                                    <input type="text" class="dropdown-input" placeholder="Buscar producto..."
+                                        id="productInput" name="productInput" autocomplete="off">
+                                    <div class="dropdown-list" id="productList">
+                                        <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}"
+                                            th:attr="data-id=${producto.idProducto},data-nombre=${producto.nombre},data-precio=${producto.precioVenta}
+                                            ,data-proveedor=${producto.proveedor.id}">
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
+                            <div class="cantidad-produc">
+                                <label for="">Cantidad</label><br>
+                                <input type="number" min="1" value="1" id="canti" name="canti">
+                            </div>
+
                         </div>
                     </div>
-                    <div class="info-produc-pedido">
-                        <p>Productos a pedir</p>
-                        <div class="listar-pedido">
-                            <div class="producto-pedido">
-                                <label for="">Producto</label><br>
-                                <input type="text" id="productInput" name="productInput" class="dropdown-input" required>
-                                <div class="dropdown-list" id="productList">
-                                    <div class="pro" th:each="producto: ${productos}" th:text="${producto.nombre}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cantidad-produc-pedi">
-                                <label for="">Cantidad</label><br>
-                                <input type="number" id="canti" name="canti" value="1">
-                            </div>
-                            <div class="agregar-list-pedido">
-                                <button type="submit">Agregar</button>
-                            </div>
-                </form>
-            </div>
-        </div>
-        <div class="cont-table-list">
-            <table id="tabla-listar" class="table-list">
-                <thead>
-                    <tr>
-                        <th>Quitar</th>
-                        <th>Producto</th>
-                        <th>Cantidad<br>Un. o KG</th>
-                        <th>Precio S/.</th>
-                        <th>Total S/.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="detalle : ${detalles}">
-                        <td><a class="quitar-listas" th:each="producto : ${productos}"
-                                th:if="${producto.idProducto == detalle.idProducto}"
-                                th:href="@{/eliminar_pedido/{idProducto}(idProducto=${producto.idProducto})}">X</a></td>
-                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.nombre}">2</td>
-                        <td th:text="${detalle.cantidad}">arroz</td>
-                        <td th:each="producto : ${productos}" th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.precio}">4.50</td>
-                        <td id="tot" class="tot" th:each="producto : ${productos}"
-                            th:if="${producto.idProducto == detalle.idProducto}"
-                            th:text="${producto.precio * detalle.cantidad}">9</td>
-                    </tr>
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            <p>SubTotal</p>
-                        </td>
-                        <td id="finalTotal">S/.9.00</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <p>Descuento: <input class="inp-descuen" type="number" value="0" min="0" size="10"> %</p>
-                        </td>
-                        <td id="descuento">20</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <p>Impuesto: <input class="inp-descuen" type="number" value="0" min="0" size="10"> %</p>
-                        </td>
-                        <td id="impuesto">20</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <p>Total</p>
-                        </td>
-                        <td id="total">20</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <form th:action="@{/registroPedido}" method="post">
-            <div class="container-submit-cancelar">
-                <div class="sub-can">
-                    <input value="Guardar" type="submit" class="btn-agreventa">
-                    <input type="hidden" id="inputDescuento" name="inputDescuento">
-                    <input type="hidden" id="inputImpuesto" name="inputImpuesto">
-                    <input type="hidden" id="inputProveedor" name="inputProveedor">
-                    <input type="text" id="total_reg" name="total_reg" style="display: none;">
-                    <button id="env" type="reset" onclick="window.location.href='/pedidos'">Cancelar</button>
+                    <div class="cont-table-list">
+                        <table id="tabla-listar" class="table-list">
+                            <thead>
+                                <tr>
+                                    <th>Quitar</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio S/.</th>
+                                    <th>Total S/.</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaProductos">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>Monto Total</p>
+                                    </td>
+                                    <td id="total-produc"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="container-submit-cancelar">
+                        <div class="sub-can">
+                            <input value="Guardar" type="submit" class="btn-agreventa">
+                            <button type="button" id="cancelar">Cancelar</button>
+                            <script>
+                                const botonCancelar = document.getElementById('cancelar')
+                                botonCancelar.addEventListener('click', (e) => {
+                                    localStorage.removeItem("productosAgregados")
+                                    window.location.href = '/inventario/pedido/cancelar'
+                                }) 
+                            </script>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
-        </div>
-        </div>
+
     </main>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+</body>
 
-            const proveedor = document.getElementById("proveedorInput");
+<script>
+    let index = 0;
+    let productosAgregados = {}
+    const tabla = document.getElementById('tablaProductos');
+    const productInput = document.getElementById("productInput");
+    const productList = document.getElementById("productList");
+    let proveedorActual = null;
 
-            proveedor.addEventListener("input", enviarProv);
-
-            function enviarProv() {
-                const enviarProveedor = document.getElementById("inputProveedor");
-                enviarProveedor.value = proveedor.value;
-
-                console.log(enviarProveedor.value);
+    const guardados = localStorage.getItem("productosAgregados")
+    if (guardados) {
+        productosAgregados = JSON.parse(guardados)
+        if (Object.entries(productosAgregados).length > 0) {
+            const firstId = Object.keys(productosAgregados)[0]
+            const productElement = document.querySelector(`.pro[data-id="${firstId}"]`)
+            if (productElement) {
+                proveedorActual = productElement.getAttribute('data-proveedor')
+                document.getElementById('Proveedores').value = proveedorActual
+                document.getElementById('Proveedores').disabled = true;
             }
+        }
+    }
 
-            const enviarImpuesto = document.getElementById("inputImpuesto");
-            const enviarDescuento = document.getElementById("inputDescuento");
+    Object.entries(productosAgregados).forEach(([id, data]) => {
+        const row = document.createElement('tr');
+        row.id = `prod-${id}`;
+        row.innerHTML = `
+                    <td><button type="button" onclick="eliminarProducto(${id})">X</button></td>
+                    <td>${data.nombre}</td>
+                    <td class="cantidad">${data.cantidad}</td>
+                    <td>${data.precio}</td>
+                    <td class="total">${(data.cantidad * data.precio).toFixed(2)}</td>
+                    <input type="hidden" name="productos[${data.index}].id" value="${id}">
+                    <input type="hidden" class="input-cantidad" name="productos[${data.index}].cantidad" value="${data.cantidad}">
+                    `;
 
-            const mostrarImpuesto = document.getElementById("impuesto");
-            const mostrarDescuento = document.getElementById("descuento");
+        tabla.appendChild(row);
+        index = Math.max(index, data.index + 1)
+    })
 
-            const FinalTotalEl = document.getElementById("finalTotal");
-            const descuentoInput = document.querySelectorAll(".inp-descuen")[0];
-            const impuestoInput = document.querySelectorAll(".inp-descuen")[1];
-            const totalEl = document.getElementById("total");
-            const totalRegInput = document.getElementById("total_reg");
+    const formPedido = document.getElementById("formPedido")
+    formPedido.addEventListener('submit', function (event) {
+        event.preventDefault()
 
-            const precios = Array.from(document.querySelectorAll("td.tot")).map(precios => parseFloat(precios.textContent.trim()));
+        if (Object.keys(productosAgregados).length === 0) {
+            alert("No se han agregado productos");
+            return
+        }
 
-            const subtotal = precios.reduce((acc, precio) => acc + precio, 0);
+        formPedido.action = `/inventario/pedido/registroPedido`;
+        formPedido.submit()
+    })
 
-            console.log(precios);
-            console.log(subtotal);
-            FinalTotalEl.innerHTML = `S/.${subtotal.toFixed(2)}`;
+    // Función para mostrar y filtrar la lista
+    function filterProducts() {
+        const query = productInput.value.toLowerCase();
+        const proveedorSeleccionado = document.getElementById('Proveedores').value
 
-            function recalcularTotal() {
-                const descuento = parseFloat(descuentoInput.value) || 0;
-                const impuesto = parseFloat(impuestoInput.value) || 0;
+        if (proveedorSeleccionado == "") {
+            alert("Seleccione un proveedor")
+            return;
+        }
 
-                enviarDescuento.value = descuento;
-                enviarImpuesto.value = impuesto;
+        const allProducts = document.querySelectorAll("div.dropdown-list div.pro")
+        let coincidencias = false;
 
+        allProducts.forEach(product => {
+            const nombre = product.textContent.toLowerCase()
+            const proveedor = product.getAttribute('data-proveedor');
 
-                const montoDescuento = subtotal * (descuento / 100);
-                const montoImpuesto = (subtotal - montoDescuento) * (impuesto / 100);
-
-                mostrarDescuento.innerHTML = montoDescuento.toFixed(2);
-                mostrarImpuesto.innerHTML = montoImpuesto.toFixed(2);
-
-
-                const totalFinal = subtotal - montoDescuento + montoImpuesto;
-
-                totalEl.textContent = `${totalFinal.toFixed(2)}`;
-                totalRegInput.value = totalFinal.toFixed(2);
+            if (nombre.includes(query) && proveedor === proveedorSeleccionado) {
+                product.onclick = () => selectProduct(product.textContent)
+                product.style.display = "block";
+                coincidencias = true;
+            } else {
+                product.style.display = "none";
             }
-
-            descuentoInput.addEventListener("input", recalcularTotal);
-            impuestoInput.addEventListener("input", recalcularTotal);
-
-            recalcularTotal();
 
         });
 
+        productList.style.display = coincidencias ? "block" : "none";
+    }
 
-        // Selecciona todos los elementos con la clase 'pro'
+    // Función para seleccionar un producto
+    function selectProduct(product) {
+        productInput.value = product;
+        productList.style.display = "none";
+    }
 
-        const products = document.querySelectorAll("div.dropdown-list div.pro");
-
-        // Crea un arreglo con el texto de cada div
-        const productNames = Array.from(products).map(product => product.textContent.trim());
-
-        const productInput = document.getElementById("productInput");
-        const productList = document.getElementById("productList");
-
-        // Función para mostrar y filtrar la lista
-        function filterProducts() {
-            const query = productInput.value.toLowerCase();
-            productList.innerHTML = ""; // Limpiar la lista
-
-            const filteredProducts = productNames.filter(product =>
-                product.toLowerCase().includes(query)
-            );
-
-            filteredProducts.forEach(product => {
-                const item = document.createElement("div");
-                item.textContent = product;
-                item.onclick = () => selectProduct(product);
-                productList.appendChild(item);
-            });
-
-            productList.style.display = filteredProducts.length ? "block" : "none";
-        }
-
-        // Función para seleccionar un producto
-        function selectProduct(product) {
-            productInput.value = product;
+    productInput.addEventListener("input", filterProducts);
+    productInput.addEventListener("click", (e) => {
+        filterProducts()
+        if (!productInput.contains(e.target) && !productList.contains(e.target)) {
             productList.style.display = "none";
         }
+    });
 
-        // Eventos
-        productInput.addEventListener("input", filterProducts);
-        document.addEventListener("click", (e) => {
-            if (!productInput.contains(e.target)) {
-                productList.style.display = "none";
+    const cantidadInput = document.getElementById('canti');
+
+    productList.addEventListener('click', function (event) {
+
+        if (event.target.classList.contains('pro')) {
+            const nombre = event.target.textContent;
+            const id = event.target.getAttribute('data-id');
+            const precio = parseFloat(event.target.getAttribute('data-precio'));
+            const cantidad = parseInt(cantidadInput.value);
+            const proveedorProducto = event.target.getAttribute('data-proveedor')
+            const proveedorSeleccionado = document.getElementById('Proveedores').value
+
+            if (proveedorActual && proveedorProducto !== proveedorSeleccionado) {
+                alert("Solo puedes agregar productos del mismo proveedor. Elimina los productos anteriores")
+                return;
             }
-        });
-    </script>
 
-    <script>
-
-        const proveedores = document.querySelectorAll("div.dropdown-lista div.prov");
-
-        // Crea un arreglo con el texto de cada div
-        const ProvNames = Array.from(proveedores).map(product => product.textContent.trim());
-
-        const ProvInput = document.getElementById("proveedorInput");
-        const ProvList = document.getElementById("proveedorList");
-
-        // Función para mostrar y filtrar la lista
-        function filterProv() {
-            const query = ProvInput.value.toLowerCase();
-            ProvList.innerHTML = ""; // Limpiar la lista
-
-            const filteredProv = ProvNames.filter(proveedor =>
-                proveedor.toLowerCase().includes(query)
-            );
-
-            filteredProv.forEach(prov => {
-                const item = document.createElement("div");
-                item.textContent = prov;
-                item.onclick = () => selectProveedor(prov);
-                ProvList.appendChild(item);
-            });
-
-            ProvList.style.display = filteredProv.length ? "block" : "none";
-        }
-
-        // Función para seleccionar un producto
-        function selectProveedor(proveedor) {
-            ProvInput.value = proveedor;
-            const enviarProveedor = document.getElementById("inputProveedor");
-            enviarProveedor.value = ProvInput.value;
-            console.log(enviarProveedor.value);
-            ProvList.style.display = "none";
-        }
-
-        // Eventos
-        ProvInput.addEventListener("input", filterProv);
-        document.addEventListener("click", (e) => {
-            if (!ProvInput.contains(e.target)) {
-                ProvList.style.display = "none";
+            if (!proveedorActual) {
+                proveedorActual = proveedorProducto
+                document.getElementById('Proveedores').disabled = true;
             }
-        });
-    </script>
 
-</body>
+            if (productosAgregados[id]) {
+                const fila = document.getElementById(`prod-${id}`)
+                const nuevaCantidad = productosAgregados[id].cantidad + cantidad
+                const nuevoTotal = (nuevaCantidad * precio).toFixed(2)
+
+                fila.querySelector('.cantidad').textContent = nuevaCantidad
+                fila.querySelector('.total').textContent = nuevoTotal
+                fila.querySelector('.input-cantidad').value = nuevaCantidad
+
+                productosAgregados[id].cantidad = nuevaCantidad
+                actualizar()
+
+            } else {
+
+                productosAgregados[id] = { cantidad: cantidad, index: index, nombre: nombre, precio: precio }
+
+                const row = document.createElement('tr');
+                row.id = `prod-${id}`;
+                row.innerHTML = `
+                    <td><a onclick="eliminarProducto(${id})">X</a></td>
+                    <td>${nombre}</td>
+                    <td class="cantidad">${cantidad}</td>
+                    <td>${precio}</td>
+                    <td class="total">${(cantidad * precio).toFixed(2)}</td>
+                    <input type="hidden" name="productos[${index}].id" value="${id}">
+                    <input type="hidden" class="input-cantidad" name="productos[${index}].cantidad" value="${cantidad}">
+                    `;
+                index++;
+                tabla.appendChild(row);
+                actualizar()
+                reindexarProductos()
+            }
+
+            productInput.value = ''
+            cantidadInput.value = 1
+
+            localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
+
+        }
+    });
+
+
+
+    function eliminarProducto(id) {
+        const fila = document.getElementById(`prod-${id}`)
+        if (fila) {
+            fila.remove()
+            delete productosAgregados[id]
+            localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
+        }
+        actualizar()
+        reindexarProductos()
+
+        if (Object.keys(productosAgregados).length === 0) {
+            proveedorActual = null
+            document.getElementById('Proveedores').disabled = false
+        }
+    }
+
+    function actualizar() {
+        let total = 0
+        document.querySelectorAll('.total').forEach(el => {
+            const valor = parseFloat(el.textContent) || 0
+            total += valor
+        })
+
+        document.getElementById('total-produc').textContent = `S/. ${total.toFixed(2)}`;
+    }
+
+    function reindexarProductos() {
+        const filas = document.querySelectorAll("#tablaProductos tr")
+        let nuevoIndex = 0
+        productosAgregados = {};
+
+        filas.forEach(fila => {
+            const id = fila.id.split("-")[1];
+            const cantidad = parseInt(fila.querySelector(".cantidad").textContent)
+            const nombre = fila.querySelector("td:nth-child(2)").textContent;
+            const precio = parseFloat(fila.querySelector("td:nth-child(4)").textContent);
+
+            fila.querySelector('[name$=".id"]').setAttribute("name", `productos[${nuevoIndex}].id`)
+            fila.querySelector('[name$=".cantidad"]').setAttribute("name", `productos[${nuevoIndex}].cantidad`)
+
+            productosAgregados[id] = { cantidad: cantidad, index: nuevoIndex, nombre: nombre, precio: precio }
+            nuevoIndex++
+        })
+
+        index = nuevoIndex;
+
+        localStorage.setItem("productosAgregados", JSON.stringify(productosAgregados))
+    }
+
+    document.getElementById('Proveedores').addEventListener('change', (e) => {
+        if (Object.keys(productosAgregados).length > 0) {
+            e.target.value = proveedorActual
+            alert('Ya agregaste productos. Elimina todos si quieres cambiar de proveedor')
+        }
+    })
+
+</script>
 
 </html>

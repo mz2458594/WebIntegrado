@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({ "nombre", "id", "rol" })
+@RequestMapping("/inventario/productos")
 public class ProductoInventarioController {
 
     @Autowired
@@ -26,11 +26,11 @@ public class ProductoInventarioController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping("/productos")
+    @GetMapping("/")
     public String productos(Model model) {
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        model.addAttribute("proveedores", proveedorService.obtenerProveedores());
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
         return "venta/productos";
     }
 
@@ -38,24 +38,38 @@ public class ProductoInventarioController {
     public String agregarProd(
             @ModelAttribute ProductDTO productDTO,
             Model model) {
-        ;
-        productoService.agregarProducto(productDTO);
+
+        try {
+            productoService.agregarProducto(productDTO);
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
+
+        return "venta/productos";
     }
 
     @PostMapping("/actualizar/{id}")
     public String actualizarProd(
-            @ModelAttribute ProductDTO productDTO, 
+            @ModelAttribute ProductDTO productDTO,
             @PathVariable int id,
             Model model) {
 
-        productoService.actualizarProducto(productDTO, id);
+        try {
+            productoService.actualizarProducto(productDTO, id);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
+
+        return "venta/productos";
     }
 
     @PostMapping("/eliminar/{id}")
@@ -65,10 +79,11 @@ public class ProductoInventarioController {
 
         productoService.eliminarProducto(id);
 
-        
         model.addAttribute("productos", productoService.listarProducto());
         model.addAttribute("categorias", productoService.obtenerCategorias());
-        return "redirect:/productos";
+        model.addAttribute("proveedores", proveedorService.obtenerProveedoresActivos());
+
+        return "redirect:/inventario/productos/";
 
     }
 }

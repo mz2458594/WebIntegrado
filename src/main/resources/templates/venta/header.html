@@ -11,21 +11,41 @@
 <body>
     <div class="contenedor__logo"> <img th:src="@{/images/logo.png}" alt=""></div>
     <div class="title__inicio">
-        <p>Sistemas de Gestion de Inventario</p>
+        <p>Sistema de Gestión de Ventas e Inventario</p>
     </div>
     <div class="contenedor__perfil">
         <div class="icon__notifi">
-            <p><i class="fa-regular fa-bell"></i></p>
+            <button id="btn-notificacion" class="notificacion-btn">
+                <i class="fa-regular fa-bell"></i>
+                <span id="contar-notificacion" class="badge-notificacion"
+                th:text="${notificaciones != null ? notificaciones.size() : 0}"></span>
+            </button>
+            <div id="panel-notifi" class="notifi-panel hidden">
+                <div class="header-notifi">
+                    <p>Notificaciones</p>
+
+                </div>
+                <div id="lista-notifi" class="notifi-lista">
+
+                    <div class="notification-item" th:if="${notificaciones != null}" th:each="notificacion : ${notificaciones}">
+                        <strong th:text="${notificacion.asunto}">Stock bajo</strong>
+                        <div th:text="${notificacion.mensaje}">descripcion</div>
+                        <small th:text="${notificacion.fecha}">tiempo</small>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <div class="linea"></div>
         <div class="profile">
             <div class="name_profile" th:if="${empleado != null}">
-                <p>Hola <span th:text="${empleado.persona.nombre}">Jefe de market</span></p>
-                <p th:text="${empleado.role}">Administrador</p>
+                <p>Hola <span th:text="${empleado.nombre}">Jefe de market</span></p>
+                <p th:text="${empleado.usuario.rol.nombre}">Administrador</p>
             </div>
             <div class="img_perfil"><i class="fa-solid fa-user"></i></div>
         </div>
     </div>
+    <script th:src="@{/js/notificaciones.js}"></script>
 </body>
 
 </html>

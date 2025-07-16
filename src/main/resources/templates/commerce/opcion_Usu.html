@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MaxiAhorro | Opciones</title>
+        <title>Targus | Opciones</title>
         <link rel="stylesheet" th:href="@{/css/opcion_Usu.css}">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="icon" href="https://maxiahorro.com.pe/wp-content/uploads/2021/06/favicon.ico" type="image/x-icon">
+        <link rel="icon" th:href="@{/images/logo.png}">
     </head>
     <body>
         <div th:insert="commerce/header.html"></div>
@@ -14,7 +14,7 @@
         <br/><br/>
 
         <div class="contenido">
-            <a th:href="@{/info}">
+            <a th:href="@{/targus/usuario/info}">
                 <div class="opciones">   
                     <div class="prin">
                         <img th:src="@{/images/id-card-regular-60.png}" alt="">
@@ -24,7 +24,7 @@
                 </div>  
             </a>
 
-            <a th:href="@{/soporte}">
+            <a th:href="@{/targus/principal/soporte}">
                 <div class="opciones">
                     <div class="prin">
                         <img th:src="@{/images/support-regular-60.png}" alt="">
@@ -33,18 +33,16 @@
                     <p>Encuentra respuestas en la sección de preguntas frecuentes o contacta a nuestro equipo de soporte.</p>
                 </div>
             </a>
-
-            <a th:if="${rol == 'Administrador' && rol != null}" th:href="@{/adminProducto}">
+            <a th:href="@{/targus/usuario/pedidos}">
                 <div class="opciones">
                     <div class="prin">
-                        <img th:src="@{/images/support-regular-60.png}" alt="">
-                        <h2>Administrador</h2>
+                        <img th:src="@{/images/id-card-regular-60.png}" alt="">
+                        <h2>Pedidos</h2>
                     </div>
-                    <p>Operaciones básicas para gestionar los datos almacenados en la base de datos y el sistema</p>
+                    <p>Aquí puedes ver el estado de tus pedidos y hacer seguimiento a cada detalle.</p>
                 </div>
             </a>
             
-
         </div>
 
         <div th:insert="commerce/footer.html"></div>
