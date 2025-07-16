@@ -107,7 +107,7 @@ public class UsuarioController {
             Model model) {
 
         try {
-            Persona cliente = authService.update(userDTO, id);
+            Cliente cliente = (Cliente)authService.update(userDTO, id);
             session.setAttribute("user", cliente);
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());

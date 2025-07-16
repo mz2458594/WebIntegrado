@@ -28,7 +28,7 @@
                 <div id="lista-notifi" class="notifi-lista">
 
                     <div class="notification-item" th:if="${notificaciones != null}" th:each="notificacion : ${notificaciones}">
-                        <strong>Stock bajo</strong>
+                        <strong th:text="${notificacion.asunto}">Stock bajo</strong>
                         <div th:text="${notificacion.mensaje}">descripcion</div>
                         <small th:text="${notificacion.fecha}">tiempo</small>
                     </div>

@@ -144,7 +144,7 @@ public class UsuarioService {
 
     public Usuario actualizarUsuarios(UserDTO userDTO, int id) {
 
-        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).get();
+        Usuario usuario = usuarioDAO.findById(Long.valueOf(id)).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         usuario.setEmail(userDTO.getCorreo());
         usuario.setUsername(userDTO.getUsername());

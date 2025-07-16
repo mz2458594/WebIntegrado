@@ -78,12 +78,6 @@ public class PersonaService {
 
     public Persona actualizarPersona(UserDTO userDTO, Usuario usuario) {
 
-        LocalDate fechaNacimineto = userDTO.getFecha_nac().toLocalDate();
-
-        if (calcularEdad(fechaNacimineto) < 18) {
-            throw new RuntimeException("*No se puede registrar a un empleado menor de 18 años");
-        }
-
         Persona persona;
 
         Optional<Cliente> cliente = clienteDAO.findByUsuario(usuario);
@@ -101,14 +95,16 @@ public class PersonaService {
             throw new RuntimeException("*El usuario no tiene ningun rol en el sistema");
         }
 
-        persona.setNombre(userDTO.getNombre());
-        persona.setApellido(userDTO.getApellido());
-        persona.setDni(userDTO.getNum_documento());
-        persona.setTelefono(userDTO.getCelular());
-        persona.setFecha(userDTO.getFecha_nac());
+        persona.setNombre(userDTO.getNombre() != null && !userDTO.getNombre().isEmpty() ? userDTO.getNombre() : persona.getNombre());
+        persona.setApellido(userDTO.getApellido() != null && !userDTO.getApellido().isEmpty() ? userDTO.getApellido() : persona.getApellido());
+        persona.setDni(userDTO.getNum_documento() != null && !userDTO.getNum_documento().isEmpty() ? userDTO.getNum_documento() : persona.getDni());
+        persona.setTelefono(userDTO.getCelular() != null && !userDTO.getCelular().isEmpty() ? userDTO.getCelular() : persona.getTelefono());
+        persona.setFecha(userDTO.getFecha_nac() != null ? userDTO.getFecha_nac() : persona.getFecha());
 
-        if (userDTO.getCalle() != null && userDTO.getDepartamento() != null &&
-                userDTO.getDistrito() != null && userDTO.getProvincia() != null) {
+        if ((userDTO.getCalle() != null && !userDTO.getCalle().isEmpty())
+                && (userDTO.getDepartamento() != null && !userDTO.getDepartamento().isEmpty())
+                && (userDTO.getDistrito() != null && !userDTO.getDistrito().isEmpty())
+                && (userDTO.getProvincia() != null && !userDTO.getProvincia().isEmpty())) {
             persona.getDireccion().setCalle(userDTO.getCalle());
             persona.getDireccion().setDepartamento(userDTO.getDepartamento());
             persona.getDireccion().setDistrito(userDTO.getDistrito());

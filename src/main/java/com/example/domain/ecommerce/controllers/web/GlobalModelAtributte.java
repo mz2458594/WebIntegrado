@@ -55,12 +55,15 @@ public class GlobalModelAtributte {
                         long dias = ChronoUnit.DAYS.between(fechaPedido, LocalDate.now());
                         return dias == 1 || dias == 2;
                     })
-                    .map(p -> new Notificacion("El pedido con ID " + p.getIdPedido() + " con estado PENDIENTE va a cumplir el límite de confirmación", LocalDateTime.now()))
+                    .map(p -> new Notificacion("Estado del pedido",
+                            "El pedido con ID " + p.getIdPedido()
+                                    + " con estado PENDIENTE va a cumplir el límite de confirmación",
+                            LocalDateTime.now()))
                     .collect(Collectors.toList()));
 
             notificacions.addAll(productos.stream()
                     .filter(p -> Integer.parseInt(p.getStock()) < 5)
-                    .map(p -> new Notificacion(
+                    .map(p -> new Notificacion("Stock bajo",
                             "El producto " + p.getNombre() + "tiene stock bajo (" + p.getStock() + " unidades)",
                             LocalDateTime.now()))
                     .collect(Collectors.toList()));

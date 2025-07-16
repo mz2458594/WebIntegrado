@@ -21,15 +21,15 @@
                 <div class="title-decoration"></div>
             </div>
         </div>
-        
+
         <div class="search-container">
             <div class="search-box">
-                <input class="search-input" type="text" id="search-input" placeholder="¿Qué estás buscando?" >
+                <input class="search-input" type="text" id="search-input" placeholder="¿Qué estás buscando?">
                 <div class="search-icon">
                     <i class="fas fa-search"></i>
                 </div>
             </div>
-            
+
             <div class="filter-box">
                 <select id="sort-select" class="filter-select">
                     <option value="name-asc">Ordenar por nombre (A-Z)</option>
@@ -40,8 +40,9 @@
             </div>
         </div>
 
-        <div class="product-grid" id="product-grid" >
-            <div th:each="producto : ${productos}" class="product-card" th:attr="data-name=${producto.nombre},data-price=${producto.precioVenta}">
+        <div class="product-grid" id="product-grid">
+            <div th:each="producto : ${productos}" class="product-card"
+                th:attr="data-name=${producto.nombre},data-price=${producto.precioVenta}">
                 <a th:href="@{/targus/producto/detalle/{id} (id = ${producto.idProducto})}" class="product-link">
                     <div class="product-image">
                         <img th:src="${producto.imagen}" alt="Imagen del producto">
@@ -75,19 +76,82 @@
 
     <script>
 
+        let currentCategory = "Todas";
+        let currentSearchTerm = "";
+        // Función para filtrar productos
+        function filterProducts() {
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                const category = card.querySelector('div').getAttribute('data-category');
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const shouldShow = (currentCategory === "Todas" || category === currentCategory) &&
+                    (productName.includes(currentSearchTerm) || currentSearchTerm === "");
+                card.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        // Función para manejar la selección de categoría
+        function handleCategoryClick(event) {
+            const category = event.currentTarget.getAttribute('data-category');
+            currentCategory = category;
+            document.querySelectorAll('.category').forEach(cat => cat.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            filterProducts();
+        }
+
+        // Añadir event listeners a las categorías
+        document.querySelectorAll('.category').forEach(category => {
+            category.addEventListener('click', handleCategoryClick);
+        });
+
+        // Función para manejar la búsqueda
+        function handleSearch() {
+            currentSearchTerm = document.getElementById('search-input').value.toLowerCase();
+            filterProducts();
+        }
+
+        // Añadir event listener al campo de búsqueda
+        document.getElementById('search-input').addEventListener('input', handleSearch);
+
+        // Función para ordenar productos
+        function sortProducts(sortBy) {
+            const productGrid = document.querySelector('.product-grid');
+            const productCards = Array.from(productGrid.children);
+
+            productCards.sort((a, b) => {
+                const aValue = a.querySelector('h3').textContent;
+                const bValue = b.querySelector('h3').textContent;
+                const aPrice = parseFloat(a.querySelector('p').textContent.replace('Precio: $', ''));
+                const bPrice = parseFloat(b.querySelector('p').textContent.replace('Precio: $', ''));
+
+                switch (sortBy) {
+                    case 'name-asc':
+                        return aValue.localeCompare(bValue);
+                    case 'name-desc':
+                        return bValue.localeCompare(aValue);
+                    case 'price-asc':
+                        return aPrice - bPrice;
+                    case 'price-desc':
+                        return bPrice - aPrice;
+                }
+            });
+
+            productCards.forEach(card => productGrid.appendChild(card));
+        }
+
         // Filtrado y ordenamiento en el cliente
         const productCards = Array.from(document.querySelectorAll('.product-card'));
         const productGrid = document.getElementById('product-grid');
-        
+
         // Ordenamiento
-        document.getElementById('sort-select').addEventListener('change', function() {
+        document.getElementById('sort-select').addEventListener('change', function () {
             const sortValue = this.value;
             sortProducts(sortValue);
         });
-        
+
         function sortProducts(sortType) {
             const sortedProducts = [...productCards].sort((a, b) => {
-                switch(sortType) {
+                switch (sortType) {
                     case 'name-asc':
                         return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
                     case 'name-desc':
@@ -100,15 +164,15 @@
                         return 0;
                 }
             });
-            
+
             // Limpiar el grid
             productGrid.innerHTML = '';
-            
+
             // Añadir productos ordenados
             sortedProducts.forEach(product => {
                 productGrid.appendChild(product);
             });
-            
+
             // Reiniciar paginación
             currentPage = 1;
             showPage(currentPage);
@@ -122,7 +186,7 @@
         function showPage(page) {
             const visibleProducts = productCards.filter(card => !card.classList.contains('hidden'));
             totalPages = Math.ceil(visibleProducts.length / productsPerPage);
-            
+
             const start = (page - 1) * productsPerPage;
             const end = start + productsPerPage;
 
@@ -144,11 +208,11 @@
         function updatePageNumbers(currentPage, totalPages) {
             const pageNumbers = document.getElementById('page-numbers');
             pageNumbers.innerHTML = '';
-            
+
             // Siempre mostrar al menos las páginas adyacentes
             let startPage = Math.max(1, currentPage - 1);
             let endPage = Math.min(totalPages, currentPage + 1);
-            
+
             // Asegurarse de que siempre se muestren al menos 3 páginas si hay suficientes
             if (totalPages >= 3) {
                 if (endPage - startPage + 1 < 3) {
@@ -159,7 +223,7 @@
                     }
                 }
             }
-            
+
             // Crear botones de página
             for (let i = startPage; i <= endPage; i++) {
                 const pageButton = document.createElement('button');
@@ -168,7 +232,7 @@
                 if (i === currentPage) {
                     pageButton.classList.add('active');
                 }
-                pageButton.addEventListener('click', function() {
+                pageButton.addEventListener('click', function () {
                     currentPage = i;
                     showPage(i);
                 });
@@ -176,14 +240,14 @@
             }
         }
 
-        document.getElementById('prev-page').addEventListener('click', function() {
+        document.getElementById('prev-page').addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
                 showPage(currentPage);
             }
         });
 
-        document.getElementById('next-page').addEventListener('click', function() {
+        document.getElementById('next-page').addEventListener('click', function () {
             if (currentPage < totalPages) {
                 currentPage++;
                 showPage(currentPage);
