@@ -60,7 +60,7 @@ public class VentasInventarioController {
             return "venta/ventas";
         }
 
-        model.addAttribute("productos", productosService.listarProducto());
+        model.addAttribute("productos", productosService.obtenerProductosActivos());
         return "venta/agregarVenta";
     }
 
@@ -78,7 +78,7 @@ public class VentasInventarioController {
 
         if ("FACTURA".equalsIgnoreCase(tipo)) {
             if (ruc == null || ruc.trim().isEmpty() || ruc.length() != 11) {
-                model.addAttribute("productos", productosService.listarProducto());
+                model.addAttribute("productos", productosService.obtenerProductosActivos());
                 return "venta/agregarVenta";
             }
             sale.setRuc(ruc);
@@ -86,14 +86,14 @@ public class VentasInventarioController {
         } else if ("BOLETA".equalsIgnoreCase(tipo)) {
             sale.setTipo("BOLETA");
         } else {
-            model.addAttribute("productos", productosService.listarProducto());
+            model.addAttribute("productos", productosService.obtenerProductosActivos());
             return "venta/agregarVenta";
         }
 
         List<ProductRequestDTO> productRequestDTOs = ventaRequestDTOs.getProductos();
 
         if (productRequestDTOs == null) {
-            model.addAttribute("productos", productosService.listarProducto());
+            model.addAttribute("productos", productosService.obtenerProductosActivos());
 
             return "venta/agregarVenta";
         }
@@ -161,7 +161,7 @@ public class VentasInventarioController {
         Empleado empleado = (Empleado) session.getAttribute("empleado");
 
         if (empleado == null) {
-            model.addAttribute("productos", productosService.listarProducto());
+            model.addAttribute("productos", productosService.obtenerProductosActivos());
             model.addAttribute("error", "No hay usuario logeado en el sistema");
             return "venta/agregarVenta";
         } else {
@@ -171,7 +171,7 @@ public class VentasInventarioController {
                 return "venta/ventas";
             } else {
                 model.addAttribute("error", "Credenciales incorrectas");
-                model.addAttribute("productos", productosService.listarProducto());
+                model.addAttribute("productos", productosService.obtenerProductosActivos());
                 return "venta/agregarVenta";
             }
         }

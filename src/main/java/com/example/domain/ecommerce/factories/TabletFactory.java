@@ -3,7 +3,6 @@ package com.example.domain.ecommerce.factories;
 import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
-import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Tablet;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -38,11 +37,11 @@ public class TabletFactory implements ProductoFactory {
     public Producto actualizar(ProductDTO productDTO, int id) {
         Tablet tablet = (Tablet) productoDAO.findById(Long.valueOf(id)).get();
 
-        tablet.setTamañoPantalla(productDTO.getTamañoPantalla());
-        tablet.setMemoriaRam(productDTO.getMemoriaRam());
-        tablet.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno());
-        tablet.setResolucionCamara(productDTO.getResolucionCamara());
-        tablet.setSistemaOperativo(productDTO.getSistemaOperativo());
+        tablet.setTamañoPantalla(productDTO.getTamañoPantalla() != null ? productDTO.getTamañoPantalla() : tablet.getTamañoPantalla());
+        tablet.setMemoriaRam(productDTO.getMemoriaRam() != null ? productDTO.getMemoriaRam() : tablet.getMemoriaRam());
+        tablet.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno() != null ? productDTO.getAlmacenamientoInterno(): tablet.getAlmacenamientoInterno());
+        tablet.setResolucionCamara(productDTO.getResolucionCamara() != null ? productDTO.getResolucionCamara() : tablet.getResolucionCamara());
+        tablet.setSistemaOperativo(productDTO.getSistemaOperativo() != null ? productDTO.getSistemaOperativo() : tablet.getSistemaOperativo());
 
         return tablet;
     }

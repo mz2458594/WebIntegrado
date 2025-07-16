@@ -35,11 +35,11 @@
                     <input type="text" name="nombre" class="soloText" required>
                 </div>
                 <div class="input__box">
-                    <label for="">Descripcion</label><br>
+                    <label for="">Descripción</label><br>
                     <textarea name="descripcion" required></textarea>
                 </div>
                 <div class="input__box">
-                    <label for="">Categoria</label><br>
+                    <label for="">Categoría</label><br>
                     <select name="nombre_categoria" id="categoria" onchange="mostrarCamposCategoria()" required>
                         <option value="" disabled selected>Seleccione la categoria</option>
                         <option th:each="categoria: ${categorias}" th:value="${categoria.nombre}"
@@ -74,7 +74,7 @@
                     <input type="text" name="imagen1" required>
                 </div>
                 <div class="input__box">
-                    <label for="">Codigo de barras</label><br>
+                    <label for="">Código de barras</label><br>
                     <input type="text" name="codigoBarras" id="codigo" maxlength="13" pattern="\d{13}"
                         title="El codigo debe tener exactamente 13 digitos numericos" required>
                 </div>
@@ -134,91 +134,92 @@
                 </button>
             </div>
             <div class="Cont__buscar">
-                div>
-                <label for="">Filtrar por estado:</label>
-                <select name="" id="estadoFiltro" style="font-weight: bold;">
-                    <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
-                    <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
-                        ACTIVO</option>
-                    <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
-                        INACTIVO
-                    </option>
-                </select>
-                <style>
-                    .opti {
-                        font-weight: bold;
-                    }
+                <div>
+                    <label for="">Filtrar por estado:</label>
+                    <select name="" id="estadoFiltro" style="font-weight: bold;">
+                        <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
+                        <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
+                            ACTIVO</option>
+                        <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
+                            INACTIVO
+                        </option>
+                    </select>
+                    <style>
+                        .opti {
+                            font-weight: bold;
+                        }
 
-                    #estadoFiltro {
-                        padding: 7px;
-                        border-radius: 5px;
-                        border: 1px solid rgba(165, 165, 165, 0.467);
+                        #estadoFiltro {
+                            padding: 7px;
+                            border-radius: 5px;
+                            border: 1px solid rgba(165, 165, 165, 0.467);
 
-                    }
+                        }
 
-                    #estadoFiltro:focus-visible {
-                        outline: 2px solid #3391fc;
-                    }
-                </style>
+                        #estadoFiltro:focus-visible {
+                            outline: 2px solid #3391fc;
+                        }
+                    </style>
+                </div>
+                <div class="buscar_search">
+                    <label for="">Buscar :</label>
+                    <input type="text" id="productInput">
+                </div>
             </div>
-            <div class="buscar_search">
-                <label for="">Buscar :</label>
-                <input type="text" id="productInput">
-            </div>
-        </div>
-        <div class="cont_table">
-            <div class="table__modal">
-                <table class="table">
-                    <tr class="thead">
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Categoria</th>
-                        <th>Proveedor</th>
-                        <th>Precio Venta</th>
-                        <th>Precio Compra</th>
-                        <th>Stock</th>
-                        <th>Marca</th>
-                        <th>Link Imagen</th>
-                        <th>Codigo de barras</th>
-                        <th>Peso</th>
-                        <th>Accion</th>
-                    </tr>
-                    <tr id="productList" th:each="producto: ${productos}">
-                        <td th:text="${producto.idProducto}">1</td>
-                        <td th:text="${producto.nombre}">Papas Lays</td>
-                        <td th:text="${producto.descripcion}">Rico y nutritivos</td>
-                        <td th:text="${producto.categoria.nombre}">Snacks</td>
-                        <td th:text="${producto.proveedor.nombre}">Paperos</td>
-                        <td th:text="${producto.precioVenta}">2</td>
-                        <td th:text="${producto.precioCompra}">200</td>
-                        <td th:text="${producto.stock}">200</td>
-                        <td th:text="${producto.marca}">200</td>
-                        <td th:text="${producto.imagen}"></td>
-                        <td th:text="${producto.codigoBarras}"></td>
-                        <td th:text="${producto.peso}"></td>
-                        <!-- <td>
+            <div class="cont_table">
+                <div class="table__modal">
+                    <table class="table">
+                        <tr class="thead">
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Proveedor</th>
+                            <th>Precio Venta</th>
+                            <th>Precio Compra</th>
+                            <th>Stock</th>
+                            <th>Marca</th>
+                            <th>Link Imagen</th>
+                            <th>Código de barras</th>
+                            <th>Peso</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                        <tr id="productList" th:each="producto: ${productos}">
+                            <td th:text="${producto.idProducto}">1</td>
+                            <td th:text="${producto.nombre}">Papas Lays</td>
+                            <td th:text="${producto.descripcion}">Rico y nutritivos</td>
+                            <td th:text="${producto.categoria.nombre}">Snacks</td>
+                            <td th:text="${producto.proveedor.nombre}">Paperos</td>
+                            <td th:text="${producto.precioVenta}">2</td>
+                            <td th:text="${producto.precioCompra}">200</td>
+                            <td th:text="${producto.stock}">200</td>
+                            <td th:text="${producto.marca}">200</td>
+                            <td th:text="${producto.imagen}"></td>
+                            <td th:text="${producto.codigoBarras}"></td>
+                            <td th:text="${producto.peso}"></td>
+                            <td>
                                 <span th:text="${producto.estado}" th:classappend="${producto.estado}"></span>
-                            </td> -->
-                        <th>
-                            <div class="container_action">
-                                <label type="checkbox" class="action_checkbox">
-                                    <label class="name_action" for="open_action">Accion <i
-                                            class="fa-solid fa-caret-down" id="vuelta"></i></label>
-                                    <div class="cont_opciones">
-                                        <button class="editproduc">Ver Detalle <i
-                                                class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
+                            <th>
+                                <div class="container_action">
+                                    <label type="checkbox" class="action_checkbox">
+                                        <label class="name_action" for="open_action">Acción <i
+                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                        <div class="cont_opciones">
+                                            <button class="editproduc">Ver Detalle <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
 
-                                    </div>
-                            </div>
-                        </th>
+                                        </div>
+                                </div>
+                            </th>
 
 
-                    </tr>
+                        </tr>
 
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
         </div>
 
 
@@ -233,11 +234,11 @@
                         <input id="nombre_act" type="text" name="nombre" required class="soloText">
                     </div>
                     <div class="input__box">
-                        <label for="">Descripcion</label><br>
+                        <label for="">Descripción</label><br>
                         <textarea id="descripcion_act" name="descripcion" required></textarea>
                     </div>
                     <div class="input__box">
-                        <label for="">Categoria</label><br>
+                        <label for="">Categoría</label><br>
                         <select id="categoria_act" name="nombre_categoria" required>
                             <option th:each="categoria: ${categorias}" th:text="${categoria.nombre}"></option>
                         </select>
@@ -265,7 +266,7 @@
                         <input type="text" name="imagen1" id="imagen_act" required>
                     </div>
                     <div class="input__box">
-                        <label for="">Codigo de barras</label><br>
+                        <label for="">Código de barras</label><br>
                         <input type="text" name="codigoBarras" id="codigo_act" maxlength="13" pattern="\d{13}"
                             title="El codigo debe tener exactamente 13 digitos numericos" required>
                     </div>
@@ -333,6 +334,7 @@
                     document.getElementById("imagen_act").value = celdas[9].textContent;
                     document.getElementById("codigo_act").value = celdas[10].textContent;
                     document.getElementById("peso_act").value = celdas[11].textContent;
+                    document.getElementById("estado_act").value = celdas[12].textContent.trim();
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();
 
@@ -369,7 +371,7 @@
                                 <input disabled class="soloText"  type="text" id="procesador" name="procesador" value="${detalle.procesador}" required>
                             </div>
                             <div class="input__box">
-                                <label for="tarjetaGrafica">Tarjeta grafica</label>
+                                <label for="tarjetaGrafica">Tarjeta gráfica</label>
                                 <input disabled class="soloText" type="text" id="tarjetaGrafica" name="tarjetaGrafica" value="${detalle.tarjetaGrafica}" required>
                             </div>
                             <div class="input__box">
@@ -408,11 +410,11 @@
                                 <input disabled class="soloText" type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
-                                <label for="resolucionCamara">Resolucion de camara</label>
+                                <label for="resolucionCamara">Resolución de camara</label>
                                 <input disabled class="soloText" type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
-                                <label for="capacidadBateria">Capacidad de bateria</label>
+                                <label for="capacidadBateria">Capacidad de batería</label>
                                 <input disabled class="soloText" type="text" id="capacidadBateria" name="capacidadBateria" value="${detalle.capacidadBateria}" required>
                             </div>
                             <div class="input__box">
@@ -430,11 +432,11 @@
                                 <input class="soloText" disabled type="text" id="tipo" name="tipo" value="${detalle.tipo}" required>
                             </div>
                             <div class="input__box">
-                                <label for="duracion">Duracion</label>
+                                <label for="duracion">Duración</label>
                                 <input class="soloText" disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             <div class="input__box">
-                                <label for="cancelacionRuido">Cancelacion de ruido</label>
+                                <label for="cancelacionRuido">Cancelación de ruido</label>
                                 <input class="soloText" disabled type="text" id="cancelacionRuido" name="cancelacionRuido" value="${detalle.cancelacionRuido}" required>
                             </div>
                             <div class="input__box">
@@ -452,7 +454,7 @@
                                 <input class="soloText" disabled type="text" id="tamañoPantalla" name="tamañoPantalla" value="${detalle.tamañoPantalla}" required>
                             </div>
                             <div class="input__box">
-                                <label for="resolucion">Resolucion</label>
+                                <label for="resolucion">Resolución</label>
                                 <input class="soloText" disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
@@ -460,7 +462,7 @@
                                 <input class="soloText" disabled type="text" id="tipoPanel" name="tipoPanel" value="${detalle.tipoPanel}" required>
                             </div>
                             <div class="input__box">
-                                <label for="frecuenciaActualizacion">Frecuencia de actualizacion</label>
+                                <label for="frecuenciaActualizacion">Frecuencia de actualización</label>
                                 <input class="soloText" disabled type="text" id="frecuenciaActualizacion" name="frecuenciaActualizacion" value="${detalle.frecuenciaActualizacion}" required>
                             </div>
                             <div class="input__box">
@@ -482,11 +484,11 @@
                                 <input class="soloText" disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
-                                <label for="distribucion">Distribucion</label>
+                                <label for="distribucion">Distribución</label>
                                 <input class="soloText" disabled type="text" id="distribucion" name="distribucion" value="${detalle.distribución}" required>
                             </div>
                             <div class="input__box">
-                                <label for="retroiluminacion">Retroiluminacion</label>
+                                <label for="retroiluminacion">Retroiluminación</label>
                                 <input class="soloText" disabled type="text" id="retroiluminacion" name="retroiluminacion" value="${detalle.retroiluminación}" required>
                             </div>
                             `;
@@ -530,7 +532,7 @@
                                 <input class="soloText" disabled type="text" id="resistenciaAgua" name="resistenciaAgua" value="${detalle.resistenciaAgua}" required>
                             </div>
                             <div class="input__box">
-                                <label for="duracion">Duracion</label>
+                                <label for="duracion">Duración</label>
                                 <input class="soloText" disabled type="text" id="duracion" name="duracion" value="${detalle.duracion}" required>
                             </div>
                             `;
@@ -552,7 +554,7 @@
                                 <input class="soloText" disabled type="text" id="almacenamientoInterno" name="almacenamientoInterno" value="${detalle.almacenamientoInterno}" required>
                             </div>
                             <div class="input__box">
-                                <label for="resolucionCamara">Resolucion de la camara</label>
+                                <label for="resolucionCamara">Resolución de la cámara</label>
                                 <input class="soloText" disabled type="text" id="resolucionCamara" name="resolucionCamara" value="${detalle.resolucionCamara}" required>
                             </div>
                             <div class="input__box">
@@ -574,7 +576,7 @@
                                 <input class="soloText" disabled type="text" id="resolucion" name="resolucion" value="${detalle.resolución}" required>
                             </div>
                             <div class="input__box">
-                                <label for="zoomOptico">Zoom Optico</label>
+                                <label for="zoomOptico">Zoom Óptico</label>
                                 <input class="soloText" disabled type="text" id="zoomOptico" name="zoomOptico" value="${detalle.zoomOptico}" required>
                             </div>
                             <div class="input__box">
@@ -600,11 +602,11 @@
                                 <input class="soloText" disabled type="text" id="conectividad" name="conectividad" value="${detalle.conectividad}" required>
                             </div>
                             <div class="input__box">
-                                <label for="velocidadImpresion">Velocidad de Impresion</label>
+                                <label for="velocidadImpresion">Velocidad de Impresión</label>
                                 <input class="soloText" disabled type="text" id="velocidadImpresion" name="velocidadImpresion" value="${detalle.velocidadImpresion}" required>
                             </div>
                             <div class="input__box">
-                                <label for="dobleCaraAutomatica">Doble cara automatica</label>
+                                <label for="dobleCaraAutomatica">Doble cara automática</label>
                                 <input class="soloText" disabled type="text" id="dobleCaraAutomatica" name="dobleCaraAutomatica" value="${detalle.dobleCaraAutomatica}" required>
                             </div>
                             `;
@@ -647,7 +649,7 @@
     <script th:src="@{/js/modalAdd.js}"></script>
 
 
-    <!-- <script>
+    <script>
         const productInput = document.getElementById("productInput");
         const estaFil = document.getElementById("estadoFiltro");
 
@@ -658,14 +660,16 @@
 
             tableRows.forEach(row => {
                 // Filtrar basándonos en las celdas relevantes (e.g., nombre del producto)
-                 const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                const productId = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
                 const productName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
                 const productCat = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
                 const productProv = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
                 const estado = row.querySelector("td:nth-child(13)").textContent.trim();
 
+                console.log(estado)
+
                 const coincideEstado = estadoSeleccionado === "" || estado === estadoSeleccionado
-                const coincideTexto = productId.includes(query) || productName.includes(query) || productDir.includes(query) || productTel.includes(query) || productEmail.includes(query)
+                const coincideTexto = productId.includes(query) || productName.includes(query) || productCat.includes(query) || productProv.includes(query)
 
                 if (coincideEstado && coincideTexto) {
                     row.style.display = ""; // Mostrar fila
@@ -684,8 +688,8 @@
             const backgroundColor = selectedOption.style.backgroundColor;
             estaFil.style.backgroundColor = backgroundColor;
         });
-        
-    </script> -->
+
+    </script>
 
 
     <script th:if="${error != '' && error != null}">

@@ -76,7 +76,6 @@ input{
 }
 
 .mensaje_error{
-    display: none;
     font-weight: 600;
     color: rgb(206, 59, 62);
 }

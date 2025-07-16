@@ -57,8 +57,8 @@ public class ProductoService {
         if (producto.isEmpty()) {
             throw new EntityNotFoundException("Producto con id " + id + " no encontrado");
         }
-        
-        return  factories.stream()
+
+        return factories.stream()
                 .filter(f -> f.supports(producto.get().getCategoria().getNombre()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Tipo de producto no soportado"))
@@ -155,7 +155,9 @@ public class ProductoService {
                 .crearProducto(productDTO);
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
-        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));;
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor())
+                .orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));
+        ;
 
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
@@ -166,8 +168,8 @@ public class ProductoService {
         producto.setStock(productDTO.getStock());
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
-
-        // producto.setEstado(Estado.valueOf(productDTO.getEstado()));
+        producto.setPeso(Float.parseFloat(productDTO.getPeso()));
+        producto.setEstado(Estado.valueOf(productDTO.getEstado()));
 
         if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
@@ -188,7 +190,8 @@ public class ProductoService {
                 .actualizar(productDTO, id);
 
         Categoria categoria = categoriaDAO.findByNombre(productDTO.getNombre_categoria());
-        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));
+        Proveedor proveedor = proveedorDAO.findByNombre(productDTO.getProveedor())
+                .orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));
 
         producto.setCategoria(categoria);
         producto.setDescripcion(productDTO.getDescripcion());
@@ -197,8 +200,8 @@ public class ProductoService {
         producto.setProveedor(proveedor);
         producto.setMarca(productDTO.getMarca());
         producto.setPrecioCompra(productDTO.getPrecioCompra());
-
-        // producto.setEstado(Estado.valueOf(productDTO.getEstado()));
+        producto.setPeso(Float.parseFloat(productDTO.getPeso()));
+        producto.setEstado(Estado.valueOf(productDTO.getEstado()));
 
         if (producto.validarCodigo(productDTO.getCodigoBarras())) {
             producto.setCodigoBarras(productDTO.getCodigoBarras());
@@ -210,16 +213,15 @@ public class ProductoService {
 
     }
 
-
-    // public List<Producto> obtenerProductosActivos(){
-    //     List<Producto> activos = new ArrayList<>();
-    //     for (Producto producto : productoDAO.findAll()) {
-    //         if (producto.getEstado().equals(Estado.ACTIVO)) {
-    //             activos.add(producto);
-    //         }
-    //     }
-    //     return activos;
-    // }
+    public List<Producto> obtenerProductosActivos() {
+        List<Producto> activos = new ArrayList<>();
+        for (Producto producto : productoDAO.findAll()) {
+            if (producto.getEstado().equals(Estado.ACTIVO)) {
+                activos.add(producto);
+            }
+        }
+        return activos;
+    }
 
     public void eliminarProducto(int id) {
         productoDAO.deleteById(Long.valueOf(id));
@@ -237,17 +239,19 @@ public class ProductoService {
         productoDAO.save(product);
     }
 
-    public List<Producto> obtenerStockBajo(){
+    public List<Producto> obtenerStockBajo() {
         return productoDAO.obtenerProductosStockBajo();
     }
 
-    public List<Producto> obtenerProductosConFiltro(ProductFilterDTO productFilterDTO){
+    public List<Producto> obtenerProductosConFiltro(ProductFilterDTO productFilterDTO) {
 
         String proveedor = null;
         String categoria = null;
 
-        if (productFilterDTO.getProveedor() != null) {
-            Proveedor prov = proveedorDAO.findByNombre(productFilterDTO.getProveedor()).orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));;
+        if (productFilterDTO.getProveedor() != null && !productFilterDTO.getProveedor().isEmpty()) {
+            Proveedor prov = proveedorDAO.findByNombre(productFilterDTO.getProveedor())
+                    .orElseThrow(() -> new RuntimeException("Error al actualizar el producto"));
+            ;
             if (prov != null) {
                 proveedor = prov.getNombre();
             }

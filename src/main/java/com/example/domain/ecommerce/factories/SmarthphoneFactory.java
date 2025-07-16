@@ -3,7 +3,6 @@ package com.example.domain.ecommerce.factories;
 import org.springframework.stereotype.Component;
 
 import com.example.domain.ecommerce.dto.ProductDTO;
-import com.example.domain.ecommerce.models.entities.Laptop;
 import com.example.domain.ecommerce.models.entities.Producto;
 import com.example.domain.ecommerce.models.entities.Smartphone;
 import com.example.domain.ecommerce.repositories.ProductoDAO;
@@ -40,12 +39,12 @@ public class SmarthphoneFactory implements ProductoFactory {
     public Producto actualizar(ProductDTO productDTO, int id) {
         Smartphone smartphone = (Smartphone) productoDAO.findById(Long.valueOf(id)).get();
 
-        smartphone.setTamañoPantalla(productDTO.getTamañoPantalla());
-        smartphone.setMemoriaRam(productDTO.getMemoriaRam());
-        smartphone.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno());
-        smartphone.setResolucionCamara(productDTO.getResolucionCamara());
-        smartphone.setCapacidadBateria(productDTO.getCapacidadBateria());
-        smartphone.setSistemaOperativo(productDTO.getSistemaOperativo());
+        smartphone.setTamañoPantalla(productDTO.getTamañoPantalla() != null ? productDTO.getTamañoPantalla() : smartphone.getTamañoPantalla());
+        smartphone.setMemoriaRam(productDTO.getMemoriaRam() != null ? productDTO.getMemoriaRam() : smartphone.getMemoriaRam());
+        smartphone.setAlmacenamientoInterno(productDTO.getAlmacenamientoInterno()!= null ? productDTO.getAlmacenamientoInterno() : smartphone.getAlmacenamientoInterno());
+        smartphone.setResolucionCamara(productDTO.getResolucionCamara()!= null ? productDTO.getResolucionCamara() : smartphone.getResolucionCamara());
+        smartphone.setCapacidadBateria(productDTO.getCapacidadBateria() != null ? productDTO.getCapacidadBateria() : smartphone.getCapacidadBateria());
+        smartphone.setSistemaOperativo(productDTO.getSistemaOperativo() != null ? productDTO.getSistemaOperativo() : smartphone.getSistemaOperativo());
 
         return smartphone;
     }

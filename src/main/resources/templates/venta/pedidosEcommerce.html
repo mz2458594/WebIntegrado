@@ -76,12 +76,12 @@
                     <table id="table" class="table">
                         <tr class="thead">
                             <th>ID</th>
-                            <th>Fecha Creacion</th>
+                            <th>Fecha Creación</th>
                             <th>Fecha entrega estimada</th>
                             <th>Cliente</th>
                             <th>Monto Total</th>
                             <th>Estado</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                         </tr>
                         <tr th:each="pedido : ${pedidos}" id="productList">
                             <td th:text="${pedido.idPedido}">1</td>
@@ -309,7 +309,7 @@
                     motivoP.style.display = 'block';
                     motivoP.innerHTML = `
                     <div class="input__box">
-                        <label for="">Motivo de cancelacion</label><br>
+                        <label for="">Motivo de cancelación</label><br>
                         <input type="text" disabled id="motivo_cancel" name="motivoCancelado" required>
                     </div>
                     `

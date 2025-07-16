@@ -20,7 +20,7 @@
     <div class="modal__container--add">
         <div class="ventana__modal ventana-close">
             <div class="form__name--add">
-                <p><i class="fa-solid fa-plus"></i> Agregar Categoria</p>
+                <p><i class="fa-solid fa-plus"></i> Agregar Categoría</p>
             </div>
             <form class="form_modal" th:action="@{/inventario/categoria/agregar_cat}" method="post">
                 <div class="input__box">
@@ -28,7 +28,7 @@
                     <input type="text" name="nombre" id="nombre_cat" class="soloText" required>
                 </div>
                 <div class="input__box">
-                    <label for="">Descripcion</label><br>
+                    <label for="">Descripción</label><br>
                     <input type="text" name="descripcion" id="descripcion_cat" class="soloText" required>
                 </div>
 
@@ -73,7 +73,7 @@
     <main class="contenedor_main">
         <div class="contenedor_modal">
             <div class="title__add--modal">
-                <p>Categoria de Productos</p>
+                <p>Categoría de Productos</p>
                 <button class="addition">
                     <i class="fa-solid fa-plus"></i>
                     <p>Nuevo</p>
@@ -91,9 +91,9 @@
                         <tr class="thead">
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th>Descripción</th>
                             <th>Link Imagen</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                         </tr>
                         <tr id="productList" th:each="categoria:${categorias}">
                             <td th:text="${categoria.id_categoria}">1</td>
@@ -123,7 +123,7 @@
         <div class="container-modal--edit">
             <div class="ventana_modal--edit ventana-close-edit">
                 <div class="form__name--add">
-                    <p><i class="fa-solid fa-plus"></i>Editar categoria</p>
+                    <p><i class="fa-solid fa-plus"></i>Editar categoría</p>
                 </div>
                 <form class="form_modal" id="formEditar" method="post">
                     <div class="input__box">
@@ -131,7 +131,7 @@
                         <input type="text" name="nombre" id="nombre_act" class="soloText" required>
                     </div>
                     <div class="input__box">
-                        <label for="">Descripcion</label><br>
+                        <label for="">Descripciín</label><br>
                         <input type="text" name="descripcion" id="descripcion_act" class="soloText" required>
                     </div>
 

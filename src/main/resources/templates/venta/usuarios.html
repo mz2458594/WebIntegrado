@@ -208,7 +208,7 @@
                             <th>Rol</th>
                             <th>Estado</th>
                             <th>Comentario</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                             <!-- <th>Cargo</th> -->
                         </tr>
                         <tr id="productList" th:each="usuario: ${usuarios}">
@@ -232,7 +232,7 @@
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
-                                        <label class="name_action" for="open_action">Accion <i
+                                        <label class="name_action" for="open_action">Acción <i
                                                 class="fa-solid fa-caret-down" id="vuelta"></i></label>
                                         <div class="cont_opciones">
                                             <button class="editproduc">Editar <i
@@ -463,7 +463,7 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        spanError.textContent = 'El telefono ya existe'
+                        spanError.textContent = 'El teléfono ya existe'
                         errores[id] = true
                     } else {
                         spanError.textContent = ''

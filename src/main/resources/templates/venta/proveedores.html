@@ -36,7 +36,7 @@
                     <span class="error-msg" id="error-nombre"></span>
                 </div>
                 <div class="input__box">
-                    <label for="">Telefono</label><br>
+                    <label for="">Teléfono</label><br>
                     <input type="text" name="telefono" id="telefono" class="soloNum" maxlength="9" required>
                     <span class="error-msg" id="error-telefono"></span>
 
@@ -141,11 +141,11 @@
                             <th>ID</th>
                             <th>RUC</th>
                             <th>Nombre</th>
-                            <th>Telefono</th>
+                            <th>Teléfono</th>
                             <th>Email</th>
                             <th>Comentario</th>
                             <th>Estado</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                         </tr>
                         <tr id="productList" th:each="proveedor: ${proveedores}">
                             <td th:text="${proveedor.id}">1</td>
@@ -160,7 +160,7 @@
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
-                                        <label class="name_action" for="open_action">Accion <i
+                                        <label class="name_action" for="open_action">Acción <i
                                                 class="fa-solid fa-caret-down" id="vuelta"></i></label>
                                         <div class="cont_opciones">
                                             <button class="editproduc">Editar <i
@@ -196,7 +196,7 @@
 
                     </div>
                     <div class="input__box">
-                        <label for="">Telefono</label><br>
+                        <label for="">Teléfono</label><br>
                         <input type="text" name="telefono" id="telefono_act" class="soloNum" maxlength="9" required>
                         <span class="error-msg" id="error-telefono_act"></span>
 
@@ -322,7 +322,7 @@
                     const existe = await response.json()
 
                     if (existe) {
-                        spanError.textContent = 'El telefono ya existe'
+                        spanError.textContent = 'El teléfono ya existe'
                         errores[id] = true
                     } else {
                         spanError.textContent = ''

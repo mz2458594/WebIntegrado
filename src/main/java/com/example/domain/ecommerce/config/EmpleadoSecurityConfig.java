@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.example.domain.ecommerce.security.CustomEmpleadorFailureHandler;
 import com.example.domain.ecommerce.security.EmpleadoSuccessHandler;
 
 @Configuration
@@ -37,7 +39,8 @@ public class EmpleadoSecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler(empleadoSuccessHandler)
-                        .failureUrl("/inventario/principal/login?error=true"))
+                        .failureHandler(new CustomEmpleadorFailureHandler())
+                )
                 .logout(logout -> logout
                         .logoutUrl("/inventario/principal/cerrarEmpleado")
                         .logoutSuccessUrl("/inventario/principal/login")

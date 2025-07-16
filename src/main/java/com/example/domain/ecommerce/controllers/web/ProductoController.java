@@ -21,10 +21,10 @@ public class ProductoController {
     @GetMapping("/")
     public String abrir(Model model) {
         
-        model.addAttribute("productos", productosService.listarProducto());
+        // model.addAttribute("productos", productosService.listarProducto());
 
         //CUANDO YA SE TENGA AGREGADO ESTADOS A PRODUCTOS
-        // model.addAttribute("productos", productosService.obtenerProductosActivos());
+        model.addAttribute("productos", productosService.obtenerProductosActivos());
 
         model.addAttribute("categorias", productosService.obtenerCategorias());
         return "commerce/productos";

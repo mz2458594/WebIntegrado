@@ -38,11 +38,11 @@ public class MonitoresFactory implements ProductoFactory {
     public Producto actualizar(ProductDTO productDTO, int id) {
         Monitor monitor = (Monitor) productoDAO.findById(Long.valueOf(id)).get();
 
-        monitor.setTamañoPantalla(productDTO.getTamañoPantalla());
-        monitor.setResolución(productDTO.getResolución());
-        monitor.setTipoPanel(productDTO.getTipoPanel());
-        monitor.setFrecuenciaActualizacion(productDTO.getFrecuenciaActualizacion());
-        monitor.setPuertosEntrada(productDTO.getPuertosEntrada());
+        monitor.setTamañoPantalla(productDTO.getTamañoPantalla() != null ? productDTO.getTamañoPantalla() : monitor.getTamañoPantalla());
+        monitor.setResolución(productDTO.getResolución() != null ? productDTO.getResolución() : monitor.getResolución());
+        monitor.setTipoPanel(productDTO.getTipoPanel() != null ? productDTO.getTipoPanel() : monitor.getTipoPanel());
+        monitor.setFrecuenciaActualizacion(productDTO.getFrecuenciaActualizacion() != null ? productDTO.getFrecuenciaActualizacion() : monitor.getFrecuenciaActualizacion());
+        monitor.setPuertosEntrada(productDTO.getPuertosEntrada() != null ? productDTO.getPuertosEntrada() : monitor.getPuertosEntrada());
 
         return monitor;
     }

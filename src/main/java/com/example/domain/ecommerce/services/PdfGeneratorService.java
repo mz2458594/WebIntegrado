@@ -151,10 +151,10 @@ public class PdfGeneratorService {
 
         // 7. Método de pago y otros
         document.add(new Paragraph("\nMETODO DE PAGO: EFECTIVO"));
-        // if (venta instanceof VentaInventario ventaInventario) {
-        //     document.add(new Paragraph("EFECTIVO: " + ventaInventario.getEfectivo()));
-        //     document.add(new Paragraph("VUELTO: " + ventaInventario.getVuelto()));
-        // }
+        if (venta instanceof VentaInventario ventaInventario) {
+            document.add(new Paragraph("EFECTIVO: " + ventaInventario.getEfectivo()));
+            document.add(new Paragraph("VUELTO: " + ventaInventario.getVuelto()));
+        }
 
         // 8. Pie de página
         document.add(new Paragraph("\nRepresentación impresa de documento electrónico.")

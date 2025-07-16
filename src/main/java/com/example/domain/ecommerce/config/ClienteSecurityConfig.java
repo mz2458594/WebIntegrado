@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.domain.ecommerce.security.ClienteSuccessHandler;
+import com.example.domain.ecommerce.security.CustomAuthenticationFailureHandler;
 
 @Configuration
 @Order(1)
@@ -35,7 +36,7 @@ public class ClienteSecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler(clienteSuccessHandler)
-                        .failureUrl("/targus/principal/iniciar_crear?error=true"))
+                        .failureHandler(new CustomAuthenticationFailureHandler()))
                 .logout(logout -> logout
                         .logoutUrl("/targus/principal/cerrar")
                         .logoutSuccessUrl("/targus/principal/iniciar_crear")

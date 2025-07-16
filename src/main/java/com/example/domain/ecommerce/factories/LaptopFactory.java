@@ -38,19 +38,23 @@ public class LaptopFactory implements ProductoFactory {
     public Producto actualizar(ProductDTO productDTO, int id) {
         Laptop laptop = (Laptop) productoDAO.findById(Long.valueOf(id)).get();
 
-        laptop.setProcesador(productDTO.getProcesador());
-        laptop.setTarjetaGrafica(productDTO.getTarjetaGrafica());
-        laptop.setSistemaOperativo(productDTO.getSistemaOperativo());
-        laptop.setTamañoPantalla(productDTO.getTamañoPantalla());
-        laptop.setMemoriaRam(productDTO.getMemoriaRam());
-        laptop.setColor(productDTO.getColor());
-        laptop.setAlmacenamiento(productDTO.getAlmacenamiento());
+        laptop.setProcesador(productDTO.getProcesador() != null ? productDTO.getProcesador() : laptop.getProcesador());
+        laptop.setTarjetaGrafica(
+                productDTO.getTarjetaGrafica() != null ? productDTO.getTarjetaGrafica() : laptop.getTarjetaGrafica());
+        laptop.setSistemaOperativo(productDTO.getSistemaOperativo() != null ? productDTO.getSistemaOperativo()
+                : laptop.getSistemaOperativo());
+        laptop.setTamañoPantalla(
+                productDTO.getTamañoPantalla() != null ? productDTO.getTamañoPantalla() : laptop.getTamañoPantalla());
+        laptop.setMemoriaRam(productDTO.getMemoriaRam() != null ? productDTO.getMemoriaRam() : laptop.getMemoriaRam());
+        laptop.setColor(productDTO.getColor() != null ? productDTO.getColor() : laptop.getColor());
+        laptop.setAlmacenamiento(
+                productDTO.getAlmacenamiento() != null ? productDTO.getAlmacenamiento() : laptop.getAlmacenamiento());
 
         return laptop;
     }
 
     @Override
-    public Producto obtener(int id){
+    public Producto obtener(int id) {
         Laptop laptop = (Laptop) productoDAO.findById(Long.valueOf(id)).get();
         return laptop;
     }
