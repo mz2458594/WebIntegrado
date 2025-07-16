@@ -134,20 +134,20 @@
                 </button>
             </div>
             <div class="Cont__buscar">
-                <div>
-                    <label for="">Filtrar por estado:</label>
-                    <select name="" id="estadoFiltro" style="font-weight: bold;">
-                        <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
-                        <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
-                            ACTIVO</option>
-                        <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
-                            INACTIVO
-                        </option>
-                    </select>
-                    <style>
-                        .opti {
-                            font-weight: bold;
-                        }
+                div>
+                <label for="">Filtrar por estado:</label>
+                <select name="" id="estadoFiltro" style="font-weight: bold;">
+                    <option class="opti" value="" selected style="background-color: #ffffff;">SELECCIONE</option>
+                    <option class="opti" value="ACTIVO" style="background-color: #d1fae5; color: #065f46;">
+                        ACTIVO</option>
+                    <option class="opti" value="INACTIVO" style="background-color: #991b1b; color: #fef2f2;">
+                        INACTIVO
+                    </option>
+                </select>
+                <style>
+                    .opti {
+                        font-weight: bold;
+                    }
 
                         #estadoFiltro {
                             padding: 7px;
@@ -156,59 +156,58 @@
 
                         }
 
-                        #estadoFiltro:focus-visible {
-                            outline: 2px solid #3391fc;
-                        }
-                    </style>
-                </div>
-                <div class="buscar_search">
-                    <label for="">Buscar :</label>
-                    <input type="text" id="productInput">
-                </div>
+                    #estadoFiltro:focus-visible {
+                        outline: 2px solid #3391fc;
+                    }
+                </style>
             </div>
-            <div class="cont_table">
-                <div class="table__modal">
-                    <table class="table">
-                        <tr class="thead">
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Categoría</th>
-                            <th>Proveedor</th>
-                            <th>Precio Venta</th>
-                            <th>Precio Compra</th>
-                            <th>Stock</th>
-                            <th>Marca</th>
-                            <th>Link Imagen</th>
-                            <th>Código de barras</th>
-                            <th>Peso</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                        <tr id="productList" th:each="producto: ${productos}">
-                            <td th:text="${producto.idProducto}">1</td>
-                            <td th:text="${producto.nombre}">Papas Lays</td>
-                            <td th:text="${producto.descripcion}">Rico y nutritivos</td>
-                            <td th:text="${producto.categoria.nombre}">Snacks</td>
-                            <td th:text="${producto.proveedor.nombre}">Paperos</td>
-                            <td th:text="${producto.precioVenta}">2</td>
-                            <td th:text="${producto.precioCompra}">200</td>
-                            <td th:text="${producto.stock}">200</td>
-                            <td th:text="${producto.marca}">200</td>
-                            <td th:text="${producto.imagen}"></td>
-                            <td th:text="${producto.codigoBarras}"></td>
-                            <td th:text="${producto.peso}"></td>
-                            <td>
+            <div class="buscar_search">
+                <label for="">Buscar :</label>
+                <input type="text" id="productInput">
+            </div>
+        </div>
+        <div class="cont_table">
+            <div class="table__modal">
+                <table class="table">
+                    <tr class="thead">
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Categoria</th>
+                        <th>Proveedor</th>
+                        <th>Precio Venta</th>
+                        <th>Precio Compra</th>
+                        <th>Stock</th>
+                        <th>Marca</th>
+                        <th>Link Imagen</th>
+                        <th>Codigo de barras</th>
+                        <th>Peso</th>
+                        <th>Accion</th>
+                    </tr>
+                    <tr id="productList" th:each="producto: ${productos}">
+                        <td th:text="${producto.idProducto}">1</td>
+                        <td th:text="${producto.nombre}">Papas Lays</td>
+                        <td th:text="${producto.descripcion}">Rico y nutritivos</td>
+                        <td th:text="${producto.categoria.nombre}">Snacks</td>
+                        <td th:text="${producto.proveedor.nombre}">Paperos</td>
+                        <td th:text="${producto.precioVenta}">2</td>
+                        <td th:text="${producto.precioCompra}">200</td>
+                        <td th:text="${producto.stock}">200</td>
+                        <td th:text="${producto.marca}">200</td>
+                        <td th:text="${producto.imagen}"></td>
+                        <td th:text="${producto.codigoBarras}"></td>
+                        <td th:text="${producto.peso}"></td>
+                        <!-- <td>
                                 <span th:text="${producto.estado}" th:classappend="${producto.estado}"></span>
-                            </td>
-                            <th>
-                                <div class="container_action">
-                                    <label type="checkbox" class="action_checkbox">
-                                        <label class="name_action" for="open_action">Acción <i
-                                                class="fa-solid fa-caret-down" id="vuelta"></i></label>
-                                        <div class="cont_opciones">
-                                            <button class="editproduc">Ver Detalle <i
-                                                    class="fa-solid fa-pen-to-square"></i></button>
+                            </td> -->
+                        <th>
+                            <div class="container_action">
+                                <label type="checkbox" class="action_checkbox">
+                                    <label class="name_action" for="open_action">Accion <i
+                                            class="fa-solid fa-caret-down" id="vuelta"></i></label>
+                                    <div class="cont_opciones">
+                                        <button class="editproduc">Ver Detalle <i
+                                                class="fa-solid fa-pen-to-square"></i></button>
 
                                         </div>
                                 </div>
@@ -217,9 +216,9 @@
 
                         </tr>
 
-                    </table>
-                </div>
+                </table>
             </div>
+        </div>
         </div>
 
 
