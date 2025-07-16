@@ -90,6 +90,8 @@ public class Producto implements Serializable {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    private String comentario;
+
 
 
 }

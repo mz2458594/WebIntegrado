@@ -89,7 +89,10 @@
                         <option value="INACTIVO">INACTIVO</option>
                     </select>
                 </div>
-
+                <div class="input__box">
+                    <label for="">Comentario</label><br>
+                    <input type="text" name="comentario">
+                </div>
                 <!-- Campos dinámicos -->
                 <div id="camposCategoria" class="category-fields"></div>
 
@@ -183,6 +186,7 @@
                             <th>Codigo de barras</th>
                             <th>Peso</th>
                             <th>Estado</th>
+                            <th>Comentario</th>
                             <th>Accion</th>
                         </tr>
                         <tr id="productList" th:each="producto: ${productos}">
@@ -201,6 +205,7 @@
                             <td>
                                 <span th:text="${producto.estado}" th:classappend="${producto.estado}"></span>
                             </td>
+                            <td th:text="${producto.comentario}"></td>
                             <th>
                                 <div class="container_action">
                                     <label type="checkbox" class="action_checkbox">
@@ -281,6 +286,10 @@
                             <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
+                    <div class="input__box">
+                        <label for="">Comentario</label><br>
+                        <input type="comentario" name="comentario" id="comentario_act" class="soloText">
+                    </div>
                     <!-- Campos dinamicos -->
                     <div id="camposCategorias" class="category-fields"></div>
                     <div class="button__modal" style="display: flex; justify-content: space-between;">
@@ -335,6 +344,7 @@
                     document.getElementById("codigo_act").value = celdas[10].textContent;
                     document.getElementById("peso_act").value = celdas[11].textContent;
                     document.getElementById("estado_act").value = celdas[12].textContent.trim();
+                    document.getElementById("comentario_act").value = celdas[13].textContent.trim();
                     const form = document.getElementById("formEditar");
                     const idProducto = celdas[0].textContent.trim();
 
