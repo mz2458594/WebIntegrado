@@ -20,7 +20,6 @@ public class CustomEmpleadorFailureHandler implements AuthenticationFailureHandl
             intentos = 1;
         } else {
             response.sendRedirect("/inventario/principal/login?error=true");
-            System.out.println(intentos);
             intentos++;
         }
     }
